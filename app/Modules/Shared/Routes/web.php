@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Modules\Shared\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('Home'));
+Route::get('/', HomeController::class);
