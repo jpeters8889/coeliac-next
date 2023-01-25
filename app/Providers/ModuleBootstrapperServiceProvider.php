@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -14,8 +16,8 @@ abstract class ModuleBootstrapperServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        collect($this->providers())->each(function(string $provider) {
-            $this->register($provider);
+        collect($this->providers())->each(function (string $provider): void {
+            $this->app->register($provider);
         });
     }
 }

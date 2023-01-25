@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Modules\Shared\SharedModuleServiceProvider;
@@ -14,7 +16,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        collect($this->modules)->each(function (string $module) {
+        collect($this->modules)->each(function (string $module): void {
             $this->app->register($module);
         });
     }
