@@ -23,6 +23,7 @@
         "method_chaining_indentation": true,
         "modernize_strpos": true,
         "new_with_braces": true,
+        "no_unused_imports": true,
         "not_operator_with_space": true,
         "ordered_traits": true,
         "simplified_if_return": true,

@@ -49,4 +49,10 @@ abstract class TestCase extends BaseTestCase
     {
         $this->assertArrayHasKey($serviceProvider, $this->app->getLoadedProviders());
     }
+
+    /** @param class-string<ServiceProvider> $serviceProvider */
+    public function assertServiceProviderNotLoaded(string $serviceProvider): void
+    {
+        $this->assertArrayNotHasKey($serviceProvider, $this->app->getLoadedProviders());
+    }
 }
