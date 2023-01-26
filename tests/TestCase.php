@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Database\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\Factory as IlluminateFactory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\ServiceProvider;
@@ -25,9 +26,9 @@ abstract class TestCase extends BaseTestCase
      * @template T
      *
      * @param  class-string<T>  $what
-     * @return Factory<T>
+     * @return IlluminateFactory<T>
      */
-    protected function build(string $what): Factory
+    protected function build(string $what): IlluminateFactory
     {
         return Factory::factoryForModel($what);
     }
