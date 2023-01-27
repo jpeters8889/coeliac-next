@@ -5,36 +5,41 @@ module.exports = {
         './resources/js/**/*.vue',
     ],
 
-  theme: {
-    extend: {
-        colors: {
-            primary: {
-                DEFAULT: '#80CCFC',
-                light: '#addaf9',
-                lightest: '#e7f4fe',
-                dark: '#29719f',
-                darkest: '#237cbd',
-                other: '#186ba3',
-                shopping: '#f4f9fd',
-            },
+    theme: {
+        fontFamily: {
+            sans: ['Raleway', 'ui-sans-serif'],
+            coeliac: ['Note This', 'ui-sans-serif'],
+        },
 
-            secondary: {
-                light: '#ecd14a',
-                DEFAULT: '#DBBC25',
-            },
+        extend: {
+            colors: {
+                primary: {
+                    DEFAULT: '#80CCFC',
+                    light: '#addaf9',
+                    lightest: '#e7f4fe',
+                    dark: '#29719f',
+                    darkest: '#237cbd',
+                    other: '#186ba3',
+                    shopping: '#f4f9fd',
+                },
 
-            social: {
-                facebook: '#3b5998',
-                'facebook-light': 'rgba(59,89,152, 0.5)',
-                twitter: '#00aced',
-                'twitter-light': 'rgba(0,172,237, 0.5)',
-                pinterest: '#bd081c',
-                reddit: '#ff4500',
-                rss: '#f26522',
+                secondary: {
+                    light: '#ecd14a',
+                    DEFAULT: '#DBBC25',
+                },
+
+                social: {
+                    facebook: '#3b5998',
+                    'facebook-light': 'rgba(59,89,152, 0.5)',
+                    twitter: '#00aced',
+                    'twitter-light': 'rgba(0,172,237, 0.5)',
+                    pinterest: '#bd081c',
+                    reddit: '#ff4500',
+                    rss: '#f26522',
+                },
             },
         },
     },
-  },
 
     plugins: [
         require('@tailwindcss/typography'),

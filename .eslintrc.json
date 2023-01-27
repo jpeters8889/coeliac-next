@@ -54,5 +54,14 @@
                 "ignoreHTMLTextContents": true
             }
         ]
+    },
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@", "./resources/js"]
+                ]
+            }
+        }
     }
 }

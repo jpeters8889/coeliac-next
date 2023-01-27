@@ -1,5 +1,13 @@
+<script setup lang="ts">
+import CoeliacHeader from '@/Layouts/Components/CoeliacHeader.vue';
+
+defineProps({
+
+});
+</script>
+
 <template>
-    <div>
-        <slot />
-    </div>
+  <body>
+    <CoeliacHeader />
+  </body>
 </template>
