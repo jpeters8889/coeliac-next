@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Shared\Media;
 
 use App\Modules\Shared\Models\Media;

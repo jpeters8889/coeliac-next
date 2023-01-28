@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Modules\Blog\Models;
 
 use App\Modules\Blog\Models\Blog;

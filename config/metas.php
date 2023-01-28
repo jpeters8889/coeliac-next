@@ -13,5 +13,5 @@ return [
         'places to eat', 'gluten free', 'gluten', 'free from', 'free from blog', 'food intolerances',
     ],
 
-    'image' => config('app.url').'/assets/images/shares/coeliac.jpg',
+    'image' => config('app.url') . '/assets/images/shares/coeliac.jpg',
 ];

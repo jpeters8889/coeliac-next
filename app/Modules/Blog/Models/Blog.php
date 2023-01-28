@@ -39,6 +39,7 @@ class Blog extends Model implements HasMedia
         $this->addMediaCollection('body');
     }
 
+    /** @return BelongsToMany<BlogTag> */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(

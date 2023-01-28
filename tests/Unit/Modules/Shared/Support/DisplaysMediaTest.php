@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Modules\Shared\Support;
 
 use App\Modules\Blog\Models\Blog;
@@ -40,7 +42,7 @@ class DisplaysMediaTest extends TestCase
     /** @param $test Closure(HasMedia $model) */
     protected function runTests(Closure $test): void
     {
-        collect($this->models)->each(function(HasMedia $model) use ($test) {
+        collect($this->models)->each(function (HasMedia $model) use ($test): void {
             $test($model);
         });
     }
@@ -48,7 +50,7 @@ class DisplaysMediaTest extends TestCase
     /** @test */
     public function itCanGetTheFirstImage(): void
     {
-        $this->runTests(function(HasMedia $model) {
+        $this->runTests(function (HasMedia $model): void {
             $firstImage = $model->first_image;
 
             $this->assertNotNull($firstImage);
@@ -59,7 +61,7 @@ class DisplaysMediaTest extends TestCase
     /** @test */
     public function itCanGetThePrimaryImage(): void
     {
-        $this->runTests(function(HasMedia $model) {
+        $this->runTests(function (HasMedia $model): void {
             $primaryImage = $model->main_image;
 
             $this->assertNotNull($primaryImage);
@@ -70,7 +72,7 @@ class DisplaysMediaTest extends TestCase
     /** @test */
     public function itCanGetTheSocialImage(): void
     {
-        $this->runTests(function(HasMedia $model) {
+        $this->runTests(function (HasMedia $model): void {
             $socialImage = $model->social_image;
 
             $this->assertNotNull($socialImage);

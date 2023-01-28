@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Shared\Support;
 
+use App\Modules\Shared\Models\Media;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 
 /**
  * @property string $main_image
@@ -15,26 +19,33 @@ trait DisplaysMedia
 {
     public function getFirstImageAttribute(): ?string
     {
-        return isset($this->getMedia()[0]) ? $this->getMedia()[0]->getUrl() : null;
+        /** @var MediaCollection<int, Media> $collection */
+        $collection = $this->getMedia();
+
+        return isset($collection[0]) ? $collection[0]->getUrl() : null;
     }
 
     public function getMainImageAttribute(): ?string
     {
-        return isset($this->getMedia('primary')[0]) ? $this->getMedia('primary')[0]->getUrl() : null;
+        /** @var MediaCollection<int, Media> $collection */
+        $collection = $this->getMedia('primary');
+
+        return isset($collection[0]) ? $collection[0]->getUrl() : null;
     }
 
     public function getSocialImageAttribute(): ?string
     {
-        return isset($this->getMedia('social')[0]) ? $this->getMedia('social')[0]->getUrl() : null;
+        /** @var MediaCollection<int, Media> $collection */
+        $collection = $this->getMedia('social');
+
+        return isset($collection[0]) ? $collection[0]->getUrl() : null;
     }
 
     public function getSquareImageAttribute(): ?string
     {
-        return isset($this->getMedia('square')[0]) ? $this->getMedia('square')[0]->getUrl() : null;
-    }
+        /** @var MediaCollection<int, Media> $collection */
+        $collection = $this->getMedia('square');
 
-    public function getSquareImageRawAttribute(): ?string
-    {
-        return $this->square_image;
+        return isset($collection[0]) ? $collection[0]->getUrl() : null;
     }
 }
