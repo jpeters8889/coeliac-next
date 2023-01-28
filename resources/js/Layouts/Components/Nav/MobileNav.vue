@@ -31,6 +31,7 @@ const links: { label: string, href: string }[] = [
 <template>
   <Sidebar
     :open="open"
+    side="right"
     @close="close()"
   >
     <div class="bg-primary flex-1">

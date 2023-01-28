@@ -1,0 +1,46 @@
+<script setup lang="ts">
+import { PopoverGroup } from '@headlessui/vue';
+import NavItem from '@/Layouts/Components/Nav/NavItem.vue';
+
+</script>
+
+<template>
+  <div class="hidden xmd:flex xmd:flex-1 xmd:items-center xmd:justify-between h-14">
+    <PopoverGroup
+      as="nav"
+      class="flex h-full text-lg"
+    >
+      <NavItem label="Home" />
+
+      <NavItem
+        label="Shop"
+        has-dropdown
+      />
+
+      <NavItem
+        label="Blogs"
+        has-dropdown
+      />
+
+      <NavItem
+        label="Eating Out"
+        has-dropdown
+      />
+
+      <NavItem
+        label="Recipes"
+        has-dropdown
+      />
+
+      <NavItem
+        label="Collections"
+        has-dropdown
+      />
+
+      <NavItem
+        label="Info"
+        has-dropdown
+      />
+    </popovergroup>
+  </div>
+</template>

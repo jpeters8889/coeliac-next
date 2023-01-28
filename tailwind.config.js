@@ -38,6 +38,10 @@ module.exports = {
                     rss: '#f26522',
                 },
             },
+
+            screens: {
+                xmd: '860px',
+            }
         },
     },
 
