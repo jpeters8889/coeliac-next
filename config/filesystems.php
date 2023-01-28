@@ -46,16 +46,16 @@ return [
             'throw' => false,
         ],
 
-        's3' => [
+        'media' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'region' => env('AWS_DEFAULT_REGION', 'eu-west-2'),
+            'bucket' => env('AWS_MEDIA_BUCKET', 'coeliac-media'),
+            'visibility' => 'public',
+            'options' => [
+                'CacheControl' => 'max-age=315360000, no-transform, public',
+            ],
         ],
 
     ],
