@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Modules\Blog\Models;
 
+use App\Legacy\HasLegacyImage;
+use App\Legacy\Imageable;
 use App\Modules\Shared\Support\DisplaysMedia;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,13 +24,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property Carbon $created_at
  * @property string $description
  * @property Carbon $updated_at
- *
- * @method transform(array $array)
  */
 class Blog extends Model implements HasMedia
 {
     use DisplaysMedia;
     use InteractsWithMedia;
+
+    use HasLegacyImage;
+    use Imageable;
 
     public function registerMediaCollections(): void
     {
