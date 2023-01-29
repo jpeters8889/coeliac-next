@@ -41,6 +41,7 @@
         "class-methods-use-this": "off",
         "max-len": ["error", { "code": 155 }],
         "vue/multi-word-component-names": "off",
+        "default-case-last": "off",
         "vue/max-len": [
             "error",
             {

@@ -26,6 +26,7 @@ class NavigationService
             $key,
             fn () => Blog::query()
                 ->take(8)
+                ->latest()
                 ->with(['media'])
                 ->get()
                 ->map(fn (Blog $blog) => new NavigationItem(

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { PopoverGroup } from '@headlessui/vue';
 import NavItem from '@/Layouts/Components/Nav/NavItem.vue';
+import { usePage } from '@inertiajs/vue3';
+import { DefaultProps } from '@/types/DefaultProps';
+
+const { navigation } = <DefaultProps>usePage().props;
 
 </script>
 
@@ -20,6 +24,9 @@ import NavItem from '@/Layouts/Components/Nav/NavItem.vue';
       <NavItem
         label="Blogs"
         has-dropdown
+        :items="navigation.blogs"
+        view-more="See all Blogs"
+        view-more-link="/blogs"
       />
 
       <NavItem

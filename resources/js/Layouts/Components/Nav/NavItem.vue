@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {
-  ChartBarIcon, CursorArrowRaysIcon, ShieldCheckIcon, Squares2X2Icon,
-} from '@heroicons/vue/24/outline';
+import { Link } from '@inertiajs/vue3';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import CoeliacButton from '@/Components/CoeliacButton.vue';
+import { NavigationItem } from '@/types/DefaultProps';
 
 defineProps({
   label: {
@@ -14,32 +14,28 @@ defineProps({
     required: false,
     default: false,
   },
+  layout: {
+    type: String,
+    required: false,
+    validator: (value: string) => ['3x5'].includes(value),
+    default: '3x5',
+  },
+  items: {
+    type: Array as () => NavigationItem[],
+    required: false,
+    default: null,
+  },
+  viewMore: {
+    type: String,
+    required: false,
+    default: null,
+  },
+  viewMoreLink: {
+    type: String,
+    required: false,
+    default: null,
+  },
 });
-
-const solutions = [
-  {
-    name: 'Analytics',
-    description: 'Get a better understanding of where your traffic is coming from.',
-    href: '#',
-    icon: ChartBarIcon,
-  },
-  {
-    name: 'Engagement',
-    description: 'Speak directly to your customers in a more meaningful way.',
-    href: '#',
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: 'Security', description: 'Your customers\' data will be safe and secure.', href: '#', icon: ShieldCheckIcon,
-  },
-  {
-    name: 'Integrations',
-    description: 'Connect with third-party tools that you\'re already using.',
-    href: '#',
-    icon: Squares2X2Icon,
-  },
-];
-
 </script>
 
 <template>
@@ -69,40 +65,70 @@ const solutions = [
         leave-from-class="opacity-100 translate-y-0"
         leave-to-class="opacity-0 -translate-y-1"
       >
-        <PopoverPanel class="absolute inset-x-0 top-full z-10 hidden transform bg-white shadow-lg md:block">
+        <PopoverPanel
+          v-if="layout === '3x5'"
+          class="absolute inset-x-0 top-full z-10 hidden transform bg-white shadow-lg md:block"
+        >
           <div
-            class="mx-auto grid max-w-7xl gap-y-6 px-4 py-6 sm:grid-cols-2 sm:gap-8 sm:px-6 sm:py-8 lg:grid-cols-4 lg:px-8 lg:py-12 xl:py-16"
+            class="mx-auto max-w-7xl flex"
           >
-            <a
-              v-for="item in solutions"
-              :key="item.name"
-              :href="item.href"
-              class="-m-3 flex flex-col justify-between rounded-lg p-3 hover:bg-gray-50"
-            >
-              <div class="flex md:h-full lg:flex-col">
-                <div class="flex-shrink-0">
-                  <span
-                    class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white sm:h-12 sm:w-12"
-                  >
-                    <component
-                      :is="item.icon"
-                      class="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </span>
-                </div>
-                <div class="ml-4 md:flex md:flex-1 md:flex-col md:justify-between lg:ml-0 lg:mt-4">
-                  <div>
-                    <p class="text-base font-medium text-gray-900">{{ item.name }}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{ item.description }}</p>
+            <div class="flex flex-col divide-y divide-secondary w-2/3">
+              <template
+                v-for="(item, index) in items"
+                :key="item.title"
+              >
+                <Link
+                  v-if="index < 3"
+                  :href="item.link"
+                  class="flex flex-col justify-between rounded-lg p-2 py-4 first:pt-2 last:pb-2 hover:bg-secondary/20"
+                >
+                  <div class="flex md:h-full lg:flex-col">
+                    <div class="flex-shrink-0 w-1/5">
+                      <img
+                        :src="item.image"
+                        :alt="item.title"
+                      >
+                    </div>
+                    <div class="ml-4 md:flex md:flex-1 md:flex-col md:justify-between lg:ml-0 lg:mt-4">
+                      <div>
+                        <p class="text-base font-medium text-gray-900">
+                          {{ item.title }}
+                        </p>
+                        <p class="mt-1 text-sm text-gray-500">
+                          {{ item.description }}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <p class="mt-2 text-sm font-medium text-indigo-600 lg:mt-4">
-                    Learn more
-                    <span aria-hidden="true"> &rarr;</span>
-                  </p>
-                </div>
+                </Link>
+              </template>
+            </div>
+
+            <div class="flex flex-col w-1/3 p-2 space-y-2">
+              <template
+                v-for="(item, index) in items"
+                :key="item.title"
+              >
+                <Link
+                  v-if="index > 3"
+                  :href="item.link"
+                  class="flex flex-col justify-between rounded-lg"
+                >
+                  {{ item.title }}
+                </Link>
+              </template>
+              <div
+                v-if="viewMore"
+                class="flex-1 flex items-end"
+              >
+                <CoeliacButton
+                  :label="viewMore"
+                  :href="viewMoreLink"
+                  size="lg"
+                  theme="secondary"
+                />
               </div>
-            </a>
+            </div>
           </div>
         </PopoverPanel>
       </transition>
