@@ -32,29 +32,32 @@ class MigrateImagesToMedia extends Command
         'collection' => 'processCollection',
     ];
 
-    public function handle()
+    public function handle(): void
     {
-        if (! array_key_exists($this->argument('module'), $this->modules)) {
+        /** @var string $module */
+        $module = $this->argument('module');
+
+        if ( ! array_key_exists($module, $this->modules)) {
             $this->error('Module is not valid');
 
             return;
         }
 
-        if (! $this->confirm('Are you sure you want to migrate images')) {
+        if ( ! $this->confirm('Are you sure you want to migrate images')) {
             return;
         }
 
         /** @var class-string<Model> $model */
-        $model = $this->modules[$this->argument('module')];
+        $model = $this->modules[$module];
 
         $items = $model::query()
-            ->with($this->with[$this->argument('module')])
+            ->with($this->with[$module])
             ->latest()
             ->get();
 
         $progress = $this->output->createProgressBar($items->count());
 
-        $items->each(fn ($item) => $this->{$this->handlers[$this->argument('module')]}($item, $progress));
+        $items->each(fn ($item) => $this->{$this->handlers[$module]}($item, $progress));
     }
 
     protected function processBlog(Blog $blog, ProgressBar $progress): void
@@ -62,14 +65,16 @@ class MigrateImagesToMedia extends Command
         ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Blog\Models\Blog')
             ->update(['imageable_type' => Blog::class]);
 
+        /** @phpstan-ignore-next-line  */
         $blog->addMediaFromUrl($blog->social_legacy_image)->toMediaCollection('social');
 
+        /** @phpstan-ignore-next-line  */
         $blog->addMediaFromUrl($blog->main_legacy_image)->toMediaCollection('primary');
 
         $blog->images()
             ->where('image_category_id', Image::IMAGE_CATEGORY_GENERAL)
             ->get()
-            ->each(function (ImageAssociations $image) use ($blog) {
+            ->each(function (ImageAssociations $image) use ($blog): void {
                 $media = $blog->addMediaFromUrl($image->image->image_url)->toMediaCollection('body');
 
                 $contents = Str::of($blog->body)

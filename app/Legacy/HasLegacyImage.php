@@ -7,10 +7,10 @@ namespace App\Legacy;
 /**
  * @deprecated
  *
- * @property string $main_image
- * @property string $social_image
- * @property string $square_image
- * @property string $first_image
+ * @property string $main_legacy_image
+ * @property string $social_legacy_image
+ * @property string $square_legacy_image
+ * @property string $first_legacy_image
  */
 trait HasLegacyImage
 {

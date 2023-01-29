@@ -30,12 +30,12 @@ class Image extends Model
 
     protected $appends = ['image_url'];
 
-    public static function booted()
+    public static function booted(): void
     {
-        static::deleted(static function (Image $image) {
+        static::deleted(static function (Image $image): void {
             Container::getInstance()->make(FilesystemManager::class)
                 ->disk('images')
-                ->delete($image->directory.'/'.$image->file_name);
+                ->delete($image->directory . '/' . $image->file_name);
         });
     }
 
@@ -46,14 +46,14 @@ class Image extends Model
 
     public function getRawUrlAttribute(): string
     {
-        return Container::getInstance()->make(FilesystemManager::class)->disk('images')->url($this->directory.'/'.$this->file_name);
+        return Container::getInstance()->make(FilesystemManager::class)->disk('images')->url($this->directory . '/' . $this->file_name);
     }
 
     public function getImageUrlAttribute(): string
     {
         if (config('app.env') === 'testing') {
             // @todo this sucks
-            return Container::getInstance()->make(FilesystemManager::class)->disk('images')->url($this->directory.'/'.$this->file_name);
+            return Container::getInstance()->make(FilesystemManager::class)->disk('images')->url($this->directory . '/' . $this->file_name);
         }
 
         return implode('/', [

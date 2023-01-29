@@ -19,9 +19,9 @@ class ImageAssociations extends Model
 {
     protected $with = ['image'];
 
-    protected static function booted()
+    protected static function booted(): void
     {
-        self::deleting(function (self $imageAssociation) {
+        self::deleting(function (self $imageAssociation): void {
             $imageAssociation->image()->delete();
         });
     }
