@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace App\Http\Response;
 
-use Inertia\ResponseFactory;
+use Illuminate\Contracts\Support\Arrayable;
+use Inertia\Inertia as BaseInertia;
+use Inertia\Response;
 
-class Inertia extends ResponseFactory
+class Inertia
 {
     public function __construct()
     {
-        $this->share('meta.title', config('metas.title'));
-        $this->share('meta.description', config('metas.description'));
-        $this->share('meta.tags', config('metas.tags'));
-        $this->share('meta.image', config('metas.image'));
+        BaseInertia::share('meta.title', config('metas.title'));
+        BaseInertia::share('meta.description', config('metas.description'));
+        BaseInertia::share('meta.tags', config('metas.tags'));
+        BaseInertia::share('meta.image', config('metas.image'));
     }
 
     public function title(string $title): self
     {
-        $this->share('meta.title', $title);
+        BaseInertia::share('meta.title', $title);
 
         return $this;
     }
 
     public function metaDescription(string $description): self
     {
-        $this->share('meta.description', $description);
+        BaseInertia::share('meta.description', $description);
 
         return $this;
     }
@@ -39,15 +41,35 @@ class Inertia extends ResponseFactory
             $tags = array_merge($tags, $defaultTags);
         }
 
-        $this->share('meta.tags', $tags);
+        BaseInertia::share('meta.tags', $tags);
 
         return $this;
     }
 
     public function metaImage(string $image): self
     {
-        $this->share('meta.image', $image);
+        BaseInertia::share('meta.image', $image);
 
         return $this;
+    }
+
+    /**
+     * @param string $component
+     * @param array|Arrayable<int|string, mixed> $props
+     * @return Response
+     */
+    public function render(string $component, array|Arrayable $props = []): Response
+    {
+        return BaseInertia::render($component, $props);
+    }
+
+    /**
+     * @param string|null $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getShared(string $key = null, mixed $default = null): mixed
+    {
+        return BaseInertia::getShared($key, $default);
     }
 }
