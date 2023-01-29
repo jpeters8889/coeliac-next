@@ -15,7 +15,7 @@ class PathGenerator extends DefaultPathGenerator
     {
         /** @var Media $media */
 
-        $basename = Str::of(class_basename($media->model))->lower()->plural()->toString();
+        $basename = Str::of(class_basename($media->model_type))->lower()->plural()->toString();
 
         $identifier = $media->getCustomProperty('slug', $media->model_id);
 

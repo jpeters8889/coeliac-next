@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as Model;
 /**
  * @property HasMedia $model
  * @property int $model_id
+ * @property string $model_type
  */
 class Media extends Model
 {

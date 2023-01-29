@@ -15,6 +15,13 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use LazilyRefreshDatabase;
 
+    protected function migrateUsing(): array
+    {
+        return [
+            '--schema-path' => 'database/schema/mysql-schema.dump'
+        ];
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -25,7 +32,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @template T
      *
-     * @param  class-string<T>  $what
+     * @param class-string<T> $what
      * @return IlluminateFactory<T>
      */
     protected function build(string $what): IlluminateFactory
@@ -36,8 +43,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * @template T
      *
-     * @param  class-string<T>  $what
-     * @param  array  $attributes
+     * @param class-string<T> $what
+     * @param array $attributes
      * @return T
      */
     protected function create(string $what, array $attributes = [])

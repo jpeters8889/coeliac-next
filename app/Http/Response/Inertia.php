@@ -34,7 +34,7 @@ class Inertia extends ResponseFactory
     {
         if ($merge) {
             /** @var string[] $defaultTags */
-            $defaultTags = config('meta.tags');
+            $defaultTags = config('metas.tags');
 
             $tags = array_merge($tags, $defaultTags);
         }

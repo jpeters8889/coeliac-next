@@ -22,23 +22,29 @@ trait DisplaysMedia
         /** @var MediaCollection<int, Media> $collection */
         $collection = $this->getMedia();
 
-        return isset($collection[0]) ? $collection[0]->getUrl() : null;
+        return $collection->first()?->getUrl();
     }
 
-    public function getMainImageAttribute(): ?string
+    public function getMainImageAttribute(): string
     {
         /** @var MediaCollection<int, Media> $collection */
         $collection = $this->getMedia('primary');
 
-        return isset($collection[0]) ? $collection[0]->getUrl() : null;
+        /** @var Media $item */
+        $item = $collection->first();
+
+        return $item->getUrl();
     }
 
-    public function getSocialImageAttribute(): ?string
+    public function getSocialImageAttribute(): string
     {
         /** @var MediaCollection<int, Media> $collection */
         $collection = $this->getMedia('social');
 
-        return isset($collection[0]) ? $collection[0]->getUrl() : null;
+        /** @var Media $item */
+        $item = $collection->first();
+
+        return $item->getUrl();
     }
 
     public function getSquareImageAttribute(): ?string
