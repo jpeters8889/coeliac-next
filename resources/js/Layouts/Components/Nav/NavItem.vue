@@ -70,7 +70,7 @@ defineProps({
           class="absolute inset-x-0 top-full z-10 hidden transform bg-white shadow-lg md:block"
         >
           <div
-            class="mx-auto max-w-7xl flex"
+            class="mx-auto max-w-8xl flex"
           >
             <div class="flex flex-col divide-y divide-secondary w-2/3">
               <template

@@ -39,6 +39,10 @@ module.exports = {
                 },
             },
 
+            maxWidth: {
+                '8xl': '94rem',
+            },
+
             screens: {
                 xmd: '860px',
             }
