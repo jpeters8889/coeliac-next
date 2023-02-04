@@ -18,7 +18,7 @@ const mobileNavOpen = ref(false);
       aria-hidden="true"
     />
     <div class="relative z-20">
-      <div class="mx-auto flex max-w-8xl items-center justify-between p-2 h-14 xmd:justify-start xmd:space-x-10 xmd:p-0">
+      <div class="mx-auto flex max-w-7xl items-center justify-between p-2 h-14 xmd:justify-start xmd:space-x-10 xmd:p-0">
         <div class="xmd:hidden">
           <a class="flex items-center justify-center rounded-md text-white/80 hover:text-white">
             <Bars3BottomLeftIcon

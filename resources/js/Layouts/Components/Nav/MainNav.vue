@@ -14,8 +14,6 @@ const { navigation } = <DefaultProps>usePage().props;
       as="nav"
       class="flex h-full text-lg"
     >
-      <NavItem label="Home" />
-
       <NavItem
         label="Shop"
         has-dropdown
@@ -41,11 +39,6 @@ const { navigation } = <DefaultProps>usePage().props;
 
       <NavItem
         label="Collections"
-        has-dropdown
-      />
-
-      <NavItem
-        label="Info"
         has-dropdown
       />
     </popovergroup>

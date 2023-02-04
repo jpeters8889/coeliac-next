@@ -19,6 +19,11 @@ const props = defineProps({
     default: 'md',
     validator: (value: string) => ['sm', 'md', 'lg', 'xl'].includes(value),
   },
+  bold: {
+    required: false,
+    type: Boolean,
+    default: false,
+  },
   as: {
     required: false,
     type: String,
@@ -55,7 +60,7 @@ const props = defineProps({
 });
 
 const classes = computed((): string[] => {
-  const base = ['inline-flex', 'items-center', 'rounded-md', 'border', 'border-transparent', 'font-medium', 'shadow-sm'];
+  const base = ['inline-flex', 'items-center', 'rounded-md', 'border', 'border-transparent', 'font-medium', 'shadow-sm', 'transition'];
 
   switch (props.size) {
     case 'sm': {
@@ -77,20 +82,24 @@ const classes = computed((): string[] => {
     }
   }
 
+  if (props.bold) {
+    base.push('!font-semibold');
+  }
+
   if (props.icon && props.iconPosition === 'right') {
     base.push('flex-row-reverse');
   }
 
   if (props.theme === 'primary') {
-    base.push('bg-primary/90', 'hover:bg-primary', 'text-white');
+    base.push('bg-primary/80', 'hover:bg-primary', 'text-white');
   }
 
   if (props.theme === 'secondary') {
-    base.push('bg-primary-light/90', 'hover:bg-primary-light', 'text-black');
+    base.push('bg-primary-light/80', 'hover:bg-primary-light', 'text-black');
   }
 
   if (props.theme === 'secondary') {
-    base.push('bg-secondary/90', 'hover:bg-secondary', 'text-black');
+    base.push('bg-secondary/80', 'hover:bg-secondary', 'text-black');
   }
 
   return base;
