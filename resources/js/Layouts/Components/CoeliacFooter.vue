@@ -3,6 +3,8 @@ import { defineComponent, h } from 'vue';
 import FacebookIcon from '@/Icons/FacebookIcon.vue';
 import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
+import CoeliacButton from '@/Components/CoeliacButton.vue';
+import InputField from '@/Components/Forms/InputField.vue';
 
 const year = new Date().getFullYear();
 
@@ -22,7 +24,7 @@ const navigation: { links: { label: string, url: string }[] } = {
 
 <template>
   <footer class="bg-primary">
-    <div class="mx-auto max-w-7xl p-4">
+    <div class="mx-auto max-w-7xl p-4 lg:grid lg:grid-cols-4 lg:gap-x-4">
       <!-- Tagline -->
       <div class="mb-4">
         <h2 class="font-semibold text-xl mb-2">
@@ -34,7 +36,7 @@ const navigation: { links: { label: string, url: string }[] } = {
         </p>
       </div>
 
-      <div class="sm:grid sm:grid-cols-3 xl:grid-cols-3 xl:gap-8">
+      <div class="sm:grid sm:grid-cols-3 lg:col-span-3 lg:gap-2">
         <!-- Links -->
         <ul class="grid grid-cols-2 gap-2">
           <li
@@ -50,39 +52,35 @@ const navigation: { links: { label: string, url: string }[] } = {
 
         <!-- Newsletter -->
         <div class="mt-10 sm:mt-0 sm:col-span-2">
-          <h3 class="font-semibold leading-6 text-gray-900">
+          <h3 class="font-semibold text-xl mb-2">
             Subscribe to our newsletter
           </h3>
-          <p class="mt-2 text-sm leading-6 text-gray-600">
+          <p>
             Enter your email address below to get our newsletter sent straight to your inbox!
           </p>
-          <form class="mt-6 sm:flex sm:max-w-md">
-            <label
-              for="email-address"
-              class="sr-only"
-            >Email address</label>
-            <input
+          <form class="mt-6 sm:flex">
+            <InputField
               id="email-address"
-              type="email"
               name="email-address"
+              type="email"
               autocomplete="email"
-              required=""
-              class="w-full min-w-0 appearance-none rounded-md border-gray-300 bg-white px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base leading-7 text-gray-900 placeholder-gray-400 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 sm:w-64 sm:text-sm sm:leading-6 xl:w-full"
-              placeholder="Enter your email"
-            >
+              placeholder="Enter your email address..."
+              required
+            />
             <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-shrink-0">
-              <button
+              <CoeliacButton
+                label="Subscribe"
+                as="button"
                 type="submit"
-                class="flex w-full items-center justify-center rounded-md bg-indigo-600 py-1.5 px-3 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:text-sm sm:leading-6"
-              >
-                Subscribe
-              </button>
+                theme="secondary"
+                classes="w-full justify-center"
+              />
             </div>
           </form>
         </div>
       </div>
 
-      <div class="mt-4 sm:flex sm:flex-row-reverse sm:items-center sm:justify-between sm:mt-8">
+      <div class="mt-4 sm:flex sm:flex-row-reverse sm:items-center sm:justify-between sm:mt-8 lg:col-span-4">
         <div class="flex items-center justify-center space-x-3">
           <a href="#">
             <FacebookIcon />

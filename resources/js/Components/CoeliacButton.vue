@@ -57,6 +57,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  classes: {
+    type: String,
+    required: false,
+    default: '',
+  },
 });
 
 const classes = computed((): string[] => {
@@ -94,13 +99,15 @@ const classes = computed((): string[] => {
     base.push('bg-primary/80', 'hover:bg-primary', 'text-white');
   }
 
-  if (props.theme === 'secondary') {
+  if (props.theme === 'light') {
     base.push('bg-primary-light/80', 'hover:bg-primary-light', 'text-black');
   }
 
   if (props.theme === 'secondary') {
     base.push('bg-secondary/80', 'hover:bg-secondary', 'text-black');
   }
+
+  base.push(props.classes);
 
   return base;
 });
