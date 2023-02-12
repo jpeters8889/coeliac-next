@@ -7,6 +7,7 @@ namespace App\Modules\Blog\Models;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Modules\Shared\Support\DisplaysMedia;
+use App\Modules\Shared\Support\LinkableModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -28,10 +29,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Blog extends Model implements HasMedia
 {
     use DisplaysMedia;
-    use HasLegacyImage;
-
-    use Imageable;
     use InteractsWithMedia;
+    use LinkableModel;
+
+    use HasLegacyImage;
+    use Imageable;
 
     public function registerMediaCollections(): void
     {

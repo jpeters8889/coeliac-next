@@ -82,14 +82,14 @@ defineProps({
                   :href="item.link"
                   class="flex flex-col justify-between rounded-lg p-2 py-4 first:pt-2 last:pb-2 hover:bg-secondary/20"
                 >
-                  <div class="flex md:h-full lg:flex-col">
+                  <div class="flex md:h-full">
                     <div class="flex-shrink-0 w-1/5">
                       <img
                         :src="item.image"
                         :alt="item.title"
                       >
                     </div>
-                    <div class="ml-4 md:flex md:flex-1 md:flex-col md:justify-between lg:ml-0 lg:mt-4">
+                    <div class="ml-4 md:flex md:flex-1 md:flex-col md:justify-between">
                       <div>
                         <p class="text-base font-medium text-gray-900">
                           {{ item.title }}
@@ -110,7 +110,7 @@ defineProps({
                 :key="item.title"
               >
                 <Link
-                  v-if="index > 3"
+                  v-if="index >= 3"
                   :href="item.link"
                   class="flex flex-col justify-between rounded-lg"
                 >
