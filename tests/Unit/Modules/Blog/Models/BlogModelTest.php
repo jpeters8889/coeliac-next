@@ -25,9 +25,9 @@ class BlogModelTest extends TestCase
             ->has($this->build(BlogTag::class)->count(5), 'tags')
             ->create();
 
-        $this->setUpDisplaysMediaTest(fn() => $this->create(Blog::class));
+        $this->setUpDisplaysMediaTest(fn () => $this->create(Blog::class));
 
-        $this->setUpLinkableModelTest(fn(array $params) => $this->create(Blog::class, $params));
+        $this->setUpLinkableModelTest(fn (array $params) => $this->create(Blog::class, $params));
     }
 
     /** @test */

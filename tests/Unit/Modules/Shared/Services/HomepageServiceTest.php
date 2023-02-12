@@ -6,11 +6,9 @@ namespace Tests\Unit\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogCardViewResource;
-use App\Modules\Shared\DataObjects\NavigationItem;
 use App\Modules\Shared\Services\HomepageService;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;

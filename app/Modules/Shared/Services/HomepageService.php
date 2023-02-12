@@ -6,10 +6,8 @@ namespace App\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogCardViewResource;
-use App\Modules\Shared\DataObjects\NavigationItem;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Collection;
 
 class HomepageService
 {

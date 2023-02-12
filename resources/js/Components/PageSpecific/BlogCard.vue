@@ -9,6 +9,11 @@ defineProps({
     required: true,
     type: Object as () => BlogCard,
   },
+  withFooter: {
+    required: false,
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
@@ -34,12 +39,11 @@ defineProps({
             v-text="blog.description"
           />
         </div>
-
-        <p
-          class="text-sm font-semibold text-primary-dark pb-2"
-          v-text="formatDate(blog.date)"
-        />
       </div>
     </Link>
+
+    <div v-if="withFooter">
+      Foo
+    </div>
   </Card>
 </template>

@@ -29,11 +29,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Blog extends Model implements HasMedia
 {
     use DisplaysMedia;
-    use InteractsWithMedia;
-    use LinkableModel;
-
     use HasLegacyImage;
     use Imageable;
+
+    use InteractsWithMedia;
+    use LinkableModel;
 
     public function registerMediaCollections(): void
     {

@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Modules\Shared\Support;
 
 use App\Modules\Shared\Support\LinkableModel;
-use Closure;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\HasMedia;
 use Tests\TestCase;
 
 /** @mixin TestCase */

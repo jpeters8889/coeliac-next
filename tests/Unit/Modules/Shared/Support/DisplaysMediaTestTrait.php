@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Shared\Support;
 
-use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -42,27 +41,27 @@ trait DisplaysMediaTestTrait
     /** @test */
     public function itCanGetTheFirstImage(): void
     {
-            $firstImage = $this->item->first_image;
+        $firstImage = $this->item->first_image;
 
-            $this->assertNotNull($firstImage);
-            $this->assertStringContainsString(self::FIRST_IMAGE, $firstImage);
+        $this->assertNotNull($firstImage);
+        $this->assertStringContainsString(self::FIRST_IMAGE, $firstImage);
     }
 
     /** @test */
     public function itCanGetThePrimaryImage(): void
     {
-            $primaryImage = $this->item->main_image;
+        $primaryImage = $this->item->main_image;
 
-            $this->assertNotNull($primaryImage);
-            $this->assertStringContainsString(self::PRIMARY_IMAGE, $primaryImage);
+        $this->assertNotNull($primaryImage);
+        $this->assertStringContainsString(self::PRIMARY_IMAGE, $primaryImage);
     }
 
     /** @test */
     public function itCanGetTheSocialImage(): void
     {
-            $socialImage = $this->item->social_image;
+        $socialImage = $this->item->social_image;
 
-            $this->assertNotNull($socialImage);
-            $this->assertStringContainsString(self::SOCIAL_IMAGE, $socialImage);
+        $this->assertNotNull($socialImage);
+        $this->assertStringContainsString(self::SOCIAL_IMAGE, $socialImage);
     }
 }
