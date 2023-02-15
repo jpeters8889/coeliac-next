@@ -6,6 +6,7 @@ namespace App\Modules\Blog\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Shared\Scopes\LiveScope;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
 use Carbon\Carbon;
@@ -25,6 +26,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property Carbon $created_at
  * @property string $description
  * @property Carbon $updated_at
+ * @property null | int $comments_count
  */
 class Blog extends Model implements HasMedia
 {
@@ -34,6 +36,11 @@ class Blog extends Model implements HasMedia
 
     use InteractsWithMedia;
     use LinkableModel;
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LiveScope());
+    }
 
     public function registerMediaCollections(): void
     {

@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import HomeHero from '@/Components/PageSpecific/HomeHero.vue';
 import Card from '@/Components/Card.vue';
-import { Link } from '@inertiajs/vue3';
 import BlogCard from '@/Components/PageSpecific/BlogCard.vue';
-import { BlogCard as BlogCardModel } from '@/types/BlogTypes';
-import { formatDate } from '@/helpers';
+import { BlogSimpleCard as BlogCardModel } from '@/types/BlogTypes';
 
 defineProps({
   blogs: {

@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Modules\Blog\Models\Blog;
+use Carbon\Carbon;
 use Database\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Factory as IlluminateFactory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
 abstract class TestCase extends BaseTestCase
@@ -62,5 +67,27 @@ abstract class TestCase extends BaseTestCase
     public function assertServiceProviderNotLoaded(string $serviceProvider): void
     {
         $this->assertArrayNotHasKey($serviceProvider, $this->app->getLoadedProviders());
+    }
+
+    protected function withBlogs($count = 10, callable $then = null): static
+    {
+        Storage::fake('media');
+
+        $this->build(Blog::class)
+            ->count($count)
+            ->sequence(fn (Sequence $sequence) => [
+                'title' => "Blog {$sequence->index}",
+                'created_at' => Carbon::now()->subDays($sequence->index)
+            ])
+            ->create()
+            ->each(function (Blog $blog): void {
+                $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');
+            });
+
+        if ($then) {
+            $then();
+        }
+
+        return $this;
     }
 }

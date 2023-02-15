@@ -7,10 +7,7 @@ namespace Tests\Unit\Modules\Shared\Services;
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Shared\DataObjects\NavigationItem;
 use App\Modules\Shared\Services\NavigationService;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -28,16 +25,7 @@ class NavigationServiceTest extends TestCase
 
         $this->service = resolve(NavigationService::class);
 
-        $this->build(Blog::class)
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => [
-                'title' => "Blog {$sequence->index}",
-                'created_at' => Carbon::now()->subDays($sequence->index)
-            ])
-            ->create()
-            ->each(function (Blog $blog): void {
-                $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');
-            });
+        $this->withBlogs();
     }
 
     /** @test */
@@ -68,6 +56,17 @@ class NavigationServiceTest extends TestCase
         $this->assertContains('Blog 0', $blogTitles);
         $this->assertContains('Blog 7', $blogTitles);
         $this->assertNotContains('Blog 8', $blogTitles);
+    }
+
+    /** @test */
+    public function itDoesntReturnBlogsThatArentLive(): void
+    {
+        Blog::query()->first()->update(['live' => false]);
+
+        $blogTitles = $this->service->blogs()->map(fn (NavigationItem $blog) => $blog->title);
+
+        $this->assertNotContains('Blog 0', $blogTitles);
+        $this->assertContains('Blog 8', $blogTitles);
     }
 
     /** @test */

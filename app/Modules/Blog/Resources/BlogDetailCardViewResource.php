@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Blog */
-class BlogCardViewResource extends JsonResource
+class BlogDetailCardViewResource extends JsonResource
 {
-    /** @return array{title: string, link: string, image: string, date: Carbon, description: string} */
+    /** @return array{title: string, link: string, image: string, date: Carbon, description: string, tags: BlogTagCollection} */
     public function toArray(Request $request)
     {
         return [
@@ -21,6 +21,8 @@ class BlogCardViewResource extends JsonResource
             'image' => $this->main_image,
             'date' => $this->created_at,
             'description' => $this->meta_description,
+            //            'comments' => $this->comments_count,
+            'tags' => new BlogTagCollection($this->tags),
         ];
     }
 }

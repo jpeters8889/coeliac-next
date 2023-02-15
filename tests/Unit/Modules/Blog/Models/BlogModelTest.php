@@ -6,6 +6,7 @@ namespace Tests\Unit\Modules\Blog\Models;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Models\BlogTag;
+use App\Modules\Shared\Scopes\LiveScope;
 use Tests\TestCase;
 use Tests\Unit\Modules\Shared\Support\DisplaysMediaTestTrait;
 use Tests\Unit\Modules\Shared\Support\LinkableModelTestTrait;
@@ -34,5 +35,11 @@ class BlogModelTest extends TestCase
     public function itHasTags(): void
     {
         $this->assertEquals(5, $this->blog->tags()->count());
+    }
+
+    /** @test */
+    public function itHasTheLiveScopeApplied(): void
+    {
+        $this->assertTrue(Blog::hasGlobalScope(LiveScope::class));
     }
 }

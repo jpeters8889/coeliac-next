@@ -7,6 +7,10 @@ namespace App\Modules\Blog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property string $tag;
+ * @property string $slug;
+ */
 class BlogTag extends Model
 {
     /** @return BelongsToMany<Blog> */

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
-import { BlogCard } from '@/types/BlogTypes';
+import { BlogSimpleCard } from '@/types/BlogTypes';
 import { formatDate } from '@/helpers';
 
 defineProps({
   blog: {
     required: true,
-    type: Object as () => BlogCard,
+    type: Object as () => BlogSimpleCard,
   },
   withFooter: {
     required: false,

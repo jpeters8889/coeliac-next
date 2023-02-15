@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
-use App\Modules\Blog\Resources\BlogCardViewResource;
+use App\Modules\Blog\Resources\BlogSimpleCardViewResource;
 use App\Modules\Shared\Services\HomepageService;
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -28,16 +25,7 @@ class HomepageServiceTest extends TestCase
 
         $this->service = resolve(HomepageService::class);
 
-        $this->build(Blog::class)
-            ->count(5)
-            ->sequence(fn (Sequence $sequence) => [
-                'title' => "Blog {$sequence->index}",
-                'created_at' => Carbon::now()->subDays($sequence->index)
-            ])
-            ->create()
-            ->each(function (Blog $blog): void {
-                $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');
-            });
+        $this->withBlogs(5);
     }
 
     /** @test */
@@ -50,7 +38,7 @@ class HomepageServiceTest extends TestCase
     public function itOnlyReturnsTheBlogAsACardResource(): void
     {
         $this->service->blogs()->each(function ($item): void {
-            $this->assertInstanceOf(BlogCardViewResource::class, $item);
+            $this->assertInstanceOf(BlogSimpleCardViewResource::class, $item);
         });
     }
 
@@ -63,11 +51,22 @@ class HomepageServiceTest extends TestCase
     /** @test */
     public function itReturnsTheLatestBlogsFirst(): void
     {
-        $blogTitles = $this->service->blogs()->map(fn (BlogCardViewResource $blog) => $blog->title);
+        $blogTitles = $this->service->blogs()->map(fn (BlogSimpleCardViewResource $blog) => $blog->title);
 
         $this->assertContains('Blog 0', $blogTitles);
         $this->assertContains('Blog 1', $blogTitles);
         $this->assertNotContains('Blog 4', $blogTitles);
+    }
+
+    /** @test */
+    public function itDoesntReturnBlogsThatArentLive(): void
+    {
+        Blog::query()->first()->update(['live' => false]);
+
+        $blogTitles = $this->service->blogs()->map(fn (BlogSimpleCardViewResource $blog) => $blog->title);
+
+        $this->assertNotContains('Blog 0', $blogTitles);
+        $this->assertContains('Blog 2', $blogTitles);
     }
 
     /** @test */
