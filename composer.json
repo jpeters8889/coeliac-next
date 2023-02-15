@@ -16,6 +16,7 @@
         "spatie/laravel-medialibrary": "^10.0.0"
     },
     "require-dev": {
+        "brianium/paratest": "^6.9",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
