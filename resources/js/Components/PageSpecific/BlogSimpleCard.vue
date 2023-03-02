@@ -2,17 +2,11 @@
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import { BlogSimpleCard } from '@/types/BlogTypes';
-import { formatDate } from '@/helpers';
 
 defineProps({
   blog: {
     required: true,
     type: Object as () => BlogSimpleCard,
-  },
-  withFooter: {
-    required: false,
-    type: Boolean,
-    default: false,
   },
 });
 </script>
@@ -41,9 +35,5 @@ defineProps({
         </div>
       </div>
     </Link>
-
-    <div v-if="withFooter">
-      Foo
-    </div>
   </Card>
 </template>

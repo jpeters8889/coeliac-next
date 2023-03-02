@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Modules\Blog\Models\Blog;
+use App\Modules\Blog\Models\BlogTag;
 use Carbon\Carbon;
 use Database\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Factory as IlluminateFactory;
@@ -79,6 +80,7 @@ abstract class TestCase extends BaseTestCase
                 'title' => "Blog {$sequence->index}",
                 'created_at' => Carbon::now()->subDays($sequence->index)
             ])
+            ->has($this->build(BlogTag::class)->count(3), 'tags')
             ->create()
             ->each(function (Blog $blog): void {
                 $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');

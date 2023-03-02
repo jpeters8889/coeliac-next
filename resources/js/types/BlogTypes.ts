@@ -13,3 +13,9 @@ export type BlogDetailCard = BlogSimpleCard & {
     slug: string;
   }[]
 };
+
+export type BlogTagCount = {
+  slug: string;
+  tag: string;
+  blogs_count: number;
+};

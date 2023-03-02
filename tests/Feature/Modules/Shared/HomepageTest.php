@@ -28,7 +28,7 @@ class HomepageTest extends TestCase
                         'blogs',
                         2,
                         fn (Assert $page) => $page
-                            ->hasAll(['title', 'description', 'date', 'image', 'link'])
+                            ->hasAll(['title', 'description', 'image', 'link'])
                     )
                     ->where('blogs.0.title', 'Blog 0')
                     ->where('blogs.1.title', 'Blog 1')
@@ -48,7 +48,7 @@ class HomepageTest extends TestCase
                         'blogs',
                         2,
                         fn (Assert $page) => $page
-                            ->hasAll(['title', 'description', 'date', 'image', 'link'])
+                            ->hasAll(['title', 'description', 'image', 'link'])
                     )
                     ->where('blogs.0.title', 'Blog 1')
                     ->where('blogs.1.title', 'Blog 2')

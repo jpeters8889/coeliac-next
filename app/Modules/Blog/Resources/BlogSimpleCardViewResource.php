@@ -18,7 +18,6 @@ class BlogSimpleCardViewResource extends JsonResource
             'title' => $this->title,
             'link' => $this->link,
             'image' => $this->main_image,
-            'date' => $this->created_at,
             'description' => $this->meta_description,
         ];
     }

@@ -28,7 +28,7 @@ const props = defineProps({
     required: false,
     type: String,
     default: 'Link',
-    validator: (value: string) => ['Link', 'button'].includes(value),
+    validator: (value: string) => ['Link', 'button', 'a'].includes(value),
   },
   type: {
     required: false,
@@ -43,9 +43,9 @@ const props = defineProps({
   },
   icon: {
     required: false,
-    type: [String, Boolean],
+    type: [String, Boolean, Function],
     default: false,
-    validator: (value: String | Boolean) => value !== true,
+    validator: (value: String | Boolean | Function) => value !== true,
   },
   iconPosition: {
     required: false,
@@ -91,7 +91,7 @@ const classes = computed((): string[] => {
     base.push('!font-semibold');
   }
 
-  if (props.icon && props.iconPosition === 'right') {
+  if (props.icon && props.iconPosition === 'left') {
     base.push('flex-row-reverse');
   }
 
@@ -120,6 +120,8 @@ const primaryComponent = () => {
   return props.as;
 };
 
+const emits = defineEmits(['click']);
+
 </script>
 
 <template>
@@ -130,6 +132,7 @@ const primaryComponent = () => {
       ...(as === 'button' ? {type} : null),
       ...(as === 'Link' ? {href} : null)
     }"
+    @click="emits('click')"
   >
     {{ label }}
 
@@ -137,7 +140,7 @@ const primaryComponent = () => {
       :is="icon"
       v-if="icon"
       class="h-4 w-4"
-      :class="iconPosition === 'left' ? 'ml-2 -mr-0.5' : 'mr-2 -ml-0.5'"
+      :class="iconPosition === 'right' ? 'ml-2 -mr-0.5' : 'mr-2 -ml-0.5'"
       aria-hidden="true"
     />
   </component>

@@ -13,9 +13,11 @@
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.12",
         "spatie/laravel-data": "^2.2",
-        "spatie/laravel-medialibrary": "^10.0.0"
+        "spatie/laravel-medialibrary": "^10.0.0",
+        "spatie/laravel-sluggable": "^3.4"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8",
         "brianium/paratest": "^6.9",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",

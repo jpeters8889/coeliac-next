@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeHero from '@/Components/PageSpecific/HomeHero.vue';
 import Card from '@/Components/Card.vue';
-import BlogCard from '@/Components/PageSpecific/BlogCard.vue';
+import BlogCard from '@/Components/PageSpecific/BlogSimpleCard.vue';
 import { BlogSimpleCard as BlogCardModel } from '@/types/BlogTypes';
 
 defineProps({

@@ -24,7 +24,7 @@ const { navigation } = <DefaultProps>usePage().props;
         has-dropdown
         :items="navigation.blogs"
         view-more="See all Blogs"
-        view-more-link="/blogs"
+        view-more-link="/blog"
       />
 
       <NavItem

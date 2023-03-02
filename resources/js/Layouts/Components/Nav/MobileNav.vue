@@ -17,7 +17,7 @@ const links: { label: string, href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/' },
   { label: 'Gluten Free Travel Cards', href: '/' },
-  { label: 'Blogs', href: '/' },
+  { label: 'Blogs', href: '/blog' },
   { label: 'Eating Out', href: '/' },
   { label: 'Recipes', href: '/' },
   { label: 'Collections', href: '/' },

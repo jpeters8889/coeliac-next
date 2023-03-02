@@ -5,20 +5,14 @@ declare(strict_types=1);
 namespace App\Modules\Blog\Http\Controllers;
 
 use App\Http\Response\Inertia;
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Blog\Resources\BlogListCollection;
+use App\Modules\Blog\Models\BlogTag;
+use App\Modules\Blog\Support\BlogIndexDataRetriever;
 use Inertia\Response;
 
 class BlogController
 {
-    public function index(Inertia $inertia): Response
+    public function index(Inertia $inertia, BlogIndexDataRetriever $blogDataRetriever, ?BlogTag $tag): Response
     {
-        return $inertia->render('Blog/Index', [
-            'blogs' => new BlogListCollection(Blog::query()
-                ->with(['tags'])
-//                ->withCount(['comments'])
-                ->latest()
-                ->paginate(12)),
-        ]);
+        return $inertia->render('Blog/Index', $blogDataRetriever->setTag($tag)->getData());
     }
 }
