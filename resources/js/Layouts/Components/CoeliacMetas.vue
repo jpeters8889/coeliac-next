@@ -7,7 +7,7 @@ const metas: MetaProps = (<DefaultProps>usePage().props).meta as MetaProps;
 
 <template>
   <Head>
-    <title v-text="metas.title" />
+    <title>{{ metas.title }}</title>
 
     <meta
       name="description"

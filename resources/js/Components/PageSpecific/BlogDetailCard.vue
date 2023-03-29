@@ -14,32 +14,34 @@ defineProps({
 
 <template>
   <Card>
-    <Link
-      :href="blog.link"
-      class="-m-4 flex flex-col mb-0"
-    >
-      <img
-        :src="blog.image"
-        :alt="blog.title"
+    <div class="group flex-1">
+      <Link
+        :href="blog.link"
+        class="-m-4 flex flex-col mb-0"
       >
-    </Link>
-
-    <div class="flex flex-col space-y-3 mt-4 flex-1">
-      <Link :href="blog.link">
-        <h2
-          class="text-lg font-semibold hover:text-primary-dark transition"
-          v-text="blog.title"
-        />
+        <img
+          :src="blog.image"
+          :alt="blog.title"
+        >
       </Link>
 
-      <div class="flex flex-1">
-        <p
-          v-text="blog.description"
-        />
+      <div class="flex flex-col space-y-3 mt-4 flex-1">
+        <Link :href="blog.link">
+          <h2
+            class="text-xl font-semibold transition hover:text-primary-dark group-hover:text-primary-dark"
+            v-text="blog.title"
+          />
+        </Link>
+
+        <div class="flex flex-1">
+          <p
+            v-text="blog.description"
+          />
+        </div>
       </div>
     </div>
 
-    <div class="bg-grey-light -m-4 mt-4 p-4 shadow-inner flex flex-col text-xs">
+    <div class="bg-grey-light -m-4 mt-4 p-4 shadow-inner flex flex-col text-sm">
       <div class="flex flex-col">
         <h4 class="font-semibold mb-1">
           Tagged With
@@ -51,7 +53,7 @@ defineProps({
             class="after:content-[','] last:after:content-['']"
           >
             <Link
-              href="#"
+              :href="`/blog/tags/${tag.slug}`"
               class="font-semibold text-primary-dark hover:text-black transition"
             >
               {{ tag.tag }}

@@ -8,10 +8,12 @@ export type BlogSimpleCard = {
 export type BlogDetailCard = BlogSimpleCard & {
   date: string;
   comments_count?: string;
-  tags?: {
-    tag: string;
-    slug: string;
-  }[]
+  tags?: BlogTag[]
+};
+
+export type BlogTag = {
+  tag: string;
+  slug: string;
 };
 
 export type BlogTagCount = {

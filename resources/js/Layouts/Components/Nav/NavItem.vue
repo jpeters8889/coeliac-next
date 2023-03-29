@@ -67,6 +67,7 @@ defineProps({
       >
         <PopoverPanel
           v-if="layout === '3x5'"
+          v-slot="{ close }"
           class="absolute inset-x-0 top-full z-10 hidden transform bg-white shadow-lg md:block"
         >
           <div
@@ -77,8 +78,9 @@ defineProps({
                 v-for="(item, index) in items"
                 :key="item.title"
               >
-                <Link
+                <PopoverButton
                   v-if="index < 3"
+                  :as="Link"
                   :href="item.link"
                   class="flex flex-col justify-between rounded-lg p-2 py-4 first:pt-2 last:pb-2 hover:bg-secondary/20"
                 >
@@ -100,7 +102,7 @@ defineProps({
                       </div>
                     </div>
                   </div>
-                </Link>
+                </PopoverButton>
               </template>
             </div>
 
@@ -109,13 +111,14 @@ defineProps({
                 v-for="(item, index) in items"
                 :key="item.title"
               >
-                <Link
+                <PopoverButton
                   v-if="index >= 3"
+                  :as="Link"
                   :href="item.link"
                   class="flex flex-col justify-between rounded-lg"
                 >
                   {{ item.title }}
-                </Link>
+                </PopoverButton>
               </template>
               <div
                 v-if="viewMore"
@@ -126,6 +129,7 @@ defineProps({
                   :href="viewMoreLink"
                   size="lg"
                   theme="secondary"
+                  @click="close()"
                 />
               </div>
             </div>

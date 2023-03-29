@@ -24,13 +24,13 @@ class BlogIndexDataRetriever
         return $this;
     }
 
-    /** @return array{blogs: Closure, tags: Closure, activeTag: string | null} */
+    /** @return array{blogs: Closure, tags: Closure, activeTag: BlogTag | null} */
     public function getData(): array
     {
         return [
             'blogs' => fn () => $this->getBlogs(),
             'tags' => fn () => $this->getTags(),
-            'activeTag' => $this->tag?->slug,
+            'activeTag' => $this->tag->exists ? $this->tag : null,
         ];
     }
 
