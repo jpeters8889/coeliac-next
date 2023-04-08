@@ -6,9 +6,11 @@ namespace App\Modules\Recipe\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Shared\Scopes\LiveScope;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,17 +21,18 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 /**
  * @property Carbon $created_at
  * @property Collection<RecipeAllergen> $allergens
- * @property mixed $live
- * @property mixed $title
- * @property mixed $author
- * @property mixed $meta_description
+ * @property bool $live
+ * @property string $title
+ * @property string $author
+ * @property string $meta_description
  * @property mixed $prep_time
  * @property mixed $cook_time
- * @property mixed $serving_size
+ * @property string $servings
+ * @property string $portion_size
  * @property RecipeNutrition $nutrition
- * @property mixed $ingredients
- * @property mixed $body
- * @property mixed $meta_tags
+ * @property string $ingredients
+ * @property string $body
+ * @property string $meta_tags
  * @property Collection<RecipeFeature> $features
  * @property string $method
  * @property string $description
@@ -50,6 +53,11 @@ class Recipe extends Model implements HasMedia
 
     use InteractsWithMedia;
     use LinkableModel;
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LiveScope());
+    }
 
     public function registerMediaCollections(): void
     {
@@ -107,5 +115,16 @@ class Recipe extends Model implements HasMedia
     public function nutrition(): HasOne
     {
         return $this->hasOne(RecipeNutrition::class)->latest();
+    }
+    /** @return Attribute<string, never-return> */
+    public function servings(): Attribute
+    {
+        return Attribute::get(fn () => $this->serving_size);
+    }
+
+    /** @return Attribute<string, never-return> */
+    public function portionSize(): Attribute
+    {
+        return Attribute::get(fn () => $this->per);
     }
 }

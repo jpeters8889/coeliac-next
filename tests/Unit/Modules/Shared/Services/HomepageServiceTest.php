@@ -6,6 +6,8 @@ namespace Tests\Unit\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogSimpleCardViewResource;
+use App\Modules\Recipe\Models\Recipe;
+use App\Modules\Recipe\Resources\RecipeSimpleCardViewResource;
 use App\Modules\Shared\Services\HomepageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
@@ -25,8 +27,11 @@ class HomepageServiceTest extends TestCase
 
         $this->service = resolve(HomepageService::class);
 
-        $this->withBlogs(5);
+        $this->withBlogs();
+        $this->withRecipes();
     }
+
+    /** Blog Tests */
 
     /** @test */
     public function itCanReturnACollectionOfBlogs(): void
@@ -43,9 +48,9 @@ class HomepageServiceTest extends TestCase
     }
 
     /** @test */
-    public function itReturnsTwoBlogs(): void
+    public function itReturnsSixBlogs(): void
     {
-        $this->assertCount(2, $this->service->blogs());
+        $this->assertCount(6, $this->service->blogs());
     }
 
     /** @test */
@@ -55,7 +60,7 @@ class HomepageServiceTest extends TestCase
 
         $this->assertContains('Blog 0', $blogTitles);
         $this->assertContains('Blog 1', $blogTitles);
-        $this->assertNotContains('Blog 4', $blogTitles);
+        $this->assertNotContains('Blog 9', $blogTitles);
     }
 
     /** @test */
@@ -91,6 +96,75 @@ class HomepageServiceTest extends TestCase
         $this->assertCount(2, DB::getQueryLog());
 
         $this->service->blogs();
+
+        $this->assertCount(2, DB::getQueryLog());
+    }
+
+    /** Recipe Tests */
+
+    /** @test */
+    public function itCanReturnACollectionOfRecipes(): void
+    {
+        $this->assertInstanceOf(AnonymousResourceCollection::class, $this->service->recipes());
+    }
+
+    /** @test */
+    public function itOnlyReturnsTheRecipeAsACardResource(): void
+    {
+        $this->service->recipes()->each(function ($item): void {
+            $this->assertInstanceOf(RecipeSimpleCardViewResource::class, $item);
+        });
+    }
+
+    /** @test */
+    public function itReturnsEightRecipes(): void
+    {
+        $this->assertCount(8, $this->service->recipes());
+    }
+
+    /** @test */
+    public function itReturnsTheLatestRecipesFirst(): void
+    {
+        $recipeTitles = $this->service->recipes()->map(fn (RecipeSimpleCardViewResource $recipe) => $recipe->title);
+
+        $this->assertContains('Recipe 0', $recipeTitles);
+        $this->assertContains('Recipe 1', $recipeTitles);
+        $this->assertNotContains('Recipe 9', $recipeTitles);
+    }
+
+    /** @test */
+    public function itDoesntReturnRecipesThatArentLive(): void
+    {
+        Recipe::query()->first()->update(['live' => false]);
+
+        $recipeTitles = $this->service->recipes()->map(fn (RecipeSimpleCardViewResource $recipe) => $recipe->title);
+
+        $this->assertNotContains('Recipe 0', $recipeTitles);
+        $this->assertContains('Recipe 2', $recipeTitles);
+    }
+
+    /** @test */
+    public function itCachesTheRecipes(): void
+    {
+        $this->assertFalse(Cache::has(config('coeliac.cache.recipes.home')));
+
+        $recipes = $this->service->recipes();
+
+        $this->assertTrue(Cache::has(config('coeliac.cache.recipes.home')));
+        $this->assertSame($recipes, Cache::get(config('coeliac.cache.recipes.home')));
+    }
+
+    /** @test */
+    public function itLoadsTheRecipesFromTheCache(): void
+    {
+        DB::enableQueryLog();
+
+        $this->service->recipes();
+
+        // Blogs and media relation;
+        $this->assertCount(2, DB::getQueryLog());
+
+        $this->service->recipes();
 
         $this->assertCount(2, DB::getQueryLog());
     }

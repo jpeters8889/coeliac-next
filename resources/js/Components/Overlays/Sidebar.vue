@@ -72,7 +72,7 @@ const closeOverlay = () => emit('close');
                   >
                     <div
                       class="absolute top-0 flex pt-4"
-                      :class="side === 'left' ? 'right-0 -mr-8 pl-2 sm:mr-10 sm:pl-4' : 'left-0 -ml-8 pr-2 sm:ml-10 sm:pr-4'"
+                      :class="side === 'left' ? 'right-0 -mr-8 pl-2 sm:-mr-10 sm:pl-4' : 'left-0 -ml-8 pr-2 sm:-ml-10 sm:pr-4'"
                     >
                       <button
                         type="button"

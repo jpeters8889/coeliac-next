@@ -30,7 +30,7 @@ class BlogIndexDataRetriever
         return [
             'blogs' => fn () => $this->getBlogs(),
             'tags' => fn () => $this->getTags(),
-            'activeTag' => $this->tag->exists ? $this->tag : null,
+            'activeTag' => $this->tag && $this->tag->exists ? $this->tag : null,
         ];
     }
 

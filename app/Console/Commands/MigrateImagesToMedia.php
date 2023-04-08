@@ -7,10 +7,12 @@ namespace App\Console\Commands;
 use App\Legacy\Image;
 use App\Legacy\ImageAssociations;
 use App\Modules\Blog\Models\Blog;
+use App\Modules\Recipe\Models\Recipe;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Exception;
 
 class MigrateImagesToMedia extends Command
 {
@@ -18,6 +20,7 @@ class MigrateImagesToMedia extends Command
 
     protected array $modules = [
         'blog' => Blog::class,
+        'recipe' => Recipe::class,
     ];
 
     protected array $with = [
@@ -52,6 +55,7 @@ class MigrateImagesToMedia extends Command
 
         $items = $model::query()
             ->with($this->with[$module])
+            ->doesntHave('media')
             ->latest()
             ->get();
 
@@ -88,6 +92,28 @@ class MigrateImagesToMedia extends Command
 
                 $blog->saveQuietly();
             });
+
+        $progress->advance();
+    }
+
+    protected function processRecipe(Recipe $recipe, ProgressBar $progress): void
+    {
+        ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Recipe\Models\Recipe')
+            ->update(['imageable_type' => Recipe::class]);
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $recipe->addMediaFromUrl($recipe->social_legacy_image)->toMediaCollection('social');
+
+            /** @phpstan-ignore-next-line */
+            $recipe->addMediaFromUrl($recipe->main_legacy_image)->toMediaCollection('primary');
+
+            if ($recipe->square_legacy_image) {
+                $recipe->addMediaFromUrl($recipe->square_legacy_image)->toMediaCollection('square');
+            }
+        } catch(Exception $e) {
+            //
+        }
 
         $progress->advance();
     }

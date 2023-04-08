@@ -6,6 +6,11 @@ namespace Tests;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Models\BlogTag;
+use App\Modules\Recipe\Models\Recipe;
+use App\Modules\Recipe\Models\RecipeAllergen;
+use App\Modules\Recipe\Models\RecipeFeature;
+use App\Modules\Recipe\Models\RecipeMeal;
+use App\Modules\Recipe\Models\RecipeNutrition;
 use Carbon\Carbon;
 use Database\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Factory as IlluminateFactory;
@@ -84,6 +89,32 @@ abstract class TestCase extends BaseTestCase
             ->create()
             ->each(function (Blog $blog): void {
                 $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');
+            });
+
+        if ($then) {
+            $then();
+        }
+
+        return $this;
+    }
+
+    protected function withRecipes($count = 10, callable $then = null): static
+    {
+        Storage::fake('media');
+
+        $this->build(Recipe::class)
+            ->count($count)
+            ->sequence(fn (Sequence $sequence) => [
+                'title' => "Recipe {$sequence->index}",
+                'created_at' => Carbon::now()->subDays($sequence->index)
+            ])
+            ->has($this->build(RecipeFeature::class), 'features')
+            ->has($this->build(RecipeAllergen::class), 'allergens')
+            ->has($this->build(RecipeMeal::class), 'meals')
+            ->has($this->build(RecipeNutrition::class), 'nutrition')
+            ->create()
+            ->each(function (Recipe $recipe): void {
+                $recipe->addMedia(UploadedFile::fake()->image('recipe.jpg'))->toMediaCollection('primary');
             });
 
         if ($then) {

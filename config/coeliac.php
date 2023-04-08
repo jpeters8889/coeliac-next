@@ -5,7 +5,10 @@ declare(strict_types=1);
 return [
     'cache' => [
         'blogs' => [
-            'navigation' => 'blogs.navigation',
+            'home' => 'blogs.home',
+        ],
+        'recipes' => [
+            'home' => 'recipes.home',
         ],
     ],
 

@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import HomeHero from '@/Components/PageSpecific/HomeHero.vue';
+import HomeHero from '@/Components/PageSpecific/Home/HomeHero.vue';
 import Card from '@/Components/Card.vue';
-import BlogCard from '@/Components/PageSpecific/BlogSimpleCard.vue';
-import { BlogSimpleCard as BlogCardModel } from '@/types/BlogTypes';
+import { Link } from '@inertiajs/vue3';
+import HomeHoverGroup from '@/Components/PageSpecific/Home/HomeHoverGroup.vue';
+import { HomeHoverItem } from '@/types/Types';
 
 defineProps({
   blogs: {
     required: true,
-    type: Array as () => BlogCardModel[],
+    type: Array as () => HomeHoverItem[],
+  },
+  recipes: {
+    required: true,
+    type: Array as () => HomeHoverItem[],
   },
 });
 </script>
@@ -15,45 +20,69 @@ defineProps({
 <template>
   <HomeHero />
 
-  <Card>
-    <h1 class="text-3xl font-semibold font-coeliac text-center mb-3">
-      Welcome to Coeliac Sanctuary
-    </h1>
+  <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2">
+    <div class="w-full lg:w-3/4 flex flex-col space-y-2">
+      <Card>
+        <h1 class="text-3xl font-semibold font-coeliac mb-3">
+          Coeliac Sanctuary - Gluten Free Blog by Alison Peters
+        </h1>
 
-    <div class="prose max-w-none">
-      <p>
-        Here at Coeliac Sanctuary we make it our aim to offer more than just a gluten free blog. Fancy something
-        different? We have plenty of gluten free recipes which I have personally tried and tested. Eating out?
-        Let us help you find places to safely eat as a Coeliac with our eating out guide which is full of places
-        recommended by you, our audience. Going abroad? We have our shop where you can buy translation cards
-        aimed at making eating out with a language barrier easier and safer along with many more useful items
-        for kids and adults alike.
-      </p>
+        <div class="prose max-w-none">
+          <p>
+            Our website is our own official sanctuary for Coeliacs to get tips, hints and tricks. Check out
+            our blogs and recipes, heading out? Check out our eating out guide to find places to eat at,
+            heading abroad? Don't forget your Coeliac travel cards from our shop!
+          </p>
+        </div>
+      </Card>
 
-      <p>
-        Our website is our own official sanctuary for Coeliacs to get tips, hints and tricks. If you have any
-        recommendations or recipes you would like us to try please feel free to contact us!
-      </p>
+      <Card>
+        Dynamic homepage collection(s)
+      </Card>
+
+      <Card>
+        Newsletter Sign up
+      </Card>
+
+      <HomeHoverGroup
+        title="Latest Blogs"
+        :items="blogs"
+      />
+
+      <HomeHoverGroup
+        title="Latest Recipes"
+        :items="recipes"
+        :per-row="4"
+      />
     </div>
-  </Card>
 
-  <section class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-    <Card class="sm:col-span-2">
-      <h2 class="text-2xl font-semibold font-coeliac mb-3">
-        Latest from the blog
-      </h2>
+    <div class="w-full lg:w-1/4">
+      <Card
+        class="space-y-4"
+        theme="primary-light"
+        faded
+      >
+        <img
+          src="/images/misc/alison.jpg"
+          alt="Alison Peters - Coeliac Sanctuary"
+        >
 
-      <p class="prose max-w-none">
-        Our motto is that we're more than just a gluten free blog, but blogs are still the heart and soul of
-        Coeliac Sanctuary, we'll write about a bit of everything, from coeliac news, new products, guides, and
-        more, we're sure you'll find something you'll love here!
-      </p>
-    </Card>
+        <p>
+          <strong>Hey, I'm Alison</strong>, I was diagnosed with Coeliac in 2014, Coeliac Sanctuary blossomed
+          from the tough time I was going through during diagnosis and almost 12 months of tests as a way to
+          share recipes, information and keep track of places to eat safely, with a shop added later selling
+          translation cards, wristbands and more.
+        </p>
 
-    <BlogCard
-      v-for="blog in blogs"
-      :key="blog.link"
-      :blog="blog"
-    />
-  </section>
+        <p>
+          <Link
+            class="font-semibold hover:text-primary-dark transition"
+            href="/"
+          >
+            Read more about me
+          </Link>
+        </p>
+      </Card>
+    </div>
+  </div>
 </template>

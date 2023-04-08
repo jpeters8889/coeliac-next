@@ -6,6 +6,8 @@ namespace App\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogSimpleCardViewResource;
+use App\Modules\Recipe\Models\Recipe;
+use App\Modules\Recipe\Resources\RecipeSimpleCardViewResource;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -24,7 +26,22 @@ class HomepageService
         return $this->cache->rememberForever(
             $key,
             fn () => BlogSimpleCardViewResource::collection(Blog::query()
-                ->take(2)
+                ->take(6)
+                ->latest()
+                ->with(['media'])
+                ->get())
+        );
+    }
+
+    public function recipes(): AnonymousResourceCollection
+    {
+        /** @var string $key */
+        $key = config('coeliac.cache.recipes.home');
+
+        return $this->cache->rememberForever(
+            $key,
+            fn () => RecipeSimpleCardViewResource::collection(Recipe::query()
+                ->take(8)
                 ->latest()
                 ->with(['media'])
                 ->get())

@@ -22,6 +22,7 @@ defineProps({
         <img
           :src="blog.image"
           :alt="blog.title"
+          loading="lazy"
         >
       </Link>
 

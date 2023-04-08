@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
-import BlogDetailCard from '@/Components/PageSpecific/BlogDetailCard.vue';
+import BlogDetailCard from '@/Components/PageSpecific/Blogs/BlogDetailCard.vue';
 import Heading from '@/Components/Heading.vue';
 import Paginator from '@/Components/Paginator.vue';
 import { router } from '@inertiajs/vue3';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { AdjustmentsHorizontalIcon, ArrowUturnLeftIcon, XMarkIcon } from '@heroicons/vue/20/solid';
 import { Ref, ref } from 'vue';
-import BlogListSideBar from '@/Components/PageSpecific/BlogListSideBar.vue';
+import BlogListSideBar from '@/Components/PageSpecific/Blogs/BlogListSideBar.vue';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { BlogDetailCard as BlogDetailCardType, BlogTag, BlogTagCount } from '@/types/BlogTypes';
 
@@ -107,10 +107,17 @@ const closeTagSidebar = (): void => {
     <BlogDetailCard
       v-for="blog in blogs.data"
       :key="blog.link"
-      class="transition transition-duration-500 sm:scale-90 sm:hover:scale-100 sm:hover:shadow-lg"
+      class="transition transition-duration-500 sm:scale-95 sm:hover:scale-100 sm:hover:shadow-lg"
       :blog="blog"
     />
   </div>
+
+  <Paginator
+    v-if="blogs.meta.last_page > 1"
+    :to="blogs.meta.last_page"
+    :current="blogs.meta.current_page"
+    @change="gotoPage"
+  />
 
   <BlogListSideBar
     :tags="tags"

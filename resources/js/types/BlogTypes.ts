@@ -1,11 +1,7 @@
-export type BlogSimpleCard = {
-  title: string;
-  link: string;
-  image: string;
-  description: string;
-};
+import { HomeHoverItem } from '@/types/Types';
 
-export type BlogDetailCard = BlogSimpleCard & {
+export type BlogDetailCard = HomeHoverItem & {
+  description: string;
   date: string;
   comments_count?: string;
   tags?: BlogTag[]

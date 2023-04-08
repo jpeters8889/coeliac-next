@@ -14,6 +14,7 @@ class RecipeAllergenFactory extends Factory
     {
         return [
             'allergen' => $this->faker->word,
+            'slug' => $this->faker->slug,
         ];
     }
 }

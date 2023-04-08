@@ -11,14 +11,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Blog */
 class BlogSimpleCardViewResource extends JsonResource
 {
-    /** @return array{title: string, link: string, image: string, description: string} */
+    /** @return array{title: string, link: string, image: string} */
     public function toArray(Request $request)
     {
         return [
             'title' => $this->title,
             'link' => $this->link,
             'image' => $this->main_image,
-            'description' => $this->meta_description,
         ];
     }
 }

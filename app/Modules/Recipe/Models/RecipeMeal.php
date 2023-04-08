@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property int $id
  * @property string $meal
+ * @property null | int $recipes_count
  */
 class RecipeMeal extends Model
 {
     /** @return BelongsToMany<Recipe> */
     public function recipes(): BelongsToMany
     {
-        return $this->belongsToMany(Recipe::class, 'recipe_assigned_meals', 'recipe_id', 'meal_type_id');
+        return $this->belongsToMany(Recipe::class, 'recipe_assigned_meals', 'meal_type_id', 'recipe_id');
     }
 }
