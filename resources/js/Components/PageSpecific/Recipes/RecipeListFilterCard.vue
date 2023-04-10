@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AdjustmentsHorizontalIcon } from '@heroicons/vue/20/solid';
+import { ArrowDownCircleIcon } from '@heroicons/vue/24/outline';
 import {
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
 } from '@headlessui/vue';
@@ -28,7 +28,19 @@ const selectedOptions: Ref<string[]> = ref(props.currentOptions);
 
 const emit = defineEmits(['changed']);
 
-watch(selectedOptions, () => emit('changed', selectedOptions));
+watch(selectedOptions, () => emit('changed', selectedOptions.value));
+
+const optionClasses = (disabled: boolean, selected: boolean): string[] => {
+  const base = ['p-2', 'border-b', 'border-secondary', 'transition', 'cursor-pointer', 'last:border-b-0', 'flex', 'justify-between'];
+
+  if (selected) {
+    base.push('bg-primary-light', 'bg-opacity-50');
+  }
+
+  base.push(disabled ? 'text-grey-off-dark' : 'hover:bg-grey-light');
+
+  return base;
+};
 </script>
 
 <template>
@@ -39,11 +51,19 @@ watch(selectedOptions, () => emit('changed', selectedOptions));
       multiple
     >
       <ListboxButton
-        class="w-full bg-secondary transition hover:bg-opacity-100 p-2 font-semibold text-lg flex items-center"
+        class="w-full bg-secondary transition hover:bg-opacity-100 p-2 font-semibold text-lg flex items-center justify-between"
         :class="open ? 'rounded-t-lg' : 'rounded-lg bg-opacity-70'"
       >
-        <AdjustmentsHorizontalIcon class="w-4 h-4 mr-2" />
-        <span>{{ label }}</span>
+        <div class="flex items-center">
+          <ArrowDownCircleIcon
+            class="w-8 h-8 mr-2 transition transition-duration-500"
+            :class="{'rotate-180': open}"
+          />
+          <span>{{ label }}</span>
+        </div>
+        <div v-if="selectedOptions.length">
+          <span class="text-grey-dark font-normal">({{ selectedOptions.length }}/{{ options.length }})</span>
+        </div>
       </ListboxButton>
 
       <transition
@@ -59,8 +79,7 @@ watch(selectedOptions, () => emit('changed', selectedOptions));
             v-for="option in options"
             :key="option.value"
             :value="option.value"
-            class="p-2 border-b border-secondary transition cursor-pointer last:border-b-0 flex justify-between"
-            :class="option.disabled ? 'text-grey-off-dark' : 'hover:bg-grey-light'"
+            :class="optionClasses(option.disabled, selectedOptions.includes(option.value))"
             :disabled="option.disabled"
           >
             <div class="flex space-x-2">

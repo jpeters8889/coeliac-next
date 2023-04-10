@@ -69,11 +69,13 @@ const mobileNavOpen = ref(false);
                 label="Register"
                 theme="secondary"
                 size="sm"
+                href="/register"
               />
               <CoeliacButton
                 label="Login"
                 theme="light"
                 size="sm"
+                href="/login"
               />
             </div>
           </div>

@@ -15,7 +15,6 @@ class RecipeFeatureFactory extends Factory
         return [
             'feature' => $this->faker->word,
             'slug' => $this->faker->slug,
-            'icon' => $this->faker->word,
         ];
     }
 }

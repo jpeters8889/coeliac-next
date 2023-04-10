@@ -29,3 +29,9 @@ export type RecipeFreeFrom = {
   slug: string;
   recipes_count: number;
 };
+
+export type RecipeSetFilters = {
+  features: string[],
+  meals: string[],
+  freeFrom: string[],
+};
