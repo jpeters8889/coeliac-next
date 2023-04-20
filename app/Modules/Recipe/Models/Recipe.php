@@ -6,6 +6,8 @@ namespace App\Modules\Recipe\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Shared\Comments\Commentable;
+use App\Modules\Shared\Comments\HasComments;
 use App\Modules\Shared\Scopes\LiveScope;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
@@ -45,8 +47,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  *
  * @method transform(array $array)
  */
-class Recipe extends Model implements HasMedia
+class Recipe extends Model implements HasComments, HasMedia
 {
+    use Commentable;
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;

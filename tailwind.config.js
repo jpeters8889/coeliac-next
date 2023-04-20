@@ -47,6 +47,12 @@ module.exports = {
                     'off-light': '#e8e8e8',
                     'off-dark': '#bbb',
                 },
+
+                red: {
+                    DEFAULT: '#f00',
+                    light: '#ff6060',
+                    dark: '#E53E3E',
+                }
             },
 
             maxWidth: {
@@ -56,7 +62,22 @@ module.exports = {
             screens: {
                 xs: '500px',
                 xmd: '860px',
-            }
+            },
+            typography:  (theme) => ({
+                DEFAULT: {
+                    css: {
+                        a: {
+                            color: theme('colors.primary.darkest'),
+                            fontWeight: theme('fontWeight.semibold'),
+                            textDecoration: 'none',
+                            transition: theme('transition'),
+                            '&:hover': {
+                                color: theme('colors.grey.dark'),
+                            },
+                        },
+                    },
+                },
+            }),
         },
     },
 

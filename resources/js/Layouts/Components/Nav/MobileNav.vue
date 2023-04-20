@@ -44,6 +44,7 @@ const links: { label: string, href: string }[] = [
             <Link
               :href="link.href"
               class="block w-full px-2"
+              @click="close()"
             >
               {{ link.label }}
             </Link>

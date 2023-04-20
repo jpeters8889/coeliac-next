@@ -16,10 +16,19 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  noPadding: {
+    required: false,
+    type: Boolean,
+    default: false,
+  },
 });
 
 const classes = (): string[] => {
-  const base: string[] = ['flex', 'flex-col', 'rounded', 'p-4'];
+  const base: string[] = ['flex', 'flex-col', 'rounded'];
+
+  if (!props.noPadding) {
+    base.push('p-4');
+  }
 
   if (props.shadow) {
     base.push('shadow');

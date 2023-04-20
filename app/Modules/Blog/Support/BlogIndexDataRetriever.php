@@ -43,7 +43,7 @@ class BlogIndexDataRetriever
                     fn (Builder $builder) => $builder->where('slug', $this->tag?->slug)
                 ))
                 ->with(['media', 'tags'])
-//                ->withCount(['comments'])
+                ->withCount(['comments'])
                 ->latest()
                 ->paginate(12)
         );

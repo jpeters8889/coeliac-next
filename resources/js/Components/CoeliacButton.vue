@@ -65,7 +65,7 @@ const props = defineProps({
 });
 
 const classes = computed((): string[] => {
-  const base = ['inline-flex', 'items-center', 'rounded-md', 'border', 'border-transparent', 'font-medium', 'shadow-sm', 'transition'];
+  const base = ['inline-flex', 'items-center', 'rounded-md', 'border', 'border-transparent', 'font-medium', 'shadow-sm', 'transition', 'relative'];
 
   switch (props.size) {
     case 'sm': {
@@ -134,14 +134,23 @@ const emits = defineEmits(['click']);
     }"
     @click="emits('click')"
   >
-    {{ label }}
+    <div :class="{ 'opacity-0': loading }">
+      {{ label }}
 
-    <component
-      :is="icon"
-      v-if="icon"
-      class="h-4 w-4"
-      :class="iconPosition === 'right' ? 'ml-2 -mr-0.5' : 'mr-2 -ml-0.5'"
-      aria-hidden="true"
-    />
+      <component
+        :is="icon"
+        v-if="icon"
+        class="h-4 w-4"
+        :class="iconPosition === 'right' ? 'ml-2 -mr-0.5' : 'mr-2 -ml-0.5'"
+        aria-hidden="true"
+      />
+    </div>
+
+    <div
+      v-if="loading"
+      class="top-0 left-0 absolute w-full h-full flex justify-center items-center"
+    >
+      <div class="w-6 h-6 border-4 border-white/20 border-t-white/80 rounded-full animate-spin" />
+    </div>
   </component>
 </template>

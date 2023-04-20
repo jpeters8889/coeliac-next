@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
-import InputField from '@/Components/Forms/InputField.vue';
+import InputField from '@/Components/Forms/RawInputField.vue';
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { BlogTagCount } from '@/types/BlogTypes';

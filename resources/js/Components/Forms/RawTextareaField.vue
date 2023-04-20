@@ -1,48 +1,7 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: {
-    required: true,
-    type: String,
-  },
-  type: {
-    required: false,
-    type: String,
-    default: 'text',
-  },
-  name: {
-    required: true,
-    type: String,
-  },
-  id: {
-    required: false,
-    type: String,
-  },
-  required: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  autocomplete: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
-  placeholder: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
-  borders: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  background: {
-    required: false,
-    type: Boolean,
-    default: true,
-  },
-});
+import { TextareaProps } from '@/Components/Forms/Props';
+
+const props = defineProps(TextareaProps);
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -65,18 +24,25 @@ const classes = (): string[] => {
     base.push('bg-transparent');
   }
 
+  if (props.error) {
+    base.push('!border-red', 'focus:border-red-dark');
+
+    if (!props.borders && props.background) {
+      base.push('!bg-red/90');
+    }
+  }
+
   return base;
 };
 
 </script>
 
 <template>
-  <input
-    :type="type"
+  <textarea
     :name="name"
     :required="required"
+    :rows="rows"
     :class="classes()"
-    :value="modelValue"
     v-bind="{
       ...(id ? {id} : null),
       ...(autocomplete ? {autocomplete} : null),
@@ -84,4 +50,6 @@ const classes = (): string[] => {
     }"
     @input="emit('update:modelValue', $event.target.value)"
   >
+      {{ modelValue }}
+  </textarea>
 </template>

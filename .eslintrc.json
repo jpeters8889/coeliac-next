@@ -61,7 +61,8 @@
             "alias": {
                 "map": [
                     ["@", "./resources/js"]
-                ]
+                ],
+                "extensions": [".js",".ts",".vue"]
             }
         }
     }

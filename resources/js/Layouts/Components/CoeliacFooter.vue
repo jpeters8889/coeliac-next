@@ -4,7 +4,7 @@ import FacebookIcon from '@/Icons/FacebookIcon.vue';
 import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
-import InputField from '@/Components/Forms/InputField.vue';
+import InputField from '@/Components/Forms/RawInputField.vue';
 
 const year = new Date().getFullYear();
 

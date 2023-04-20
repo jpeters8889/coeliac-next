@@ -16,7 +16,7 @@ class BlogSimpleCardViewResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'link' => $this->link,
+            'link' => route('blog.show', ['blog' => $this]),
             'image' => $this->main_image,
         ];
     }

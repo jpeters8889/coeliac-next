@@ -32,7 +32,7 @@ trait LinkableModel
 
     protected function linkRoot(): string
     {
-        return Str::of(class_basename($this))->lower()->plural()->toString();
+        return Str::of(class_basename($this))->lower()->singular()->toString();
     }
 
     protected function linkColumn(): string

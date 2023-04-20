@@ -11,11 +11,13 @@ use App\Modules\Recipe\Models\RecipeMeal;
 use App\Modules\Recipe\Models\RecipeNutrition;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Tests\Unit\Modules\Shared\Comments\CommentableTestTrait;
 use Tests\Unit\Modules\Shared\Support\DisplaysMediaTestTrait;
 use Tests\Unit\Modules\Shared\Support\LinkableModelTestTrait;
 
 class RecipeModelTest extends TestCase
 {
+    use CommentableTestTrait;
     use DisplaysMediaTestTrait;
     use LinkableModelTestTrait;
 
@@ -35,6 +37,8 @@ class RecipeModelTest extends TestCase
         $this->setUpDisplaysMediaTest(fn () => $this->create(Recipe::class));
 
         $this->setUpLinkableModelTest(fn (array $params) => $this->create(Recipe::class, $params));
+
+        $this->setUpCommentsTest(fn (array $params = []) => $this->create(Recipe::class, $params));
 
         $this->item->addMedia(UploadedFile::fake()->image('square.jpg'))->toMediaCollection('square');
     }

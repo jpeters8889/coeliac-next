@@ -21,7 +21,7 @@ class BlogFactory extends Factory
             'description' => $this->faker->paragraph,
             'body' => $this->faker->paragraph,
             'live' => true,
-            'meta_tags' => $this->faker->paragraph,
+            'meta_tags' => implode(',', $this->faker->words(10)),
             'meta_description' => $this->faker->paragraph,
         ];
     }

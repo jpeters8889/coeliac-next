@@ -6,6 +6,7 @@ namespace App\Http\Response;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Inertia\Inertia as BaseInertia;
+use Inertia\LazyProp;
 use Inertia\Response;
 
 class Inertia
@@ -71,5 +72,10 @@ class Inertia
     public function getShared(string $key = null, mixed $default = null): mixed
     {
         return BaseInertia::getShared($key, $default);
+    }
+
+    public function lazy(callable $callback): LazyProp
+    {
+        return BaseInertia::lazy($callback);
     }
 }

@@ -8,11 +8,13 @@ use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Models\BlogTag;
 use App\Modules\Shared\Scopes\LiveScope;
 use Tests\TestCase;
+use Tests\Unit\Modules\Shared\Comments\CommentableTestTrait;
 use Tests\Unit\Modules\Shared\Support\DisplaysMediaTestTrait;
 use Tests\Unit\Modules\Shared\Support\LinkableModelTestTrait;
 
 class BlogModelTest extends TestCase
 {
+    use CommentableTestTrait;
     use DisplaysMediaTestTrait;
     use LinkableModelTestTrait;
 
@@ -22,19 +24,21 @@ class BlogModelTest extends TestCase
     {
         parent::setUp();
 
-        $this->blog = $this->build(Blog::class)
-            ->has($this->build(BlogTag::class)->count(5), 'tags')
-            ->create();
+        $this->withBlogs(1);
+
+        $this->blog = Blog::query()->first();
 
         $this->setUpDisplaysMediaTest(fn () => $this->create(Blog::class));
 
         $this->setUpLinkableModelTest(fn (array $params) => $this->create(Blog::class, $params));
+
+        $this->setUpCommentsTest(fn (array $params = []) => $this->create(Blog::class, $params));
     }
 
     /** @test */
     public function itHasTags(): void
     {
-        $this->assertEquals(5, $this->blog->tags()->count());
+        $this->assertEquals(3, $this->blog->tags()->count());
     }
 
     /** @test */

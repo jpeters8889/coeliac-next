@@ -69,7 +69,7 @@ defineProps({
         </div>
 
         <div>
-          0 Comments
+          {{ blog.comments_count }} Comment{{ blog.comments_count !== 1 ? 's' : '' }}
         </div>
       </div>
     </div>

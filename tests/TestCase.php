@@ -82,6 +82,7 @@ abstract class TestCase extends BaseTestCase
         $this->build(Blog::class)
             ->count($count)
             ->sequence(fn (Sequence $sequence) => [
+                'id' => $sequence->index+1,
                 'title' => "Blog {$sequence->index}",
                 'created_at' => Carbon::now()->subDays($sequence->index)
             ])
@@ -89,6 +90,7 @@ abstract class TestCase extends BaseTestCase
             ->create()
             ->each(function (Blog $blog): void {
                 $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('primary');
+                $blog->addMedia(UploadedFile::fake()->image('blog.jpg'))->toMediaCollection('social');
             });
 
         if ($then) {

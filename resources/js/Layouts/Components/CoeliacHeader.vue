@@ -6,7 +6,7 @@ import CoeliacMetas from '@/Layouts/Components/CoeliacMetas.vue';
 import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
 import Sealic from '@/Svg/Sealic.vue';
 import { Link } from '@inertiajs/vue3';
-import InputField from '@/Components/Forms/InputField.vue';
+import InputField from '@/Components/Forms/RawInputField.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 
 const mobileNavOpen = ref(false);
