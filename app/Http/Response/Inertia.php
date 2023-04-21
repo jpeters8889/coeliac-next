@@ -54,6 +54,13 @@ class Inertia
         return $this;
     }
 
+    public function schema(string $schema): self
+    {
+        BaseInertia::share('meta.schema', $schema);
+
+        return $this;
+    }
+
     /**
      * @param string $component
      * @param array|Arrayable<int|string, mixed> $props

@@ -9,4 +9,5 @@ export type MetaProps = {
   description: string,
   tags: string[],
   image: string,
+  schema?: string,
 };

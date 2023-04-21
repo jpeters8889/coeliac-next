@@ -30,6 +30,7 @@ class BlogController
             ->metaDescription($blog->meta_description)
             ->metaTags(explode(',', $blog->meta_tags))
             ->metaImage($blog->social_image)
+            ->schema($blog->schema()->toScript())
             ->render('Blog/Show', [
                 'blog' => new BlogShowResource($blog),
                 'comments' =>  fn () => new CommentCollection(

@@ -81,5 +81,9 @@ const metas: MetaProps = (<DefaultProps>usePage().props).meta as MetaProps;
       name="twitter:creator"
       content="@coeliacsanc"
     >
+
+    <template v-if="metas.schema">
+      {{ metas.schema }}
+    </template>
   </Head>
 </template>

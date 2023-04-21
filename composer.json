@@ -14,7 +14,8 @@
         "league/flysystem-aws-s3-v3": "^3.12.2",
         "spatie/laravel-data": "^2.2.3",
         "spatie/laravel-medialibrary": "^10.7.15",
-        "spatie/laravel-sluggable": "^3.4.2"
+        "spatie/laravel-sluggable": "^3.4.2",
+        "spatie/schema-org": "^3.14"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8.1",

@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\SchemaOrg\Blog as BlogSchema;
+use Spatie\SchemaOrg\Schema;
 
 /**
  * @property string $title
@@ -78,5 +80,21 @@ class Blog extends Model implements HasComments, HasMedia
     protected function linkRoot(): string
     {
         return 'blog';
+    }
+
+    public function schema(): BlogSchema
+    {
+        return Schema::blog()
+            ->author(Schema::person()->name('Alison Peters'))
+            ->dateModified($this->updated_at)
+            ->datePublished($this->created_at)
+            ->description($this->meta_description)
+            ->headline($this->title)
+            ->image($this->main_image)
+            ->mainEntityOfPage(Schema::webPage()->identifier(config('app.url')))
+            ->publisher(
+                Schema::organization()->name('Coeliac Sanctuary')
+                ->logo(Schema::imageObject()->url(config('app.url')."/images/logo.svg"))
+            );
     }
 }
