@@ -31,11 +31,13 @@ class Comment extends Model
         'approved' => 'bool'
     ];
 
+    /** @return HasOne<CommentReply> */
     public function reply(): HasOne
     {
         return $this->hasOne(CommentReply::class);
     }
 
+    /** @return MorphTo<Model, Comment> */
     public function commentable(): MorphTo
     {
         return $this->morphTo();

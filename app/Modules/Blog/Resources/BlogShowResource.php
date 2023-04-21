@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Modules\Blog\Resources;
 
 use App\Modules\Blog\Models\Blog;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
@@ -14,7 +13,7 @@ use Illuminate\Support\Str;
  */
 class BlogShowResource extends JsonResource
 {
-    /** @return array{id: number, title: string, image: string, created_at: Carbon, updated_at: Carbon, description: string, body: string, tags: BlogTagCollection} */
+    /** @return array{id: number, title: string, image: string, published: string, updated: string, description: string, body: string, tags: BlogTagCollection} */
     public function toArray(Request $request)
     {
         return [

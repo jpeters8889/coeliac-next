@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Shared\Models\Comment;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Comment::query()

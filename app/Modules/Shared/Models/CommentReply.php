@@ -16,6 +16,7 @@ class CommentReply extends Model
 {
     use DisplaysDates;
 
+    /** @return BelongsTo<Comment, CommentReply> */
     public function comment(): BelongsTo
     {
         return $this->belongsTo(Comment::class);

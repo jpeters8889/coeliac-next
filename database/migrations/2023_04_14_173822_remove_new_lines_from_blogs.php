@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Modules\Blog\Models\Blog;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Blog::query()->get()->each(function (Blog $blog) {
+        Blog::query()->get()->each(function (Blog $blog): void {
             $blog->timestamps = false;
             $blog->body = str_replace('<br />', "\n", $blog->body);
 

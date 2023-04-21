@@ -32,7 +32,7 @@ class BlogController
             ->metaImage($blog->social_image)
             ->render('Blog/Show', [
                 'blog' => new BlogShowResource($blog),
-                'comments' =>  fn() => new CommentCollection(
+                'comments' =>  fn () => new CommentCollection(
                     $blog->comments()
                         ->with('reply')
                         ->simplePaginate(5, pageName: 'commentPage')

@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Shared\Comments;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Recipe\Models\Recipe;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Closure;
 
 class CommentRequest extends FormRequest
 {
@@ -23,23 +23,24 @@ class CommentRequest extends FormRequest
             default => throw new NotFoundHttpException(),
         };
 
-       return $builder->findOrFail($this->integer('id'));
+        return $builder->findOrFail($this->integer('id'));
     }
 
     public function rules(): array
     {
         return [
             'module' => ['required', Rule::in(['blog', 'recipe'])],
-            'id' => ['required', 'numeric', 'bail', function(string $attribute, mixed $value, \Closure $fail) {
-                $builder = match ($this->input('module')) {
+            'id' => ['required', 'numeric', 'bail', function (string $attribute, mixed $value, Closure $fail): void {
+                $builder = match ((string) $this->string('module')) {
                     'blog' => Blog::query(),
                     'recipe' => Recipe::query(),
+                    default => throw new NotFoundHttpException(),
                 };
 
                 $check = $builder->where('id', $value)->exists();
 
-                if (!$check) {
-                    $fail("The {$this->input('module')} can not be found.");
+                if ( ! $check) {
+                    $fail("The {$this->string('module')} can not be found.");
                 }
             }],
             'name' => ['required', 'string'],

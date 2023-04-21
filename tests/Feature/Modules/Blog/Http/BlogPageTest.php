@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Modules\Blog\Http;
 
 use App\Modules\Blog\Models\Blog;
@@ -50,7 +52,7 @@ class BlogPageTest extends TestCase
     {
         $this->visitBlog()
             ->assertInertia(
-                fn(Assert $page) => $page
+                fn (Assert $page) => $page
                     ->component('Blog/Show')
                     ->has('blog')
                     ->where('blog.title', 'Blog 0')

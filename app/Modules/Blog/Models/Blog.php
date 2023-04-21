@@ -13,7 +13,6 @@ use App\Modules\Shared\Support\DisplaysDates;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,11 +39,11 @@ class Blog extends Model implements HasComments, HasMedia
     use Commentable;
     use DisplaysDates;
     use DisplaysMedia;
-    use LinkableModel;
     use HasLegacyImage;
     use Imageable;
-
     use InteractsWithMedia;
+
+    use LinkableModel;
 
     protected static function booted(): void
     {

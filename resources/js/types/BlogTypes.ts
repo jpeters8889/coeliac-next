@@ -8,7 +8,7 @@ export type BlogDetailCard = HomeHoverItem & {
 };
 
 export type BlogPage = {
-    id: number;
+  id: number;
   title: string;
   image: string;
   published: string;
