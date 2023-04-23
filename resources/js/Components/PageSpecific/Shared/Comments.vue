@@ -70,7 +70,7 @@ const submitComment = () => {
         class="flex flex-col space-y-2 bg-gradient-to-br from-primary/30 to-primary-light/30 p-3 border-l-8 border-secondary shadow"
       >
         <div
-          class="prose prose-sm"
+          class="prose prose-sm max-w-none md:prose-base"
           v-text="comment.comment"
         />
         <div class="flex space-x-2 text-xs font-medium text-grey">
@@ -92,7 +92,7 @@ const submitComment = () => {
             <span v-text="comment.reply.published" />
           </div>
           <div
-            class="prose prose-sm"
+            class="prose prose-sm max-w-none md:prose-base"
             v-text="comment.reply.comment"
           />
         </div>

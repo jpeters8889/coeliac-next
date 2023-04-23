@@ -69,6 +69,8 @@ class MigrateImagesToMedia extends Command
         ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Blog\Models\Blog')
             ->update(['imageable_type' => Blog::class]);
 
+        $blog->refresh();
+
         /** @phpstan-ignore-next-line  */
         $blog->addMediaFromUrl($blog->social_legacy_image)->toMediaCollection('social');
 
@@ -100,6 +102,8 @@ class MigrateImagesToMedia extends Command
     {
         ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Recipe\Models\Recipe')
             ->update(['imageable_type' => Recipe::class]);
+
+        $recipe->refresh();
 
         try {
             /** @phpstan-ignore-next-line */

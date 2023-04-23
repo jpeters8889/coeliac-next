@@ -3,6 +3,8 @@ import '../css/app.css';
 import { createApp, DefineComponent, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import Coeliac from '@/Layouts/Coeliac.vue';
+import ArticleHeader from '@/Components/ArticleHeader.vue';
+import ArticleImage from "@/Components/ArticleImage.vue";
 
 const appName = 'Coeliac Sanctuary';
 
@@ -26,6 +28,8 @@ createInertiaApp({
     el, App, props, plugin,
   }) {
     createApp({ render: () => h(App, props) })
+      .component('article-header', ArticleHeader)
+      .component('article-image', ArticleImage)
       .use(plugin)
       .mount(el);
   },

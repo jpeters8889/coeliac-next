@@ -56,6 +56,8 @@ module.exports = {
             },
 
             maxWidth: {
+                '1/2': '50%',
+                '1/3': '33%',
                 '8xl': '94rem',
             },
 

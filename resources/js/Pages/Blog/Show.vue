@@ -8,6 +8,7 @@ import { Page, PageProps } from '@inertiajs/core/types/types';
 import { BlogPage } from '@/types/BlogTypes';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { Comment } from '@/types/Types';
+import RenderedString from '@/Components/RenderedString.vue';
 
 const props = defineProps({
   blog: {
@@ -31,7 +32,7 @@ const loadMoreComments = () => {
     preserveScroll: true,
     preserveState: true,
     only: ['comments'],
-    onSuccess: (event: Page<PageProps & { comments?: PaginatedResponse<Comment> }>) => {
+    onSuccess: (event: { props: { comments?: PaginatedResponse<Comment> } }) => {
       // eslint-disable-next-line no-restricted-globals
       history.pushState(null, '', `${window.location.origin}${window.location.pathname}`);
 
@@ -98,23 +99,22 @@ const loadMoreComments = () => {
   </Card>
 
   <Card>
-    <p
-      class="prose prose-lg max-w-none"
-      v-html="blog.body"
-    />
+    <div class="prose prose-lg max-w-none">
+      <RenderedString>{{ blog.body }}</RenderedString>
+    </div>
   </Card>
 
   <Card
     theme="primary-light"
     faded
   >
-    <div class="md:flex md:flex-row md:space-y-2">
+    <div class="md:flex md:flex-row md:space-x-2 justify-center md:space-x-4">
       <img
         src="/images/misc/alison.jpg"
-        class="rounded-full w-1/4 float-left mb-2 mr-2"
+        class="rounded-full w-1/4 float-left mb-2 mr-2 max-w-[150px]"
         alt="Alison Peters"
       >
-      <div>
+      <div class="prose max-w-2xl md:prose-xl">
         <strong>Alison Peters</strong> has been Coeliac since June 2014 and launched Coeliac Sanctuary in August of that year, and since then
         has aimed to provide a one stop shop for Coeliacs, from blogs, to recipes, eating out guide and online shop.
       </div>

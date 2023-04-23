@@ -17,7 +17,7 @@ const mobileNavOpen = ref(false);
   <CoeliacMetas />
 
   <div class="relative bg-primary shadow-lg">
-    <div class="relative z-20">
+    <div class="relative z-20" id="header">
       <div class="w-full mx-auto flex max-w-7xl items-center justify-between px-2">
         <div class="md:hidden">
           <a class=" flex items-center justify-center rounded-md text-white/80 hover:text-white">

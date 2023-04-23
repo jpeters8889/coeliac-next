@@ -57,6 +57,11 @@ export const InputProps: ComponentObjectPropsOptions = {
     type: String,
     default: 'text',
   },
+  error: {
+    required: false,
+    type: String,
+    default: undefined,
+  },
 };
 
 export const TextareaProps: ComponentObjectPropsOptions = {
@@ -65,5 +70,10 @@ export const TextareaProps: ComponentObjectPropsOptions = {
     required: false,
     type: Number,
     default: 5,
+  },
+  error: {
+    required: false,
+    type: String,
+    default: undefined,
   },
 };
