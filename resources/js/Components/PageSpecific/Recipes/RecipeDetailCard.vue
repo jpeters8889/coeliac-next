@@ -65,7 +65,7 @@ defineProps({
               class="after:content-[','] last:after:content-['']"
             >
               <Link
-                href="#"
+                :href="`/recipe?features=${feature.slug}`"
                 class="font-semibold text-primary-dark hover:text-black transition"
               >
                 {{ feature.feature }}

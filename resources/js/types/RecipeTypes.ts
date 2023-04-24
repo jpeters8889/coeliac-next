@@ -12,6 +12,32 @@ export type RecipeDetailCard = HomeHoverItem & {
   }
 };
 
+export type RecipePage = {
+  id: number;
+  title: string;
+  image: string;
+  square_image: string;
+  published: string;
+  updated: string;
+  author: string;
+  description: string;
+  ingredients: string;
+  method: string;
+  features?: { feature: string, slug: string }[];
+  allergens?: { allergen: string, slug: string }[];
+  timing: {
+    prep_time: string;
+    cook_time: string;
+  },
+  nutrition: RecipeDetailCard['nutrition'] & {
+    carbs: number;
+    fibre: number;
+    fat: number;
+    sugar: number;
+    protein: number;
+  }
+};
+
 export type RecipeFeature = {
   feature: string;
   slug: string;

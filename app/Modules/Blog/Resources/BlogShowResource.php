@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-/** @mixin Blog
- */
+/** @mixin Blog */
 class BlogShowResource extends JsonResource
 {
     /** @return array{id: number, title: string, image: string, published: string, updated: string, description: string, body: string, tags: BlogTagCollection} */

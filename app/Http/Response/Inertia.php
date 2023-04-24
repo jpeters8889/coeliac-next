@@ -61,6 +61,13 @@ class Inertia
         return $this;
     }
 
+    public function alternateMetas(array $metas): self
+    {
+        BaseInertia::share('meta.alternateMetas', $metas);
+
+        return $this;
+    }
+
     /**
      * @param string $component
      * @param array|Arrayable<int|string, mixed> $props

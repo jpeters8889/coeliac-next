@@ -107,6 +107,7 @@ abstract class TestCase extends BaseTestCase
         $this->build(Recipe::class)
             ->count($count)
             ->sequence(fn (Sequence $sequence) => [
+                'id' => $sequence->index + 1,
                 'title' => "Recipe {$sequence->index}",
                 'created_at' => Carbon::now()->subDays($sequence->index)
             ])
@@ -117,6 +118,7 @@ abstract class TestCase extends BaseTestCase
             ->create()
             ->each(function (Recipe $recipe): void {
                 $recipe->addMedia(UploadedFile::fake()->image('recipe.jpg'))->toMediaCollection('primary');
+                $recipe->addMedia(UploadedFile::fake()->image('recipe.jpg'))->toMediaCollection('social');
             });
 
         if ($then) {

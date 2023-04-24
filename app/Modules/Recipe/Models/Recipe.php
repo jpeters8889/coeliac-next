@@ -9,6 +9,7 @@ use App\Legacy\Imageable;
 use App\Modules\Shared\Comments\Commentable;
 use App\Modules\Shared\Comments\HasComments;
 use App\Modules\Shared\Scopes\LiveScope;
+use App\Modules\Shared\Support\DisplaysDates;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
 use Carbon\Carbon;
@@ -44,12 +45,15 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string $meta_keywords
  * @property string $legacy_slug
  * @property string $slug
+ * @property string $published
+ * @property string $lastUpdated
  *
  * @method transform(array $array)
  */
 class Recipe extends Model implements HasComments, HasMedia
 {
     use Commentable;
+    use DisplaysDates;
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
@@ -60,6 +64,11 @@ class Recipe extends Model implements HasComments, HasMedia
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function registerMediaCollections(): void

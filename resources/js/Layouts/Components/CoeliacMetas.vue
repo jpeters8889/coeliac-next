@@ -82,6 +82,15 @@ const metas: MetaProps = (<DefaultProps>usePage().props).meta as MetaProps;
       content="@coeliacsanc"
     >
 
+    <template v-if="metas.alternateMetas">
+      <meta
+        v-for="(content, property) in metas.alternateMetas"
+        :key="property"
+        :property="property"
+        :content="content"
+      >
+    </template>
+
     <template v-if="metas.schema">
       {{ metas.schema }}
     </template>

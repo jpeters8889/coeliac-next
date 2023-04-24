@@ -30,6 +30,14 @@ class BlogController
             ->metaDescription($blog->meta_description)
             ->metaTags(explode(',', $blog->meta_tags))
             ->metaImage($blog->social_image)
+            ->alternateMetas([
+                'article:publisher' => 'https://www.facebook.com/coeliacsanctuary',
+                'article:section' => 'Food',
+                'article:published_time' => $blog->created_at,
+                'article:modified_time' => $blog->updated_at,
+                'article:author' => 'Coeliac Sanctuary',
+                'article.tags' => $blog->meta_tags,
+            ])
             ->schema($blog->schema()->toScript())
             ->render('Blog/Show', [
                 'blog' => new BlogShowResource($blog),

@@ -41,7 +41,7 @@ const selectedFeatures: Ref<string[]> = toRef(props.setFilters, 'features');
 const selectedMeals: Ref<string[]> = ref(props.setFilters.meals);
 const selectedAllergens: Ref<string[]> = ref(props.setFilters.freeFrom);
 
-const refreshPage = () => {
+const refreshPage = (preserveScroll = true) => {
   router.get('/recipe', {
     ...(page.value > 1 ? { page: page.value } : undefined),
     ...(selectedFeatures.value.length > 0 ? { features: selectedFeatures.value.join() } : undefined),
@@ -50,14 +50,14 @@ const refreshPage = () => {
   }, {
     only: ['recipes', 'features', 'meals', 'freeFrom', 'setFilters'],
     preserveState: true,
-    preserveScroll: true,
+    preserveScroll,
   });
 };
 
 const gotoPage = (p: number) => {
   page.value = p;
 
-  refreshPage();
+  refreshPage(false);
 };
 
 const featureOptions = (): RecipeFilterOption[] => props.features.map((feature) => ({
