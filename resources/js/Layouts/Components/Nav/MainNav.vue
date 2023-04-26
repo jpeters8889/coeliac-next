@@ -19,10 +19,10 @@ onMounted(() => {
 <template>
   <div
     id="main-nav"
-    class="mx-auto hidden w-full max-w-7xl md:flex md:items-center md:justify-center"
+    class="mx-auto hidden md:flex md:items-center md:justify-center"
     :class="{
-      'fixed bg-primary top-0 h-10': isSticky,
-      'h-14': !isSticky,
+      'fixed bg-primary top-0 h-10 w-screen': isSticky,
+      'h-14 w-full max-w-7xl ': !isSticky,
     }"
   >
     <nav

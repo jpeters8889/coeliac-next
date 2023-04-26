@@ -8,6 +8,7 @@ import Heading from '@/Components/Heading.vue';
 import Comments from '@/Components/PageSpecific/Shared/Comments.vue';
 import { PrinterIcon } from '@heroicons/vue/20/solid';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
+import RecipeNutritionTable from '@/Components/PageSpecific/Recipes/RecipeNutritionTable.vue';
 
 const props = defineProps({
   recipe: {
@@ -55,17 +56,17 @@ const loadMoreComments = () => {
       {{ recipe.title }}
     </Heading>
 
-    <p
+    <div
       class="prose prose-lg font-semibold max-w-none"
       v-text="recipe.description"
     />
 
-    <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0">
+    <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 md:text-lg">
       <div v-if="recipe.features.length">
-        <h3 class="font-semibold text-base text-grey-darkest">
+        <h3 class="font-semibold text-grey-darkest">
           This recipe is...
         </h3>
-        <ul class="flex flex-row flex-wrap text-sm leading-tight gap-2 gap-y-1">
+        <ul class="flex flex-row flex-wrap leading-tight gap-2 gap-y-1">
           <li
             v-for="feature in recipe.features"
             :key="feature.slug"
@@ -82,11 +83,11 @@ const loadMoreComments = () => {
       </div>
 
       <div v-if="recipe.allergens.length">
-        <div class="bg-red-light bg-opacity-10 rounded p-3 w-full">
-          <h3 class="font-semibold text-base text-grey-darkest">
+        <div class="bg-red-light bg-opacity-10 rounded p-3 pr-12 w-full">
+          <h3 class="font-semibold text-grey-darkest">
             This recipe contains:
           </h3>
-          <ul class="flex flex-row flex-wrap text-sm leading-tight gap-2 gap-y-1">
+          <ul class="flex flex-row flex-wrap leading-tight gap-2 gap-y-1">
             <li
               v-for="allergen in recipe.allergens"
               :key="allergen.slug"
@@ -101,12 +102,16 @@ const loadMoreComments = () => {
     <div class="bg-grey-light -m-4 !-mb-4 p-4 shadow-inner flex justify-between">
       <div>
         <p v-if="recipe.updated">
-          Last updated {{ recipe.updated }}
+          <span class="font-semibold">Last updated</span> {{ recipe.updated }}
         </p>
-        <p>Published {{ recipe.published }}</p>
+        <p><span class="font-semibold">Added</span> {{ recipe.published }}</p>
+        <p><span class="font-semibold">Recipe by</span> <span v-html="recipe.author" /></p>
       </div>
+
       <div>
-        <PrinterIcon class="w-8 h-8" />
+          <a :href="recipe.print_url" target="_blank">
+        <PrinterIcon class="w-12 h-12" />
+          </a>
       </div>
     </div>
   </Card>
@@ -125,28 +130,39 @@ const loadMoreComments = () => {
     />
   </Card>
 
-  <Card>
-    <!--        <div class="prose prose-lg max-w-none">-->
-    <!--            <RenderedString>{{ recipe.body }}</RenderedString>-->
-    <!--        </div>-->
+  <Card class="space-y-3 pb-0">
+    <h2 class="font-semibold text-xl text-primary-dark">
+      Ingredients
+    </h2>
+
+    <div
+      class="prose prose-lg max-w-none"
+      v-html="recipe.ingredients"
+    />
+
+    <ul class="bg-grey-light border-t border-grey-off-light -m-4 mt-4 p-4">
+      <li><strong class="font-semibold">Preparation Time:</strong> {{ recipe.timing.prep_time }}</li>
+      <li><strong class="font-semibold">Cooking Time:</strong> {{ recipe.timing.cook_time }}</li>
+      <li><strong class="font-semibold">This recipe makes {{ recipe.nutrition.servings }}</strong></li>
+    </ul>
   </Card>
 
-  <!--    <Card-->
-  <!--        theme="primary-light"-->
-  <!--        faded-->
-  <!--    >-->
-  <!--        <div class="md:flex md:flex-row md:space-x-2 justify-center md:space-x-4">-->
-  <!--            <img-->
-  <!--                src="/images/misc/alison.jpg"-->
-  <!--                class="rounded-full w-1/4 float-left mb-2 mr-2 max-w-[150px]"-->
-  <!--                alt="Alison Peters"-->
-  <!--            >-->
-  <!--            <div class="prose max-w-2xl md:prose-xl">-->
-  <!--                <strong>Alison Peters</strong> has been Coeliac since June 2014 and launched Coeliac Sanctuary in August of that year, and since then-->
-  <!--                has aimed to provide a one stop shop for Coeliacs, from recipes, to recipes, eating out guide and online shop.-->
-  <!--            </div>-->
-  <!--        </div>-->
-  <!--    </Card>-->
+  <Card class="space-y-3">
+    <h3 class="font-semibold text-xl text-primary-dark">
+      Method
+    </h3>
+
+    <article
+      class="prose prose-lg max-w-none"
+      v-html="recipe.method"
+    />
+
+    <h3 class="text-base font-semibold mt-4 mb-2">
+      Nutritional Information (Per {{ recipe.nutrition.portion_size }})
+    </h3>
+
+    <RecipeNutritionTable :nutrition="recipe.nutrition" />
+  </Card>
 
   <Comments
     :id="recipe.id"

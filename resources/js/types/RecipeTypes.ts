@@ -14,6 +14,7 @@ export type RecipeDetailCard = HomeHoverItem & {
 
 export type RecipePage = {
   id: number;
+  print_url: string;
   title: string;
   image: string;
   square_image: string;

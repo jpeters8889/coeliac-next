@@ -17,6 +17,7 @@ class RecipeShowResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'print_url' => route('recipe.print', ['recipe' => $this]),
             'title' => $this->title,
             'image' => $this->main_image,
             'square_image' => $this->square_image,
@@ -24,7 +25,11 @@ class RecipeShowResource extends JsonResource
             'updated' => $this->lastUpdated,
             'author' => $this->author,
             'description' => $this->description,
-            'ingredients' => Str::markdown($this->ingredients),
+            'ingredients' => Str::markdown($this->ingredients, [
+                'renderer' => [
+                    'soft_break' => "<br />",
+                ],
+            ]),
             'method' => Str::markdown($this->method),
             'features' => $this->features->transform(fn(RecipeFeature $feature) => [
                 'feature' => $feature->feature,

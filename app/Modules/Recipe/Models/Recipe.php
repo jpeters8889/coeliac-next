@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\SchemaOrg\RestrictedDiet;
+use Spatie\SchemaOrg\Schema;
 
 /**
  * @property Carbon $created_at
@@ -42,7 +44,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property string $link
  * @property int $id
  * @property Collection $meals
- * @property string $meta_keywords
  * @property string $legacy_slug
  * @property string $slug
  * @property string $published
@@ -139,4 +140,79 @@ class Recipe extends Model implements HasComments, HasMedia
     {
         return Attribute::get(fn () => $this->per);
     }
+
+    public function schema()
+    {
+        return Schema::recipe()
+            ->name($this->title)
+            ->image($this->main_image)
+            ->author(Schema::person()->name('Alison Peters'))
+            ->dateModified($this->updated_at)
+            ->datePublished($this->created_at)
+            ->prepTime($this->formatTimeToIso($this->prep_time))
+            ->cookTime($this->formatTimeToIso($this->cook_time))
+            ->recipeYield($this->servings)
+            ->nutrition(Schema::nutritionInformation()
+                ->calories("{$this->nutrition->calories} calories")
+                ->carbohydrateContent("{$this->nutrition->carbs} grams")
+                ->fatContent("{$this->nutrition->fat} grams")
+                ->proteinContent("{$this->nutrition->protein} grams")
+                ->sugarContent("{$this->nutrition->sugar} grams")
+                ->fiberContent("{$this->nutrition->fibre} grams")
+                ->servingSize($this->portion_size)
+            )
+            ->recipeIngredient(explode("\n", $this->ingredients))
+            ->recipeInstructions(explode("\n\n", $this->method))
+            ->suitableForDiet($this->richTextSuitableFor())
+            ->keywords($this->meta_tags)
+            ->recipeCategory('Gluten Free')
+            ->recipeCuisine('');
+    }
+
+    protected function richTextSuitableFor(): array
+    {
+        $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::GlutenFreeDiet);
+
+        if (! $this->allergens->contains('Dairy')) {
+            $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::LowLactoseDiet);
+        }
+
+        if ($this->nutrition->calories < 400) {
+            $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::LowCalorieDiet);
+        }
+
+        if ($this->features->contains('Vegan')) {
+            $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::VeganDiet);
+        }
+
+        if ($this->features->contains('Vegetarian')) {
+            $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::VegetarianDiet);
+        }
+
+        return $suitableFor;
+    }
+
+    protected function formatTimeToIso(string $time): string
+    {
+        $time = str_ireplace([' and', ' a', ' half'], '', $time);
+        $bits = explode(' ', $time);
+
+        if (count($bits) === 4) {
+            return "PT{$bits[0]}H{$bits[2]}M";
+        }
+
+        if (count($bits) === 2) {
+            $unit = 'M';
+
+            if (in_array($bits[1], ['Hour', 'Hours'])) {
+                $unit = 'H';
+            }
+
+            return "PT{$bits[0]}{$unit}";
+        }
+
+        return 'PT';
+    }
+
+
 }

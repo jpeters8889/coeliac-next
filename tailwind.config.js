@@ -77,6 +77,9 @@ module.exports = {
                                 color: theme('colors.grey.dark'),
                             },
                         },
+                        ol: {
+                            listStyle: 'auto',
+                        }
                     },
                 },
             }),

@@ -12,7 +12,7 @@ defineProps({
   <div class="flex flex-col pb-2 border-b border-gray-light">
     <component
       :is="as"
-      class="text-3xl font-semibold font-coeliac text-center"
+      class="text-3xl font-semibold font-coeliac text-center md:text-4xl"
     >
       <slot />
     </component>

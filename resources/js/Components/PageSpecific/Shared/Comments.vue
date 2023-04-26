@@ -157,7 +157,7 @@ const submitComment = () => {
         required
       />
 
-      <small class="text-xs italic">
+      <small class="text-xs sm:text-sm md:text-base italic">
         Note, your email address will never be displayed with your comment, it is only required to alert you when your comment has been
         approved or if the Coeliac Sanctuary team reply to your comment.
       </small>

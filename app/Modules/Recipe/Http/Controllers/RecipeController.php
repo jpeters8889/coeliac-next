@@ -34,6 +34,7 @@ class RecipeController
             ->metaDescription($recipe->meta_description)
             ->metaTags(explode(',', $recipe->meta_tags))
             ->metaImage($recipe->social_image)
+            ->schema($recipe->schema()->toScript())
             ->alternateMetas([
                 'article:publisher' => 'https://www.facebook.com/coeliacsanctuary',
                 'article:section' => 'Food',
@@ -50,5 +51,10 @@ class RecipeController
                   ->simplePaginate(5, pageName: 'commentPage')
                 ),
             ]);
+    }
+
+    public function print(Recipe $recipe)
+    {
+        return view('recipe-print', ['recipe' => $recipe]);
     }
 }
