@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Modules\Recipe\Models\Recipe;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class RecipeFactory extends Factory
@@ -32,6 +33,8 @@ class RecipeFactory extends Factory
                 'prep_time' => '1 Hour',
                 'cook_time' => '1 Hour',
                 'live' => true,
+                'publish_at' => Carbon::now(),
+                'draft' => false,
             ];
         }
     }

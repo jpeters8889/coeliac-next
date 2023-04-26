@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Modules\Blog\Models\Blog;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class BlogFactory extends Factory
@@ -23,6 +24,8 @@ class BlogFactory extends Factory
             'live' => true,
             'meta_tags' => implode(',', $this->faker->words(10)),
             'meta_description' => $this->faker->paragraph,
+            'publish_at' => Carbon::now(),
+            'draft' => false,
         ];
     }
 

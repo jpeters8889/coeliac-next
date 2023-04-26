@@ -8,11 +8,13 @@ use App\Modules\Blog\Models\Blog;
 use App\Modules\Shared\Scopes\LiveScope;
 use Tests\TestCase;
 use Tests\Unit\Modules\Shared\Comments\CommentableTestTrait;
+use Tests\Unit\Modules\Shared\Support\CanBePublishedTestTrait;
 use Tests\Unit\Modules\Shared\Support\DisplaysMediaTestTrait;
 use Tests\Unit\Modules\Shared\Support\LinkableModelTestTrait;
 
 class BlogModelTest extends TestCase
 {
+    use CanBePublishedTestTrait;
     use CommentableTestTrait;
     use DisplaysMediaTestTrait;
     use LinkableModelTestTrait;
@@ -32,6 +34,8 @@ class BlogModelTest extends TestCase
         $this->setUpLinkableModelTest(fn (array $params) => $this->create(Blog::class, $params));
 
         $this->setUpCommentsTest(fn (array $params = []) => $this->create(Blog::class, $params));
+
+        $this->setUpCanBePublishedModelTest(fn (array $params = []) => $this->create(Blog::class, $params));
     }
 
     /** @test */

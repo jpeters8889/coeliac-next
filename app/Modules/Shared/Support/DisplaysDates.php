@@ -19,11 +19,13 @@ trait DisplaysDates
     public function published(): Attribute
     {
         return Attribute::get(function () {
-            if ($this->created_at < Carbon::now()->subMonth()) {
-                return $this->created_at->format('jS F Y');
+            $date = $this->publish_at ?? $this->created_at;
+
+            if ($date < Carbon::now()->subMonth()) {
+                return $date->format('jS F Y');
             }
 
-            return $this->created_at->diffForHumans();
+            return $date->diffForHumans();
         });
     }
 
@@ -31,7 +33,9 @@ trait DisplaysDates
     public function lastUpdated(): Attribute
     {
         return Attribute::get(function () {
-            if ($this->created_at === $this->updated_at) {
+            $date = $this->publish_at ?? $this->created_at;
+
+            if ($date === $this->updated_at) {
                 return null;
             }
 

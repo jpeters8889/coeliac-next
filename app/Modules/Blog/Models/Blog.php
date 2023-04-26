@@ -9,6 +9,7 @@ use App\Legacy\Imageable;
 use App\Modules\Shared\Comments\Commentable;
 use App\Modules\Shared\Comments\HasComments;
 use App\Modules\Shared\Scopes\LiveScope;
+use App\Modules\Shared\Support\CanBePublished;
 use App\Modules\Shared\Support\DisplaysDates;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
@@ -38,6 +39,7 @@ use Spatie\SchemaOrg\Schema;
  */
 class Blog extends Model implements HasComments, HasMedia
 {
+    use CanBePublished;
     use Commentable;
     use DisplaysDates;
     use DisplaysMedia;
@@ -95,9 +97,10 @@ class Blog extends Model implements HasComments, HasMedia
             ->headline($this->title)
             ->image($this->main_image)
             ->mainEntityOfPage(Schema::webPage()->identifier($url))
-            ->publisher(Schema::organization()
-                ->name('Coeliac Sanctuary')
-                ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
+            ->publisher(
+                Schema::organization()
+                    ->name('Coeliac Sanctuary')
+                    ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
             );
     }
 }
