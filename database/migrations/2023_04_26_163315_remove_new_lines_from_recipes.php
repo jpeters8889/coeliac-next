@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Modules\Recipe\Models\Recipe;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
         Recipe::query()->get()->each(function (Recipe $recipe): void {

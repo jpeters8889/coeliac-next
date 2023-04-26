@@ -84,6 +84,9 @@ class Blog extends Model implements HasComments, HasMedia
 
     public function schema(): BlogSchema
     {
+        /** @var string $url */
+        $url = config('app.url');
+
         return Schema::blog()
             ->author(Schema::person()->name('Alison Peters'))
             ->dateModified($this->updated_at)
@@ -91,10 +94,10 @@ class Blog extends Model implements HasComments, HasMedia
             ->description($this->meta_description)
             ->headline($this->title)
             ->image($this->main_image)
-            ->mainEntityOfPage(Schema::webPage()->identifier(config('app.url')))
-            ->publisher(
-                Schema::organization()->name('Coeliac Sanctuary')
-                ->logo(Schema::imageObject()->url(config('app.url')."/images/logo.svg"))
+            ->mainEntityOfPage(Schema::webPage()->identifier($url))
+            ->publisher(Schema::organization()
+                ->name('Coeliac Sanctuary')
+                ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
             );
     }
 }

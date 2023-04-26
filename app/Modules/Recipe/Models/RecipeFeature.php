@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $feature
  * @property null | int $recipes_count
+ * @property string $slug
  */
 class RecipeFeature extends Model
 {

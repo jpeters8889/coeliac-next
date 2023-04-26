@@ -9,6 +9,7 @@ use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Recipe\Resources\RecipeShowResource;
 use App\Modules\Recipe\Support\RecipeIndexDataRetriever;
 use App\Modules\Shared\Comments\Resources\CommentCollection;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -46,14 +47,14 @@ class RecipeController
             ->render('Recipe/Show', [
                 'recipe' => new RecipeShowResource($recipe),
                 'comments' => fn () => new CommentCollection(
-                  $recipe->comments()
-                  ->with('reply')
-                  ->simplePaginate(5, pageName: 'commentPage')
+                    $recipe->comments()
+                        ->with('reply')
+                        ->simplePaginate(5, pageName: 'commentPage')
                 ),
             ]);
     }
 
-    public function print(Recipe $recipe)
+    public function print(Recipe $recipe): View
     {
         return view('recipe-print', ['recipe' => $recipe]);
     }

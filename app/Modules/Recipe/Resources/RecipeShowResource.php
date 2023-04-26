@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Recipe\Resources;
 
 use App\Modules\Recipe\Models\Recipe;
@@ -12,7 +14,7 @@ use Illuminate\Support\Str;
 /** @mixin Recipe */
 class RecipeShowResource extends JsonResource
 {
-    /** @return array{id: number, title: string, image: string, published: string, updated: string, description: string, body: string} */
+    /** @return array */
     public function toArray(Request $request)
     {
         return [
@@ -31,14 +33,8 @@ class RecipeShowResource extends JsonResource
                 ],
             ]),
             'method' => Str::markdown($this->method),
-            'features' => $this->features->transform(fn(RecipeFeature $feature) => [
-                'feature' => $feature->feature,
-                'slug' => $feature->slug,
-            ])->values(),
-            'allergens' => $this->containsAllergens()->transform(fn(RecipeAllergen $allergen) => [
-                'allergen' => $allergen->allergen,
-                'slug' => $allergen->slug,
-            ])->values(),
+            'features' => $this->features()->get()->map($this->processFeature(...))->values(),
+            'allergens' => $this->containsAllergens()->map($this->processAllergen(...))->values(),
             'timing' => [
                 'prep_time' => $this->prep_time,
                 'cook_time' => $this->cook_time,
@@ -53,6 +49,22 @@ class RecipeShowResource extends JsonResource
                 'sugar' => $this->nutrition->sugar,
                 'protein' => $this->nutrition->protein,
             ],
+        ];
+    }
+
+    protected function processFeature(RecipeFeature $feature): array
+    {
+        return [
+            'feature' => $feature->feature,
+            'slug' => $feature->slug,
+        ];
+    }
+
+    protected function processAllergen(RecipeAllergen $allergen): array
+    {
+        return [
+            'allergen' => $allergen->allergen,
+            'slug' => $allergen->slug,
         ];
     }
 }

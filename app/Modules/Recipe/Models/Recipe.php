@@ -22,6 +22,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\SchemaOrg\RestrictedDiet;
 use Spatie\SchemaOrg\Schema;
+use Spatie\SchemaOrg\Recipe as RecipeSchema;
 
 /**
  * @property Carbon $created_at
@@ -141,39 +142,49 @@ class Recipe extends Model implements HasComments, HasMedia
         return Attribute::get(fn () => $this->per);
     }
 
-    public function schema()
+    /** @noinspection PhpParamsInspection */
+    public function schema(): RecipeSchema
     {
+        /** @var string $url */
+        $url = config('app.url');
+
         return Schema::recipe()
             ->name($this->title)
             ->image($this->main_image)
             ->author(Schema::person()->name('Alison Peters'))
             ->dateModified($this->updated_at)
             ->datePublished($this->created_at)
-            ->prepTime($this->formatTimeToIso($this->prep_time))
-            ->cookTime($this->formatTimeToIso($this->cook_time))
+            ->prepTime($this->formatTimeToIso($this->prep_time)) /** @phpstan-ignore-line */
+            ->cookTime($this->formatTimeToIso($this->cook_time)) /** @phpstan-ignore-line */
             ->recipeYield($this->servings)
-            ->nutrition(Schema::nutritionInformation()
-                ->calories("{$this->nutrition->calories} calories")
-                ->carbohydrateContent("{$this->nutrition->carbs} grams")
-                ->fatContent("{$this->nutrition->fat} grams")
-                ->proteinContent("{$this->nutrition->protein} grams")
-                ->sugarContent("{$this->nutrition->sugar} grams")
-                ->fiberContent("{$this->nutrition->fibre} grams")
-                ->servingSize($this->portion_size)
+            ->nutrition(
+                Schema::nutritionInformation()
+                    ->calories("{$this->nutrition->calories} calories") /** @phpstan-ignore-line */
+                    ->carbohydrateContent("{$this->nutrition->carbs} grams") /** @phpstan-ignore-line */
+                    ->fatContent("{$this->nutrition->fat} grams") /** @phpstan-ignore-line */
+                    ->proteinContent("{$this->nutrition->protein} grams") /** @phpstan-ignore-line */
+                    ->sugarContent("{$this->nutrition->sugar} grams") /** @phpstan-ignore-line */
+                    ->fiberContent("{$this->nutrition->fibre} grams") /** @phpstan-ignore-line */
+                    ->servingSize($this->portion_size)
             )
             ->recipeIngredient(explode("\n", $this->ingredients))
             ->recipeInstructions(explode("\n\n", $this->method))
             ->suitableForDiet($this->richTextSuitableFor())
             ->keywords($this->meta_tags)
             ->recipeCategory('Gluten Free')
-            ->recipeCuisine('');
+            ->recipeCuisine('')
+            ->mainEntityOfPage(Schema::webPage()->identifier($url))
+            ->publisher(Schema::organization()
+                ->name('Coeliac Sanctuary')
+                ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
+            );
     }
 
     protected function richTextSuitableFor(): array
     {
         $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::GlutenFreeDiet);
 
-        if (! $this->allergens->contains('Dairy')) {
+        if ( ! $this->allergens->contains('Dairy')) {
             $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::LowLactoseDiet);
         }
 
@@ -213,6 +224,4 @@ class Recipe extends Model implements HasComments, HasMedia
 
         return 'PT';
     }
-
-
 }
