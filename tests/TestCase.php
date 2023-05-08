@@ -6,6 +6,7 @@ namespace Tests;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Models\BlogTag;
+use App\Modules\Collection\Models\Collection;
 use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Recipe\Models\RecipeAllergen;
 use App\Modules\Recipe\Models\RecipeFeature;
@@ -119,6 +120,32 @@ abstract class TestCase extends BaseTestCase
             ->each(function (Recipe $recipe): void {
                 $recipe->addMedia(UploadedFile::fake()->image('recipe.jpg'))->toMediaCollection('primary');
                 $recipe->addMedia(UploadedFile::fake()->image('recipe.jpg'))->toMediaCollection('social');
+            });
+
+        if ($then) {
+            $then();
+        }
+
+        return $this;
+    }
+
+
+
+    protected function withCollections($count = 10, callable $then = null): static
+    {
+        Storage::fake('media');
+
+        $this->build(Collection::class)
+            ->count($count)
+            ->sequence(fn (Sequence $sequence) => [
+                'id' => $sequence->index+1,
+                'title' => "Collection {$sequence->index}",
+                'created_at' => Carbon::now()->subDays($sequence->index)
+            ])
+            ->create()
+            ->each(function (Collection $collection): void {
+                $collection->addMedia(UploadedFile::fake()->image('collection.jpg'))->toMediaCollection('primary');
+                $collection->addMedia(UploadedFile::fake()->image('collection.jpg'))->toMediaCollection('social');
             });
 
         if ($then) {

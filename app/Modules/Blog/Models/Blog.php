@@ -6,6 +6,7 @@ namespace App\Modules\Blog\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Collection\Support\Collectable;
 use App\Modules\Shared\Comments\Commentable;
 use App\Modules\Shared\Comments\HasComments;
 use App\Modules\Shared\Scopes\LiveScope;
@@ -37,7 +38,7 @@ use Spatie\SchemaOrg\Schema;
  * @property string $lastUpdated
  * @property null | int $comments_count
  */
-class Blog extends Model implements HasComments, HasMedia
+class Blog extends Model implements Collectable, HasComments, HasMedia
 {
     use CanBePublished;
     use Commentable;
