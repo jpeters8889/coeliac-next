@@ -6,30 +6,58 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "guzzlehttp/guzzle": "^7.5",
+        "guzzlehttp/guzzle": "^7.5.1",
         "inertiajs/inertia-laravel": "^0.6.9",
-        "laravel/framework": "^10.5.1",
-        "laravel/sanctum": "^3.2.1",
+        "jpeters8889/advanced-nova-media-library": "dev-master",
+        "jpeters8889/body": "*",
+        "jpeters8889/polymorphic-panel": "*",
+        "laravel/framework": "^10.9.0",
+        "laravel/nova": "^4.24.1",
+        "laravel/sanctum": "^3.2.5",
         "laravel/tinker": "^2.8.1",
-        "league/flysystem-aws-s3-v3": "^3.12.2",
+        "league/flysystem-aws-s3-v3": "^3.15.0",
+        "pixelcreation/nova-field-sortable": "^3.2",
+        "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-data": "^2.2.3",
-        "spatie/laravel-medialibrary": "^10.7.15",
+        "spatie/laravel-medialibrary": "^10.9.2",
         "spatie/laravel-sluggable": "^3.4.2",
         "spatie/schema-org": "^3.14"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8.1",
-        "brianium/paratest": "^7.1.2",
+        "brianium/paratest": "^7.1.4",
         "fakerphp/faker": "^1.21.0",
-        "laravel/pint": "^1.7",
-        "laravel/sail": "^1.21.3",
+        "laravel/pint": "^1.10",
+        "laravel/sail": "^1.21.5",
         "mockery/mockery": "^1.5.1",
         "nunomaduro/collision": "^v7.3.3",
-        "nunomaduro/larastan": "^2.5.1",
-        "phpunit/phpunit": "^10.0.19",
-        "spatie/laravel-ignition": "^2.0",
+        "nunomaduro/larastan": "^2.6.0",
+        "phpunit/phpunit": "^10.1.2",
+        "spatie/laravel-ignition": "^2.1.1",
         "worksome/request-factories": "^3.2"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        },
+        {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        },
+        {
+            "type": "path",
+            "url": "./../packages/advanced-nova-media-library"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Body"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/PolymorphicPanel"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",

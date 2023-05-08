@@ -2,7 +2,19 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "build-body": "cd nova-components/Body && npm run dev",
+        "build-body-prod": "cd nova-components/Body && npm run prod",
+        "build-polymorphic-panel": "cd nova-components/PolymorphicPanel && npm run dev",
+        "build-polymorphic-panel-prod": "cd nova-components/PolymorphicPanel && npm run prod",
+        "build-address-lookup": "cd nova-components/AddressLookup && npm run dev",
+        "build-address-lookup-prod": "cd nova-components/AddressLookup && npm run prod",
+        "build-wte-opening-times": "cd nova-components/WteOpeningTimes && npm run dev",
+        "build-wte-opening-times-prod": "cd nova-components/WteOpeningTimes && npm run prod",
+        "build-select-or-new": "cd nova-components/SelectOrNew && npm run dev",
+        "build-select-or-new-prod": "cd nova-components/SelectOrNew && npm run prod",
+        "build-wte-attractions": "cd nova-components/WteAttractions && npm run dev",
+        "build-wte-attractions-prod": "cd nova-components/WteAttractions && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
