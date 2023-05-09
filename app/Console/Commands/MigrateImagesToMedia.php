@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Legacy\Image;
 use App\Legacy\ImageAssociations;
 use App\Modules\Blog\Models\Blog;
+use App\Modules\Collection\Models\Collection;
 use App\Modules\Recipe\Models\Recipe;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,7 @@ class MigrateImagesToMedia extends Command
     protected array $modules = [
         'blog' => Blog::class,
         'recipe' => Recipe::class,
+        'collection' => Collection::class,
     ];
 
     protected array $with = [
@@ -40,13 +42,13 @@ class MigrateImagesToMedia extends Command
         /** @var string $module */
         $module = $this->argument('module');
 
-        if ( ! array_key_exists($module, $this->modules)) {
+        if (!array_key_exists($module, $this->modules)) {
             $this->error('Module is not valid');
 
             return;
         }
 
-        if ( ! $this->confirm('Are you sure you want to migrate images')) {
+        if (!$this->confirm('Are you sure you want to migrate images')) {
             return;
         }
 
@@ -61,7 +63,7 @@ class MigrateImagesToMedia extends Command
 
         $progress = $this->output->createProgressBar($items->count());
 
-        $items->each(fn ($item) => $this->{$this->handlers[$module]}($item, $progress));
+        $items->each(fn($item) => $this->{$this->handlers[$module]}($item, $progress));
     }
 
     protected function processBlog(Blog $blog, ProgressBar $progress): void
@@ -71,10 +73,10 @@ class MigrateImagesToMedia extends Command
 
         $blog->refresh();
 
-        /** @phpstan-ignore-next-line  */
+        /** @phpstan-ignore-next-line */
         $blog->addMediaFromUrl($blog->social_legacy_image)->toMediaCollection('social');
 
-        /** @phpstan-ignore-next-line  */
+        /** @phpstan-ignore-next-line */
         $blog->addMediaFromUrl($blog->main_legacy_image)->toMediaCollection('primary');
 
         $blog->images()
@@ -86,7 +88,7 @@ class MigrateImagesToMedia extends Command
                 $contents = Str::of($blog->body)
                     ->when(
                         config('app.env') !== 'production',
-                        fn ($str) => $str->replace('https://images.coeliacsanctuary.co.uk', 'https://images-develop.coeliacsanctuary.co.uk')
+                        fn($str) => $str->replace('https://images.coeliacsanctuary.co.uk', 'https://images-develop.coeliacsanctuary.co.uk')
                     )
                     ->replace($image->image->image_url, $media->getUrl());
 
@@ -115,7 +117,27 @@ class MigrateImagesToMedia extends Command
             if ($recipe->square_legacy_image) {
                 $recipe->addMediaFromUrl($recipe->square_legacy_image)->toMediaCollection('square');
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
+            //
+        }
+
+        $progress->advance();
+    }
+
+    protected function processCollection(Collection $collection, ProgressBar $progress): void
+    {
+        ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Collection\Models\Collection')
+            ->update(['imageable_type' => Collection::class]);
+
+        $collection->refresh();
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $collection->addMediaFromUrl($collection->social_legacy_image)->toMediaCollection('social');
+
+            /** @phpstan-ignore-next-line */
+            $collection->addMediaFromUrl($collection->main_legacy_image)->toMediaCollection('primary');
+        } catch (Exception $e) {
             //
         }
 

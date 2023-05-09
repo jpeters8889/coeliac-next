@@ -26,7 +26,7 @@ class RecipeListTest extends TestCase
     }
 
     /** @test */
-    public function itReturnsTheFirst12Blogs(): void
+    public function itReturnsTheFirst12Recipes(): void
     {
         $this->get(route('recipe.index'))
             ->assertInertia(
