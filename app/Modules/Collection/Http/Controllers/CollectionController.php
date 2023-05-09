@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Collection\Http\Controllers;
 
 use App\Http\Response\Inertia;

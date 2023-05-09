@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Modules\Collection\Models;
 
-use App\Modules\Collection\Support\Collectable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;

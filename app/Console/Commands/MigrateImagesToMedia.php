@@ -42,13 +42,13 @@ class MigrateImagesToMedia extends Command
         /** @var string $module */
         $module = $this->argument('module');
 
-        if (!array_key_exists($module, $this->modules)) {
+        if ( ! array_key_exists($module, $this->modules)) {
             $this->error('Module is not valid');
 
             return;
         }
 
-        if (!$this->confirm('Are you sure you want to migrate images')) {
+        if ( ! $this->confirm('Are you sure you want to migrate images')) {
             return;
         }
 
@@ -63,7 +63,7 @@ class MigrateImagesToMedia extends Command
 
         $progress = $this->output->createProgressBar($items->count());
 
-        $items->each(fn($item) => $this->{$this->handlers[$module]}($item, $progress));
+        $items->each(fn ($item) => $this->{$this->handlers[$module]}($item, $progress));
     }
 
     protected function processBlog(Blog $blog, ProgressBar $progress): void
@@ -88,7 +88,7 @@ class MigrateImagesToMedia extends Command
                 $contents = Str::of($blog->body)
                     ->when(
                         config('app.env') !== 'production',
-                        fn($str) => $str->replace('https://images.coeliacsanctuary.co.uk', 'https://images-develop.coeliacsanctuary.co.uk')
+                        fn ($str) => $str->replace('https://images.coeliacsanctuary.co.uk', 'https://images-develop.coeliacsanctuary.co.uk')
                     )
                     ->replace($image->image->image_url, $media->getUrl());
 
