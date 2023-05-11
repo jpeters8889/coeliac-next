@@ -6,6 +6,7 @@ namespace App\Modules\Blog\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Collection\Support\CanBeCollected;
 use App\Modules\Collection\Support\Collectable;
 use App\Modules\Shared\Comments\Commentable;
 use App\Modules\Shared\Comments\HasComments;
@@ -40,6 +41,7 @@ use Spatie\SchemaOrg\Schema;
  */
 class Blog extends Model implements Collectable, HasComments, HasMedia
 {
+    use CanBeCollected;
     use CanBePublished;
     use Commentable;
     use DisplaysDates;

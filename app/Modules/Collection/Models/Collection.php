@@ -12,11 +12,23 @@ use App\Modules\Shared\Support\CanBePublished;
 use App\Modules\Shared\Support\DisplaysDates;
 use App\Modules\Shared\Support\DisplaysMedia;
 use App\Modules\Shared\Support\LinkableModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @property string $title
+ * @property string $meta_description
+ * @property string $meta_tags
+ * @property int $id
+ * @property string $published
+ * @property string $lastUpdated
+ * @property string $description
+ * @property string $long_description
+ * @property string | null $body
+ */
 class Collection extends Model implements HasMedia
 {
     use CanBePublished;
@@ -65,5 +77,17 @@ class Collection extends Model implements HasMedia
         ]);
 
         return $this;
+    }
+
+    /** @return Attribute<string, never> */
+    public function description(): Attribute
+    {
+        return Attribute::get(fn() => $this->long_description);
+    }
+
+    /** @return Attribute<string, never> */
+    public function metaTags(): Attribute
+    {
+        return Attribute::get(fn() => $this->meta_keywords);
     }
 }

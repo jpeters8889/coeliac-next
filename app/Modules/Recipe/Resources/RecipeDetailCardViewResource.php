@@ -22,7 +22,7 @@ class RecipeDetailCardViewResource extends JsonResource
             'link' => $this->link,
             'image' => $this->main_image,
             'square_image' => $this->square_image,
-            'date' => $this->created_at,
+            'date' => $this->published,
             'description' => $this->meta_description,
             'features' => $this->features->only(['feature']),
             'nutrition' => [

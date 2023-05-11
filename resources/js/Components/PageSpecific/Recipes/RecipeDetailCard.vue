@@ -3,7 +3,6 @@ import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
 import { RecipeDetailCard } from '@/types/RecipeTypes';
-import { formatDate } from '@/helpers';
 
 defineProps({
   recipe: {
@@ -87,7 +86,7 @@ defineProps({
 
       <div class="flex justify-between mt-4">
         <div>
-          Added on {{ formatDate(recipe.date) }}
+          Added on {{ recipe.date }}
         </div>
       </div>
     </div>

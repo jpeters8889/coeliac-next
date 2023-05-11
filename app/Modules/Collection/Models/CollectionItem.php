@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
+/**
+ * @property Collectable $item
+ */
 class CollectionItem extends Model implements Sortable
 {
     use SortableTrait;

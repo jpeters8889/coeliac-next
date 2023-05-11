@@ -5,11 +5,19 @@ defineProps({
     type: String,
     default: 'h1',
   },
+  border: {
+    required: false,
+    type: Boolean,
+    default: true,
+  },
 });
 </script>
 
 <template>
-  <div class="flex flex-col pb-2 border-b border-gray-light">
+  <div
+    class="flex flex-col"
+    :class="{'pb-2 border-b border-gray-light': border}"
+  >
     <component
       :is="as"
       class="text-3xl font-semibold font-coeliac text-center md:text-4xl"

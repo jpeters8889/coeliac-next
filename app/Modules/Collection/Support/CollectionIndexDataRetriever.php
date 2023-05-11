@@ -23,7 +23,8 @@ class CollectionIndexDataRetriever
         return new CollectionListCollection(
             Collection::query()
                 ->with(['media'])
-                ->latest()
+                ->withCount('items')
+                ->latest('updated_at')
                 ->paginate(12)
         );
     }

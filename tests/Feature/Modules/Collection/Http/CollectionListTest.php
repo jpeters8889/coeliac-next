@@ -36,7 +36,7 @@ class CollectionListTest extends TestCase
                     ->has(
                         'collections.data',
                         12,
-                        fn (Assert $page) => $page->hasAll(['title', 'description', 'date', 'image', 'link'])
+                        fn (Assert $page) => $page->hasAll(['title', 'description', 'date', 'image', 'link', 'number_of_items'])
                     )
                     ->where('collections.data.0.title', 'Collection 0')
                     ->where('collections.data.1.title', 'Collection 1')
@@ -61,7 +61,7 @@ class CollectionListTest extends TestCase
                         'collections.data',
                         12,
                         fn (Assert $page) => $page
-                            ->hasAll(['title', 'description', 'date', 'image', 'link'])
+                            ->hasAll(['title', 'description', 'date', 'image', 'link', 'number_of_items'])
                     )
                     ->where('collections.data.0.title', 'Collection 12')
                     ->where('collections.data.1.title', 'Collection 13')

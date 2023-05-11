@@ -3,6 +3,7 @@ import { HomeHoverItem } from '@/types/Types';
 export type CollectionDetailCard = HomeHoverItem & {
   description: string;
   date: string;
+  number_of_items: number;
 };
 
 export type CollectionPage = {
@@ -13,4 +14,16 @@ export type CollectionPage = {
   updated: string;
   author: string;
   description: string;
+  body?: string;
+  items: CollectionItem[];
+};
+
+export type CollectionItem = {
+  type: 'Blog' | 'Recipe',
+  title: string;
+  description: string;
+  image: string;
+  square_image?: string;
+  date: string;
+  link: string;
 };

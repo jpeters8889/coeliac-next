@@ -58,7 +58,12 @@ module.exports = {
             maxWidth: {
                 '1/2': '50%',
                 '1/3': '33%',
+                '16': '16rem',
                 '8xl': '94rem',
+            },
+
+            minWidth: {
+                '1/4': '25%',
             },
 
             screens: {

@@ -6,6 +6,8 @@ namespace App\Modules\Recipe\Models;
 
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Modules\Collection\Support\CanBeCollected;
+use App\Modules\Collection\Support\Collectable;
 use App\Modules\Shared\Comments\Commentable;
 use App\Modules\Shared\Comments\HasComments;
 use App\Modules\Shared\Scopes\LiveScope;
@@ -53,8 +55,9 @@ use Spatie\SchemaOrg\Recipe as RecipeSchema;
  *
  * @method transform(array $array)
  */
-class Recipe extends Model implements HasComments, HasMedia
+class Recipe extends Model implements Collectable, HasComments, HasMedia
 {
+    use CanBeCollected;
     use CanBePublished;
     use Commentable;
     use DisplaysDates;

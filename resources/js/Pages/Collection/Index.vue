@@ -6,6 +6,7 @@ import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { CollectionDetailCard as CollectionDetailCardType } from '@/types/CollectionTypes';
+import CollectionDetailCard from '@/Components/PageSpecific/Collections/CollectionDetailCard.vue';
 
 defineProps({
   collections: {
@@ -36,7 +37,7 @@ const gotoPage = (p: number) => {
 
 <template>
   <Card class="mt-3 flex flex-col space-y-4">
-    <Heading>
+    <Heading :border="false">
       Coeliac Sanctuary Collections
     </Heading>
 
@@ -49,12 +50,12 @@ const gotoPage = (p: number) => {
   </Card>
 
   <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-0">
-    <!--    <CollectionDetailCard-->
-    <!--      v-for="collection in collections.data"-->
-    <!--      :key="collection.link"-->
-    <!--      class="transition transition-duration-500 sm:scale-95 sm:hover:scale-100 sm:hover:shadow-lg"-->
-    <!--      :collection="collection"-->
-    <!--    />-->
+    <CollectionDetailCard
+      v-for="collection in collections.data"
+      :key="collection.link"
+      class="transition transition-duration-500 sm:scale-95 sm:hover:scale-100 sm:hover:shadow-lg"
+      :collection="collection"
+    />
   </div>
 
   <Paginator
