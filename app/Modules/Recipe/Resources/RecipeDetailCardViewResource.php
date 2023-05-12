@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Modules\Recipe\Resources;
 
 use App\Modules\Recipe\Models\Recipe;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -14,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Recipe */
 class RecipeDetailCardViewResource extends JsonResource
 {
-    /** @return array{title: string, link: string, image: string, square_image: string|null, date: Carbon, description: string, features: Collection<int,Model>, nutrition: array{calories: string, servings: string, portion_size: string}} */
+    /** @return array{title: string, link: string, image: string, square_image: string|null, date: string, description: string, features: Collection<int,Model>, nutrition: array{calories: string, servings: string, portion_size: string}} */
     public function toArray(Request $request)
     {
         return [

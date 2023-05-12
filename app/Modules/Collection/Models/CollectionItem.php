@@ -11,7 +11,12 @@ use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
 /**
- * @property Collectable $item
+ * @property string $title
+ * @property string $meta_description
+ * @property string $main_image
+ * @property string $square_image
+ * @property string $lastUpdated
+ * @property string $link
  */
 class CollectionItem extends Model implements Sortable
 {

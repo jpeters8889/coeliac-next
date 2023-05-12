@@ -8,7 +8,10 @@ use App\Modules\Collection\Models\CollectionItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin CollectionItem */
+/**
+ * @mixin CollectionItem
+ * @property CollectionItem $item
+ */
 class CollectedItemResource extends JsonResource
 {
     /** @return array */

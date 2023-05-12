@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Collection\Support;
 
 use App\Modules\Collection\Models\CollectionItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-/** @mixin Model */
+/**
+ * @mixin Model
+ */
 trait CanBeCollected
 {
     /** @return MorphMany<CollectionItem> */

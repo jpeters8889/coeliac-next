@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Modules\Collection\Http;
 
 use App\Modules\Collection\Models\Collection;

@@ -82,12 +82,12 @@ class Collection extends Model implements HasMedia
     /** @return Attribute<string, never> */
     public function description(): Attribute
     {
-        return Attribute::get(fn() => $this->long_description);
+        return Attribute::get(fn () => $this->long_description);
     }
 
     /** @return Attribute<string, never> */
     public function metaTags(): Attribute
     {
-        return Attribute::get(fn() => $this->meta_keywords);
+        return Attribute::get(fn () => $this->meta_keywords);
     }
 }
