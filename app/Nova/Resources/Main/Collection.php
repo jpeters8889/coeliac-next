@@ -80,7 +80,7 @@ class Collection extends Resource
                             $field->hide();
                         }
                     })
-                    ->nullable()
+                    ->nullable(),
             ]),
 
             new Panel('Metas', [

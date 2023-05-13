@@ -6,6 +6,8 @@ namespace Tests\Unit\Modules\Shared\Services;
 
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogSimpleCardViewResource;
+use App\Modules\Collection\Models\Collection;
+use App\Modules\Collection\Resources\CollectionSimpleCardViewResource;
 use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Recipe\Resources\RecipeSimpleCardViewResource;
 use App\Modules\Shared\Services\HomepageService;
@@ -29,6 +31,7 @@ class HomepageServiceTest extends TestCase
 
         $this->withBlogs();
         $this->withRecipes();
+        $this->withCollections(2);
     }
 
     /** Blog Tests */
@@ -165,6 +168,58 @@ class HomepageServiceTest extends TestCase
         $this->assertCount(2, DB::getQueryLog());
 
         $this->service->recipes();
+
+        $this->assertCount(2, DB::getQueryLog());
+    }
+
+    /** @test */
+    public function itCanReturnACollectionOfCollections(): void
+    {
+        $this->assertInstanceOf(AnonymousResourceCollection::class, $this->service->collections());
+    }
+
+    /** @test */
+    public function itDoesntLoadAnyCollectionsIfNoneAreSetToDisplayOnTheHomepage(): void
+    {
+        $this->assertCount(0, $this->service->collections());
+    }
+
+    /** @test */
+    public function itReturnsTheCollectionsAsACardResource(): void
+    {
+        Collection::query()->update(['display_on_homepage' => true]);
+
+        $this->service->collections()->each(function ($item): void {
+            $this->assertInstanceOf(CollectionSimpleCardViewResource::class, $item);
+        });
+    }
+
+    /** @test */
+    public function itCachesTheCollections(): void
+    {
+        Collection::query()->update(['display_on_homepage' => true]);
+
+        $this->assertFalse(Cache::has(config('coeliac.cache.collections.home')));
+
+        $collections = $this->service->collections();
+
+        $this->assertTrue(Cache::has(config('coeliac.cache.collections.home')));
+        $this->assertSame($collections, Cache::get(config('coeliac.cache.collections.home')));
+    }
+
+    /** @test */
+    public function itLoadsTheCollectionsFromTheCache(): void
+    {
+        Collection::query()->update(['display_on_homepage' => true]);
+
+        DB::enableQueryLog();
+
+        $this->service->collections();
+
+        // Blogs and media relation;
+        $this->assertCount(2, DB::getQueryLog());
+
+        $this->service->collections();
 
         $this->assertCount(2, DB::getQueryLog());
     }

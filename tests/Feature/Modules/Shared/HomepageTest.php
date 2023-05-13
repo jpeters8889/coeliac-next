@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Modules\Shared;
 
 use App\Modules\Blog\Models\Blog;
+use App\Modules\Collection\Models\Collection;
 use App\Modules\Recipe\Models\Recipe;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -93,6 +94,25 @@ class HomepageTest extends TestCase
                     )
                     ->where('recipes.0.title', 'Recipe 1')
                     ->where('recipes.1.title', 'Recipe 2')
+                    ->etc()
+            );
+    }
+
+    /** @test */
+    public function itDisplaysTheCollections(): void
+    {
+        $this->withCollections(then: fn () => Collection::query()->first()->update(['display_on_homepage' => true]))
+            ->get(route('home'))
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('Home')
+                    ->has(
+                        'collections',
+                        1,
+                        fn (Assert $page) => $page
+                            ->hasAll(['title', 'image', 'link'])
+                    )
+                    ->where('collections.0.title', 'Collection 0')
                     ->etc()
             );
     }

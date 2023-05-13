@@ -15,6 +15,7 @@ class HomeController
         return $inertia->render('Home', [
             'blogs' => $service->blogs(),
             'recipes' => $service->recipes(),
+            'collections' => $service->collections(),
         ]);
     }
 }
