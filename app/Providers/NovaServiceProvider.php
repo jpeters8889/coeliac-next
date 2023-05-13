@@ -6,6 +6,8 @@ namespace App\Providers;
 
 use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\BlogTag;
+use App\Nova\Resources\Main\Collection;
+use App\Nova\Resources\Main\CollectionItem;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
@@ -25,6 +27,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::resources([
             Blog::class,
             BlogTag::class,
+            Collection::class,
+            CollectionItem::class,
             Recipe::class,
             RecipeAllergens::class,
             RecipeNutritionalInformation::class,

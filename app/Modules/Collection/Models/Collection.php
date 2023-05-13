@@ -39,6 +39,11 @@ class Collection extends Model implements HasMedia
     use InteractsWithMedia;
     use LinkableModel;
 
+    protected $casts = [
+        'display_on_homepage' => 'bool',
+        'remove_from_homepage' => 'datetime',
+    ];
+
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());
