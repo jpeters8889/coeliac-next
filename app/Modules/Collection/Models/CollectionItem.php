@@ -17,6 +17,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property string $square_image
  * @property string $lastUpdated
  * @property string $link
+ * @property Collection $collection
  */
 class CollectionItem extends Model implements Sortable
 {

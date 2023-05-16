@@ -60,7 +60,7 @@ class HomepageService
             fn () => CollectionSimpleCardViewResource::collection(Collection::query()
                 ->where('display_on_homepage', true)
                 ->latest('updated_at')
-                ->with('media')
+                ->with(['media'])
                 ->get())
         );
     }

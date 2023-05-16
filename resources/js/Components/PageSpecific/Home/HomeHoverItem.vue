@@ -2,6 +2,7 @@
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import { HomeHoverItem as HomeHoverItemType } from '@/types/Types';
+import RecipeSquareImage from "@/Components/PageSpecific/Recipes/RecipeSquareImage.vue";
 
 defineProps({
   item: {
@@ -21,9 +22,15 @@ defineProps({
       class="group -m-4"
     >
       <img
+        v-if="item.type !== 'Recipe' || (item.type === 'Recipe' && item.square_image)"
         :src="item.image"
         :alt="item.title"
       >
+      <RecipeSquareImage
+        v-else
+        :src="item.image"
+        :alt="item.title"
+      />
 
       <h2
         class="text-base group-hover:text-primary-dark transition p-2 font-semibold text-center"

@@ -1,4 +1,5 @@
 import { HomeHoverItem } from '@/types/Types';
+import { FeaturedInCollection } from '@/types/CollectionTypes';
 
 export type RecipeDetailCard = HomeHoverItem & {
   square_image: string;
@@ -36,7 +37,8 @@ export type RecipePage = {
     fat: number;
     sugar: number;
     protein: number;
-  }
+  };
+  featured_in?: FeaturedInCollection[];
 };
 
 export type RecipeFeature = {

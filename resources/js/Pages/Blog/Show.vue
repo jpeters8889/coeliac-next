@@ -4,7 +4,6 @@ import Heading from '@/Components/Heading.vue';
 import { Link, router } from '@inertiajs/vue3';
 import Comments from '@/Components/PageSpecific/Shared/Comments.vue';
 import { ref, Ref } from 'vue';
-import { Page, PageProps } from '@inertiajs/core/types/types';
 import { BlogPage } from '@/types/BlogTypes';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { Comment } from '@/types/Types';
@@ -96,6 +95,26 @@ const loadMoreComments = () => {
       loading="lazy"
       :alt="blog.title"
     >
+  </Card>
+
+  <Card v-if="blog.featured_in.length">
+    <h3 class="font-semibold text-base text-grey-darkest">
+      This blog was featured in
+    </h3>
+
+    <ul class="flex flex-row flex-wrap text-sm leading-tight mt-2">
+      <li
+        v-for="collection in blog.featured_in"
+        class="after:content-[','] last:after:content-['']"
+      >
+        <Link
+          class="font-semibold text-primary-dark hover:text-grey-darker"
+          :href="collection.link"
+        >
+          {{ collection.title }}
+        </Link>
+      </li>
+    </ul>
   </Card>
 
   <Card>

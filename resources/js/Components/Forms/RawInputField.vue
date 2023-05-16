@@ -9,7 +9,7 @@ const classes = (): string[] => {
   const base = [
     'flex-1', 'w-full', 'min-w-0', 'appearance-none', 'rounded-md', 'px-[calc(theme(spacing.3)-1px)]',
     'py-[calc(theme(spacing[1.5])-1px)]', 'text-base', 'leading-7', 'text-gray-900', 'placeholder-gray-400', 'shadow-sm', 'outline-none',
-    'sm:w-64', 'sm:text-sm', 'sm:leading-6', 'xl:w-full', 'focus:ring-0', 'focus:outline-none transition',
+    'sm:text-sm', 'sm:leading-6', 'xl:w-full', 'focus:ring-0', 'focus:outline-none transition',
   ];
 
   if (props.borders) {

@@ -109,9 +109,12 @@ const loadMoreComments = () => {
       </div>
 
       <div>
-          <a :href="recipe.print_url" target="_blank">
-        <PrinterIcon class="w-12 h-12" />
-          </a>
+        <a
+          :href="recipe.print_url"
+          target="_blank"
+        >
+          <PrinterIcon class="w-12 h-12" />
+        </a>
       </div>
     </div>
   </Card>
@@ -128,6 +131,26 @@ const loadMoreComments = () => {
       :src="recipe.image"
       :alt="recipe.title"
     />
+  </Card>
+
+  <Card v-if="recipe.featured_in.length">
+    <h3 class="font-semibold text-base text-grey-darkest">
+      This recipe was featured in
+    </h3>
+
+    <ul class="flex flex-row flex-wrap text-sm leading-tight mt-2">
+      <li
+        v-for="collection in recipe.featured_in"
+        class="after:content-[','] last:after:content-['']"
+      >
+        <Link
+          class="font-semibold text-primary-dark hover:text-grey-darker"
+          :href="collection.link"
+        >
+          {{ collection.title }}
+        </Link>
+      </li>
+    </ul>
   </Card>
 
   <Card class="space-y-3 pb-0">

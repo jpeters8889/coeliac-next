@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Recipe\Resources;
 
+use App\Modules\Collection\Resources\FeaturedInCollectionSimpleCardViewResource;
 use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Recipe\Models\RecipeAllergen;
 use App\Modules\Recipe\Models\RecipeFeature;
@@ -17,6 +18,8 @@ class RecipeShowResource extends JsonResource
     /** @return array */
     public function toArray(Request $request)
     {
+        $this->load(['associatedCollections', 'associatedCollections.collection', 'associatedCollections.collection.media']);
+
         return [
             'id' => $this->id,
             'print_url' => route('recipe.print', ['recipe' => $this]),
@@ -49,6 +52,7 @@ class RecipeShowResource extends JsonResource
                 'sugar' => $this->nutrition->sugar,
                 'protein' => $this->nutrition->protein,
             ],
+            'featured_in' => FeaturedInCollectionSimpleCardViewResource::collection($this->associatedCollections)
         ];
     }
 

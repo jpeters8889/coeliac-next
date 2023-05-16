@@ -7,6 +7,7 @@ namespace Tests\Unit\Modules\Shared\Services;
 use App\Modules\Blog\Models\Blog;
 use App\Modules\Blog\Resources\BlogSimpleCardViewResource;
 use App\Modules\Collection\Models\Collection;
+use App\Modules\Collection\Resources\CollectedItemSimpleCardViewResource;
 use App\Modules\Collection\Resources\CollectionSimpleCardViewResource;
 use App\Modules\Recipe\Models\Recipe;
 use App\Modules\Recipe\Resources\RecipeSimpleCardViewResource;
@@ -195,6 +196,44 @@ class HomepageServiceTest extends TestCase
     }
 
     /** @test */
+    public function itReturnsTheCollectedItemsWithTheCollectionResource(): void
+    {
+        /** @var Collection $collection */
+        $collection = Collection::query()->first();
+
+        $collection->update(['display_on_homepage' => true]);
+
+        Blog::query()->take(3)->get()->each(function (Blog $blog) use ($collection): void {
+            $collection->addItem($blog, $blog->description);
+        });
+
+        $collectionResource = $this->service->collections()[0]->toArray(request());
+
+        $this->assertInstanceOf(AnonymousResourceCollection::class, $collectionResource['items']);
+
+        $collectionResource['items']->each(function ($item): void {
+            $this->assertInstanceOf(CollectedItemSimpleCardViewResource::class, $item);
+        });
+    }
+
+    /** @test */
+    public function itOnlyReturnsThreeCollectedItemsWithTheResource(): void
+    {
+        /** @var Collection $collection */
+        $collection = Collection::query()->first();
+
+        $collection->update(['display_on_homepage' => true]);
+
+        Blog::query()->take(5)->get()->each(function (Blog $blog) use ($collection): void {
+            $collection->addItem($blog, $blog->description);
+        });
+
+        $collectionResource = $this->service->collections()[0]->toArray(request());
+
+        $this->assertCount(3, $collectionResource['items']);
+    }
+
+    /** @test */
     public function itCachesTheCollections(): void
     {
         Collection::query()->update(['display_on_homepage' => true]);
@@ -216,7 +255,7 @@ class HomepageServiceTest extends TestCase
 
         $this->service->collections();
 
-        // Blogs and media relation;
+        // collections and media/item relation;
         $this->assertCount(2, DB::getQueryLog());
 
         $this->service->collections();

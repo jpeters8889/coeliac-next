@@ -4,6 +4,8 @@ import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import HomeHoverGroup from '@/Components/PageSpecific/Home/HomeHoverGroup.vue';
 import { HomeHoverItem } from '@/types/Types';
+import HomeCollection from '@/Components/PageSpecific/Home/HomeCollection.vue';
+import { HomepageCollection } from '@/types/CollectionTypes';
 
 defineProps({
   blogs: {
@@ -13,6 +15,10 @@ defineProps({
   recipes: {
     required: true,
     type: Array as () => HomeHoverItem[],
+  },
+  collections: {
+    required: true,
+    type: Array as () => HomepageCollection[],
   },
 });
 </script>
@@ -36,9 +42,13 @@ defineProps({
         </div>
       </Card>
 
-      <Card>
-        Dynamic homepage collection(s)
-      </Card>
+      <template v-if="collections.length">
+        <HomeCollection
+          v-for="collection in collections"
+          :key="collection.title"
+          :collection="collection"
+        />
+      </template>
 
       <Card>
         Newsletter Sign up

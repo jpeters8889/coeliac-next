@@ -27,3 +27,23 @@ export type CollectionItem = {
   date: string;
   link: string;
 };
+
+export type HomepageCollection = {
+  title: string;
+  description: string;
+  link: string;
+  items: HomepageCollectedItem[];
+};
+
+export type HomepageCollectedItem = {
+  type: 'Blog' | 'Recipe',
+  title: string;
+  image: string;
+  square_image?: string;
+  link: string;
+};
+
+export type FeaturedInCollection = {
+  title: string;
+  link: string;
+};

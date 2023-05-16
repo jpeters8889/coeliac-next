@@ -2,6 +2,8 @@ export type HomeHoverItem = {
   title: string;
   link: string;
   image: string;
+  square_image?: string;
+  type?: 'Blog' | 'Recipe'
 };
 
 export type SelectBoxItem = {
