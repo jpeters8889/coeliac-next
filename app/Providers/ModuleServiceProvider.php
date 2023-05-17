@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Modules\Blog\BlogModuleServiceProvider;
 use App\Modules\Collection\CollectionModuleServiceProvider;
+use App\Modules\EatingOut\EateryModuleServiceProvider;
 use App\Modules\Recipe\RecipeModuleServiceProvider;
 use App\Modules\Shared\SharedModuleServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +19,7 @@ class ModuleServiceProvider extends ServiceProvider
 
         BlogModuleServiceProvider::class,
         CollectionModuleServiceProvider::class,
+        EateryModuleServiceProvider::class,
         RecipeModuleServiceProvider::class,
     ];
 

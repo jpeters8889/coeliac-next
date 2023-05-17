@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,6 +40,10 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->withoutVite();
+
+        DB::connection()->getSchemaBuilder()->disableForeignKeyConstraints();
+
+        $this->afterApplicationCreated(fn () => $this->seed());
     }
 
     /**
@@ -128,8 +133,6 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
-
-
 
     protected function withCollections($count = 10, callable $then = null): static
     {

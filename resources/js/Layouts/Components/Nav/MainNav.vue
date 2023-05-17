@@ -29,7 +29,6 @@ onMounted(() => {
       class="flex h-full text-lg"
     >
       <NavItem
-        v-if="isSticky"
         label="Home"
         href="/"
         :active="$page.component === 'Home'"
