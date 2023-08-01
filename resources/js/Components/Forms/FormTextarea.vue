@@ -1,16 +1,13 @@
 <script lang="ts" setup>
-import { TextareaProps } from '@/Components/Forms/Props';
+import { TextareaProps, TextareaPropsDefaults } from '@/Components/Forms/Props';
 import { ref, watch } from 'vue';
 import RawTextareaField from '@/Components/Forms/RawTextareaField.vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
-const props = defineProps({
-  label: {
-    required: true,
-    type: String,
-  },
-  ...TextareaProps,
-});
+const props = withDefaults(
+  defineProps<TextareaProps & { label: string }>(),
+  TextareaPropsDefaults,
+);
 
 const emits = defineEmits(['update:modelValue']);
 
@@ -33,10 +30,10 @@ watch(value, () => {
       <RawTextareaField
         :id="id"
         v-model="value"
+        :autocomplete="autocomplete"
         :name="name"
         :placeholder="placeholder"
         :required="required"
-        :autocomplete="autocomplete"
         borders
       />
       <div
@@ -44,8 +41,8 @@ watch(value, () => {
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
       >
         <ExclamationCircleIcon
-          class="h-5 w-5 text-red"
           aria-hidden="true"
+          class="h-5 w-5 text-red"
         />
       </div>
     </div>

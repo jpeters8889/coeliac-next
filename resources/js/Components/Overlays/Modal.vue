@@ -1,34 +1,28 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
-  Dialog, DialogPanel, TransitionChild, TransitionRoot,
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+  TransitionRoot,
 } from '@headlessui/vue';
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { useSlots } from 'vue';
 
 const emit = defineEmits(['close']);
 
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
-  closeable: {
-    required: false,
-    type: Boolean,
-    default: true,
-  },
-  noPadding: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  size: {
-    required: false,
-    type: String,
-    default: 'medium',
-    validator: (value: string) => ['small', 'medium', 'large', 'xl', 'full'].includes(value),
-  },
-});
+withDefaults(
+  defineProps<{
+    open: boolean;
+    closeable?: boolean;
+    noPadding?: boolean;
+    size?: 'small' | 'medium' | 'large' | 'xl' | 'full';
+  }>(),
+  {
+    closeable: true,
+    noPadding: false,
+    size: 'medium',
+  }
+);
 
 const closeOverlay = () => emit('close');
 
@@ -38,8 +32,8 @@ const slots = useSlots();
 <template>
   <Teleport to="body">
     <TransitionRoot
-      as="template"
       :show="open"
+      as="template"
     >
       <Dialog
         as="div"
@@ -55,11 +49,15 @@ const slots = useSlots();
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" />
+          <div
+            class="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
+          />
         </TransitionChild>
 
         <div class="fixed inset-0 z-10 overflow-y-auto">
-          <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+          <div
+            class="flex min-h-full items-center justify-center p-4 text-center sm:p-0"
+          >
             <TransitionChild
               as="template"
               enter="ease-out duration-300"
@@ -70,32 +68,33 @@ const slots = useSlots();
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel
-                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8"
                 :class="{
                   'sm:max-w-lg': size === 'medium',
+                  'sm:max-w-7xl': size === 'large',
                   'sm:max-w-[95%]': size === 'full',
                 }"
+                class="relative w-full max-w-[95%] transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8"
               >
                 <div
-                  class="absolute right-0 top-0 pr-2 pt-2"
-                  :class="{hidden: !closeable}"
+                  :class="{ hidden: !closeable }"
+                  class="absolute right-0 top-0 z-10 pr-2 pt-2"
                 >
                   <button
+                    class="text-gray-dark rounded-md bg-white bg-opacity-40 hover:bg-opacity-80"
                     type="button"
-                    class="rounded-md bg-white bg-opacity-40 text-gray-dark hover:bg-opacity-80"
                     @click="closeOverlay()"
                   >
                     <XMarkIcon class="h-6 w-6" />
                   </button>
                 </div>
 
-                <div :class="{'p-2': !noPadding}">
+                <div :class="{ 'p-2': !noPadding }">
                   <slot />
                 </div>
 
                 <div
                   v-if="slots.footer"
-                  class="bg-grey-off-light p-2 border-t border-grey-off"
+                  class="border-t border-grey-off bg-grey-off-light p-2"
                 >
                   <slot name="footer" />
                 </div>

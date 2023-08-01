@@ -4,27 +4,22 @@ import Card from '@/Components/Card.vue';
 import HomeHoverItem from '@/Components/PageSpecific/Home/HomeHoverItem.vue';
 import { Link } from '@inertiajs/vue3';
 
-defineProps({
-  collection: {
-    required: true,
-    type: Object as () => HomepageCollection,
-  },
-});
+defineProps<{ collection: HomepageCollection }>();
 </script>
 
 <template>
   <Card>
-    <h2 class="text-3xl font-semibold font-coeliac">
+    <h2 class="font-coeliac text-3xl font-semibold">
       {{ collection.title }}
     </h2>
 
     <p
-      class="prose prose-md max-w-none"
+      class="prose-md prose max-w-none"
       v-html="collection.description"
     />
 
     <div
-      class="my-2 w-4/5 mx-auto h-px bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40"
+      class="my-2 mx-auto h-px w-4/5 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40"
     />
 
     <section class="group grid grid-cols-1 sm:grid-cols-3">

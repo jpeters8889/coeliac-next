@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Modules\Collection\Models\CollectionItem as CollectionItemModel;
+use App\Models\Collections\CollectionItem as CollectionItemModel;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;

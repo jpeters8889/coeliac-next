@@ -3,13 +3,20 @@ export type HomeHoverItem = {
   link: string;
   image: string;
   square_image?: string;
-  type?: 'Blog' | 'Recipe'
+  type?: 'Blog' | 'Recipe';
 };
 
-export type SelectBoxItem = {
+export type FormItem = {
   value: string | number;
   label: string;
+};
+
+export type SelectBoxItem = FormItem & {
   disabled?: boolean;
+};
+
+export type CheckboxItem = SelectBoxItem & {
+  checked?: boolean;
 };
 
 export type Comment = {
@@ -22,4 +29,9 @@ export type Comment = {
 export type CommentReply = {
   comment: string;
   published: string;
+};
+
+export type HeadingBackLink = {
+  label: string;
+  href: string;
 };

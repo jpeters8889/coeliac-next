@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Blog\Models\Blog;
+use App\Models\Blogs\Blog;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 

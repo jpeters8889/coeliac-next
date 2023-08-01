@@ -1,19 +1,14 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
 import { Link } from '@inertiajs/vue3';
 
 const emit = defineEmits(['close']);
 
-defineProps({
-  open: {
-    type: Boolean,
-    required: true,
-  },
-});
+defineProps<{ open: boolean }>();
 
 const close = () => emit('close');
 
-const links: { label: string, href: string }[] = [
+const links: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/' },
   { label: 'Gluten Free Travel Cards', href: '/' },
@@ -34,9 +29,9 @@ const links: { label: string, href: string }[] = [
     side="right"
     @close="close()"
   >
-    <div class="bg-primary flex-1">
+    <div class="flex-1 bg-primary">
       <nav class="w-full pt-10">
-        <ul class="text-2xl text-white text-center flex flex-col space-y-2">
+        <ul class="flex flex-col space-y-2 text-center text-2xl text-white">
           <li
             v-for="(link, index) in links"
             :key="index"

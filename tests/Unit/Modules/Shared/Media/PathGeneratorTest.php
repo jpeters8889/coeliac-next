@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Shared\Media;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Shared\Media\PathGenerator;
-use App\Modules\Shared\Models\Media;
+use App\Media\PathGenerator;
+use App\Models\Blogs\Blog;
+use App\Models\Media;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;

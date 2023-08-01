@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\EatingOut\Models\Eatery;
-use App\Modules\EatingOut\Models\EateryReview;
+use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryReview;
 
 class EateryReviewFactory extends Factory
 {

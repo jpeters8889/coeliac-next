@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Blog\Http;
 
-use App\Modules\Blog\Models\Blog;
+use App\Actions\Comments\GetCommentsForItemAction;
+use App\Models\Blogs\Blog;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -45,6 +46,14 @@ class BlogPageTest extends TestCase
     public function itReturnsOkForABlogThatIsLive(): void
     {
         $this->visitBlog()->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetCommentsForItemAction(): void
+    {
+        $this->expectAction(GetCommentsForItemAction::class, Blog::class);
+
+        $this->visitBlog();
     }
 
     /** @test */

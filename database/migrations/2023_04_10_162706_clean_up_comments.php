@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Recipe\Models\Recipe;
-use App\Modules\Shared\Models\Comment;
+use App\Models\Blogs\Blog;
+use App\Models\Comments\Comment;
+use App\Models\Recipes\Recipe;
 use Illuminate\Database\Migrations\Migration;
 
 return new class () extends Migration {

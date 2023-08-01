@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Collection\Http;
 
+use App\Actions\Collections\GetCollectionsForIndexAction;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -26,7 +27,15 @@ class CollectionListTest extends TestCase
     }
 
     /** @test */
-    public function itReturnsTheFirst12Recipes(): void
+    public function itCallsTheGetCollectionsForIndexAction(): void
+    {
+        $this->expectAction(GetCollectionsForIndexAction::class);
+
+        $this->get(route('collection.index'));
+    }
+
+    /** @test */
+    public function itReturnsTheFirst12Collections(): void
     {
         $this->get(route('collection.index'))
             ->assertInertia(

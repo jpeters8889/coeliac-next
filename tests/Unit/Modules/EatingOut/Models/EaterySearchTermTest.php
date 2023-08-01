@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\EatingOut\Models;
 
-use App\Modules\EatingOut\Models\EaterySearchTerm;
+use App\Models\EatingOut\EaterySearchTerm;
 use Tests\TestCase;
 
 class EaterySearchTermTest extends TestCase

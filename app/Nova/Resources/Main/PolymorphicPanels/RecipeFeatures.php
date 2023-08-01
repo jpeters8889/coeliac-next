@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main\PolymorphicPanels;
 
-use App\Modules\Recipe\Models\Recipe;
-use App\Modules\Recipe\Models\RecipeFeature;
-use Jpeters8889\PolymorphicPanel\PolymorphicResource;
+use App\Models\Recipes\Recipe;
+use App\Models\Recipes\RecipeFeature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Jpeters8889\PolymorphicPanel\PolymorphicResource;
 use Laravel\Nova\Fields\Boolean;
 
 class RecipeFeatures implements PolymorphicResource

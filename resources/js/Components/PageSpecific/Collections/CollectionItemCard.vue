@@ -1,15 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import { CollectionItem } from '@/types/CollectionTypes';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
 
-defineProps({
-  item: {
-    required: true,
-    type: Object as () => CollectionItem,
-  },
-});
+defineProps<{ item: CollectionItem }>();
 </script>
 
 <template>
@@ -17,42 +12,45 @@ defineProps({
     <div class="md:min-w-1/4 md:max-w-16">
       <Link
         :href="item.link"
-        class="flex flex-col mb-0"
+        class="mb-0 flex flex-col"
       >
         <img
-          v-if="item.type !== 'Recipe' || (item.type === 'Recipe' && item.square_image)"
-          :src="item.image"
+          v-if="
+            item.type !== 'Recipe' ||
+            (item.type === 'Recipe' && item.square_image)
+          "
           :alt="item.title"
+          :src="item.image"
           loading="lazy"
-        >
+        />
         <RecipeSquareImage
           v-else
-          :src="item.image"
           :alt="item.title"
+          :src="item.image"
         />
       </Link>
     </div>
 
-    <div class="flex flex-col space-y-3 mt-4 flex-1">
+    <div class="mt-4 flex flex-1 flex-col space-y-3">
       <Link :href="item.link">
         <h2
-          class="text-xl font-semibold transition text-primary-dark hover:text-grey-dark md:text-2xl"
+          class="text-xl font-semibold text-primary-dark transition hover:text-grey-dark md:text-2xl"
           v-text="item.title"
         />
       </Link>
 
       <div class="flex flex-1">
         <p
-          class="prose prose-md max-w-none"
+          class="prose-md prose max-w-none"
           v-text="item.description"
         />
       </div>
 
-      <div class="flex-1 flex justify-between items-end">
-        <p class="text-xs">
-          Added on {{ item.date }}
-        </p>
-        <div class="bg-primary-light bg-opacity-50 rounded-lg py-2 px-4 leading-none text-sm font-semibold">
+      <div class="flex flex-1 items-end justify-between">
+        <p class="text-xs">Added on {{ item.date }}</p>
+        <div
+          class="rounded-lg bg-primary-light bg-opacity-50 py-2 px-4 text-sm font-semibold leading-none"
+        >
           <span v-text="item.type" />
         </div>
       </div>

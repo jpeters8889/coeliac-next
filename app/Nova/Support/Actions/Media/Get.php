@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Support\Actions\Media;
 
-use App\Modules\Shared\Models\TemporaryFileUpload;
+use App\Models\TemporaryFileUpload;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Jpeters8889\AdvancedNovaMediaLibrary\Contracts\GetUploadedMediaContract;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Modules\Recipe\Models\RecipeNutrition;
+use App\Models\Recipes\RecipeNutrition;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;

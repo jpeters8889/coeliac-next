@@ -6,14 +6,14 @@ namespace App\Console\Commands;
 
 use App\Legacy\Image;
 use App\Legacy\ImageAssociations;
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Collection\Models\Collection;
-use App\Modules\Recipe\Models\Recipe;
+use App\Models\Blogs\Blog;
+use App\Models\Collections\Collection;
+use App\Models\Recipes\Recipe;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Exception;
 
 class MigrateImagesToMedia extends Command
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Modules\Recipe\Models\RecipeAllergen;
+use App\Models\Recipes\RecipeAllergen;
 use App\Nova\Resource;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Modules\Blog\Models\Blog;
+use App\Models\Blogs\Blog;
 use Illuminate\Database\Migrations\Migration;
 
 return new class () extends Migration {

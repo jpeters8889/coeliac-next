@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Nova\Support\Panels\VisibilityPanel;
-use Jpeters8889\Body\Body;
-use App\Modules\Recipe\Models\Recipe as RecipeModel;
+use App\Models\Recipes\Recipe as RecipeModel;
 use App\Nova\Resource;
 use App\Nova\Resources\Main\PolymorphicPanels\RecipeAllergens as RecipeAllergenPanel;
-use App\Nova\Resources\Main\PolymorphicPanels\RecipeMeals as RecipeMealPanel;
 use App\Nova\Resources\Main\PolymorphicPanels\RecipeFeatures as RecipeFeaturePanel;
-use Jpeters8889\PolymorphicPanel\PolymorphicPanel;
+use App\Nova\Resources\Main\PolymorphicPanels\RecipeMeals as RecipeMealPanel;
+use App\Nova\Support\Panels\VisibilityPanel;
 use Jpeters8889\AdvancedNovaMediaLibrary\Fields\Images;
+use Jpeters8889\Body\Body;
+use Jpeters8889\PolymorphicPanel\PolymorphicPanel;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;

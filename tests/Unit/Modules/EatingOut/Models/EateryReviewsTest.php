@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\EatingOut\Models;
 
-use App\Modules\EatingOut\Models\Eatery;
-use App\Modules\EatingOut\Models\EateryReview;
+use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryReview;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Tests\TestCase;
 

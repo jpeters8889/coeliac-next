@@ -1,43 +1,44 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import BlogDetailCard from '@/Components/PageSpecific/Blogs/BlogDetailCard.vue';
 import Heading from '@/Components/Heading.vue';
 import Paginator from '@/Components/Paginator.vue';
 import { router } from '@inertiajs/vue3';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
-import { AdjustmentsHorizontalIcon, ArrowUturnLeftIcon, XMarkIcon } from '@heroicons/vue/20/solid';
-import { Ref, ref } from 'vue';
+import {
+  AdjustmentsHorizontalIcon,
+  ArrowUturnLeftIcon,
+} from '@heroicons/vue/20/solid';
+import { ref } from 'vue';
 import BlogListSideBar from '@/Components/PageSpecific/Blogs/BlogListSideBar.vue';
 import { PaginatedResponse } from '@/types/GenericTypes';
-import { BlogDetailCard as BlogDetailCardType, BlogTag, BlogTagCount } from '@/types/BlogTypes';
+import {
+  BlogDetailCard as BlogDetailCardType,
+  BlogTag,
+  BlogTagCount,
+} from '@/types/BlogTypes';
 
-defineProps({
-  blogs: {
-    required: true,
-    type: Object as () => PaginatedResponse<BlogDetailCardType>,
-  },
-  tags: {
-    required: true,
-    type: Array as () => BlogTagCount[],
-  },
-  activeTag: {
-    required: false,
-    type: Object as () => BlogTag,
-    default: () => undefined,
-  },
-});
+defineProps<{
+  blogs: PaginatedResponse<BlogDetailCardType>;
+  tags: BlogTagCount[];
+  activeTag?: BlogTag;
+}>();
 
 const showTags = ref(false);
 
 const page = ref(1);
 
 const refreshPage = () => {
-  router.get('/blog', {
-    ...(page.value > 1 ? { page: page.value } : undefined),
-  }, {
-    preserveState: true,
-    only: ['blogs', 'tags'],
-  });
+  router.get(
+    '/blog',
+    {
+      ...(page.value > 1 ? { page: page.value } : undefined),
+    },
+    {
+      preserveState: true,
+      only: ['blogs', 'tags'],
+    },
+  );
 };
 
 const gotoPage = (p: number) => {
@@ -57,39 +58,38 @@ const closeTagSidebar = (): void => {
 
 <template>
   <Card class="mt-3 flex flex-col space-y-4">
-    <Heading v-if="!activeTag">
-      Coeliac Sanctuary Blogs
-    </Heading>
+    <Heading v-if="!activeTag"> Coeliac Sanctuary Blogs </Heading>
     <Heading v-else>
       Coeliac Sanctuary Blogs tagged with {{ activeTag.tag }}
     </Heading>
 
     <p>
-      Our motto is that we're more than just a gluten free blog, but blogs are still the heart and soul of Coeliac
-      Sanctuary, we'll write about a bit of everything, from coeliac news, new products, guides, and more, we're
-      sure you'll find something you'll love here!
+      Our motto is that we're more than just a gluten free blog, but blogs are
+      still the heart and soul of Coeliac Sanctuary, we'll write about a bit of
+      everything, from coeliac news, new products, guides, and more, we're sure
+      you'll find something you'll love here!
     </p>
 
     <div class="flex justify-between">
       <div>
         <CoeliacButton
           v-if="activeTag"
-          label="Back to all Blogs"
-          as="Link"
           :icon="ArrowUturnLeftIcon"
+          as="Link"
           bold
           classes="cursor-pointer"
           href="/blog"
+          label="Back to all Blogs"
         />
       </div>
       <div>
         <CoeliacButton
-          label="Tags"
-          as="a"
           :icon="AdjustmentsHorizontalIcon"
+          as="a"
           bold
           classes="cursor-pointer"
           icon-position="right"
+          label="Tags"
           @click="openTagSidebar()"
         />
       </div>
@@ -97,8 +97,8 @@ const closeTagSidebar = (): void => {
 
     <Paginator
       v-if="blogs.meta.last_page > 1"
-      :to="blogs.meta.last_page"
       :current="blogs.meta.current_page"
+      :to="blogs.meta.last_page"
       @change="gotoPage"
     />
   </Card>
@@ -107,21 +107,21 @@ const closeTagSidebar = (): void => {
     <BlogDetailCard
       v-for="blog in blogs.data"
       :key="blog.link"
-      class="transition transition-duration-500 sm:scale-95 sm:hover:scale-100 sm:hover:shadow-lg"
       :blog="blog"
+      class="transition-duration-500 transition sm:scale-95 sm:hover:scale-100 sm:hover:shadow-lg"
     />
   </div>
 
   <Paginator
     v-if="blogs.meta.last_page > 1"
-    :to="blogs.meta.last_page"
     :current="blogs.meta.current_page"
+    :to="blogs.meta.last_page"
     @change="gotoPage"
   />
 
   <BlogListSideBar
-    :tags="tags"
     :open="showTags"
+    :tags="tags"
     @close="closeTagSidebar()"
   />
 </template>

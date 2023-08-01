@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import HomeHero from '@/Components/PageSpecific/Home/HomeHero.vue';
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
@@ -7,37 +7,33 @@ import { HomeHoverItem } from '@/types/Types';
 import HomeCollection from '@/Components/PageSpecific/Home/HomeCollection.vue';
 import { HomepageCollection } from '@/types/CollectionTypes';
 
-defineProps({
-  blogs: {
-    required: true,
-    type: Array as () => HomeHoverItem[],
-  },
-  recipes: {
-    required: true,
-    type: Array as () => HomeHoverItem[],
-  },
-  collections: {
-    required: true,
-    type: Array as () => HomepageCollection[],
-  },
-});
+defineProps<{
+  blogs: HomeHoverItem[];
+  recipes: HomeHoverItem[];
+  collections: HomepageCollection[];
+}>();
 </script>
 
 <template>
   <HomeHero />
 
   <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2">
-    <div class="w-full lg:w-3/4 flex flex-col space-y-2">
+    <div class="flex w-full flex-col space-y-2 lg:w-3/4">
       <Card>
-        <h1 class="text-3xl font-semibold font-coeliac mb-3">
+        <h1 class="mb-3 font-coeliac text-3xl font-semibold">
           Coeliac Sanctuary - Gluten Free Blog by Alison Peters
         </h1>
 
         <div class="prose max-w-none">
           <p>
-            Our website is our own official sanctuary for Coeliacs to get tips, hints and tricks. Check out
-            our blogs and recipes, heading out? Check out our eating out guide to find places to eat at,
-            heading abroad? Don't forget your Coeliac travel cards from our shop!
+            Welcome to Coeliac Sanctuary, your ultimate sanctuary for Coeliac
+            disease. I provide a wealth of resources, tips, and tricks tailored
+            specifically for people with Coeliac disease. Explore our extensive
+            collection of blogs and recipes for delicious gluten free options.
+            Whether you're dining out locally or traveling abroad, our
+            comprehensive eating out guide and Coeliac travel cards, available
+            in our shop, ensure a safe and worry-free experience. Join our
+            community and embrace a gluten-free lifestyle with confidence.
           </p>
         </div>
       </Card>
@@ -50,43 +46,43 @@ defineProps({
         />
       </template>
 
-      <Card>
-        Newsletter Sign up
-      </Card>
+      <Card> Newsletter Sign up </Card>
 
       <HomeHoverGroup
-        title="Latest Blogs"
         :items="blogs"
+        title="Latest Blogs"
       />
 
       <HomeHoverGroup
-        title="Latest Recipes"
         :items="recipes"
         :per-row="4"
+        title="Latest Recipes"
       />
     </div>
 
     <div class="w-full lg:w-1/4">
       <Card
         class="space-y-4"
-        theme="primary-light"
         faded
+        theme="primary-light"
       >
         <img
-          src="/images/misc/alison.jpg"
           alt="Alison Peters - Coeliac Sanctuary"
-        >
+          src="/images/misc/alison.jpg"
+        />
 
         <p>
-          <strong>Hey, I'm Alison</strong>, I was diagnosed with Coeliac in 2014, Coeliac Sanctuary blossomed
-          from the tough time I was going through during diagnosis and almost 12 months of tests as a way to
-          share recipes, information and keep track of places to eat safely, with a shop added later selling
-          translation cards, wristbands and more.
+          <strong>Hey, I'm Alison</strong>, I was diagnosed with Coeliac in
+          2014, Coeliac Sanctuary blossomed from the tough time I was going
+          through during diagnosis and almost 12 months of tests as a way to
+          share recipes, information and keep track of places to eat safely,
+          with a shop added later selling translation cards, wristbands and
+          more.
         </p>
 
         <p>
           <Link
-            class="font-semibold hover:text-primary-dark transition"
+            class="font-semibold transition hover:text-primary-dark"
             href="/"
           >
             Read more about me

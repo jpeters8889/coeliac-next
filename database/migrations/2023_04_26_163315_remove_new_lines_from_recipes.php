@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Modules\Recipe\Models\Recipe;
+use App\Models\Recipes\Recipe;
 use Illuminate\Database\Migrations\Migration;
 
 return new class () extends Migration {

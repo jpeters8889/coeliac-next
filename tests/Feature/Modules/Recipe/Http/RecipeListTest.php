@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Recipe\Http;
 
+use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
+use App\Actions\Recipes\GetRecipesForIndexAction;
+use App\Contracts\Recipes\FilterableRecipeRelation;
+use App\Models\Recipes\RecipeAllergen;
+use App\Models\Recipes\RecipeFeature;
+use App\Models\Recipes\RecipeMeal;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -23,6 +29,56 @@ class RecipeListTest extends TestCase
     public function itLoadsTheRecipeListPage(): void
     {
         $this->get(route('recipe.index'))->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetRecipesForIndexAction(): void
+    {
+        $this->expectAction(GetRecipesForIndexAction::class);
+
+        $this->get(route('recipe.index'));
+
+        $this->expectAction(GetRecipesForIndexAction::class, function ($filters): bool {
+            $this->assertArrayHasKey('features', $filters);
+            $this->assertArrayHasKey('meals', $filters);
+            $this->assertArrayHasKey('freeFrom', $filters);
+
+            $this->assertContains('test', $filters['meals']);
+
+            return true;
+        });
+
+        $this->get(route('recipe.index', ['meals' => 'test']));
+    }
+
+    public static function filterableImplementations(): array
+    {
+        return [
+            'recipe features' => [RecipeFeature::class, 'features'],
+            'recipe meals' => [RecipeMeal::class, 'meals'],
+            'recipe free from' => [RecipeAllergen::class, 'freeFrom'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider filterableImplementations
+     * @param class-string<FilterableRecipeRelation> $relationship
+     */
+    public function itCallsTheGetRecipeFiltersForIndexAction(string $relationship, string $name): void
+    {
+        $this->expectAction(GetRecipeFiltersForIndexAction::class, function ($class, $filters) use ($name): bool {
+            $this->assertContains($class, [RecipeFeature::class, RecipeMeal::class, RecipeAllergen::class]);
+            $this->assertArrayHasKey('features', $filters);
+            $this->assertArrayHasKey('meals', $filters);
+            $this->assertArrayHasKey('freeFrom', $filters);
+
+            $this->assertContains('test', $filters[$name]);
+
+            return true;
+        });
+
+        $this->get(route('recipe.index', [$name => 'test']));
     }
 
     /** @test */

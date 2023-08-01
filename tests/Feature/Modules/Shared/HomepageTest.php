@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Shared;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Collection\Models\Collection;
-use App\Modules\Recipe\Models\Recipe;
+use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
+use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
+use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
+use App\Models\Blogs\Blog;
+use App\Models\Collections\Collection;
+use App\Models\Recipes\Recipe;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -16,6 +19,30 @@ class HomepageTest extends TestCase
     public function itLoadsTheHomepage(): void
     {
         $this->get(route('home'))->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetLatestBlogsForHomepageAction(): void
+    {
+        $this->expectAction(GetLatestBlogsForHomepageAction::class);
+
+        $this->get(route('home'));
+    }
+
+    /** @test */
+    public function itCallsTheGetLatestRecipesForHomepageAction(): void
+    {
+        $this->expectAction(GetLatestRecipesForHomepageAction::class);
+
+        $this->get(route('home'));
+    }
+
+    /** @test */
+    public function itCallsTheGetLatestCollectionsForHomepageAction(): void
+    {
+        $this->expectAction(GetLatestCollectionsForHomepageAction::class);
+
+        $this->get(route('home'));
     }
 
     /** @test */

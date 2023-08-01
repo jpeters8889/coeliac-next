@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\BlogTag;
 use App\Nova\Resources\Main\Collection;
@@ -25,6 +26,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function resources(): void
     {
         Nova::resources([
+            // Main
             Blog::class,
             BlogTag::class,
             Collection::class,
@@ -32,6 +34,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Recipe::class,
             RecipeAllergens::class,
             RecipeNutritionalInformation::class,
+
+            // Eating Out
+            Counties::class
         ]);
     }
 

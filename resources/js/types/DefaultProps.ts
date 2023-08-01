@@ -5,12 +5,12 @@ export type DefaultProps = {
 };
 
 export type MetaProps = {
-  title: string,
-  description: string,
-  tags: string[],
-  image: string,
-  schema?: string,
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  schema?: string;
   alternateMetas?: {
-    [T: string]: string,
-  },
+    [T: string]: string;
+  };
 };

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Recipe\Models\RecipeAllergen;
+use App\Models\Recipes\RecipeAllergen;
 
 class RecipeAllergenFactory extends Factory
 {

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Recipe\Http;
 
-use App\Modules\Recipe\Models\Recipe;
+use App\Actions\Comments\GetCommentsForItemAction;
+use App\Models\Recipes\Recipe;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -45,6 +46,14 @@ class RecipeShowTest extends TestCase
     public function itReturnsOkForARecipeThatIsLive(): void
     {
         $this->visitRecipe()->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetCommentsForItemAction(): void
+    {
+        $this->expectAction(GetCommentsForItemAction::class, Recipe::class);
+
+        $this->visitRecipe();
     }
 
     /** @test */

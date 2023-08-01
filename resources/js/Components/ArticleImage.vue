@@ -2,20 +2,14 @@
 import { ref } from 'vue';
 import Modal from '@/Components/Overlays/Modal.vue';
 
-const props = defineProps({
-  src: {
-    required: true,
-    type: String,
-  },
-  title: {
-    type: String,
-    default: null,
-  },
-  position: {
-    type: String,
-    default: 'left',
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    src: string;
+    title?: string;
+    position: string;
+  }>(),
+  { title: undefined, position: 'left' },
+);
 
 const zoomed = ref(false);
 
@@ -50,16 +44,16 @@ const classes = (): string[] => {
 <template>
   <div :class="classes()">
     <img
-      :src="src"
       :alt="title"
+      :src="src"
+      class="m-0 h-auto w-full"
       loading="lazy"
-      class="w-full h-auto m-0"
       style="cursor: zoom-in"
       @click="zoomed = true"
-    >
+    />
     <div
       v-if="title"
-      class="text-center text-sm mt-2 leading-none md:text-base"
+      class="mt-2 text-center text-sm leading-none md:text-base"
     >
       {{ title }}
     </div>
@@ -67,16 +61,16 @@ const classes = (): string[] => {
 
   <Modal
     :open="zoomed"
-    size="full"
     closeable
     no-padding
+    size="full"
     @close="zoomed = false"
   >
     <img
-      :src="src"
       :alt="title"
+      :src="src"
       class="w-full"
-    >
+    />
 
     <template #footer>
       <p

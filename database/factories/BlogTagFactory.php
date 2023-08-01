@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Blog\Models\BlogTag;
+use App\Models\Blogs\BlogTag;
 
 class BlogTagFactory extends Factory
 {
@@ -14,7 +14,7 @@ class BlogTagFactory extends Factory
     {
         return [
             'tag' => $this->faker->word,
-            'slug' => $this->faker->word,
+            'slug' => $this->faker->slug,
         ];
     }
 }

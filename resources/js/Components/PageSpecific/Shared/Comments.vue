@@ -10,21 +10,11 @@ import { ref } from 'vue';
 
 const emits = defineEmits(['load-more']);
 
-const props = defineProps({
-  comments: {
-    required: true,
-    type: Object as () => PaginatedResponse<Comment>,
-  },
-  module: {
-    required: true,
-    type: String,
-    validator: (value: string) => ['blog', 'recipe'].includes(value),
-  },
-  id: {
-    required: true,
-    type: Number,
-  },
-});
+const props = defineProps<{
+  comments: PaginatedResponse<Comment>;
+  module: 'blog' | 'recipe';
+  id: number;
+}>();
 
 const form = useForm({
   module: props.module,
@@ -56,9 +46,7 @@ const submitComment = () => {
 
 <template>
   <Card>
-    <h2 class="text-2xl my-2 font-semibold font-coeliac">
-      Your Comments
-    </h2>
+    <h2 class="my-2 font-coeliac text-2xl font-semibold">Your Comments</h2>
 
     <div
       v-if="comments.data.length"
@@ -67,7 +55,7 @@ const submitComment = () => {
       <div
         v-for="(comment, index) in comments.data"
         :key="`${comment.name}-${index}`"
-        class="flex flex-col space-y-2 bg-gradient-to-br from-primary/30 to-primary-light/30 p-3 border-l-8 border-secondary shadow"
+        class="flex flex-col space-y-2 border-l-8 border-secondary bg-gradient-to-br from-primary/30 to-primary-light/30 p-3 shadow"
       >
         <div
           class="prose prose-sm max-w-none md:prose-base"
@@ -82,7 +70,7 @@ const submitComment = () => {
         </div>
         <div
           v-if="comment.reply"
-          class="flex mt-2 flex-col space-y-2 bg-white bg-opacity-80 p-3"
+          class="mt-2 flex flex-col space-y-2 bg-white bg-opacity-80 p-3"
         >
           <div class="flex space-x-2 text-sm font-medium text-grey">
             <span
@@ -100,7 +88,7 @@ const submitComment = () => {
 
       <div
         v-if="comments.links.next"
-        class="bg-gradient-to-br from-primary/20 to-primary-light/20 p-1 shadow border border-primary text-center text-lg hover:bg-primary-gradient-10 cursor-pointer"
+        class="hover:bg-primary-gradient-10 cursor-pointer border border-primary bg-gradient-to-br from-primary/20 to-primary-light/20 p-1 text-center text-lg shadow"
         @click="emits('load-more')"
         v-text="'Load more comments...'"
       />
@@ -115,11 +103,11 @@ const submitComment = () => {
   </Card>
 
   <Card>
-    <h2 class="text-2xl my-2 font-semibold font-coeliac">
-      Submit Comment
-    </h2>
+    <h2 class="my-2 font-coeliac text-2xl font-semibold">Submit Comment</h2>
 
-    <p>Want to leave a comment on this blog? Feel free to join the discussion!</p>
+    <p>
+      Want to leave a comment on this blog? Feel free to join the discussion!
+    </p>
 
     <form
       v-if="!hasSubmitted"
@@ -129,55 +117,57 @@ const submitComment = () => {
       <FormInput
         id="name"
         v-model="form.name"
-        name="name"
-        label="Your Name"
-        autocomplete="fullname"
         :error="form.errors.name"
+        autocomplete="fullname"
+        label="Your Name"
+        name="name"
         required
       />
 
       <FormInput
         id="email"
         v-model="form.email"
-        name="email"
-        type="email"
-        label="Email Address"
-        autocomplete="email"
         :error="form.errors.email"
+        autocomplete="email"
+        label="Email Address"
+        name="email"
         required
+        type="email"
       />
 
       <FormTextarea
         id="comment"
         v-model="form.comment"
-        name="comment"
-        label="Your Comment..."
-        autocomplete="email"
         :error="form.errors.comment"
+        autocomplete="email"
+        label="Your Comment..."
+        name="comment"
         required
       />
 
-      <small class="text-xs sm:text-sm md:text-base italic">
-        Note, your email address will never be displayed with your comment, it is only required to alert you when your comment has been
-        approved or if the Coeliac Sanctuary team reply to your comment.
+      <small class="text-xs italic sm:text-sm md:text-base">
+        Note, your email address will never be displayed with your comment, it
+        is only required to alert you when your comment has been approved or if
+        the Coeliac Sanctuary team reply to your comment.
       </small>
 
       <div class="text-center">
         <CoeliacButton
-          label="Submit Comment"
-          as="button"
-          type="submit"
-          theme="light"
           :loading="commentSubmitting"
+          as="button"
+          label="Submit Comment"
+          theme="light"
+          type="submit"
         />
       </div>
     </form>
 
     <p
       v-else
-      class="text-lg font-semibold text-center mt-2 lg:w-4/5 mx-auto"
+      class="mx-auto mt-2 text-center text-lg font-semibold lg:w-4/5"
     >
-      Thank you for submitting your comment! Your comment will be approved before appearing on the website.
+      Thank you for submitting your comment! Your comment will be approved
+      before appearing on the website.
     </p>
   </Card>
 </template>

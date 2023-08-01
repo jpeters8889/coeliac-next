@@ -1,16 +1,10 @@
 <script lang="ts" setup>
-import { Link } from '@inertiajs/vue3';
 import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
 import { CollectionPage } from '@/types/CollectionTypes';
-import CollectionItemCard from "@/Components/PageSpecific/Collections/CollectionItemCard.vue";
+import CollectionItemCard from '@/Components/PageSpecific/Collections/CollectionItemCard.vue';
 
-defineProps({
-  collection: {
-    required: true,
-    type: Object as () => CollectionPage,
-  },
-});
+defineProps<{ collection: CollectionPage }>();
 </script>
 
 <template>
@@ -20,11 +14,11 @@ defineProps({
     </Heading>
 
     <div
-      class="prose prose-lg font-semibold max-w-none"
+      class="prose prose-lg max-w-none font-semibold"
       v-text="collection.description"
     />
 
-    <div class="bg-grey-light -m-4 !-mb-4 p-4 shadow-inner">
+    <div class="-m-4 !-mb-4 bg-grey-light p-4 shadow-inner">
       <p v-if="collection.updated">
         <span class="font-semibold">Last updated</span> {{ collection.updated }}
       </p>
@@ -34,10 +28,10 @@ defineProps({
 
   <Card no-padding>
     <img
-      :src="collection.image"
       :alt="collection.title"
+      :src="collection.image"
       loading="lazy"
-    >
+    />
   </Card>
 
   <Card

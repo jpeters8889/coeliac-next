@@ -9,17 +9,13 @@ import Comments from '@/Components/PageSpecific/Shared/Comments.vue';
 import { PrinterIcon } from '@heroicons/vue/20/solid';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
 import RecipeNutritionTable from '@/Components/PageSpecific/Recipes/RecipeNutritionTable.vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Page } from '@inertiajs/core';
 
-const props = defineProps({
-  recipe: {
-    required: true,
-    type: Object as () => RecipePage,
-  },
-  comments: {
-    required: true,
-    type: Object as () => PaginatedResponse<Comment>,
-  },
-});
+const props = defineProps<{
+  recipe: RecipePage;
+  comments: PaginatedResponse<Comment>;
+}>();
 
 const allComments: Ref<PaginatedResponse<Comment>> = ref(props.comments);
 
@@ -28,25 +24,33 @@ const loadMoreComments = () => {
     return;
   }
 
-  router.get(props.comments.links.next, {}, {
-    preserveScroll: true,
-    preserveState: true,
-    only: ['comments'],
-    onSuccess: (event: { props: { comments?: PaginatedResponse<Comment> } }) => {
-      // eslint-disable-next-line no-restricted-globals
-      history.pushState(null, '', `${window.location.origin}${window.location.pathname}`);
+  router.get(
+    props.comments.links.next,
+    {},
+    {
+      preserveScroll: true,
+      preserveState: true,
+      only: ['comments'],
+      onSuccess: (page: Page<{ comments?: PaginatedResponse<Comment> }>) => {
+        // eslint-disable-next-line no-restricted-globals
+        history.pushState(
+          null,
+          '',
+          `${window.location.origin}${window.location.pathname}`,
+        );
 
-      if (!event.props.comments) {
-        return true;
-      }
+        if (!page.props.comments) {
+          return true;
+        }
 
-      allComments.value.data.push(...event.props.comments.data);
-      allComments.value.links = event.props.comments.links;
-      allComments.value.meta = event.props.comments.meta;
+        allComments.value.data.push(...page.props.comments.data);
+        allComments.value.links = page.props.comments.links;
+        allComments.value.meta = page.props.comments.meta;
 
-      return false;
+        return false;
+      },
     },
-  });
+  );
 };
 </script>
 
@@ -57,24 +61,24 @@ const loadMoreComments = () => {
     </Heading>
 
     <div
-      class="prose prose-lg font-semibold max-w-none"
+      class="prose prose-lg max-w-none font-semibold"
       v-text="recipe.description"
     />
 
-    <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 md:text-lg">
+    <div
+      class="flex flex-col space-y-2 xs:flex-row xs:justify-between xs:space-y-0 md:text-lg"
+    >
       <div v-if="recipe.features.length">
-        <h3 class="font-semibold text-grey-darkest">
-          This recipe is...
-        </h3>
-        <ul class="flex flex-row flex-wrap leading-tight gap-2 gap-y-1">
+        <h3 class="font-semibold text-grey-darkest">This recipe is...</h3>
+        <ul class="flex flex-row flex-wrap gap-2 gap-y-1 leading-tight">
           <li
             v-for="feature in recipe.features"
             :key="feature.slug"
             class="after:content-[','] last:after:content-['']"
           >
             <Link
-              class="font-semibold text-primary-dark hover:text-grey-darker"
               :href="`/recipe?features=${feature.slug}`"
+              class="font-semibold text-primary-dark hover:text-grey-darker"
             >
               {{ feature.feature }}
             </Link>
@@ -83,11 +87,9 @@ const loadMoreComments = () => {
       </div>
 
       <div v-if="recipe.allergens.length">
-        <div class="bg-red-light bg-opacity-10 rounded p-3 pr-12 w-full">
-          <h3 class="font-semibold text-grey-darkest">
-            This recipe contains:
-          </h3>
-          <ul class="flex flex-row flex-wrap leading-tight gap-2 gap-y-1">
+        <div class="w-full rounded bg-red-light bg-opacity-10 p-3 pr-12">
+          <h3 class="font-semibold text-grey-darkest">This recipe contains:</h3>
+          <ul class="flex flex-row flex-wrap gap-2 gap-y-1 leading-tight">
             <li
               v-for="allergen in recipe.allergens"
               :key="allergen.slug"
@@ -99,13 +101,18 @@ const loadMoreComments = () => {
       </div>
     </div>
 
-    <div class="bg-grey-light -m-4 !-mb-4 p-4 shadow-inner flex justify-between">
+    <div
+      class="-m-4 !-mb-4 flex justify-between bg-grey-light p-4 shadow-inner"
+    >
       <div>
         <p v-if="recipe.updated">
           <span class="font-semibold">Last updated</span> {{ recipe.updated }}
         </p>
         <p><span class="font-semibold">Added</span> {{ recipe.published }}</p>
-        <p><span class="font-semibold">Recipe by</span> <span v-html="recipe.author" /></p>
+        <p>
+          <span class="font-semibold">Recipe by</span>
+          <span v-html="recipe.author" />
+        </p>
       </div>
 
       <div>
@@ -113,7 +120,7 @@ const loadMoreComments = () => {
           :href="recipe.print_url"
           target="_blank"
         >
-          <PrinterIcon class="w-12 h-12" />
+          <PrinterIcon class="h-12 w-12" />
         </a>
       </div>
     </div>
@@ -122,30 +129,31 @@ const loadMoreComments = () => {
   <Card no-padding>
     <img
       v-if="recipe.square_image"
-      :src="recipe.image"
       :alt="recipe.title"
+      :src="recipe.image"
       loading="lazy"
-    >
+    />
     <RecipeSquareImage
       v-else
-      :src="recipe.image"
       :alt="recipe.title"
+      :src="recipe.image"
     />
   </Card>
 
   <Card v-if="recipe.featured_in.length">
-    <h3 class="font-semibold text-base text-grey-darkest">
+    <h3 class="text-base font-semibold text-grey-darkest">
       This recipe was featured in
     </h3>
 
-    <ul class="flex flex-row flex-wrap text-sm leading-tight mt-2">
+    <ul class="mt-2 flex flex-row flex-wrap text-sm leading-tight">
       <li
         v-for="collection in recipe.featured_in"
+        :key="collection.link"
         class="after:content-[','] last:after:content-['']"
       >
         <Link
-          class="font-semibold text-primary-dark hover:text-grey-darker"
           :href="collection.link"
+          class="font-semibold text-primary-dark hover:text-grey-darker"
         >
           {{ collection.title }}
         </Link>
@@ -154,33 +162,39 @@ const loadMoreComments = () => {
   </Card>
 
   <Card class="space-y-3 pb-0">
-    <h2 class="font-semibold text-xl text-primary-dark">
-      Ingredients
-    </h2>
+    <h2 class="text-xl font-semibold text-primary-dark">Ingredients</h2>
 
     <div
       class="prose prose-lg max-w-none"
       v-html="recipe.ingredients"
     />
 
-    <ul class="bg-grey-light border-t border-grey-off-light -m-4 mt-4 p-4">
-      <li><strong class="font-semibold">Preparation Time:</strong> {{ recipe.timing.prep_time }}</li>
-      <li><strong class="font-semibold">Cooking Time:</strong> {{ recipe.timing.cook_time }}</li>
-      <li><strong class="font-semibold">This recipe makes {{ recipe.nutrition.servings }}</strong></li>
+    <ul class="-m-4 mt-4 border-t border-grey-off-light bg-grey-light p-4">
+      <li>
+        <strong class="font-semibold">Preparation Time:</strong>
+        {{ recipe.timing.prep_time }}
+      </li>
+      <li>
+        <strong class="font-semibold">Cooking Time:</strong>
+        {{ recipe.timing.cook_time }}
+      </li>
+      <li>
+        <strong class="font-semibold"
+          >This recipe makes {{ recipe.nutrition.servings }}</strong
+        >
+      </li>
     </ul>
   </Card>
 
   <Card class="space-y-3">
-    <h3 class="font-semibold text-xl text-primary-dark">
-      Method
-    </h3>
+    <h3 class="text-xl font-semibold text-primary-dark">Method</h3>
 
     <article
       class="prose prose-lg max-w-none"
       v-html="recipe.method"
     />
 
-    <h3 class="text-base font-semibold mt-4 mb-2">
+    <h3 class="mt-4 mb-2 text-base font-semibold">
       Nutritional Information (Per {{ recipe.nutrition.portion_size }})
     </h3>
 
@@ -189,8 +203,8 @@ const loadMoreComments = () => {
 
   <Comments
     :id="recipe.id"
-    module="recipe"
     :comments="allComments"
+    module="recipe"
     @load-more="loadMoreComments"
   />
 </template>

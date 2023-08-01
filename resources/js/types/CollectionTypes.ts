@@ -19,7 +19,7 @@ export type CollectionPage = {
 };
 
 export type CollectionItem = {
-  type: 'Blog' | 'Recipe',
+  type: 'Blog' | 'Recipe';
   title: string;
   description: string;
   image: string;
@@ -36,7 +36,7 @@ export type HomepageCollection = {
 };
 
 export type HomepageCollectedItem = {
-  type: 'Blog' | 'Recipe',
+  type: 'Blog' | 'Recipe';
   title: string;
   image: string;
   square_image?: string;

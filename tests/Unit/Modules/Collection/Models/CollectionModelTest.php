@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Collection\Models;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Collection\Models\Collection;
-use App\Modules\Shared\Scopes\LiveScope;
+use App\Models\Blogs\Blog;
+use App\Models\Collections\Collection;
+use App\Scopes\LiveScope;
 use Tests\TestCase;
 use Tests\Unit\Modules\Shared\Support\CanBePublishedTestTrait;
 use Tests\Unit\Modules\Shared\Support\DisplaysMediaTestTrait;

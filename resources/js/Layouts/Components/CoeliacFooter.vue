@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import { defineComponent, h } from 'vue';
+<script lang="ts" setup>
 import FacebookIcon from '@/Icons/FacebookIcon.vue';
 import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
@@ -8,7 +7,7 @@ import InputField from '@/Components/Forms/RawInputField.vue';
 
 const year = new Date().getFullYear();
 
-const navigation: { links: { label: string, url: string }[] } = {
+const navigation: { links: { label: string; url: string }[] } = {
   links: [
     { label: 'Shop', url: '/shop' },
     { label: 'Blogs', url: '/blogs' },
@@ -27,12 +26,11 @@ const navigation: { links: { label: string, url: string }[] } = {
     <div class="mx-auto max-w-7xl p-4 lg:grid lg:grid-cols-4 lg:gap-x-4">
       <!-- Tagline -->
       <div class="mb-4">
-        <h2 class="font-semibold text-xl mb-2">
-          Coeliac Sanctuary
-        </h2>
+        <h2 class="mb-2 text-xl font-semibold">Coeliac Sanctuary</h2>
         <p>
-          Coeliac Sanctuary, more than a gluten free blog, find gluten free, coeliac safe places to eat,
-          gluten free recipes, blogs, reviews, buy coeliac travel cards and more!
+          Coeliac Sanctuary, more than a gluten free blog, find gluten free,
+          coeliac safe places to eat, gluten free recipes, blogs, reviews, buy
+          coeliac travel cards and more!
         </p>
       </div>
 
@@ -46,41 +44,45 @@ const navigation: { links: { label: string, url: string }[] } = {
             <a
               :href="item.url"
               class="leading-6 hover:text-gray-900"
-            >{{ item.label }}</a>
+              >{{ item.label }}</a
+            >
           </li>
         </ul>
 
         <!-- Newsletter -->
-        <div class="mt-10 sm:mt-0 sm:col-span-2">
-          <h3 class="font-semibold text-xl mb-2">
+        <div class="mt-10 sm:col-span-2 sm:mt-0">
+          <h3 class="mb-2 text-xl font-semibold">
             Subscribe to our newsletter
           </h3>
           <p>
-            Enter your email address below to get our newsletter sent straight to your inbox!
+            Enter your email address below to get our newsletter sent straight
+            to your inbox!
           </p>
           <form class="mt-6 sm:flex">
             <InputField
               id="email-address"
-              name="email-address"
-              type="email"
               autocomplete="email"
+              name="email-address"
               placeholder="Enter your email address..."
               required
+              type="email"
             />
             <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-shrink-0">
               <CoeliacButton
-                label="Subscribe"
                 as="button"
-                type="submit"
-                theme="secondary"
                 classes="w-full justify-center"
+                label="Subscribe"
+                theme="secondary"
+                type="submit"
               />
             </div>
           </form>
         </div>
       </div>
 
-      <div class="mt-4 sm:flex sm:flex-row-reverse sm:items-center sm:justify-between sm:mt-8 lg:col-span-4">
+      <div
+        class="mt-4 sm:mt-8 sm:flex sm:flex-row-reverse sm:items-center sm:justify-between lg:col-span-4"
+      >
         <div class="flex items-center justify-center space-x-3">
           <a href="#">
             <FacebookIcon />
@@ -92,7 +94,7 @@ const navigation: { links: { label: string, url: string }[] } = {
             <InstagramIcon />
           </a>
         </div>
-        <p class="mt-8 text-xs text-center leading-5 sm:mt-0 sm:text-left">
+        <p class="mt-8 text-center text-xs leading-5 sm:mt-0 sm:text-left">
           Copyright &copy; 2014 - {{ year }} Coeliac Sanctuary.
         </p>
       </div>

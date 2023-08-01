@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\EatingOut\Models\EateryFeature;
+use App\Models\EatingOut\EateryFeature;
 
 class EateryFeatureFactory extends Factory
 {
@@ -13,8 +13,8 @@ class EateryFeatureFactory extends Factory
     public function definition()
     {
         return [
-            'icon' => $this->faker->word,
             'feature' => $this->faker->word,
+            'slug' => $this->faker->slug,
         ];
     }
 }

@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { ArrowDownCircleIcon } from '@heroicons/vue/24/outline';
 import {
-  Listbox, ListboxButton, ListboxOption, ListboxOptions,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
 } from '@headlessui/vue';
 import { Ref, ref, watch } from 'vue';
 import Icon from '@/Components/Icon.vue';
@@ -9,29 +12,29 @@ import { SelectBoxItem } from '@/types/Types';
 
 export type RecipeFilterOption = SelectBoxItem & { recipeCount: number };
 
-const props = defineProps({
-  label: {
-    required: true,
-    type: String,
-  },
-  options: {
-    required: true,
-    type: Array as () => RecipeFilterOption[],
-  },
-  currentOptions: {
-    required: true,
-    type: Array as () => string[],
-  },
-});
+const props = defineProps<{
+  label: string;
+  options: RecipeFilterOption[];
+  currentOptions: string[];
+}>();
 
-const selectedOptions: Ref<string[]> = ref(props.currentOptions);
+const selectedOptions: Ref<(string | number)[]> = ref(props.currentOptions);
 
 const emit = defineEmits(['changed']);
 
 watch(selectedOptions, () => emit('changed', selectedOptions.value));
 
 const optionClasses = (disabled: boolean, selected: boolean): string[] => {
-  const base = ['p-2', 'border-b', 'border-secondary', 'transition', 'cursor-pointer', 'last:border-b-0', 'flex', 'justify-between'];
+  const base = [
+    'p-2',
+    'border-b',
+    'border-secondary',
+    'transition',
+    'cursor-pointer',
+    'last:border-b-0',
+    'flex',
+    'justify-between',
+  ];
 
   if (selected) {
     base.push('bg-primary-light', 'bg-opacity-50');
@@ -51,18 +54,20 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
       multiple
     >
       <ListboxButton
-        class="w-full bg-secondary transition hover:bg-opacity-100 p-2 font-semibold text-lg flex items-center justify-between"
         :class="open ? 'rounded-t-lg' : 'rounded-lg bg-opacity-70'"
+        class="flex w-full items-center justify-between bg-secondary p-2 text-lg font-semibold transition hover:bg-opacity-100"
       >
         <div class="flex items-center">
           <ArrowDownCircleIcon
-            class="w-8 h-8 mr-2 transition transition-duration-500"
-            :class="{'rotate-180': open}"
+            :class="{ 'rotate-180': open }"
+            class="transition-duration-500 mr-2 h-8 w-8 transition"
           />
           <span>{{ label }}</span>
         </div>
         <div v-if="selectedOptions.length">
-          <span class="text-grey-dark font-normal">({{ selectedOptions.length }}/{{ options.length }})</span>
+          <span class="font-normal text-grey-dark"
+            >({{ selectedOptions.length }}/{{ options.length }})</span
+          >
         </div>
       </ListboxButton>
 
@@ -74,16 +79,23 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
         leave-from-class="transform scale-100 opacity-100"
         leave-to-class="transform scale-95 opacity-0"
       >
-        <ListboxOptions class="z-10 absolute bg-white border-2 border-secondary rounded-b-lg w-full shadow-lg overflow-hidden">
+        <ListboxOptions
+          class="absolute z-10 w-full overflow-hidden rounded-b-lg border-2 border-secondary bg-white shadow-lg"
+        >
           <ListboxOption
             v-for="option in options"
             :key="option.value"
-            :value="option.value"
-            :class="optionClasses(option.disabled, selectedOptions.includes(option.value))"
+            :class="
+              optionClasses(
+                option.disabled,
+                selectedOptions.includes(option.value),
+              )
+            "
             :disabled="option.disabled"
+            :value="option.value"
           >
             <div class="flex space-x-2">
-              <Icon :name="option.value" />
+              <Icon :name="option.value.toString()" />
               <span>{{ option.label }}</span>
             </div>
             <span>({{ option.recipeCount }} recipes)</span>

@@ -1,11 +1,11 @@
 import { HomeHoverItem } from '@/types/Types';
-import {FeaturedInCollection} from "@/types/CollectionTypes";
+import { FeaturedInCollection } from '@/types/CollectionTypes';
 
 export type BlogDetailCard = HomeHoverItem & {
   description: string;
   date: string;
   comments_count?: number;
-  tags?: BlogTag[]
+  tags?: BlogTag[];
 };
 
 export type BlogPage = {

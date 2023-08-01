@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Modules\Blog\Models\BlogTag as BlogTagModel;
+use App\Models\Blogs\BlogTag as BlogTagModel;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;

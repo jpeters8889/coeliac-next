@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Shared\Comments\HasComments;
-use App\Modules\Shared\Models\Comment;
+use App\Contracts\Comments\HasComments;
+use App\Models\Comments\Comment;
 
 class CommentFactory extends Factory
 {

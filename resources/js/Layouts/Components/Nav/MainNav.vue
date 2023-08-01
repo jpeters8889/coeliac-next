@@ -5,14 +5,17 @@ import { onMounted, ref } from 'vue';
 const isSticky = ref(false);
 
 onMounted(() => {
-  new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      isSticky.value = !entry.isIntersecting;
-    });
-  }, {
-    threshold: 0.5,
-    rootMargin: '0px',
-  }).observe(document.getElementById('header'));
+  new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        isSticky.value = !entry.isIntersecting;
+      });
+    },
+    {
+      threshold: 0.5,
+      rootMargin: '0px',
+    }
+  ).observe(document.getElementById('header'));
 });
 </script>
 
@@ -21,13 +24,11 @@ onMounted(() => {
     id="main-nav"
     class="mx-auto hidden md:flex md:items-center md:justify-center"
     :class="{
-      'fixed bg-primary top-0 h-10 w-screen': isSticky,
+      'fixed top-0 h-10 w-screen bg-primary': isSticky,
       'h-14 w-full max-w-7xl ': !isSticky,
     }"
   >
-    <nav
-      class="flex h-full text-lg"
-    >
+    <nav class="flex h-full text-lg">
       <NavItem
         label="Home"
         href="/"
@@ -49,6 +50,7 @@ onMounted(() => {
       <NavItem
         label="Eating Out"
         href="eating-out"
+        :active="$page.url.startsWith('/wheretoeat')"
       />
 
       <NavItem
@@ -60,6 +62,7 @@ onMounted(() => {
       <NavItem
         label="Collections"
         href="/collection"
+        :active="$page.url.startsWith('/collection')"
       />
     </nav>
   </div>

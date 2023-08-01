@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Shared\Comments;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Shared\Models\Comment;
+use App\Models\Blogs\Blog;
+use App\Models\Comments\Comment;
 use Illuminate\Testing\TestResponse;
 use Tests\RequestFactories\CommentRequestFactory;
 use Tests\TestCase;

@@ -1,21 +1,17 @@
 <script lang="ts" setup>
-import { InputProps } from '@/Components/Forms/Props';
+import { InputPropDefaults, InputProps } from '@/Components/Forms/Props';
 import RawInputField from '@/Components/Forms/RawInputField.vue';
 import { ref, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
-const props = defineProps({
-  label: {
-    required: true,
-    type: String,
-  },
-  error: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
-  ...InputProps,
-});
+const props = withDefaults(
+  defineProps<
+    InputProps & {
+      label: string;
+    }
+  >(),
+  InputPropDefaults,
+);
 
 const emits = defineEmits(['update:modelValue']);
 
@@ -38,21 +34,21 @@ watch(value, () => {
       <RawInputField
         :id="id"
         v-model="value"
-        :type="type"
+        :autocomplete="autocomplete"
+        :has-error="!!error"
         :name="name"
         :placeholder="placeholder"
         :required="required"
-        :autocomplete="autocomplete"
+        :type="type"
         borders
-        :has-error="!! error"
       />
       <div
         v-if="error"
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
       >
         <ExclamationCircleIcon
-          class="h-5 w-5 text-red"
           aria-hidden="true"
+          class="h-5 w-5 text-red"
         />
       </div>
     </div>

@@ -1,11 +1,11 @@
 export type PaginatedResponse<Data> = {
-  data: Data[],
+  data: Data[];
   links: {
     first: string;
     last: string;
     next?: string;
     prev?: string;
-  }
+  };
   meta: {
     current_page: number;
     from: number;
@@ -13,5 +13,5 @@ export type PaginatedResponse<Data> = {
     per_page: number;
     to: number;
     total: number;
-  }
+  };
 };

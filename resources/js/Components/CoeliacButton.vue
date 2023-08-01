@@ -1,71 +1,51 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, FunctionalComponent, HTMLAttributes, VNodeProps } from 'vue';
 
-const props = defineProps({
-  label: {
-    required: true,
-    type: String,
-  },
-  theme: {
-    required: false,
-    type: String,
-    default: 'primary',
-    validator: (value: string) => ['primary', 'faded', 'secondary', 'light'].includes(value),
-  },
-  size: {
-    required: false,
-    type: String,
-    default: 'md',
-    validator: (value: string) => ['sm', 'md', 'lg', 'xl'].includes(value),
-  },
-  bold: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  as: {
-    required: false,
-    type: String,
-    default: 'Link',
-    validator: (value: string) => ['Link', 'button', 'a'].includes(value),
-  },
-  type: {
-    required: false,
-    type: String,
-    default: null,
-    validator: (value: string) => ['submit', 'button'].includes(value),
-  },
-  href: {
-    required: false,
-    type: String,
-    default: null,
-  },
-  icon: {
-    required: false,
-    type: [String, Boolean, Function],
-    default: false,
-    validator: (value: String | Boolean | Function) => value !== true,
-  },
-  iconPosition: {
-    required: false,
-    type: String,
-    default: 'left',
-  },
-  loading: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-  classes: {
-    type: String,
-    required: false,
-    default: '',
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    label: string;
+    theme?: 'primary' | 'faded' | 'secondary' | 'light';
+    size?: 'sm' | 'md' | 'lg' | 'xl';
+    bold?: boolean;
+    as?: InstanceType<typeof Link> | 'button' | 'a';
+    type?: 'submit' | 'button';
+    href?: string;
+    icon?:
+      | string
+      | false
+      | FunctionalComponent<HTMLAttributes & VNodeProps>
+      | Function;
+    iconPosition?: 'left' | 'right';
+    loading?: boolean;
+    classes?: string;
+  }>(),
+  {
+    theme: 'primary',
+    size: 'md',
+    bold: false,
+    as: Link,
+    type: undefined,
+    href: undefined,
+    icon: false,
+    iconPosition: 'left',
+    loading: false,
+    classes: '',
+  }
+);
 
 const classes = computed((): string[] => {
-  const base = ['inline-flex', 'items-center', 'rounded-md', 'border', 'border-transparent', 'font-medium', 'shadow-sm', 'transition', 'relative'];
+  const base = [
+    'inline-flex',
+    'items-center',
+    'rounded-md',
+    'border',
+    'border-transparent',
+    'font-medium',
+    'shadow-sm',
+    'transition',
+    'relative',
+  ];
 
   switch (props.size) {
     case 'sm': {
@@ -112,25 +92,16 @@ const classes = computed((): string[] => {
   return base;
 });
 
-const primaryComponent = () => {
-  if (props.as === 'Link') {
-    return Link;
-  }
-
-  return props.as;
-};
-
 const emits = defineEmits(['click']);
-
 </script>
 
 <template>
   <component
-    :is="primaryComponent()"
+    :is="props.as"
     :class="classes"
     v-bind="{
-      ...(as === 'button' ? {type} : null),
-      ...(as === 'Link' ? {href} : null)
+      ...(props.as === 'button' ? { type: props.type } : null),
+      ...(props.as === Link || props.as === 'a' ? { href: props.href } : null),
     }"
     @click="emits('click')"
   >
@@ -140,17 +111,19 @@ const emits = defineEmits(['click']);
       <component
         :is="icon"
         v-if="icon"
-        class="h-4 w-4"
-        :class="iconPosition === 'right' ? 'ml-2 -mr-0.5' : 'mr-2 -ml-0.5'"
+        :class="iconPosition === 'right' ? '-mr-0.5 ml-2' : '-ml-0.5 mr-2'"
         aria-hidden="true"
+        class="h-4 w-4"
       />
     </div>
 
     <div
       v-if="loading"
-      class="top-0 left-0 absolute w-full h-full flex justify-center items-center"
+      class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
     >
-      <div class="w-6 h-6 border-4 border-white/20 border-t-white/80 rounded-full animate-spin" />
+      <div
+        class="h-6 w-6 animate-spin rounded-full border-4 border-white/20 border-t-white/80"
+      />
     </div>
   </component>
 </template>

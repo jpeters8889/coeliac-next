@@ -1,59 +1,128 @@
-<script setup lang="ts">
-import { DocumentArrowUpIcon, EnvelopeOpenIcon, MapIcon } from '@heroicons/vue/24/outline';
+<script lang="ts" setup>
+import {
+  DocumentArrowUpIcon,
+  EnvelopeOpenIcon,
+  MapIcon,
+} from '@heroicons/vue/24/outline';
+import {
+  BuildingStorefrontIcon,
+  MapPinIcon,
+  StarIcon,
+} from '@heroicons/vue/24/solid';
 
-const props = defineProps({
-  county: {
-    type: String,
-    required: true,
-  },
-});
+const props = defineProps<{
+  name: string;
+  image?: string;
+  towns: number;
+  eateries: number;
+  reviews: number;
+}>();
 
 const linkCards = [
   {
     title: 'Recommend a place',
-    description: `Do you know somewhere in <span class="font-semibold">${props.county}</span> that offers gluten free that we don't have listed? Let us know!`,
+    description: `Do you know somewhere in <span class="font-semibold">${props.name}</span> that offers gluten free that we don't have listed? Let us know!`,
     icon: DocumentArrowUpIcon,
   },
   {
     title: 'Map',
-    description: `Browse an interactive map of <span class="font-semibold">${props.county}</span> with all of the places we know about marked that offer gluten free!`,
+    description: `Browse an interactive map of <span class="font-semibold">${props.name}</span> with all of the places we know about marked that offer gluten free!`,
     icon: MapIcon,
   },
   {
     title: 'Subscribe',
-    description: `Subscribe to <span class="font-semibold">${props.county}</span> and get notified straight into your inbox whenever we add a new location!`,
+    description: `Subscribe to <span class="font-semibold">${props.name}</span> and get notified straight into your inbox whenever we add a new location!`,
     icon: EnvelopeOpenIcon,
   },
 ];
 </script>
 
 <template>
-  <div class="grid gap-2 grid-cols-3 px-2">
+  <div class="relative">
     <div
-      v-for="(item) in linkCards"
-      :key="item.title"
-      class="flex-shrink-0"
+      class="my-3 xxs:absolute xxs:top-4 xxs:m-0 xxs:flex xxs:w-full xxs:justify-between xxs:p-3"
     >
+      <div class="">
+        <h1
+          class="w-full bg-white p-2 text-center text-xl font-semibold shadow xxs:w-auto xxs:rounded xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+        >
+          Gluten Free places to eat in {{ name }}
+        </h1>
+      </div>
       <div
-        class="bg-gradient-to-br from-primary/70 to-primary-light/70 rounded p-2 shadow flex flex-col items-center justify-center space-y-2 w-full h-full md:p-4 md:justify-between"
+        class="hidden min-w-[190px] grid-cols-1 gap-2 text-lg font-semibold sm:grid"
       >
-        <div class="flex flex-col items-center justify-center flex-1 md:flex-row-reverse md:w-full md:items-start md:flex-none">
-          <div class="flex-1 mb-2 xs:mb-4 md:flex-none md:mb-0">
-            <component
-              :is="item.icon"
-              class="w-12 h-12 sm:w-14 sm:h-14 md:w-8 md:h-8"
-            />
+        <div
+          class="flex w-full justify-between space-x-8 rounded bg-primary-light/90 p-2 shadow-lg lg:space-x-12"
+        >
+          <div class="flex items-center space-x-4 lg:space-x-6">
+            <MapPinIcon class="h-6 w-6" />
+            <span>Towns</span>
           </div>
-
-          <div class="text-sm font-semibold text-center xs:text-base sm:text-lg md:text-left md:flex-1 md:text-xl">
-            {{ item.title }}
-          </div>
+          <span>{{ towns }}</span>
         </div>
-        <p
-          class="hidden text-sm md:inline"
-          v-html="item.description"
-        />
+        <div
+          class="flex w-full justify-between space-x-8 rounded bg-primary-light/90 p-2 shadow-lg lg:space-x-12"
+        >
+          <div class="flex items-center space-x-4 lg:space-x-6">
+            <BuildingStorefrontIcon class="h-6 w-6" />
+            <span>Eateries</span>
+          </div>
+          <span>{{ eateries }}</span>
+        </div>
+        <div
+          class="flex w-full justify-between space-x-8 rounded bg-primary-light/90 p-2 shadow-lg lg:space-x-12"
+        >
+          <div class="flex items-center space-x-4 lg:space-x-6">
+            <StarIcon class="h-6 w-6" />
+            <span>Reviews</span>
+          </div>
+          <span>{{ reviews }}</span>
+        </div>
       </div>
     </div>
+
+    <div class="absolute bottom-0 mb-2 grid w-full grid-cols-3 gap-2 px-2">
+      <div
+        v-for="item in linkCards"
+        :key="item.title"
+        class="flex-shrink-0"
+      >
+        <div
+          class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded rounded bg-gradient-to-br from-primary/90 to-primary-light/90 p-2 shadow shadow-lg transition duration-500 hover:sm:from-primary/95 hover:sm:to-primary-light/95 md:justify-between md:p-4"
+        >
+          <div
+            class="flex flex-1 flex-col items-center justify-center xs:w-full xs:flex-row md:flex-none md:items-start"
+          >
+            <div
+              class="mb-2 hidden flex-1 xs:mb-4 xs:mb-0 xs:mr-4 xs:block xs:flex-none"
+            >
+              <component
+                :is="item.icon"
+                class="h-12 w-12 xs:h-10 xs:w-10 md:h-8 md:w-8"
+              />
+            </div>
+
+            <div
+              class="text-center text-sm font-semibold xs:flex-1 xs:text-left xs:text-base md:text-xl lg:text-2xl"
+            >
+              {{ item.title }}
+            </div>
+          </div>
+          <p
+            class="hidden text-sm md:inline lg:text-base"
+            v-html="item.description"
+          />
+        </div>
+      </div>
+    </div>
+
+    <img
+      v-if="image"
+      :alt="`Gluten Free places to eat in ${name}`"
+      :src="image"
+      class="mt-4 w-full shadow"
+      loading="lazy"
+    />
   </div>
 </template>

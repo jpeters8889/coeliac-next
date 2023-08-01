@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Modules\Recipe\Models\RecipeMeal;
+use App\Models\Recipes\RecipeMeal;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

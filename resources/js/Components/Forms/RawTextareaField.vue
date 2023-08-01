@@ -1,15 +1,30 @@
-<script setup lang="ts">
-import { TextareaProps } from '@/Components/Forms/Props';
+<script lang="ts" setup>
+import { TextareaProps, TextareaPropsDefaults } from '@/Components/Forms/Props';
 
-const props = defineProps(TextareaProps);
+const props = withDefaults(defineProps<TextareaProps>(), TextareaPropsDefaults);
 
 const emit = defineEmits(['update:modelValue']);
 
 const classes = (): string[] => {
   const base = [
-    'flex-1', 'w-full', 'min-w-0', 'appearance-none', 'rounded-md', 'px-[calc(theme(spacing.3)-1px)]',
-    'py-[calc(theme(spacing[1.5])-1px)]', 'text-base', 'leading-7', 'text-gray-900', 'placeholder-gray-400', 'shadow-sm', 'outline-none',
-    'sm:text-sm', 'sm:leading-6', 'xl:w-full', 'focus:ring-0', 'focus:outline-none transition',
+    'flex-1',
+    'w-full',
+    'min-w-0',
+    'appearance-none',
+    'rounded-md',
+    'px-[calc(theme(spacing.3)-1px)]',
+    'py-[calc(theme(spacing[1.5])-1px)]',
+    'text-base',
+    'leading-7',
+    'text-gray-900',
+    'placeholder-gray-400',
+    'shadow-sm',
+    'outline-none',
+    'sm:text-sm',
+    'sm:leading-6',
+    'xl:w-full',
+    'focus:ring-0',
+    'focus:outline-none transition',
   ];
 
   if (props.borders) {
@@ -34,19 +49,18 @@ const classes = (): string[] => {
 
   return base;
 };
-
 </script>
 
 <template>
   <textarea
+    :class="classes()"
     :name="name"
     :required="required"
     :rows="rows"
-    :class="classes()"
     v-bind="{
-      ...(id ? {id} : null),
-      ...(autocomplete ? {autocomplete} : null),
-      ...(placeholder ? {placeholder} : null),
+      ...(id ? { id } : null),
+      ...(autocomplete ? { autocomplete } : null),
+      ...(placeholder ? { placeholder } : null),
     }"
     @input="emit('update:modelValue', $event.target.value)"
   >

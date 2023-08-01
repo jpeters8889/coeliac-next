@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\EatingOut\Models;
 
-use App\Modules\EatingOut\Models\EateryOpeningTimes;
+use App\Models\EatingOut\EateryOpeningTimes;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Spatie\TestTime\TestTime;

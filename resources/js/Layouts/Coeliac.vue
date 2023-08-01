@@ -1,17 +1,15 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import CoeliacHeader from '@/Layouts/Components/CoeliacHeader.vue';
 import CoeliacFooter from '@/Layouts/Components/CoeliacFooter.vue';
-
-defineProps({
-
-});
 </script>
 
 <template>
-  <body class="bg-gray-100 min-h-screen flex flex-col">
+  <body class="flex min-h-screen flex-col bg-gray-100">
     <CoeliacHeader />
 
-    <section class="w-full mx-auto max-w-7xl flex-1 flex flex-col space-y-3 mb-3">
+    <section
+      class="mx-auto mb-3 flex w-full max-w-7xl flex-1 flex-col space-y-3"
+    >
       <slot />
     </section>
 

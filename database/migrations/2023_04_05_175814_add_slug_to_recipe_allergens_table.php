@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Modules\Recipe\Models\RecipeAllergen;
+use App\Models\Recipes\RecipeAllergen;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

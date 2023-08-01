@@ -1,33 +1,28 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
-import { BlogSimpleCard } from '@/types/BlogTypes';
+import { BlogDetailCard } from '@/types/BlogTypes';
 
-defineProps({
-  blog: {
-    required: true,
-    type: Object as () => BlogSimpleCard,
-  },
-});
+defineProps<{ blog: BlogDetailCard }>();
 </script>
 
 <template>
   <Card
     :shadow="false"
-    class="transform scale-95 hover:scale-105 transition duration-500 hover:!opacity-100"
+    class="scale-95 transform transition duration-500 hover:scale-105 hover:!opacity-100"
   >
     <Link
       :href="blog.link"
       class="group -m-4"
     >
       <img
-        :src="blog.image"
         :alt="blog.title"
+        :src="blog.image"
         loading="lazy"
-      >
+      />
 
       <h2
-        class="text-base group-hover:text-primary-dark transition p-2 font-semibold text-center"
+        class="p-2 text-center text-base font-semibold transition group-hover:text-primary-dark"
         v-text="blog.title"
       />
     </Link>

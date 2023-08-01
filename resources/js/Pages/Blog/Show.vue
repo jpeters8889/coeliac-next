@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
 import { Link, router } from '@inertiajs/vue3';
@@ -9,16 +9,10 @@ import { PaginatedResponse } from '@/types/GenericTypes';
 import { Comment } from '@/types/Types';
 import RenderedString from '@/Components/RenderedString.vue';
 
-const props = defineProps({
-  blog: {
-    required: true,
-    type: Object as () => BlogPage,
-  },
-  comments: {
-    required: true,
-    type: Object as () => PaginatedResponse<Comment>,
-  },
-});
+const props = defineProps<{
+  blog: BlogPage;
+  comments: PaginatedResponse<Comment>;
+}>();
 
 const allComments: Ref<PaginatedResponse<Comment>> = ref(props.comments);
 
@@ -27,27 +21,36 @@ const loadMoreComments = () => {
     return;
   }
 
-  router.get(props.comments.links.next, {}, {
-    preserveScroll: true,
-    preserveState: true,
-    only: ['comments'],
-    onSuccess: (event: { props: { comments?: PaginatedResponse<Comment> } }) => {
-      // eslint-disable-next-line no-restricted-globals
-      history.pushState(null, '', `${window.location.origin}${window.location.pathname}`);
+  router.get(
+    props.comments.links.next,
+    {},
+    {
+      preserveScroll: true,
+      preserveState: true,
+      only: ['comments'],
+      onSuccess: (event: {
+        props: { comments?: PaginatedResponse<Comment> };
+      }) => {
+        // eslint-disable-next-line no-restricted-globals
+        history.pushState(
+          null,
+          '',
+          `${window.location.origin}${window.location.pathname}`,
+        );
 
-      if (!event.props.comments) {
-        return true;
-      }
+        if (!event.props.comments) {
+          return true;
+        }
 
-      allComments.value.data.push(...event.props.comments.data);
-      allComments.value.links = event.props.comments.links;
-      allComments.value.meta = event.props.comments.meta;
+        allComments.value.data.push(...event.props.comments.data);
+        allComments.value.links = event.props.comments.links;
+        allComments.value.meta = event.props.comments.meta;
 
-      return false;
+        return false;
+      },
     },
-  });
+  );
 };
-
 </script>
 
 <template>
@@ -57,11 +60,13 @@ const loadMoreComments = () => {
     </Heading>
 
     <p
-      class="prose prose-lg font-semibold max-w-none"
+      class="prose prose-lg max-w-none font-semibold"
       v-text="blog.description"
     />
 
-    <div class="bg-grey-light -m-4 !-mb-4 p-4 shadow-inner flex flex-col text-sm flex flex-col space-y-4">
+    <div
+      class="-m-4 !-mb-4 flex flex flex-col flex-col space-y-4 bg-grey-light p-4 text-sm shadow-inner"
+    >
       <div>
         <strong>Tagged With</strong>
         <ul class="flex flex-wrap space-x-1">
@@ -81,9 +86,7 @@ const loadMoreComments = () => {
       </div>
 
       <div>
-        <p v-if="blog.updated">
-          Last updated {{ blog.updated }}
-        </p>
+        <p v-if="blog.updated">Last updated {{ blog.updated }}</p>
         <p>Published {{ blog.published }}</p>
       </div>
     </div>
@@ -91,25 +94,25 @@ const loadMoreComments = () => {
 
   <Card no-padding>
     <img
+      :alt="blog.title"
       :src="blog.image"
       loading="lazy"
-      :alt="blog.title"
-    >
+    />
   </Card>
 
   <Card v-if="blog.featured_in.length">
-    <h3 class="font-semibold text-base text-grey-darkest">
+    <h3 class="text-base font-semibold text-grey-darkest">
       This blog was featured in
     </h3>
 
-    <ul class="flex flex-row flex-wrap text-sm leading-tight mt-2">
+    <ul class="mt-2 flex flex-row flex-wrap text-sm leading-tight">
       <li
         v-for="collection in blog.featured_in"
         class="after:content-[','] last:after:content-['']"
       >
         <Link
-          class="font-semibold text-primary-dark hover:text-grey-darker"
           :href="collection.link"
+          class="font-semibold text-primary-dark hover:text-grey-darker"
         >
           {{ collection.title }}
         </Link>
@@ -124,26 +127,28 @@ const loadMoreComments = () => {
   </Card>
 
   <Card
-    theme="primary-light"
     faded
+    theme="primary-light"
   >
-    <div class="md:flex md:flex-row md:space-x-2 justify-center md:space-x-4">
+    <div class="justify-center md:flex md:flex-row md:space-x-2 md:space-x-4">
       <img
-        src="/images/misc/alison.jpg"
-        class="rounded-full w-1/4 float-left mb-2 mr-2 max-w-[150px]"
         alt="Alison Peters"
-      >
+        class="float-left mb-2 mr-2 w-1/4 max-w-[150px] rounded-full"
+        src="/images/misc/alison.jpg"
+      />
       <div class="prose max-w-2xl md:prose-xl">
-        <strong>Alison Peters</strong> has been Coeliac since June 2014 and launched Coeliac Sanctuary in August of that year, and since then
-        has aimed to provide a one stop shop for Coeliacs, from blogs, to recipes, eating out guide and online shop.
+        <strong>Alison Peters</strong> has been Coeliac since June 2014 and
+        launched Coeliac Sanctuary in August of that year, and since then has
+        aimed to provide a one stop shop for Coeliacs, from blogs, to recipes,
+        eating out guide and online shop.
       </div>
     </div>
   </Card>
 
   <Comments
     :id="blog.id"
-    module="blog"
     :comments="allComments"
+    module="blog"
     @load-more="loadMoreComments"
   />
 </template>

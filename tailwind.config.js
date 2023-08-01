@@ -59,7 +59,13 @@ module.exports = {
                 '1/2': '50%',
                 '1/3': '33%',
                 '16': '16rem',
+                '18': '18rem',
                 '8xl': '94rem',
+            },
+
+            minHeight: {
+                map: '300px',
+                'map-small': '200px',
             },
 
             minWidth: {
@@ -67,6 +73,7 @@ module.exports = {
             },
 
             screens: {
+                xxs: '400px',
                 xs: '500px',
                 xmd: '860px',
             },
@@ -95,4 +102,4 @@ module.exports = {
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
     ],
-}
+} // as import("tailwindcss/types").Config

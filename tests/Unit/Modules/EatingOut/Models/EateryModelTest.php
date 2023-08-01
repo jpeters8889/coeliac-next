@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\EatingOut\Models;
 
-use App\Modules\EatingOut\Models\Eatery;
-use App\Modules\EatingOut\Models\EateryFeature;
-use App\Modules\EatingOut\Models\EateryOpeningTimes;
+use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryCuisine;
+use App\Models\EatingOut\EateryFeature;
+use App\Models\EatingOut\EateryOpeningTimes;
+use App\Models\EatingOut\EateryVenueType;
+use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -18,10 +22,15 @@ class EateryModelTest extends TestCase
     {
         parent::setUp();
 
+        $this->seed(EateryScaffoldingSeeder::class);
+
         $this->eatery = $this->build(Eatery::class)
             ->withoutSlug()
             ->has($this->build(EateryFeature::class), 'features')
-            ->create();
+            ->create([
+                'venue_type_id' => EateryVenueType::query()->first()->id,
+                'cuisine_id' => EateryCuisine::query()->first()->id,
+            ]);
     }
 
     /** @test */
@@ -78,5 +87,23 @@ class EateryModelTest extends TestCase
 
         $this->assertNotNull($this->eatery->refresh()->openingTimes);
         $this->assertTrue($this->eatery->openingTimes->is($openingTimes));
+    }
+
+    /** @test */
+    public function itHasAnHasCategoriesScope(): void
+    {
+        $this->assertInstanceOf(Builder::class, Eatery::query()->hasCategories([]));
+    }
+
+    /** @test */
+    public function itHasAnHasVenueTypesScope(): void
+    {
+        $this->assertInstanceOf(Builder::class, Eatery::query()->hasVenueTypes([]));
+    }
+
+    /** @test */
+    public function itHasAnHasFeaturesScope(): void
+    {
+        $this->assertInstanceOf(Builder::class, Eatery::query()->hasFeatures([]));
     }
 }

@@ -1,79 +1,39 @@
-import { ComponentObjectPropsOptions } from 'vue';
-
-const BaseProps: ComponentObjectPropsOptions = {
-  modelValue: {
-    required: true,
-    type: String,
-  },
-  name: {
-    required: true,
-    type: String,
-  },
-  id: {
-    required: false,
-    type: String,
-  },
-  required: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  autocomplete: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
-  placeholder: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
-  borders: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  background: {
-    required: false,
-    type: Boolean,
-    default: true,
-  },
-  hasError: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  // validateOnBlur: {
-  //   required: false,
-  //   type: Boolean,
-  //   default: false,
-  // },
+export type BaseFormInputProps = {
+  modelValue: string;
+  name: string;
+  id?: string;
+  required?: boolean;
+  autocomplete?: string;
+  placeholder?: string;
+  borders?: boolean;
+  background?: boolean;
+  hasError?: boolean;
 };
 
-export const InputProps: ComponentObjectPropsOptions = {
-  ...BaseProps,
-  type: {
-    required: false,
-    type: String,
-    default: 'text',
-  },
-  error: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
+export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
+  id: undefined,
+  required: false,
+  borders: false,
+  background: true,
+  hasError: false,
 };
 
-export const TextareaProps: ComponentObjectPropsOptions = {
-  ...BaseProps,
-  rows: {
-    required: false,
-    type: Number,
-    default: 5,
-  },
-  error: {
-    required: false,
-    type: String,
-    default: undefined,
-  },
+export type InputProps = BaseFormInputProps & {
+  type?: 'text' | 'number' | 'search' | 'email';
+  error?: string;
+};
+
+export const InputPropDefaults: Partial<InputProps> = {
+  ...BaseFormInputPropDefaults,
+  type: 'text',
+};
+
+export type TextareaProps = BaseFormInputProps & {
+  rows?: number;
+  error?: string;
+};
+
+export const TextareaPropsDefaults: Partial<TextareaProps> = {
+  ...BaseFormInputPropDefaults,
+  rows: 5,
 };

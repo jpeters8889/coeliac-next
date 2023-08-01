@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\Blog\Http;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Blog\Models\BlogTag;
+use App\Actions\Blogs\GetBlogTagsAction;
+use App\Models\Blogs\Blog;
+use App\Models\Blogs\BlogTag;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -33,6 +34,18 @@ class BlogListWithTagTest extends TestCase
     public function itLoadsTheBlogListPage(): void
     {
         $this->get(route('blog.index.tags', ['tag' => $this->tag->slug]))->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetBlogTagsAction(): void
+    {
+        $this->expectAction(GetBlogTagsAction::class)
+            ->get(route('blog.index'));
+
+        $tag = BlogTag::query()->first();
+
+        $this->expectAction(GetBlogTagsAction::class)
+            ->get(route('blog.index.tags', ['tag' => $tag->slug]));
     }
 
     /** @test */

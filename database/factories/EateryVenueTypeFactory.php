@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\EatingOut\Models\EateryVenueType;
+use App\Models\EatingOut\EateryVenueType;
 
 class EateryVenueTypeFactory extends Factory
 {
@@ -14,6 +14,7 @@ class EateryVenueTypeFactory extends Factory
     {
         return [
             'venue_type' => $this->faker->word,
+            'slug' => $this->faker->slug,
             'type_id' => 1,
         ];
     }

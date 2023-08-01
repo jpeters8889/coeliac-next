@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    class?: string;
+  }>(),
+  { class: 'w-6 h-6' },
+);
 
 const filepath = `../../icons/${props.name}.svg`;
 
@@ -15,7 +16,16 @@ const modules = import.meta.glob('../../icons/*.svg', {
   eager: true,
 });
 
-const svg = computed(() => modules[filepath]);
+const svg = computed(() => {
+  const template = document.createElement('template');
+  template.innerHTML = modules[filepath];
+
+  const element: SVGElement = template.content.firstChild;
+
+  element.setAttribute('class', props.class);
+
+  return template.innerHTML;
+});
 </script>
 
 <template>

@@ -1,23 +1,17 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/vue/20/solid';
 
 type Page = {
   type: 'page' | 'dots';
   number?: number;
   current?: boolean;
-  static?: boolean
+  static?: boolean;
 };
 
-const props = defineProps({
-  current: {
-    required: true,
-    type: Number,
-  },
-  to: {
-    required: true,
-    type: Number,
-  },
-});
+const props = defineProps<{
+  current: number;
+  to: number;
+}>();
 
 const canGoBack = (): boolean => props.current > 1;
 
@@ -27,15 +21,11 @@ const pages = (): Page[] => {
   const pageArray: Page[] = [];
 
   if (props.current > 3) {
-    pageArray.push(
-      { type: 'page', number: 1 },
-    );
+    pageArray.push({ type: 'page', number: 1 });
   }
 
   if (props.current > 4) {
-    pageArray.push(
-      { type: 'page', number: 2 },
-    );
+    pageArray.push({ type: 'page', number: 2 });
   }
 
   if (props.current > 5) {
@@ -51,7 +41,10 @@ const pages = (): Page[] => {
   }
 
   pageArray.push({
-    type: 'page', number: props.current, current: true, static: true,
+    type: 'page',
+    number: props.current,
+    current: true,
+    static: true,
   });
 
   if (props.current < props.to - 2) {
@@ -67,15 +60,11 @@ const pages = (): Page[] => {
   }
 
   if (props.current + 1 < props.to) {
-    pageArray.push(
-      { type: 'page', number: props.to - 1 },
-    );
+    pageArray.push({ type: 'page', number: props.to - 1 });
   }
 
   if (props.current < props.to) {
-    pageArray.push(
-      { type: 'page', number: props.to },
-    );
+    pageArray.push({ type: 'page', number: props.to });
   }
 
   return pageArray;
@@ -100,29 +89,42 @@ const gotoPage = (page: number | 'next' | 'prev'): void => {
 };
 
 const classes = (page: Page): string[] => {
-  const rtr: string[] = ['items-center', 'border-t-2', 'px-4', 'pt-4', 'font-semibold'];
+  const rtr: string[] = [
+    'items-center',
+    'border-t-2',
+    'px-4',
+    'pt-4',
+    'font-semibold',
+  ];
 
   if (page.current) {
     rtr.push('border-primary', 'text-primary');
   }
 
   if (!page.current) {
-    rtr.push('border-transparent', 'text-gray-500', 'hover:border-gray-300', 'hover:text-gray-700', 'cursor-pointer');
+    rtr.push(
+      'border-transparent',
+      'text-gray-500',
+      'hover:border-gray-300',
+      'hover:text-gray-700',
+      'cursor-pointer',
+    );
   }
 
   rtr.push(page.static ? 'inline-flex' : 'hidden sm:inline-flex');
 
   return rtr;
 };
-
 </script>
 
 <template>
-  <nav class="flex items-center justify-between border-t border-gray-200 px-4 sm:px-0 select-none">
+  <nav
+    class="flex select-none items-center justify-between border-t border-gray-200 px-4 sm:px-0"
+  >
     <div class="-mt-px flex w-0 flex-1">
       <a
         v-if="canGoBack()"
-        class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-700 cursor-pointer"
+        class="inline-flex cursor-pointer items-center border-t-2 border-transparent pt-4 pr-1 font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-700"
         @click.prevent="gotoPage('prev')"
       >
         <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-gray-400" />
@@ -142,7 +144,7 @@ const classes = (page: Page): string[] => {
         />
         <span
           v-else
-          class="hidden sm:inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500"
+          class="hidden items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 sm:inline-flex"
           v-text="'...'"
         />
       </template>
@@ -150,7 +152,7 @@ const classes = (page: Page): string[] => {
     <div class="-mt-px flex w-0 flex-1 justify-end">
       <a
         v-if="canGoForward()"
-        class="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-700 cursor-pointer"
+        class="inline-flex cursor-pointer items-center border-t-2 border-transparent pt-4 pl-1 font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-700"
         @click.prevent="gotoPage('next')"
       >
         <span class="hidden sm:inline">Next</span>

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Recipe\Models;
 
-use App\Modules\Recipe\Models\Recipe;
-use App\Modules\Recipe\Models\RecipeAllergen;
-use App\Modules\Recipe\Models\RecipeFeature;
-use App\Modules\Recipe\Models\RecipeMeal;
-use App\Modules\Recipe\Models\RecipeNutrition;
+use App\Models\Recipes\Recipe;
+use App\Models\Recipes\RecipeAllergen;
+use App\Models\Recipes\RecipeFeature;
+use App\Models\Recipes\RecipeMeal;
+use App\Models\Recipes\RecipeNutrition;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use Tests\Unit\Modules\Shared\Comments\CommentableTestTrait;

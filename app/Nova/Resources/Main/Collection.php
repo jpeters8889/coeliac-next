@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
+use App\Models\Collections\Collection as CollectionModel;
+use App\Nova\Resource;
 use App\Nova\Support\Panels\VisibilityPanel;
 use Illuminate\Database\Eloquent\Builder;
-use Jpeters8889\Body\Body;
-use App\Modules\Collection\Models\Collection as CollectionModel;
-use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Jpeters8889\AdvancedNovaMediaLibrary\Fields\Images;
+use Jpeters8889\Body\Body;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;

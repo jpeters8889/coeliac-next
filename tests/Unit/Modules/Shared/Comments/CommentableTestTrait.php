@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Shared\Comments;
 
-use App\Modules\Shared\Models\Comment;
+use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Tests\TestCase;

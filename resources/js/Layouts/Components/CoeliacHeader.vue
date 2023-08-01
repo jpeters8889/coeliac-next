@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { Bars3BottomLeftIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+import {
+  Bars3BottomLeftIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 import MobileNav from '@/Layouts/Components/Nav/MobileNav.vue';
 import CoeliacMetas from '@/Layouts/Components/CoeliacMetas.vue';
@@ -10,17 +13,23 @@ import InputField from '@/Components/Forms/RawInputField.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 
 const mobileNavOpen = ref(false);
-
 </script>
 
 <template>
   <CoeliacMetas />
 
   <div class="relative bg-primary shadow-lg">
-    <div class="relative z-20" id="header">
-      <div class="w-full mx-auto flex max-w-7xl items-center justify-between px-2">
+    <div
+      class="relative z-20"
+      id="header"
+    >
+      <div
+        class="mx-auto flex w-full max-w-7xl items-center justify-between px-2"
+      >
         <div class="md:hidden">
-          <a class=" flex items-center justify-center rounded-md text-white/80 hover:text-white">
+          <a
+            class="flex items-center justify-center rounded-md text-white/80 hover:text-white"
+          >
             <Bars3BottomLeftIcon
               class="h-10 w-10"
               @click="mobileNavOpen = true"
@@ -29,30 +38,36 @@ const mobileNavOpen = ref(false);
         </div>
 
         <Link
-          class="flex flex-col xs:flex-row flex-1 h-24 my-2 md:my-4 md:ml-2 items-center xs:justify-center md:justify-start"
+          class="my-2 flex h-24 flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start"
           href="/"
         >
           <Sealic class="xs:h-20 md:h-24" />
 
           <div class="flex flex-col">
-            <h1 class="text-center mt-2 xs:text-left xs:mt-0 xs:ml-2 text-xl xs:text-3xl md:text-4xl font-coeliac">
+            <h1
+              class="mt-2 text-center font-coeliac text-xl xs:mt-0 xs:ml-2 xs:text-left xs:text-3xl md:text-4xl"
+            >
               Coeliac Sanctuary
             </h1>
-            <span class="text-xs text-center font-coeliac md:text-base">
+            <span class="text-center font-coeliac text-xs md:text-base">
               Gluten Free Blog by Alison Peters
             </span>
           </div>
         </Link>
 
         <div class="md:w-full md:max-w-xs">
-          <div class="p-2 w-14 h-14 md:hidden">
-            <div class="bg-secondary rounded-full w-10 h-10 flex justify-center items-center">
-              <MagnifyingGlassIcon class="w-6 h-6" />
+          <div class="h-14 w-14 p-2 md:hidden">
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
+            >
+              <MagnifyingGlassIcon class="h-6 w-6" />
             </div>
           </div>
 
-          <div class="hidden md:flex flex-col">
-            <div class="flex bg-white bg-opacity-50 rounded-xl items-center pr-2 focus-within:bg-opacity-90 transition">
+          <div class="hidden flex-col md:flex">
+            <div
+              class="flex items-center rounded-xl bg-white bg-opacity-50 pr-2 transition focus-within:bg-opacity-90"
+            >
               <InputField
                 type="search"
                 name="search"
@@ -61,10 +76,10 @@ const mobileNavOpen = ref(false);
                 placeholder="Search..."
               />
 
-              <MagnifyingGlassIcon class="w-6 h-6" />
+              <MagnifyingGlassIcon class="h-6 w-6" />
             </div>
 
-            <div class="flex justify-end space-x-2 mt-2">
+            <div class="mt-2 flex justify-end space-x-2">
               <CoeliacButton
                 label="Register"
                 theme="secondary"
@@ -82,7 +97,9 @@ const mobileNavOpen = ref(false);
         </div>
       </div>
 
-      <div class="hidden md:block w-4/5 mx-auto h-px bg-gradient-to-r from-white/20 via-white/40 to-white/20" />
+      <div
+        class="mx-auto hidden h-px w-4/5 bg-gradient-to-r from-white/20 via-white/40 to-white/20 md:block"
+      />
 
       <MainNav />
     </div>

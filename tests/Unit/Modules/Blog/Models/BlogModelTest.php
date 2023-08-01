@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Modules\Blog\Models;
 
-use App\Modules\Blog\Models\Blog;
-use App\Modules\Shared\Scopes\LiveScope;
+use App\Models\Blogs\Blog;
+use App\Scopes\LiveScope;
 use Tests\TestCase;
 use Tests\Unit\Modules\Shared\Comments\CommentableTestTrait;
 use Tests\Unit\Modules\Shared\Support\CanBePublishedTestTrait;

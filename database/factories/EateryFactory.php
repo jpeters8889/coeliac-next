@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\EatingOut\Models\Eatery;
+use App\Models\EatingOut\Eatery;
 
 class EateryFactory extends Factory
 {

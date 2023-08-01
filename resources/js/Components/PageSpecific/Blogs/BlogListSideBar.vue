@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
 import InputField from '@/Components/Forms/RawInputField.vue';
 import { ref } from 'vue';
@@ -7,16 +7,10 @@ import { BlogTagCount } from '@/types/BlogTypes';
 
 const emits = defineEmits(['close']);
 
-const props = defineProps({
-  open: {
-    required: true,
-    type: Boolean,
-  },
-  tags: {
-    required: true,
-    type: Array as () => BlogTagCount[],
-  },
-});
+const props = defineProps<{
+  open: boolean;
+  tags: BlogTagCount[];
+}>();
 
 const emitClose = () => emits('close');
 
@@ -26,12 +20,13 @@ const tagsToDisplay = (): BlogTagCount[] => {
   let { tags } = props;
 
   if (searchText.value !== '') {
-    tags = tags.filter((tag) => tag.tag.toLowerCase().includes(searchText.value.toLowerCase()));
+    tags = tags.filter((tag) =>
+      tag.tag.toLowerCase().includes(searchText.value.toLowerCase()),
+    );
   }
 
   return tags.slice(0, 15);
 };
-
 </script>
 
 <template>
@@ -40,21 +35,20 @@ const tagsToDisplay = (): BlogTagCount[] => {
     side="right"
     @close="emitClose()"
   >
-    <div class="bg-white flex-1">
+    <div class="flex-1 bg-white">
       <div class="flex flex-col">
-        <div class="bg-grey-light p-2 border-b border-grey-off-light">
-          <h3 class="text-xl font-semibold">
-            Blog Tags
-          </h3>
+        <div class="border-b border-grey-off-light bg-grey-light p-2">
+          <h3 class="text-xl font-semibold">Blog Tags</h3>
         </div>
 
         <div class="p-2">
           <InputField
+            id="blog-search"
             v-model="searchText"
-            name="search"
-            type="search"
-            placeholder="Search Tags"
             borders
+            name="search"
+            placeholder="Search Tags"
+            type="search"
           />
         </div>
 
@@ -67,8 +61,8 @@ const tagsToDisplay = (): BlogTagCount[] => {
             :key="tag.slug"
           >
             <Link
-              class="flex justify-between items-center border-b border-dashed border-grey-off-dark py-2 hover:bg-grey-light transition cursor-pointer"
               :href="`/blog/tags/${tag.slug}`"
+              class="flex cursor-pointer items-center justify-between border-b border-dashed border-grey-off-dark py-2 transition hover:bg-grey-light"
             >
               <span v-text="tag.tag" />
               <span
@@ -81,7 +75,7 @@ const tagsToDisplay = (): BlogTagCount[] => {
 
         <span
           v-else
-          class="px-3 font-italic"
+          class="font-italic px-3"
           v-text="'No tags found...'"
         />
       </div>

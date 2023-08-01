@@ -1,29 +1,27 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 
-defineProps({
-  label: {
-    type: String,
-    required: true,
-  },
-  href: {
-    type: String,
-    required: false,
-    default: null,
-  },
-  active: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-});
+withDefaults(
+  defineProps<{
+    label: string;
+    href?: string;
+    active?: boolean;
+  }>(),
+  {
+    href: undefined,
+    active: false,
+  }
+);
 </script>
 
 <template>
   <Link
+    :class="{
+      'border-b-4 border-secondary': active,
+      'border-b-2 border-transparent hover:border-white': !active,
+    }"
     :href="href"
-    class="font-medium flex h-full items-center border-transparent px-4"
-    :class="{'border-b-4 border-secondary': active, 'border-b-2 hover:border-white': !active}"
+    class="flex h-full items-center px-4 font-medium"
   >
     {{ label }}
   </Link>

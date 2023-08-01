@@ -1,27 +1,18 @@
-<script setup lang="ts">
-const props = defineProps({
-  shadow: {
-    required: false,
-    type: Boolean,
-    default: true,
-  },
-  theme: {
-    required: false,
-    type: String,
-    validator: (value: string) => ['white', 'primary', 'primary-light', 'secondary'].includes(value),
-    default: 'white',
-  },
-  faded: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-  noPadding: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
-});
+<script lang="ts" setup>
+const props = withDefaults(
+  defineProps<{
+    shadow?: boolean;
+    theme?: 'white' | 'primary' | 'primary-light' | 'secondary';
+    faded?: boolean;
+    noPadding?: boolean;
+  }>(),
+  {
+    theme: 'white',
+    shadow: true,
+    faded: false,
+    noPadding: false,
+  }
+);
 
 const classes = (): string[] => {
   const base: string[] = ['flex', 'flex-col', 'rounded'];

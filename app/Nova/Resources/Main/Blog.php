@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Main;
 
-use App\Modules\Blog\Models\Blog as BlogModel;
+use App\Models\Blogs\Blog as BlogModel;
 use App\Nova\Resource;
 use App\Nova\Support\Panels\VisibilityPanel;
 use Jpeters8889\AdvancedNovaMediaLibrary\Fields\Images;

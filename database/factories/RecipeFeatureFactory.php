@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Modules\Recipe\Models\RecipeFeature;
+use App\Models\Recipes\RecipeFeature;
 
 class RecipeFeatureFactory extends Factory
 {

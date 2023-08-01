@@ -5,12 +5,12 @@ export type RecipeDetailCard = HomeHoverItem & {
   square_image: string;
   description: string;
   date: string;
-  features?: { feature: string }[],
+  features?: { feature: string }[];
   nutrition: {
-    servings: string,
-    calories: number,
-    portion_size: number,
-  }
+    servings: string;
+    calories: number;
+    portion_size: number;
+  };
 };
 
 export type RecipePage = {
@@ -25,12 +25,12 @@ export type RecipePage = {
   description: string;
   ingredients: string;
   method: string;
-  features?: { feature: string, slug: string }[];
-  allergens?: { allergen: string, slug: string }[];
+  features?: { feature: string; slug: string }[];
+  allergens?: { allergen: string; slug: string }[];
   timing: {
     prep_time: string;
     cook_time: string;
-  },
+  };
   nutrition: RecipeDetailCard['nutrition'] & {
     carbs: number;
     fibre: number;
@@ -60,7 +60,7 @@ export type RecipeFreeFrom = {
 };
 
 export type RecipeSetFilters = {
-  features: string[],
-  meals: string[],
-  freeFrom: string[],
+  features: string[];
+  meals: string[];
+  freeFrom: string[];
 };
