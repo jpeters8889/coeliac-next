@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
+use App\Concerns\EatingOut\HasEateryDetails;
 use App\Scopes\LiveScope;
 use Closure;
 use Illuminate\Container\Container;
@@ -11,25 +12,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Support\Stringable;
 
 /**
- * @property string $name
- * @property EateryTown $town
- * @property EateryCounty $county
  * @property string $info
- * @property string $address
- * @property int $lat
- * @property int $lng
- * @property bool $live
- * @property int $id
  * @property Collection<EateryAttractionRestaurant> $restaurants
  * @property string | null $website
  * @property EateryCuisine | null $cuisine
@@ -40,10 +31,7 @@ use Illuminate\Support\Stringable;
  * @property Collection<EateryFeature> $features
  * @property Collection<EateryReview> $reviews
  * @property EateryType $type
- * @property string $full_location
  * @property EateryVenueType | null $venueType
- * @property null|string $slug
- * @property number $town_id
  * @property string $full_name
  * @property string $gf_menu_link
  * @property EateryOpeningTimes | null $openingTimes
@@ -56,6 +44,8 @@ use Illuminate\Support\Stringable;
  */
 class Eatery extends Model
 {
+    use HasEateryDetails;
+
     protected $casts = [
         'lat' => 'float',
         'lng' => 'float',
@@ -84,37 +74,6 @@ class Eatery extends Model
         });
     }
 
-    public function generateSlug(): string
-    {
-        if ($this->slug) {
-            return $this->slug;
-        }
-
-        return Str::of($this->name)
-            ->when(
-                $this->hasDuplicateNameInTown(),
-                fn (Stringable $str) => $str->append(' ' . $this->eateryPostcode()),
-            )
-            ->slug()
-            ->toString();
-    }
-
-    protected function hasDuplicateNameInTown(): bool
-    {
-        return self::query()
-            ->where('town_id', $this->town_id)
-            ->where('name', $this->name)
-            ->where('live', 1)
-            ->count() > 1;
-    }
-
-    protected function eateryPostcode(): string
-    {
-        $address = explode('<br />', $this->address);
-
-        return array_pop($address);
-    }
-
     public function link(): string
     {
         return '/' . implode('/', [
@@ -123,18 +82,6 @@ class Eatery extends Model
             $this->town->slug,
             $this->slug,
         ]);
-    }
-
-    /** @return BelongsTo<EateryCounty, Eatery> */
-    public function county(): BelongsTo
-    {
-        return $this->belongsTo(EateryCounty::class, 'county_id');
-    }
-
-    /** @return BelongsTo<EateryCountry, Eatery> */
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(EateryCountry::class, 'country_id');
     }
 
     /** @return HasOne<EateryCuisine> */
@@ -152,6 +99,18 @@ class Eatery extends Model
             'wheretoeat_id',
             'feature_id'
         )->withTimestamps();
+    }
+
+    /** @return HasMany<NationwideBranch> */
+    public function nationwideBranches(): HasMany
+    {
+        return $this->hasMany(NationwideBranch::class, 'wheretoeat_id');
+    }
+
+    /** @return HasOne<NationwideBranch> */
+    public function branch(): HasOne
+    {
+        return $this->hasOne(NationwideBranch::class, 'wheretoeat_id');
     }
 
     /** @return HasOne<EateryOpeningTimes> */
@@ -184,12 +143,6 @@ class Eatery extends Model
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return BelongsTo<EateryTown, Eatery> */
-    public function town(): BelongsTo
-    {
-        return $this->belongsTo(EateryTown::class, 'town_id');
-    }
-
     /** @return HasOne<EateryType> */
     public function type(): HasOne
     {
@@ -219,7 +172,7 @@ class Eatery extends Model
             $average = round(Arr::average($reviewsWithHowExpense));
 
             return [
-                'value' => (string)$average,
+                'value' => (string) $average,
                 'label' => EateryReview::HOW_EXPENSIVE_LABELS[$average],
             ];
         });
@@ -233,14 +186,8 @@ class Eatery extends Model
                 return null;
             }
 
-            return (string)Arr::average($this->reviews->pluck('rating')->toArray());
+            return (string) Arr::average($this->reviews->pluck('rating')->toArray());
         });
-    }
-
-    /** @return Attribute<string, never> */
-    public function formattedAddress(): Attribute
-    {
-        return Attribute::get(fn () => Str::of($this->address)->explode('<br />')->join(', '));
     }
 
     /** @return Attribute<string | null, never> */
@@ -257,26 +204,6 @@ class Eatery extends Model
 
             return implode(', ', [
                 $this->name,
-                $this->town->town,
-                $this->county->county,
-                $this->country->country,
-            ]);
-        });
-    }
-
-    /** @return Attribute<string | null, never> */
-    public function fullLocation(): Attribute
-    {
-        return Attribute::get(function () {
-            if ( ! $this->relationLoaded('town')) {
-                return null;
-            }
-
-            if (Str::lower($this->town->town) === 'nationwide') {
-                return "{$this->name}, Nationwide";
-            }
-
-            return implode(', ', [
                 $this->town->town,
                 $this->county->county,
                 $this->country->country,
@@ -311,7 +238,7 @@ class Eatery extends Model
     }
 
     /**
-     * @param Builder<Eatery> $builder
+     * @param  Builder<Eatery>  $builder
      * @return Builder<Eatery>
      */
     public function scopeHasCategories(Builder $builder, array $categories): Builder
@@ -326,7 +253,7 @@ class Eatery extends Model
     }
 
     /**
-     * @param Builder<Eatery> $builder
+     * @param  Builder<Eatery>  $builder
      * @return Builder<Eatery>
      */
     public function scopeHasVenueTypes(Builder $builder, array $venueTypes): Builder
@@ -341,7 +268,7 @@ class Eatery extends Model
     }
 
     /**
-     * @param Builder<Eatery> $builder
+     * @param  Builder<Eatery>  $builder
      * @return Builder<Eatery>
      */
     public function scopeHasFeatures(Builder $builder, array $features): Builder

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class GetBlogsForBlogIndexAction
 {
-    public function __invoke(?BlogTag $tag = null, int $perPage = 12): BlogListCollection
+    public function handle(BlogTag $tag = null, int $perPage = 12): BlogListCollection
     {
         return new BlogListCollection(
             Blog::query()

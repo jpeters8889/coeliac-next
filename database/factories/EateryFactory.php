@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryType;
 
 class EateryFactory extends Factory
 {
@@ -13,7 +14,7 @@ class EateryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->title,
+            'name' => $this->faker->word,
             'slug' => $this->faker->slug,
             'town_id' => 1,
             'county_id' => 1,
@@ -31,13 +32,23 @@ class EateryFactory extends Factory
         ];
     }
 
-    public function notLive()
+    public function notLive(): self
     {
         return $this->state(fn () => ['live' => false]);
     }
 
-    public function withOutSlug()
+    public function withOutSlug(): self
     {
         return $this->state(fn () => ['slug' => null]);
+    }
+
+    public function attraction(): self
+    {
+        return $this->state(fn () => ['type_id' => EateryType::ATTRACTION]);
+    }
+
+    public function hotel(): self
+    {
+        return $this->state(fn () => ['type_id' => EateryType::HOTEL]);
     }
 }

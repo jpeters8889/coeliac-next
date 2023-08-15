@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Cache;
 class GetMostRatedPlacesInCountyAction
 {
     /** @return Collection<int, CountyEateryResource> */
-    public function __invoke(EateryCounty $county): Collection
+    public function handle(EateryCounty $county): Collection
     {
         $key = "wheretoeat_county_{$county->slug}_most_rated_places";
 
-        if(Cache::has($key)) {
+        if (Cache::has($key)) {
             /** @var Collection<int, CountyEateryResource> $cached */
             $cached = Cache::get($key);
 

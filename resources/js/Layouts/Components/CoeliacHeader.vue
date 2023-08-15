@@ -20,8 +20,8 @@ const mobileNavOpen = ref(false);
 
   <div class="relative bg-primary shadow-lg">
     <div
-      class="relative z-20"
       id="header"
+      class="relative z-20"
     >
       <div
         class="mx-auto flex w-full max-w-7xl items-center justify-between px-2"
@@ -38,14 +38,14 @@ const mobileNavOpen = ref(false);
         </div>
 
         <Link
-          class="my-2 flex h-24 flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start"
+          class="my-2 flex h-[6.5rem] flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start"
           href="/"
         >
-          <Sealic class="xs:h-20 md:h-24" />
+          <Sealic class="-mb-3 xs:mb-0 xs:h-20 md:h-24" />
 
           <div class="flex flex-col">
             <h1
-              class="mt-2 text-center font-coeliac text-xl xs:mt-0 xs:ml-2 xs:text-left xs:text-3xl md:text-4xl"
+              class="mt-2 text-center font-coeliac text-xl xs:ml-2 xs:mt-0 xs:text-left xs:text-3xl md:text-4xl"
             >
               Coeliac Sanctuary
             </h1>

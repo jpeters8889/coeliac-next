@@ -17,7 +17,7 @@ class GetFiltersForTownAction
 {
     protected array $filters;
 
-    public function __invoke(EateryTown $town, array $filters = []): array
+    public function handle(EateryTown $town, array $filters = []): array
     {
         $this->filters = $filters;
 
@@ -39,7 +39,7 @@ class GetFiltersForTownAction
                 'value' => $type->type,
                 'label' => "{$type->name} - ({$type->eateries_count})",
                 'disabled' => false,
-                'checked' => $this->filterIsEnabled('category', $type->type),
+                'checked' => $this->filterIsEnabled('categories', $type->type),
             ]);
     }
 
@@ -49,11 +49,14 @@ class GetFiltersForTownAction
             return false;
         }
 
-        /** @var string $string */
-        $string = Arr::get($this->filters, $key);
+        /** @var string[] $filters */
+        $filters = Arr::get($this->filters, $key, []);
 
-        return Str::of($string)
-            ->explode(',')
+        if ( ! $filters) {
+            return false;
+        }
+
+        return collect($filters)
             ->map(fn (string $filter) => Str::lower($filter))
             ->contains(Str::lower($value));
     }
@@ -69,14 +72,13 @@ class GetFiltersForTownAction
                 'value' => $venueType->slug,
                 'label' => "{$venueType->venue_type} - ({$venueType->eateries_count})",
                 'disabled' => false,
-                'checked' => $this->filterIsEnabled('venueType', $venueType->slug),
+                'checked' => $this->filterIsEnabled('venueTypes', $venueType->slug),
             ]);
     }
 
     /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
     protected function getFeatures(EateryTown $town): Collection
     {
-
         return EateryFeature::query()
             ->withCount(['eateries' => fn (Builder $query) => $query->where('town_id', $town->id)])
             ->orderByRaw('eateries_count desc, feature asc')
@@ -85,7 +87,7 @@ class GetFiltersForTownAction
                 'value' => $feature->slug,
                 'label' => "{$feature->feature} - ({$feature->eateries_count})",
                 'disabled' => false,
-                'checked' => $this->filterIsEnabled('feature', $feature->slug),
+                'checked' => $this->filterIsEnabled('features', $feature->slug),
             ]);
     }
 }

@@ -37,10 +37,10 @@ class RecipeController
             ->metaDescription('Coeliac Sanctuary gluten free recipe list, all of our fabulous gluten free recipes which I have been tried and tested! ')
             ->metaTags(['coeliac sanctuary recipes', 'recipe index', 'recipe list', 'gluten free recipes', 'recipes', 'coeliac recipes'])
             ->render('Recipe/Index', [
-                'recipes' => fn () => $getRecipesForIndexAction($filters),
-                'features' => fn () => $getRecipeFiltersForIndexAction(RecipeFeature::class, $filters),
-                'meals' => fn () => $getRecipeFiltersForIndexAction(RecipeMeal::class, $filters),
-                'freeFrom' => fn () => $getRecipeFiltersForIndexAction(RecipeAllergen::class, $filters),
+                'recipes' => fn () => $getRecipesForIndexAction->handle($filters),
+                'features' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeFeature::class, $filters),
+                'meals' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeMeal::class, $filters),
+                'freeFrom' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeAllergen::class, $filters),
                 'setFilters' => fn () => $filters,
             ]);
     }
@@ -63,7 +63,7 @@ class RecipeController
             ])
             ->render('Recipe/Show', [
                 'recipe' => new RecipeShowResource($recipe),
-                'comments' => fn () => $getCommentsForItemAction($recipe),
+                'comments' => fn () => $getCommentsForItemAction->handle($recipe),
             ]);
     }
 

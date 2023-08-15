@@ -18,7 +18,7 @@ class CollectionController
             ->title('Collections')
             ->metaDescription('Coeliac Sanctuary Collections | Some of our favourite things, all grouped together in collections!')
             ->render('Collection/Index', [
-                'collections' => $getCollectionsForIndexAction(),
+                'collections' => $getCollectionsForIndexAction->handle(),
             ]);
     }
 

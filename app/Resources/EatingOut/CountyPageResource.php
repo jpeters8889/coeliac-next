@@ -14,7 +14,7 @@ class CountyPageResource extends JsonResource
     /** @return array{name: string, slug: string, image: string, towns: CountyTownCollection, eateries: int, reviews: int} */
     public function toArray(Request $request)
     {
-        $this->load('activeTowns', 'activeTowns.county', 'activeTowns.eateries');
+        $this->load('activeTowns', 'activeTowns.county', 'activeTowns.liveEateries', 'activeTowns.liveBranches');
         $this->loadCount(['eateries', 'reviews']);
 
         return [

@@ -11,22 +11,22 @@ use Tests\TestCase;
 trait InteractsWithActions
 {
     /**
-     * @param class-string $action
+     * @param  class-string  $action
      */
-    protected function callAction(string $action, ... $props)
+    protected function callAction(string $action, ...$props)
     {
-        return app($action)(...$props);
+        return app($action)->handle(...$props);
     }
 
     /**
-     * @param class-string $action
+     * @param  class-string  $action
      */
     protected function expectAction(string $action, ...$args): self
     {
-        $mockery = $this->partialMock($action)->shouldReceive('__invoke');
+        $mockery = $this->partialMock($action)->shouldReceive('handle');
 
         if ($args) {
-            if(count($args) === 1 && $args[0] instanceof Closure) {
+            if (count($args) === 1 && $args[0] instanceof Closure) {
                 $args = $args[0];
             }
 

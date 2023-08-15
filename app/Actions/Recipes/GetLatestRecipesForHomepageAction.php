@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class GetLatestRecipesForHomepageAction
 {
-    public function __invoke(): AnonymousResourceCollection
+    public function handle(): AnonymousResourceCollection
     {
         /** @var string $key */
         $key = config('coeliac.cache.recipes.home');

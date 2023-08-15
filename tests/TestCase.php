@@ -7,9 +7,9 @@ namespace Tests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\ServiceProvider;
 use Tests\Concerns\CreatesFactories;
 use Tests\Concerns\InteractsWithActions;
+use Tests\Concerns\InteractsWithPipelines;
 use Tests\Concerns\SeedsWebsite;
 
 abstract class TestCase extends BaseTestCase
@@ -17,13 +17,14 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use CreatesFactories;
     use InteractsWithActions;
+    use InteractsWithPipelines;
     use RefreshDatabase;
     use SeedsWebsite;
 
     protected function migrateUsing(): array
     {
         return [
-            '--schema-path' => 'database/schema/mysql-schema.dump'
+            '--schema-path' => 'database/schema/mysql-schema.dump',
         ];
     }
 
@@ -36,15 +37,34 @@ abstract class TestCase extends BaseTestCase
         DB::connection()->getSchemaBuilder()->disableForeignKeyConstraints();
     }
 
-    /** @param class-string<ServiceProvider> $serviceProvider */
-    public function assertServiceProviderLoaded(string $serviceProvider): void
+    protected function assertSortedAlphabetically(array $items): void
     {
-        $this->assertArrayHasKey($serviceProvider, $this->app->getLoadedProviders());
-    }
+        $lookup = range('a', 'z');
 
-    /** @param class-string<ServiceProvider> $serviceProvider */
-    public function assertServiceProviderNotLoaded(string $serviceProvider): void
-    {
-        $this->assertArrayNotHasKey($serviceProvider, $this->app->getLoadedProviders());
+        foreach ($items as $index => $item) {
+            if ($index === 0) {
+                continue;
+            }
+
+            $item = str_replace(' ', '', $item);
+            $toCompare = str_replace(' ', '', $items[$index - 1]);
+
+            $characterIndex = 0;
+            $currentLetter = 0;
+            $previousLetter = 0;
+
+            while ($currentLetter === $previousLetter) {
+                $currentLetter = mb_strlen($item) > $characterIndex ? array_search($item[$characterIndex], $lookup) : 30;
+                $previousLetter = mb_strlen($toCompare) > $characterIndex ? array_search($toCompare[$characterIndex], $lookup) : -1;
+
+                $characterIndex++;
+            }
+
+            $this->assertGreaterThan(
+                $previousLetter,
+                $currentLetter,
+                "Failed to assert that {$item} comes after {$toCompare} alphabetically"
+            );
+        }
     }
 }

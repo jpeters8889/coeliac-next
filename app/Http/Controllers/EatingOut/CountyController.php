@@ -14,8 +14,8 @@ use Inertia\Response;
 class CountyController
 {
     public function __invoke(
-        EateryCounty                     $county,
-        Inertia                          $inertia,
+        EateryCounty $county,
+        Inertia $inertia,
         GetMostRatedPlacesInCountyAction $getMostRatedPlacesInCounty,
         GetTopRatedPlacesInCountyAction $getTopRatedPlacesInCounty
     ): Response {
@@ -25,8 +25,8 @@ class CountyController
             ->metaTags($county->keywords())
             ->render('EatingOut/County', [
                 'county' => new CountyPageResource($county),
-                'topRated' => fn () => $getMostRatedPlacesInCounty($county),
-                'mostRated' => fn () => $getTopRatedPlacesInCounty($county),
+                'topRated' => fn () => $getMostRatedPlacesInCounty->handle($county),
+                'mostRated' => fn () => $getTopRatedPlacesInCounty->handle($county),
             ]);
     }
 }

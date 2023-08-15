@@ -9,7 +9,7 @@ use App\Resources\Comments\CommentCollection;
 
 class GetCommentsForItemAction
 {
-    public function __invoke(HasComments $item): CommentCollection
+    public function handle(HasComments $item): CommentCollection
     {
         return new CommentCollection(
             $item->comments()

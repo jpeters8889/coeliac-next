@@ -9,7 +9,7 @@ use App\Resources\Collections\CollectionListCollection;
 
 class GetCollectionsForIndexAction
 {
-    public function __invoke(int $perPage = 12): CollectionListCollection
+    public function handle(int $perPage = 12): CollectionListCollection
     {
         return new CollectionListCollection(
             Collection::query()

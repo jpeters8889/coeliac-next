@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 class GetBlogTagsAction
 {
     /** @return Collection<int, BlogTag> */
-    public function __invoke(int $limit = 14): Collection
+    public function handle(int $limit = 14): Collection
     {
         return BlogTag::query()
             ->withCount(['blogs' => fn (Builder $builder) => $builder->where('live', true)])

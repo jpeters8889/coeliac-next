@@ -18,9 +18,9 @@ class CountyTownResource extends JsonResource
         return [
             'name' => $this->town,
             'link' => $this->link(),
-            'eateries' => $this->eateries->where('type_id', EateryType::EATERY)->count(),
-            'attractions' => $this->eateries->where('type_id', EateryType::ATTRACTION)->count(),
-            'hotels' => $this->eateries->where('type_id', EateryType::HOTEL)->count(),
+            'eateries' => $this->liveEateries->where('type_id', EateryType::EATERY)->count() + $this->liveBranches->count(),
+            'attractions' => $this->liveEateries->where('type_id', EateryType::ATTRACTION)->count(),
+            'hotels' => $this->liveEateries->where('type_id', EateryType::HOTEL)->count(),
         ];
     }
 }

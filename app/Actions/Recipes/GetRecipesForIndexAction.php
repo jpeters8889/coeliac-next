@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class GetRecipesForIndexAction
 {
-    /** @param array{features?: string[], meals?: string[], freeFrom?: string[]} $filters */
-    public function __invoke(array $filters = [], int $perPage = 12): RecipeListCollection
+    /** @param  array{features?: string[], meals?: string[], freeFrom?: string[]}  $filters */
+    public function handle(array $filters = [], int $perPage = 12): RecipeListCollection
     {
         $featureFilters = array_filter($filters['features'] ?? []);
         $mealFilters = array_filter($filters['meals'] ?? []);

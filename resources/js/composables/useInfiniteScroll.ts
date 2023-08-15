@@ -27,8 +27,9 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
       {
         preserveState: true,
         preserveScroll: true,
+        replace: true,
         onSuccess: () => {
-          window.history.replaceState({}, '', initialUrl);
+          window.history.replaceState(null, '', initialUrl);
 
           items.value = [...items.value, ...value().data];
         },

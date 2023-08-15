@@ -14,11 +14,12 @@ class GetRecipeFiltersForIndexAction
 {
     /**
      * @template TFilter of FilterableRecipeRelation
-     * @param class-string<TFilter> $relation
-     * @param array{features?: string[], meals?: string[], freeFrom?: string[]} $filters
+     *
+     * @param  class-string<TFilter>  $relation
+     * @param  array{features?: string[], meals?: string[], freeFrom?: string[]}  $filters
      * @return Collection<int, array>
      */
-    public function __invoke(string $relation, array $filters = []): Collection
+    public function handle(string $relation, array $filters = []): Collection
     {
         $featureFilters = array_filter($filters['features'] ?? []);
         $mealFilters = array_filter($filters['meals'] ?? []);
@@ -26,7 +27,6 @@ class GetRecipeFiltersForIndexAction
 
         /** @var Builder<TFilter> $query */
         $query = $relation::query(); /** @phpstan-ignore-line */
-
         if (count($featureFilters) > 0) {
             $query->hasRecipesWithFeatures($featureFilters);
         }
@@ -42,7 +42,6 @@ class GetRecipeFiltersForIndexAction
         /** @var Builder<TFilter> $query */
         $query = $query->withCount(['recipes' => function (Builder $builder) use ($featureFilters, $mealFilters, $freeFromFilters): Builder { /** @phpstan-ignore-line */
             /** @var Builder<Recipe> $builder */
-
             if (count($featureFilters) > 0) {
                 $builder->hasFeatures($featureFilters);
             }

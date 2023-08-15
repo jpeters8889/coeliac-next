@@ -21,6 +21,7 @@
         "league/flysystem-aws-s3-v3": "^3.15.0",
         "pixelcreation/nova-field-sortable": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
+        "spatie/laravel-collection-macros": "^7.13",
         "spatie/laravel-data": "^2.2.3",
         "spatie/laravel-medialibrary": "^10.11.2",
         "spatie/laravel-sluggable": "^3.5.0",

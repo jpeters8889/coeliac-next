@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut;
 
-use App\Actions\EatingOut\GetEateriesInTownAction;
 use App\Actions\EatingOut\GetFiltersForTownAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use App\Pipelines\EatingOut\GetEateriesPipeline;
 use App\Resources\EatingOut\TownPageResource;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -16,13 +16,14 @@ use Inertia\Response;
 class TownController
 {
     public function __invoke(
-        Request                 $request,
-        EateryCounty            $county,
-        EateryTown              $town,
-        Inertia                 $inertia,
-        GetEateriesInTownAction $getEateriesInTown,
+        Request $request,
+        EateryCounty $county,
+        EateryTown $town,
+        Inertia $inertia,
         GetFiltersForTownAction $getFiltersForTown,
+        GetEateriesPipeline $getEateriesPipeline,
     ): Response {
+        /** @var array{categories: string[], features: string[], venueTypes: string []}  $filters */
         $filters = [
             'categories' => $request->has('filter.category') ? explode(',', $request->string('filter.category')->toString()) : null,
             'venueTypes' => $request->has('filter.venueType') ? explode(',', $request->string('filter.venueType')->toString()) : null,
@@ -38,8 +39,8 @@ class TownController
             ->metaTags($town->keywords())
             ->render('EatingOut/Town', [
                 'town' => fn () => new TownPageResource($town),
-                'eateries' => fn () => $getEateriesInTown($town, $filters),
-                'filters' => fn () => $getFiltersForTown($town),
+                'eateries' => fn () => $getEateriesPipeline->run($town, $filters),
+                'filters' => fn () => $getFiltersForTown->handle($town, $filters),
             ]);
     }
 }

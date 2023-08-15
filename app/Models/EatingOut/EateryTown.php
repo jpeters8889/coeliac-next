@@ -24,7 +24,12 @@ class EateryTown extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope('hasPlaces', fn (Builder $builder) => $builder->whereHas('liveEateries'));
+        static::addGlobalScope(
+            'hasPlaces',
+            fn (Builder $builder) => $builder
+                ->whereHas('liveEateries')
+                ->orWhereHas('liveBranches')
+        );
 
         static::creating(static function (self $town) {
             if ( ! $town->slug) {
@@ -51,6 +56,12 @@ class EateryTown extends Model
     public function liveEateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'town_id')->where('live', true);
+    }
+
+    /** @return HasMany<NationwideBranch> */
+    public function liveBranches(): HasMany
+    {
+        return $this->hasMany(NationwideBranch::class, 'town_id')->where('live', true);
     }
 
     /** @return BelongsTo<EateryCounty, EateryTown> */

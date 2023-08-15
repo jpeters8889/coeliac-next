@@ -22,8 +22,8 @@ class BlogController
             ->metaDescription('Coeliac Sanctuary gluten free blog list | All of our Coeliac blog posts in one list')
             ->metaTags(['coeliac sanctuary blog', 'blog', 'coeliac blog', 'gluten free blog', ...($tag->exists ? ["{$tag->tag} blogs"] : [])])
             ->render('Blog/Index', [
-                'blogs' => fn () => $getBlogsForBlogIndexAction($tag),
-                'tags' => fn () => $getBlogTagsAction(),
+                'blogs' => fn () => $getBlogsForBlogIndexAction->handle($tag),
+                'tags' => fn () => $getBlogTagsAction->handle(),
                 'activeTag' => $tag->exists ? $tag : null,
             ]);
     }
@@ -46,7 +46,7 @@ class BlogController
             ->schema($blog->schema()->toScript())
             ->render('Blog/Show', [
                 'blog' => new BlogShowResource($blog),
-                'comments' =>  fn () => $commentsForItemAction($blog),
+                'comments' => fn () => $commentsForItemAction->handle($blog),
             ]);
     }
 }

@@ -47,11 +47,13 @@ class EateryCounty extends Model implements HasMedia
         $this->addMediaCollection('primary')->singleFile();
     }
 
-
     /** @return HasMany<EateryTown> */
     public function activeTowns(): HasMany
     {
-        return $this->hasMany(EateryTown::class, 'county_id')->whereHas('liveEateries')->orderBy('town');
+        return $this->hasMany(EateryTown::class, 'county_id')
+            ->whereHas('liveEateries')
+            ->orWhereHas('liveBranches')
+            ->orderBy('town');
     }
 
     /** @return HasMany<Eatery> */

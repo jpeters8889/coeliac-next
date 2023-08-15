@@ -19,8 +19,8 @@ class EateryScaffoldingSeeder extends Seeder
     public function run(): void
     {
         Factory::factoryForModel(EateryCountry::class)->create(['id' => 1, 'country' => 'England']);
-        Factory::factoryForModel(EateryCounty::class)->create(['id' => 1, 'county' => 'Cheshire']);
-        Factory::factoryForModel(EateryTown::class)->create(['id' => 1, 'town' => 'Crewe']);
+        Factory::factoryForModel(EateryCounty::class)->create(['id' => 1, 'county' => 'Cheshire', 'country_id' => 1]);
+        Factory::factoryForModel(EateryTown::class)->create(['id' => 1, 'town' => 'Crewe', 'county_id' => 1]);
 
         Factory::factoryForModel(EateryType::class)->create(['id' => 1, 'type' => 'wte', 'name' => 'Eatery']);
         Factory::factoryForModel(EateryType::class)->create(['id' => 2, 'type' => 'att', 'name' => 'Attraction']);
@@ -30,5 +30,4 @@ class EateryScaffoldingSeeder extends Seeder
         Factory::factoryForModel(EateryFeature::class)->count(5)->create();
         Factory::factoryForModel(EateryCuisine::class)->count(5)->create();
     }
-
 }

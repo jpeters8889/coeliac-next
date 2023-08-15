@@ -19,9 +19,9 @@ class HomeController
         GetLatestCollectionsForHomepageAction $getLatestCollectionsForHomepageAction
     ): Response {
         return $inertia->render('Home', [
-            'blogs' => $getLatestBlogsForHomepageAction(),
-            'recipes' => $getLatestRecipesForHomepageAction(),
-            'collections' => $getLatestCollectionsForHomepageAction(),
+            'blogs' => $getLatestBlogsForHomepageAction->handle(),
+            'recipes' => $getLatestRecipesForHomepageAction->handle(),
+            'collections' => $getLatestCollectionsForHomepageAction->handle(),
         ]);
     }
 }
