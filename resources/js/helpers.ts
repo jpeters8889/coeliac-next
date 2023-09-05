@@ -39,3 +39,6 @@ export const loadScript = (script: string) =>
 
     scriptElement.addEventListener('load', resolve);
   });
+
+export const ucfirst = (str: string): string =>
+  str.charAt(0).toUpperCase() + str.slice(1);

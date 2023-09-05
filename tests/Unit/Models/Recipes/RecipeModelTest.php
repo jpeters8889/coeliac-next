@@ -10,11 +10,11 @@ use App\Models\Recipes\RecipeFeature;
 use App\Models\Recipes\RecipeMeal;
 use App\Models\Recipes\RecipeNutrition;
 use Illuminate\Http\UploadedFile;
+use Tests\Concerns\CanBePublishedTestTrait;
+use Tests\Concerns\CommentableTestTrait;
+use Tests\Concerns\DisplaysMediaTestTrait;
+use Tests\Concerns\LinkableModelTestTrait;
 use Tests\TestCase;
-use Tests\Unit\Concerns\CanBePublishedTestTrait;
-use Tests\Unit\Concerns\Comments\CommentableTestTrait;
-use Tests\Unit\Concerns\DisplaysMediaTestTrait;
-use Tests\Unit\Concerns\LinkableModelTestTrait;
 
 class RecipeModelTest extends TestCase
 {

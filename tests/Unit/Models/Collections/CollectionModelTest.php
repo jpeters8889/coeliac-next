@@ -7,10 +7,10 @@ namespace Tests\Unit\Models\Collections;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Scopes\LiveScope;
+use Tests\Concerns\CanBePublishedTestTrait;
+use Tests\Concerns\DisplaysMediaTestTrait;
+use Tests\Concerns\LinkableModelTestTrait;
 use Tests\TestCase;
-use Tests\Unit\Concerns\CanBePublishedTestTrait;
-use Tests\Unit\Concerns\DisplaysMediaTestTrait;
-use Tests\Unit\Concerns\LinkableModelTestTrait;
 
 class CollectionModelTest extends TestCase
 {

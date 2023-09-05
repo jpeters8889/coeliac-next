@@ -8,6 +8,9 @@ use App\Concerns\EatingOut\HasEateryDetails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Eatery $eatery
+ */
 class NationwideBranch extends Model
 {
     use HasEateryDetails;
@@ -36,5 +39,15 @@ class NationwideBranch extends Model
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');
+    }
+
+    public function link(): string
+    {
+        return '/' . implode('/', [
+            'wheretoeat',
+            'nationwide',
+            $this->eatery->slug,
+            $this->slug,
+        ]);
     }
 }

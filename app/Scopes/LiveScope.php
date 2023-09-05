@@ -10,16 +10,18 @@ use Illuminate\Database\Eloquent\Scope;
 
 class LiveScope implements Scope
 {
+    public function __construct(protected string $field = 'live')
+    {
+        //
+    }
+
     /**
      * @template T of Model
      *
-     * @param Builder<T> $builder
-     * @param Model $model
-     * @return void
+     * @param  Builder<T>  $builder
      */
     public function apply(Builder $builder, Model $model): void
     {
-        /** @phpstan-ignore-next-line  */
-        $builder->where('live', true);
+        $builder->where($this->field, true);
     }
 }

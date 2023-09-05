@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import { computed, FunctionalComponent, HTMLAttributes, VNodeProps } from 'vue';
+import Loader from '@/Components/Loader.vue';
 
 const props = withDefaults(
   defineProps<{
     label: string;
     theme?: 'primary' | 'faded' | 'secondary' | 'light';
-    size?: 'sm' | 'md' | 'lg' | 'xl';
+    size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     bold?: boolean;
     as?: InstanceType<typeof Link> | 'button' | 'a';
     type?: 'submit' | 'button';
@@ -65,6 +66,10 @@ const classes = computed((): string[] => {
       base.push('px-6', 'py-3', 'text-base');
       break;
     }
+    case 'xxl': {
+      base.push('px-12', 'py-3', 'text-lg', 'font-semibold');
+      break;
+    }
   }
 
   if (props.bold) {
@@ -117,13 +122,6 @@ const emits = defineEmits(['click']);
       />
     </div>
 
-    <div
-      v-if="loading"
-      class="absolute left-0 top-0 flex h-full w-full items-center justify-center"
-    >
-      <div
-        class="h-6 w-6 animate-spin rounded-full border-4 border-white/20 border-t-white/80"
-      />
-    </div>
+    <Loader :display="loading || false" />
   </component>
 </template>

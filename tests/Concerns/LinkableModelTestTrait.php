@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Modules\Shared\Support;
+namespace Tests\Concerns;
 
 use App\Concerns\LinkableModel;
 use Illuminate\Database\Eloquent\Model;

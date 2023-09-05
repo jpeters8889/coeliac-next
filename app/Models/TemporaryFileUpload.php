@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
 /**
@@ -28,24 +26,5 @@ class TemporaryFileUpload extends Model
 
             return $model;
         });
-    }
-
-    public static function createFrom(UploadedFile $file, string $path, string $source = 'upload', Carbon $deleteAt = null): self
-    {
-        $deleteAt ??= Carbon::now()->addDay();
-
-        return static::query()->create([
-            'filename' => $file->hashName(),
-            'path' => $path,
-            'source' => $source,
-            'filesize' => $file->getSize(),
-            'mime' => $file->getMimeType(),
-            'delete_at' => $deleteAt,
-        ]);
-    }
-
-    public static function createFromReviewImageUpload(UploadedFile $file, string $path): self
-    {
-        return static::createFrom($file, $path, 'wte-review-image', Carbon::now()->addMinutes(15));
     }
 }

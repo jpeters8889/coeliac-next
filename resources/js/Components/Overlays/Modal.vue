@@ -37,7 +37,7 @@ const slots = useSlots();
     >
       <Dialog
         as="div"
-        class="relative z-10"
+        class="relative z-40"
         @close="closeOverlay()"
       >
         <TransitionChild
@@ -69,6 +69,7 @@ const slots = useSlots();
             >
               <DialogPanel
                 :class="{
+                  'xs:max-w-md': size === 'small',
                   'sm:max-w-lg': size === 'medium',
                   'sm:max-w-7xl': size === 'large',
                   'sm:max-w-[95%]': size === 'full',
@@ -77,10 +78,10 @@ const slots = useSlots();
               >
                 <div
                   :class="{ hidden: !closeable }"
-                  class="absolute right-0 top-0 z-10 pr-2 pt-2"
+                  class="absolute right-0 top-0 z-50 pr-2 pt-2"
                 >
                   <button
-                    class="text-gray-dark rounded-md bg-white bg-opacity-40 hover:bg-opacity-80"
+                    class="rounded-md border border-transparent bg-white bg-opacity-40 text-grey-dark hover:border-grey-dark hover:bg-opacity-80"
                     type="button"
                     @click="closeOverlay()"
                   >

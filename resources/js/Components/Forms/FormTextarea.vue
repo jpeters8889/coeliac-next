@@ -6,7 +6,7 @@ import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(
   defineProps<TextareaProps & { label: string }>(),
-  TextareaPropsDefaults,
+  TextareaPropsDefaults
 );
 
 const emits = defineEmits(['update:modelValue']);
@@ -34,6 +34,7 @@ watch(value, () => {
         :name="name"
         :placeholder="placeholder"
         :required="required"
+        :max="max"
         borders
       />
       <div

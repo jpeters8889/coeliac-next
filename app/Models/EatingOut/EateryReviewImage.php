@@ -45,15 +45,15 @@ class EateryReviewImage extends Model
     }
 
     /** @return Attribute<string, never> */
-    public function thumb(string $thumb): Attribute
+    public function thumb(): Attribute
     {
-        return Attribute::get(fn () => $this->imageUrl($thumb));
+        return Attribute::get(fn () => $this->imageUrl($this->attributes['thumb']));
     }
 
     /** @return Attribute<string, never> */
-    public function path(string $path): Attribute
+    public function path(): Attribute
     {
-        return Attribute::get(fn () => $this->imageUrl($path));
+        return Attribute::get(fn () => $this->imageUrl($this->attributes['path']));
     }
 
     protected function imageUrl(string $file): string

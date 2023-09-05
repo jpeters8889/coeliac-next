@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -39,6 +40,8 @@ use Illuminate\Support\Str;
  * @property string | null $average_rating
  * @property int | null $rating
  * @property int | null $rating_count
+ * @property int | null $average_expense
+ * @property bool $has_been_rated
  *
  * @method transform(array $array)
  */
@@ -72,6 +75,23 @@ class Eatery extends Model
 
             return $eatery;
         });
+    }
+
+    /**
+     * @param  Relation<self>  $query
+     * @return Relation<self>
+     */
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        if (app(Request::class)->route('town')) {
+            /** @var EateryTown $town */
+            $town = app(Request::class)->route('town');
+
+            return $town->liveEateries()->where('slug', $value);
+        }
+
+        /** @phpstan-ignore-next-line  */
+        return $query->where('slug', $value);
     }
 
     public function link(): string
@@ -131,6 +151,14 @@ class Eatery extends Model
         return $this->hasMany(EateryAttractionRestaurant::class, 'wheretoeat_id', 'id');
     }
 
+    /** @return HasOne<EateryReview> */
+    public function adminReview(): HasOne
+    {
+        return $this->hasOne(EateryReview::class, 'wheretoeat_id', 'id')
+            ->where('admin_review', true)
+            ->latest();
+    }
+
     /** @return HasMany<EateryReview> */
     public function reviews(): HasMany
     {
@@ -141,6 +169,13 @@ class Eatery extends Model
     public function reviewImages(): HasMany
     {
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_id', 'id');
+    }
+
+    /** @return HasMany<EateryReviewImage> */
+    public function approvedReviewImages(): HasMany
+    {
+        return $this->hasMany(EateryReviewImage::class, 'wheretoeat_id', 'id')
+            ->whereRelation('review', 'approved', true);
     }
 
     /** @return HasOne<EateryType> */
@@ -280,5 +315,17 @@ class Eatery extends Model
         );
 
         return $builder->where($closure);
+    }
+
+    public function keywords(): array
+    {
+        return [
+            $this->name, $this->full_name, "{$this->name} gluten free",
+            "gluten free {$this->town}", "coeliac {$this->town} eateries", "gluten free {$this->town} eateries",
+            'gluten free places to eat in the uk', "gluten free places to eat in {$this->town}",
+            'gluten free places to eat', 'gluten free cafes', 'gluten free restaurants', 'gluten free uk',
+            'places to eat', 'cafes', 'restaurants', 'eating out', 'catering to coeliac', 'eating out uk',
+            'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
+        ];
     }
 }

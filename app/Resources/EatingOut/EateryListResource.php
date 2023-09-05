@@ -6,6 +6,7 @@ namespace App\Resources\EatingOut;
 
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryAttractionRestaurant;
+use App\Models\EatingOut\NationwideBranch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,8 +23,13 @@ class EateryListResource extends JsonResource
             'info' => $restaurant->info,
         ];
 
+        /** @var NationwideBranch | null $branch */
+        $branch = $this->relationLoaded('branch') ? $this->branch : null;
+
         return [
             'name' => $this->name,
+            'key' => $this->id . ($branch ? '-' . $branch->id : null),
+            'isNationwideBranch' => $this->relationLoaded('branch'),
             'link' => $this->link(),
             'county' => [
                 'id' => $this->county_id,
@@ -35,6 +41,18 @@ class EateryListResource extends JsonResource
                 'name' => $this->town->town,
                 'link' => $this->town->link(),
             ],
+            'branch' => $branch ? [
+                'id' => $branch->id,
+                'name' => $branch->name,
+                'location' => [
+                    'lat' => $branch->lat,
+                    'lng' => $branch->lng,
+                    'address' => collect(explode("\n", $branch->address))
+                        ->map(fn (string $line) => trim($line))
+                        ->join(', '),
+                ],
+                'link' => $branch->link(),
+            ] : null,
             'venue_type' => $this->venueType?->venue_type,
             'type' => $this->type->name,
             'cuisine' => $this->cuisine?->cuisine,

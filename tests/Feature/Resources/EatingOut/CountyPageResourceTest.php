@@ -77,7 +77,7 @@ class CountyPageResourceTest extends TestCase
     {
         $this->build(Eatery::class)
             ->count(5)
-            ->has($this->build(EateryReview::class)->count(5), 'reviews')
+            ->has($this->build(EateryReview::class)->approved()->count(5), 'reviews')
             ->create(['county_id' => $this->county->id]);
 
         $resource = (new CountyPageResource($this->county))->toArray(request());

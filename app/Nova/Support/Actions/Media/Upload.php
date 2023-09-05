@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Support\Actions\Media;
 
-use App\Models\TemporaryFileUpload;
+use App\Pipelines\UploadTemporaryFilePipeline;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Jpeters8889\AdvancedNovaMediaLibrary\Contracts\UploadMediaContract;
@@ -14,16 +14,11 @@ class Upload implements UploadMediaContract
 {
     public function upload(UploadedFile $file): UploadedFileResponse
     {
-        $uploadedFile = TemporaryFileUpload::createFrom(
-            $file,
-            (string) $file->store('/', 'uploads'),
-            'admin',
-            Carbon::now()->addHour()
-        );
+        $uploadedFile = app(UploadTemporaryFilePipeline::class)->run($file, 'admin', Carbon::now()->addHour());
 
         return new UploadedFileResponse(
             key: $file->hashName(),
-            uuid: $uploadedFile->id,
+            uuid: $uploadedFile['id'],
             filename: $file->getClientOriginalName(),
             mime_type: $file->getMimeType(),
             file_size: $file->getSize(),

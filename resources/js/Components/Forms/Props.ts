@@ -1,5 +1,8 @@
-export type BaseFormInputProps = {
-  modelValue: string;
+import { CheckCircleIcon as CheckCircleIconOutline } from '@heroicons/vue/24/outline';
+import { CheckCircleIcon as CheckCircleIconSolid } from '@heroicons/vue/24/solid';
+import { FunctionalComponent } from 'vue';
+
+export type BaseFormProps = {
   name: string;
   id?: string;
   required?: boolean;
@@ -8,6 +11,11 @@ export type BaseFormInputProps = {
   borders?: boolean;
   background?: boolean;
   hasError?: boolean;
+  disabled?: boolean;
+};
+
+export type BaseFormInputProps = BaseFormProps & {
+  modelValue: string;
 };
 
 export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
@@ -16,6 +24,7 @@ export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
   borders: false,
   background: true,
   hasError: false,
+  disabled: false,
 };
 
 export type InputProps = BaseFormInputProps & {
@@ -31,9 +40,54 @@ export const InputPropDefaults: Partial<InputProps> = {
 export type TextareaProps = BaseFormInputProps & {
   rows?: number;
   error?: string;
+  max?: number;
 };
 
 export const TextareaPropsDefaults: Partial<TextareaProps> = {
   ...BaseFormInputPropDefaults,
   rows: 5,
+  max: undefined,
+};
+
+export type CheckboxProps = BaseFormProps & {
+  modelValue: boolean;
+  label: string;
+};
+
+export const CheckboxPropsDefault: Partial<CheckboxProps> = <
+  Partial<CheckboxProps>
+>{
+  ...BaseFormInputPropDefaults,
+};
+
+export type FormSelectOption = {
+  label?: string;
+  value: string | number | boolean;
+};
+
+export type FormStepperProps = BaseFormProps & {
+  modelValue: string | number | boolean;
+  label?: string;
+  options: FormSelectOption[];
+  selectedClass?: string | string[];
+  baseClass?: string | string[];
+  iconClasses?: string | string[];
+  wrapperClasses?: string | string[];
+  icon?: FunctionalComponent;
+  unselectedIcon?: FunctionalComponent | null;
+  hideOptionsText?: boolean;
+  defaultText?: string;
+};
+
+export const FormStepperPropsDefaults: Partial<FormStepperProps> = {
+  ...BaseFormInputPropDefaults,
+  label: undefined,
+  selectedClass: ['text-secondary'],
+  baseClass: ['text-grey-off'],
+  iconClasses: ['h-8 w-8'],
+  wrapperClasses: [],
+  icon: CheckCircleIconSolid,
+  unselectedIcon: CheckCircleIconOutline,
+  hideOptionsText: false,
+  defaultText: 'Select an option',
 };

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Concerns;
+namespace Tests\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

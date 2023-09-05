@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
+use App\Scopes\LiveScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -13,11 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property Eatery $eatery
  * @property int $id
- * @property mixed $rating
+ * @property int $rating
  * @property int $wheretoeat_id
  * @property bool $admin_review
  * @property int $how_expensive
  * @property Carbon $created_at
+ * @property string $human_date
+ * @property array{value: int, label: string} | null $price
  */
 class EateryReview extends Model
 {
@@ -35,6 +38,11 @@ class EateryReview extends Model
         'admin_review' => 'bool',
         'approved' => 'bool',
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new LiveScope('approved'));
+    }
 
     /** @return BelongsTo<Eatery, EateryReview> */
     public function eatery(): BelongsTo

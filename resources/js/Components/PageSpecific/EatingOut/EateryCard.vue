@@ -9,7 +9,29 @@ import EateryInfoBlock from '@/Components/PageSpecific/EatingOut/EaterySnippetCo
 
 const props = defineProps<{ eatery: TownEatery }>();
 
-const isNotNationwide = computed(() => props.eatery.county.id !== 1);
+const isNotNationwide = computed(() => {
+  if (props.eatery.isNationwideBranch) {
+    return true;
+  }
+
+  return props.eatery.county.id !== 1;
+});
+
+const eateryName = computed(() => {
+  if (props.eatery.branch && props.eatery.branch.name) {
+    return `${props.eatery.branch.name} - ${props.eatery.name}`;
+  }
+
+  return props.eatery.name;
+});
+
+const eateryLink = computed(() => {
+  if (props.eatery.branch) {
+    return props.eatery.branch.link;
+  }
+
+  return props.eatery.link;
+});
 </script>
 
 <template>
@@ -22,11 +44,12 @@ const isNotNationwide = computed(() => props.eatery.county.id !== 1);
         <EateryIntroduction
           :cuisine="eatery.cuisine"
           :is-not-nationwide="isNotNationwide"
-          :link="eatery.link"
-          :name="eatery.name"
+          :link="eateryLink"
+          :name="eateryName"
           :type="eatery.type"
           :venue-type="eatery.venue_type"
           :website="eatery.website"
+          :is-branch="eatery.isNationwideBranch"
         />
 
         <EateryInfoBlock
@@ -43,15 +66,19 @@ const isNotNationwide = computed(() => props.eatery.county.id !== 1);
         class="hidden pl-4 sm:block sm:w-2/5 lg:w-1/3"
       >
         <StaticMap
-          :lat="eatery.location.lat"
-          :lng="eatery.location.lng"
+          :lat="
+            eatery.branch ? eatery.branch.location.lat : eatery.location.lat
+          "
+          :lng="
+            eatery.branch ? eatery.branch.location.lng : eatery.location.lng
+          "
         />
       </div>
     </div>
 
     <EateryReviews
-      :link="eatery.link"
-      :name="eatery.name"
+      :link="eateryLink"
+      :name="eateryName"
       :reviews="eatery.reviews"
     />
   </Card>

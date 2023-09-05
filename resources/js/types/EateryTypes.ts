@@ -59,6 +59,8 @@ export type EateryFilters = {
 };
 
 export type TownEatery = Eatery & {
+  key: string;
+  link: string;
   type: string;
   venue_type?: string;
   cuisine?: string;
@@ -67,16 +69,101 @@ export type TownEatery = Eatery & {
     name?: string;
     info: string;
   }[];
-  location: {
-    address: string;
-    lat: number;
-    lng: number;
-  };
+  location: EateryLocation;
   phone?: string;
   reviews: {
     number: number;
     average: string;
   };
+  isNationwideBranch?: boolean;
+  branch?: EateryNationwideBranch;
+};
+
+export type EateryLocation = {
+  address: string;
+  lat: number;
+  lng: number;
+};
+
+export type EateryNationwideBranch = {
+  name?: string;
+  location: EateryLocation;
+  link: string;
+  county: {
+    id: number;
+    name: string;
+    link: string;
+  };
+  town: {
+    id: number;
+    name: string;
+    link: string;
+  };
+};
+
+export type DetailedEatery = Exclude<TownEatery, 'key'> & {
+  id: number;
+  menu?: string;
+  reviews: {
+    number: number;
+    average: string;
+    expense?: {
+      value: string;
+      label: string;
+    };
+    has_rated: boolean;
+    images?: ReviewImage[];
+    admin_review?: Exclude<EateryReview, ['id', 'name']>;
+    user_reviews: EateryReview[];
+  };
+  features?: {
+    name: string;
+    slug: string;
+  }[];
+  opening_times?: {
+    is_open_now: boolean;
+    today: OpeningTime;
+    days: {
+      [T in Days]: OpeningTime;
+    };
+  };
+};
+
+export type Days =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
+
+export type OpeningTime = {
+  opens: string;
+  closes: string;
+};
+
+export type EateryReview = {
+  id: string;
+  published: string;
+  date_diff: string;
+  body?: string;
+  name?: string;
+  rating: StarRating;
+  expense?: {
+    value: string;
+    label: string;
+  };
+  food_rating?: string;
+  service_rating?: string;
+  branch_name?: string;
+  images: ReviewImage[];
+};
+
+export type ReviewImage = {
+  id: string;
+  thumbnail: string;
+  path: string;
 };
 
 export type StarRating =

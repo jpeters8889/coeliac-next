@@ -61,9 +61,9 @@ const classes = (): string[] => {
       ...(id ? { id } : null),
       ...(autocomplete ? { autocomplete } : null),
       ...(placeholder ? { placeholder } : null),
+      ...(max ? { maxLength: max } : null),
     }"
     @input="emit('update:modelValue', $event.target.value)"
+    >{{ modelValue }}</textarea
   >
-      {{ modelValue }}
-  </textarea>
 </template>

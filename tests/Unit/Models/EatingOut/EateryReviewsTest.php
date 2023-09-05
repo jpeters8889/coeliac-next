@@ -27,13 +27,13 @@ class EateryReviewsTest extends TestCase
     /** @test */
     public function itHasReviews(): void
     {
-        $this->assertEquals(1, $this->eatery->fresh()->reviews()->count());
+        $this->assertEquals(1, $this->eatery->fresh()->reviews()->withoutGlobalScopes()->count());
     }
 
     /** @test */
     public function itIsNotApprovedByDefault(): void
     {
-        $this->assertFalse($this->eatery->fresh()->reviews()->first()->approved);
+        $this->assertFalse($this->eatery->fresh()->reviews()->withoutGlobalScopes()->first()->approved);
     }
 
     /** @test */
@@ -43,6 +43,7 @@ class EateryReviewsTest extends TestCase
 
         $this->build(EateryReview::class)
             ->on($this->eatery)
+            ->approved()
             ->count(2)
             ->state(new Sequence(
                 ['rating' => 5],
@@ -60,6 +61,7 @@ class EateryReviewsTest extends TestCase
 
         $this->build(EateryReview::class)
             ->on($this->eatery)
+            ->approved()
             ->count(2)
             ->state(new Sequence(
                 ['how_expensive' => 1],
@@ -82,6 +84,7 @@ class EateryReviewsTest extends TestCase
 
         $this->build(EateryReview::class)
             ->on($this->eatery)
+            ->approved()
             ->count(3)
             ->state(new Sequence(
                 ['how_expensive' => 4],

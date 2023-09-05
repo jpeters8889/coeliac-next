@@ -29,6 +29,7 @@ use Illuminate\Support\Str;
  * @property string $opens_at
  * @property string $closes_at
  * @property bool $is_open_now
+ * @property array | null $opening_times_array
  */
 class EateryOpeningTimes extends Model
 {
@@ -66,35 +67,25 @@ class EateryOpeningTimes extends Model
         });
     }
 
-    /** @return Attribute<string | null, never> */
-    public function closesAt(): Attribute
+    public function closesAt(string $day = null): string
     {
-        return Attribute::get(function () {
-            if ( ! $this->is_open_now) {
-                return null;
-            }
+        if ( ! $day) {
+            $day = $this->currentDay();
+        }
 
-            $today = $this->currentDay();
-
-            return $this->timeToString($today, 'end');
-        });
+        return $this->timeToString($day, 'end');
     }
 
-    /** @return Attribute<string | null, never> */
-    public function opensAt(): Attribute
+    public function opensAt(string $day = null): string
     {
-        return Attribute::get(function () {
-            if ( ! $this->is_open_now) {
-                return null;
-            }
+        if ( ! $day) {
+            $day = $this->currentDay();
+        }
 
-            $today = $this->currentDay();
-
-            return $this->timeToString($today, 'start');
-        });
+        return $this->timeToString($day, 'start');
     }
 
-    public function formatTime(string $column): array|null
+    public function formatTime(string $column): ?array
     {
         $value = $this->$column;
 
@@ -105,9 +96,9 @@ class EateryOpeningTimes extends Model
         $bits = explode(':', $value);
 
         return [
-            (int)$bits[0],
-            (int)($bits[1] ?? 0),
-            (int)($bits[2] ?? 0),
+            (int) $bits[0],
+            (int) ($bits[1] ?? 0),
+            (int) ($bits[2] ?? 0),
         ];
     }
 
@@ -131,6 +122,19 @@ class EateryOpeningTimes extends Model
         }
 
         return "{$closesAt[0]}:{$closesAt[1]}";
+    }
+
+    /** @return Attribute<array<mixed>, never> */
+    public function openingTimesArray(): Attribute
+    {
+        return Attribute::get(fn () => collect(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])
+            ->mapWithKeys(fn (string $day) => [
+                $day => [
+                    'opens' => $this->opensAt($day),
+                    'closes' => $this->closesAt($day),
+                ],
+            ])
+            ->toArray());
     }
 
     protected function currentDay(): string

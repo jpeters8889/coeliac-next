@@ -6,11 +6,11 @@ namespace Tests\Unit\Models\Blogs;
 
 use App\Models\Blogs\Blog;
 use App\Scopes\LiveScope;
+use Tests\Concerns\CanBePublishedTestTrait;
+use Tests\Concerns\CommentableTestTrait;
+use Tests\Concerns\DisplaysMediaTestTrait;
+use Tests\Concerns\LinkableModelTestTrait;
 use Tests\TestCase;
-use Tests\Unit\Concerns\CanBePublishedTestTrait;
-use Tests\Unit\Concerns\Comments\CommentableTestTrait;
-use Tests\Unit\Concerns\DisplaysMediaTestTrait;
-use Tests\Unit\Concerns\LinkableModelTestTrait;
 
 class BlogModelTest extends TestCase
 {

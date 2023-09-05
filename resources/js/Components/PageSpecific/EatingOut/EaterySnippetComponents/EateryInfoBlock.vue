@@ -3,7 +3,7 @@ import EateryRestaurants from '@/Components/PageSpecific/EatingOut/EaterySnippet
 import { TownEatery } from '@/types/EateryTypes';
 
 defineProps<{
-  restaurants: TownEatery['restaurants'][];
+  restaurants: TownEatery['restaurants'];
   info: string;
   isNotNationwide: boolean;
   distance?: string;

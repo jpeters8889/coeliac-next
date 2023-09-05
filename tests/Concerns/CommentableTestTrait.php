@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Concerns\Comments;
+namespace Tests\Concerns;
 
 use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
