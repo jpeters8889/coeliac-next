@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DetailedEatery } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm } from 'laravel-precognition-vue-inertia';
 import { computed, ComputedRef, nextTick, Ref, ref } from 'vue';
 import FormInput from '@/Components/Forms/FormInput.vue';
 import FormTextarea from '@/Components/Forms/FormTextarea.vue';
@@ -27,8 +27,10 @@ let form = useForm<{
   images?: Array<any>;
   branchName?: string;
   adminReview?: boolean;
-}>({
+  method: 'website';
+}>('post', `/${window.location.pathname}/reviews`, {
   rating: 0,
+  method: 'website',
 });
 
 const characterLimit = 1500;
@@ -62,15 +64,21 @@ const usedCharacters: ComputedRef<number> = computed(
   () => form.body?.length || 0
 );
 
-const submitRating = (short: boolean = false) => {
-  //
+const submitRating = () => {
+  form.submit({
+    preserveState: true,
+    preserveScroll: true,
+    onSuccess: () => {
+      hasSubmitted.value = true;
+    },
+  });
 };
 
 const isAdmin = (): boolean =>
   // @todo
   false;
 
-const imageUploadError: Ref<string, false> = ref(false);
+const imageUploadError: Ref<string | false> = ref(false);
 
 const imagesUploaded = (images: any[]): void => {
   imageUploadError.value = false;
@@ -154,7 +162,7 @@ const prepareForm = (): void => {
           bold
           type="button"
           classes="justify-center"
-          @click="submitRating(true)"
+          @click="submitRating()"
         />
 
         <CoeliacButton

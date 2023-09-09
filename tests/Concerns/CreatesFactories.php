@@ -14,7 +14,7 @@ trait CreatesFactories
     /**
      * @template T
      *
-     * @param class-string<T> $what
+     * @param  class-string<T>  $what
      * @return IlluminateFactory<T>
      */
     protected function build(string $what): IlluminateFactory
@@ -25,8 +25,7 @@ trait CreatesFactories
     /**
      * @template T
      *
-     * @param class-string<T> $what
-     * @param array $attributes
+     * @param  class-string<T>  $what
      * @return T
      */
     protected function create(string $what, array $attributes = [])

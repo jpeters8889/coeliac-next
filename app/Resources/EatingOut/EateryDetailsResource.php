@@ -12,6 +12,7 @@ use App\Models\EatingOut\EateryReviewImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 /** @mixin Eatery */
 class EateryDetailsResource extends JsonResource
@@ -24,6 +25,12 @@ class EateryDetailsResource extends JsonResource
             'name' => $restaurant->restaurant_name,
             'info' => $restaurant->info,
         ];
+
+        /** @var Collection<int, EateryReview> $reviews */
+        $reviews = $this->reviews;
+
+        /** @var Collection<int, EateryFeature> $features */
+        $features = $this->features;
 
         return [
             'id' => $this->id,
@@ -66,7 +73,7 @@ class EateryDetailsResource extends JsonResource
                 'admin_review' => $this->adminReview ? [
                     'published' => $this->adminReview->created_at,
                     'date_diff' => $this->adminReview->human_date,
-                    'body' => $this->adminReview->body,
+                    'body' => $this->adminReview->review,
                     'rating' => (float) $this->adminReview->rating,
                     'expense' => $this->adminReview->price,
                     'food_rating' => $this->adminReview->food_rating,
@@ -78,12 +85,12 @@ class EateryDetailsResource extends JsonResource
                         'path' => $image->path,
                     ]) : [],
                 ] : null,
-                'user_reviews' => $this->reviews->map(fn (EateryReview $review) => [
+                'user_reviews' => $reviews->map(fn (EateryReview $review) => [
                     'id' => $review->id,
                     'published' => $review->created_at,
                     'date_diff' => $review->human_date,
                     'name' => $review->name,
-                    'body' => $review->body,
+                    'body' => $review->review,
                     'rating' => (float) $review->rating,
                     'expense' => $review->price,
                     'food_rating' => $review->food_rating,
@@ -96,7 +103,7 @@ class EateryDetailsResource extends JsonResource
                     ]) : [],
                 ]),
             ],
-            'features' => $this->features->map(fn (EateryFeature $feature) => [
+            'features' => $features->map(fn (EateryFeature $feature) => [
                 'name' => $feature->feature,
                 'slug' => $feature->slug,
             ]),

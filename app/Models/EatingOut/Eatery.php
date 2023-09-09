@@ -84,8 +84,12 @@ class Eatery extends Model
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         if (app(Request::class)->route('town')) {
-            /** @var EateryTown $town */
+            /** @var EateryTown $town | string */
             $town = app(Request::class)->route('town');
+
+            if ( ! $town instanceof EateryTown) {
+                $town = EateryTown::query()->where('slug', $town)->firstOrFail();
+            }
 
             return $town->liveEateries()->where('slug', $value);
         }

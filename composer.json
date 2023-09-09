@@ -11,6 +11,7 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.7.0",
         "inertiajs/inertia-laravel": "^0.6.9",
+        "intervention/image": "^2.7",
         "jpeters8889/advanced-nova-media-library": "dev-master",
         "jpeters8889/body": "*",
         "jpeters8889/polymorphic-panel": "*",

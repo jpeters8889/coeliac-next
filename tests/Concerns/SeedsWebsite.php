@@ -30,7 +30,7 @@ trait SeedsWebsite
             ->sequence(fn (Sequence $sequence) => [
                 'id' => $sequence->index + 1,
                 'title' => "Blog {$sequence->index}",
-                'created_at' => Carbon::now()->subDays($sequence->index)
+                'created_at' => Carbon::now()->subDays($sequence->index),
             ])
             ->has($this->build(BlogTag::class)->count(3), 'tags')
             ->create()
@@ -55,7 +55,7 @@ trait SeedsWebsite
             ->sequence(fn (Sequence $sequence) => [
                 'id' => $sequence->index + 1,
                 'title' => "Recipe {$sequence->index}",
-                'created_at' => Carbon::now()->subDays($sequence->index)
+                'created_at' => Carbon::now()->subDays($sequence->index),
             ])
             ->has($this->build(RecipeFeature::class), 'features')
             ->has($this->build(RecipeAllergen::class), 'allergens')
@@ -83,7 +83,7 @@ trait SeedsWebsite
             ->sequence(fn (Sequence $sequence) => [
                 'id' => $sequence->index + 1,
                 'title' => "Collection {$sequence->index}",
-                'created_at' => Carbon::now()->subDays($sequence->index)
+                'created_at' => Carbon::now()->subDays($sequence->index),
             ])
             ->create()
             ->each(function (Collection $collection): void {

@@ -19,7 +19,7 @@ class EateryReviewFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->email,
             'how_expensive' => $this->faker->numberBetween(1, 5),
-            'body' => $this->faker->paragraph,
+            'review' => $this->faker->paragraph,
             'method' => 'test',
             'approved' => false,
         ];
