@@ -21,8 +21,8 @@ class EateryCreateReviewRequest extends FormRequest
     {
         return [
             'rating' => ['required', 'numeric', 'min:1', 'max:5'],
-            'name' => ['nullable', 'required_with:email,comment', 'string'],
-            'email' => ['nullable', 'required_with:name,comment', 'email'],
+            'name' => ['nullable', 'required_with:email,review', 'string'],
+            'email' => ['nullable', 'required_with:name,review', 'email'],
             'review' => ['nullable', 'required_with:name,email', 'string'],
             'food_rating' => ['nullable', 'in:poor,good,excellent'],
             'service_rating' => ['nullable', 'in:poor,good,excellent'],
@@ -31,7 +31,7 @@ class EateryCreateReviewRequest extends FormRequest
             'images.*' => ['string', 'exists:temporary_file_uploads,id'],
             'method' => ['in:website,app'],
             //'admin_review' => $this->user()?->isAdmin() ? ['boolean'] : ['sometimes', 'declined'],
-            'branch_name' => $this->isNationwide() ? ['required_with:name,email,comment', 'string'] : ['prohibited'],
+            'branch_name' => $this->isNationwide() ? ['required_with:name,email,review', 'string'] : ['prohibited'],
         ];
     }
 
@@ -44,7 +44,7 @@ class EateryCreateReviewRequest extends FormRequest
 
         $requiredFieldsCheck = $this->input('name') === null
             && $this->input('email') === null
-            && $this->input('comment') === null;
+            && $this->input('review') === null;
 
         if ($this->isNationwide()) {
             return $this->input('branch_name') !== null && $requiredFieldsCheck;

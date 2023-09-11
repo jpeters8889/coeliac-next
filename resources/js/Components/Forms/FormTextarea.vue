@@ -39,7 +39,7 @@ watch(value, () => {
       />
       <div
         v-if="error"
-        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+        class="pointer-events-none absolute inset-y-0 right-0 flex pr-3 pt-3"
       >
         <ExclamationCircleIcon
           aria-hidden="true"

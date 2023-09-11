@@ -2,11 +2,12 @@
 import Modal from '@/Components/Overlays/Modal.vue';
 import FormTextarea from '@/Components/Forms/FormTextarea.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm } from 'laravel-precognition-vue-inertia';
 import { ref } from 'vue';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
+import useUrl from '@/composables/useUrl';
 
-const props = defineProps<{
+defineProps<{
   eateryName: string;
   eateryId: number;
   show: boolean;
@@ -16,18 +17,23 @@ const hasSubmitted = ref(false);
 
 const emits = defineEmits(['close']);
 
-const form = useForm({
+const { generateUrl } = useUrl();
+
+const form = useForm('post', generateUrl('report'), {
   details: '',
 });
 
 const close = () => {
   emits('close');
+
   hasSubmitted.value = false;
   form.details = '';
 };
 
 const submitForm = () => {
-  form.post(`/wheretoeat/${props.eateryId}/report`, {
+  form.submit({
+    preserveState: true,
+    preserveScroll: true,
     onSuccess: () => {
       hasSubmitted.value = true;
     },
@@ -53,9 +59,9 @@ const submitForm = () => {
         </div>
 
         <p class="md:prose-md prose mb-2 max-w-none text-center">
-          Thank you for your report about {{ eateryName }}, we'll check it out,
-          and if the eatery no longer qualifies, we'll remove it from our
-          website!
+          Thank you for your report about <strong>{{ eateryName }}</strong
+          >, we'll check it out, and if the eatery no longer qualifies, we'll
+          remove it from our website!
         </p>
 
         <div class="mt-4 flex-1 text-center">
@@ -92,6 +98,7 @@ const submitForm = () => {
                 required
                 name="details"
                 :rows="5"
+                :error="form.errors.details"
               />
             </form>
             <div class="flex-1 text-center">

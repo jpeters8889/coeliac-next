@@ -9,6 +9,7 @@ use App\Http\Requests\EatingOut\EateryCreateReviewRequest;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use Illuminate\Http\RedirectResponse;
 
 class EateryCreateReviewController
 {
@@ -18,7 +19,7 @@ class EateryCreateReviewController
         EateryTown $town,
         Eatery $eatery,
         CreateEateryReviewAction $createEateryReviewAction,
-    ): void {
+    ): RedirectResponse {
         /** @var array $requestData */
         $requestData = $request->validated();
 
@@ -27,5 +28,7 @@ class EateryCreateReviewController
             'ip' => $request->ip(),
             'approved' => $request->shouldReviewBeApproved(),
         ]);
+
+        return redirect()->back();
     }
 }
