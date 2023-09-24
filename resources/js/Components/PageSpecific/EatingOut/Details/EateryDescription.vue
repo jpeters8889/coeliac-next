@@ -1,14 +1,33 @@
 <script lang="ts" setup>
 import { DetailedEatery } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import ReportEateryModal from '@/Components/PageSpecific/EatingOut/Details/Modals/ReportEateryModal.vue';
 
-defineProps<{
+const props = defineProps<{
   eatery: DetailedEatery;
+  openReport: boolean;
 }>();
 
 const showReportPlaceModal = ref(false);
+
+const emits = defineEmits(['resetForceOpen']);
+
+onMounted(() => {
+  showReportPlaceModal.value = props.openReport;
+});
+
+watch(
+  () => props.openReport,
+  () => {
+    showReportPlaceModal.value = props.openReport;
+  }
+);
+
+const closeReportModal = () => {
+  showReportPlaceModal.value = false;
+  emits('resetForceOpen');
+};
 </script>
 
 <template>
@@ -50,6 +69,6 @@ const showReportPlaceModal = ref(false);
     :eatery-name="eatery.name"
     :eatery-id="eatery.id"
     :show="showReportPlaceModal"
-    @close="showReportPlaceModal = false"
+    @close="closeReportModal()"
   />
 </template>

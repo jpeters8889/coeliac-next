@@ -15,3 +15,7 @@ export type PaginatedResponse<Data> = {
     total: number;
   };
 };
+
+export type DataResponse<Data> = {
+  data: Data;
+};

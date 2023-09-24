@@ -1,4 +1,5 @@
 import { CheckboxItem } from '@/types/Types';
+import { FormSelectOption } from '@/Components/Forms/Props';
 
 export type County = {
   name: string;
@@ -183,3 +184,67 @@ export type StarRating =
   | 4.5
   | 5
   | 5.0;
+
+export type EditableEateryData = {
+  address: string;
+  website?: string;
+  gf_menu_link?: string;
+  phone?: string;
+  type_id: number;
+  venue_type: EditableEaterySelectableData;
+  cuisine: EditableEaterySelectableData;
+  opening_times: {
+    [T in Days | 'today']: [null, null] | [string, string];
+  };
+  features: {
+    selected: {
+      id: number;
+      label: string;
+    }[];
+    values: EditableEaterySelectableData['values'];
+  };
+  is_nationwide: boolean;
+};
+
+type EditableEaterySelectableData = {
+  id: number;
+  label: string;
+  values: {
+    id: number;
+    label: string;
+    selected: boolean;
+  }[];
+};
+
+type BaseEditableEateryField = {
+  id: string;
+  label: string;
+  shouldDisplay: boolean;
+  getter: () => string | null;
+  capitalise?: boolean;
+  truncate?: boolean;
+  isFormField: boolean;
+  updated: boolean;
+};
+
+type BaseEditableEateryFieldForm = BaseEditableEateryField & {
+  isFormField: true;
+  formField: EditableEateryFieldComponent;
+};
+
+type BaseEditableEateryFieldComponent = BaseEditableEateryField & {
+  isFormField: false;
+  component: Exclude<EditableEateryFieldComponent, 'value'> & {
+    change: (value: Object[]) => void;
+  };
+};
+
+export type EditableEateryField =
+  | BaseEditableEateryFieldForm
+  | BaseEditableEateryFieldComponent;
+
+type EditableEateryFieldComponent = {
+  component: string;
+  value: () => string | number;
+  props?: Partial<any>;
+};

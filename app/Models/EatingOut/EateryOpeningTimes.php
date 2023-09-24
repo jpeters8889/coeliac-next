@@ -26,8 +26,6 @@ use Illuminate\Support\Str;
  * @property string $saturday_end
  * @property string $sunday_start
  * @property string $sunday_end
- * @property string $opens_at
- * @property string $closes_at
  * @property bool $is_open_now
  * @property array | null $opening_times_array
  */

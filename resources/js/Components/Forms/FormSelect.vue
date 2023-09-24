@@ -1,11 +1,17 @@
 <script lang="ts" setup>
-import { TextareaProps, TextareaPropsDefaults } from '@/Components/Forms/Props';
-import { ref, watch } from 'vue';
-import RawTextareaField from '@/Components/Forms/RawTextareaField.vue';
-import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
+import {
+  FormSelectProps,
+  FormSelectPropsDefaults,
+} from '@/Components/Forms/Props';
 import RawInputField from '@/Components/Forms/RawInputField.vue';
+import { ref, watch } from 'vue';
+import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
+import RawSelectField from '@/Components/Forms/RawSelectField.vue';
 
-const props = withDefaults(defineProps<TextareaProps>(), TextareaPropsDefaults);
+const props = withDefaults(
+  defineProps<FormSelectProps>(),
+  FormSelectPropsDefaults
+);
 
 const emits = defineEmits(['update:modelValue']);
 
@@ -26,20 +32,22 @@ watch(value, () => {
       {{ label }}
     </label>
     <div class="relative rounded-md shadow-sm">
-      <RawTextareaField
+      <RawSelectField
         :id="id"
         v-model="value"
         :autocomplete="autocomplete"
+        :has-error="!!error"
         :name="name"
         :placeholder="placeholder"
         :required="required"
         :label="label"
-        :max="max"
+        :options="options"
+        :disabled="disabled"
         borders
       />
       <div
         v-if="error"
-        class="pointer-events-none absolute inset-y-0 right-0 flex pr-3 pt-3"
+        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
       >
         <ExclamationCircleIcon
           aria-hidden="true"

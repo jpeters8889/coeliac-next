@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use ArrayAccess;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +66,26 @@ abstract class TestCase extends BaseTestCase
                 $currentLetter,
                 "Failed to assert that {$item} comes after {$toCompare} alphabetically"
             );
+        }
+    }
+
+    protected function assertArrayHasInstanceOf(string $class, array $array): void
+    {
+        $matched = false;
+
+        foreach ($array as $check) {
+            if ( ! $matched && $check instanceof $class) {
+                $matched = true;
+            }
+        }
+
+        $this->assertTrue($matched, 'Failed asserting that array contains instance of ' . class_basename($class));
+    }
+
+    protected function assertArrayHasKeys(array $keys, array|ArrayAccess $array): void
+    {
+        foreach ($keys as $key) {
+            $this->assertArrayHasKey($key, $array);
         }
     }
 }

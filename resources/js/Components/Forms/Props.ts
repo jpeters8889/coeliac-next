@@ -29,24 +29,30 @@ export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
 
 export type InputProps = BaseFormInputProps & {
   type?: 'text' | 'number' | 'search' | 'email';
+  label: string;
   error?: string;
+  hideLabel?: boolean;
 };
 
 export const InputPropDefaults: Partial<InputProps> = {
   ...BaseFormInputPropDefaults,
   type: 'text',
+  hideLabel: false,
 };
 
 export type TextareaProps = BaseFormInputProps & {
+  label: string;
   rows?: number;
   error?: string;
   max?: number;
+  hideLabel?: boolean;
 };
 
 export const TextareaPropsDefaults: Partial<TextareaProps> = {
   ...BaseFormInputPropDefaults,
   rows: 5,
   max: undefined,
+  hideLabel: false,
 };
 
 export type CheckboxProps = BaseFormProps & {
@@ -63,6 +69,23 @@ export const CheckboxPropsDefault: Partial<CheckboxProps> = <
 export type FormSelectOption = {
   label?: string;
   value: string | number | boolean;
+};
+
+export type FormSelectProps = BaseFormProps & {
+  modelValue: string | number | boolean;
+  label?: string;
+  options: FormSelectOption[];
+  placeholder?: string;
+  hideLabel?: boolean;
+  error?: string;
+};
+
+export const FormSelectPropsDefaults: Partial<FormSelectProps> = {
+  ...BaseFormInputPropDefaults,
+  label: undefined,
+  placeholder: 'Select an option',
+  hideLabel: false,
+  error: undefined,
 };
 
 export type FormStepperProps = BaseFormProps & {

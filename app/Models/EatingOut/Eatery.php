@@ -22,17 +22,17 @@ use Illuminate\Support\Str;
 
 /**
  * @property string $info
- * @property Collection<EateryAttractionRestaurant> $restaurants
+ * @property Collection<int, EateryAttractionRestaurant> $restaurants
  * @property string | null $website
  * @property EateryCuisine | null $cuisine
  * @property string | null $phone
  * @property EateryCountry $country
  * @property int $type_id
  * @property int $reviews_count
- * @property Collection<EateryFeature> $features
- * @property Collection<EateryReview> $reviews
+ * @property Collection<int, EateryFeature> $features
+ * @property Collection<int, EateryReview> $reviews
  * @property EateryType $type
- * @property EateryVenueType | null $venueType
+ * @property EateryVenueType $venueType
  * @property string $full_name
  * @property string $gf_menu_link
  * @property EateryOpeningTimes | null $openingTimes
@@ -83,6 +83,10 @@ class Eatery extends Model
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
+        if (app(Request::class)->wantsJson()) {
+            return $query->where('id', $value); /** @phpstan-ignore-line */
+        }
+
         if (app(Request::class)->route('town')) {
             /** @var EateryTown $town | string */
             $town = app(Request::class)->route('town');
@@ -192,6 +196,12 @@ class Eatery extends Model
     public function venueType(): HasOne
     {
         return $this->hasOne(EateryVenueType::class, 'id', 'venue_type_id');
+    }
+
+    /** @return HasMany<EaterySuggestedEdit> */
+    public function suggestedEdits(): HasMany
+    {
+        return $this->hasMany(EaterySuggestedEdit::class, 'wheretoeat_id', 'id');
     }
 
     /** @return Attribute<array{value: string, label: string} | null, never> */

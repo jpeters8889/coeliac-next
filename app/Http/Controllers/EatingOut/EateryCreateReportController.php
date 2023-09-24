@@ -20,7 +20,7 @@ class EateryCreateReportController
         Eatery $eatery,
         CreateEateryReportAction $createEateryReportAction,
     ): RedirectResponse {
-        $createEateryReportAction->handle($eatery, $request->validated('details'));
+        $createEateryReportAction->handle($eatery, $request->string('details')->toString());
 
         return redirect()->back();
     }

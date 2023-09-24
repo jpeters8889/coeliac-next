@@ -7,18 +7,29 @@ import EateryLocation from '@/Components/PageSpecific/EatingOut/Details/EateryLo
 import EateryAdminReview from '@/Components/PageSpecific/EatingOut/Details/EateryAdminReview.vue';
 import EateryVisitorPhotos from '@/Components/PageSpecific/EatingOut/Details/EateryVisitorPhotos.vue';
 import EateryVisitorReviews from '@/Components/PageSpecific/EatingOut/Details/EateryVisitorReviews.vue';
+import { ref } from 'vue';
 
 defineProps<{
   eatery: DetailedEatery;
 }>();
+
+const forceOpenReport = ref(false);
 </script>
 
 <template>
   <EateryHeading :eatery="eatery" />
 
-  <EateryDescription :eatery="eatery" />
+  <EateryDescription
+    :eatery="eatery"
+    :open-report="forceOpenReport"
+    @reset-force-open="forceOpenReport = false"
+  />
 
-  <EaterySuggestEdits :eatery="eatery" />
+  <EaterySuggestEdits
+    :id="eatery.id"
+    :name="eatery.name"
+    @open-report="forceOpenReport = true"
+  />
 
   <EateryLocation
     v-if="eatery.county.id !== 1 || eatery.branch"

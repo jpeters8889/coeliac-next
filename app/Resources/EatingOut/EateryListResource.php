@@ -53,7 +53,7 @@ class EateryListResource extends JsonResource
                 ],
                 'link' => $branch->link(),
             ] : null,
-            'venue_type' => $this->venueType?->venue_type,
+            'venue_type' => $this->venueType->venue_type,
             'type' => $this->type->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,

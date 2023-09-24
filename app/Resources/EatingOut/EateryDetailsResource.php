@@ -45,7 +45,7 @@ class EateryDetailsResource extends JsonResource
                 'name' => $this->town->town,
                 'link' => $this->town->link(),
             ],
-            'venue_type' => $this->venueType?->venue_type,
+            'venue_type' => $this->venueType->venue_type,
             'type' => $this->type->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,

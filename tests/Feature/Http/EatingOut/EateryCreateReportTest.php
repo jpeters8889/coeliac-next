@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Feature\Http\EatingOut;
 
 use App\Actions\EatingOut\CreateEateryReportAction;
-use App\Actions\EatingOut\CreateEateryReviewAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
-use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryTown;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;

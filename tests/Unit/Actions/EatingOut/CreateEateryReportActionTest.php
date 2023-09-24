@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions\EatingOut;
 
 use App\Actions\EatingOut\CreateEateryReportAction;
-use App\Jobs\EatingOut\ProcessReviewImagesJob;
 use App\Models\EatingOut\Eatery;
-use App\Models\EatingOut\EateryReview;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Queue;
-use Tests\RequestFactories\EateryCreateReviewRequestFactory;
 use Tests\TestCase;
 
 class CreateEateryReportActionTest extends TestCase

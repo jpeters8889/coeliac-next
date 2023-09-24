@@ -1,0 +1,439 @@
+<script setup lang="ts">
+import Modal from '@/Components/Overlays/Modal.vue';
+import CoeliacButton from '@/Components/CoeliacButton.vue';
+import { computed, onMounted, Ref, ref } from 'vue';
+import { CheckCircleIcon } from '@heroicons/vue/24/outline';
+import Loader from '@/Components/Loader.vue';
+import axios, { AxiosResponse } from 'axios';
+import { DataResponse } from '@/types/GenericTypes';
+import { EditableEateryData, EditableEateryField } from '@/types/EateryTypes';
+import FormTextarea from '@/Components/Forms/FormTextarea.vue';
+import FormInput from '@/Components/Forms/FormInput.vue';
+import FormSelect from '@/Components/Forms/FormSelect.vue';
+import EaterySuggestEditOpeningTimes from '@/Components/PageSpecific/EatingOut/Details/Modals/EaterySuggestEditOpeningTimes.vue';
+import { FormSelectOption } from '@/Components/Forms/Props';
+import EaterySuggestEditFeatures from '@/Components/PageSpecific/EatingOut/Details/Modals/EaterySuggestEditFeatures.vue';
+
+const props = defineProps<{
+  eateryName: string;
+  eateryId: number;
+  show: boolean;
+}>();
+
+const hasSubmitted = ref(false);
+const loading = ref(true);
+
+const emits = defineEmits(['close', 'openReport']);
+
+const editableData: Ref<EditableEateryData | undefined> =
+  ref<EditableEateryData>();
+
+const loadData = () => {
+  loading.value = true;
+
+  axios
+    .get(`/api/wheretoeat/${props.eateryId}/suggest-edit`)
+    .then((response: AxiosResponse<DataResponse<EditableEateryData>>) => {
+      editableData.value = response.data.data;
+      loading.value = false;
+    });
+};
+
+onMounted(() => {
+  loadData();
+});
+
+const close = () => {
+  emits('close');
+
+  hasSubmitted.value = false;
+};
+
+const editing: Ref<EditableEateryField | null> = ref(null);
+const newValue: Ref<string | number | null | Array<string | number | object>> =
+  ref(null);
+
+const fields = computed((): EditableEateryField[] => {
+  if (editableData.value === undefined) {
+    return [];
+  }
+
+  const eatery: EditableEateryData = editableData.value;
+
+  return [
+    {
+      id: 'address',
+      label: 'Address',
+      shouldDisplay: !eatery.is_nationwide,
+      getter: () => eatery.address.replaceAll('\n', ', '),
+      isFormField: true,
+      formField: {
+        component: FormTextarea,
+        value: () => eatery.address,
+        props: {
+          rows: 5,
+        },
+      },
+      updated: false,
+    },
+    {
+      id: 'website',
+      label: 'Website',
+      shouldDisplay: true,
+      getter: () => eatery.website || '',
+      isFormField: true,
+      formField: {
+        component: FormInput,
+        value: () => eatery.website || '',
+      },
+      updated: false,
+    },
+    {
+      id: 'gf_menu_link',
+      label: 'Gluten Free Menu Link',
+      shouldDisplay: true,
+      getter: () => eatery.gf_menu_link || '',
+      isFormField: true,
+      formField: {
+        component: FormInput,
+        value: () => eatery.gf_menu_link || '',
+      },
+      updated: false,
+    },
+    {
+      id: 'phone',
+      label: 'Phone Number',
+      shouldDisplay: !eatery.is_nationwide,
+      getter: () => eatery.phone || '',
+      isFormField: true,
+      formField: {
+        component: FormInput,
+        value: () => eatery.phone || '',
+      },
+      updated: false,
+    },
+    {
+      id: 'venue_type',
+      label: 'Venue Type',
+      shouldDisplay: true,
+      getter: () => eatery.venue_type.label,
+      isFormField: true,
+      formField: {
+        component: FormSelect,
+        value: () => eatery.venue_type.id,
+        props: {
+          options: eatery.venue_type.values.map(
+            (value): FormSelectOption => ({
+              label: value.label,
+              value: value.id,
+            })
+          ),
+        },
+      },
+      updated: false,
+    },
+    {
+      id: 'cuisine',
+      label: 'Cuisine',
+      shouldDisplay: eatery.type_id === 1,
+      getter: () => eatery.cuisine.label,
+      isFormField: true,
+      formField: {
+        component: FormSelect,
+        value: () => eatery.cuisine.id,
+        props: {
+          options: eatery.cuisine.values.map(
+            (value): FormSelectOption => ({
+              label: value.label,
+              value: value.id,
+            })
+          ),
+        },
+      },
+      updated: false,
+    },
+    {
+      id: 'opening_times',
+      label: 'Opening Times',
+      shouldDisplay: eatery.type_id !== 3 && !eatery.is_nationwide,
+      getter: () => {
+        if (!eatery.opening_times) {
+          return null;
+        }
+
+        if (!eatery.opening_times.today) {
+          return 'Currently closed';
+        }
+
+        return `${eatery.opening_times.today[0]} - ${eatery.opening_times.today[1]}`;
+      },
+      capitalise: true,
+      isFormField: false,
+      component: {
+        component: EaterySuggestEditOpeningTimes,
+        change: (value: Object[]): void => {
+          newValue.value = value;
+        },
+        props: {
+          currentOpeningTimes: eatery.opening_times,
+        },
+      },
+      updated: false,
+    },
+    {
+      id: 'features',
+      label: 'Features',
+      shouldDisplay: true,
+      getter: () =>
+        eatery.features.selected.map((feature) => feature.label).join(', '),
+      isFormField: false,
+      component: {
+        component: EaterySuggestEditFeatures,
+        change: (value: Object[]): void => {
+          newValue.value = value;
+        },
+        props: {
+          currentFeatures: eatery.features.values,
+        },
+      },
+      updated: false,
+    },
+    {
+      id: 'info',
+      label: 'Additional Information',
+      shouldDisplay: true,
+      getter: () =>
+        'Is there anything else we should know about this location?',
+      truncate: false,
+      isFormField: true,
+      formField: {
+        component: FormTextarea,
+        value: () => '',
+      },
+      updated: false,
+    },
+  ];
+});
+
+const isFieldBeingEdited = (field: EditableEateryField): boolean =>
+  field.label === editing.value?.label;
+
+const isFieldNotBeingEdited = (field: EditableEateryField): boolean =>
+  !isFieldBeingEdited(field);
+
+const cancelEditingField = (): void => {
+  if (!editing.value) {
+    return;
+  }
+
+  editing.value = null;
+  newValue.value = null;
+};
+
+const openField = (field: EditableEateryField): void => {
+  if (editing.value) {
+    cancelEditingField();
+  }
+
+  newValue.value = field.isFormField ? field.formField.value() : '';
+  // this.$root.$on(`${field.id}-change`, this.handleFieldUpdate);
+
+  editing.value = field;
+};
+
+const updateField = (): void => {
+  if (!newValue.value) {
+    // coeliac().error('Please complete the form before submitting!');
+  }
+
+  // coeliac()
+  //   .request()
+  //   .post(`/api/wheretoeat/${this.id}/suggest-edit`, {
+  //     field: this.editing.id,
+  //     value: this.newValue,
+  //   })
+  //   .then(() => {
+  //     this.fields[this.currentFieldIndex].updated = true;
+  //     this.cancelEditingField();
+  //
+  //     coeliac().success(
+  //       'Thanks for suggesting an improvement to this location!'
+  //     );
+  //   })
+  //   .catch(() => {
+  //     coeliac().error(
+  //       'Sorry, we were unable to save your suggested edit, please try again...'
+  //     );
+  //   });
+};
+
+const openReport = () => {
+  emits('close');
+  emits('openReport');
+};
+</script>
+
+<template>
+  <Modal
+    :open="show"
+    size="medium"
+    @close="close()"
+  >
+    <div
+      class="border-grey-mid relative border-b bg-grey-light p-3 pr-[34px] text-center text-sm font-semibold"
+    >
+      Suggest Edits for {{ eateryName }}
+    </div>
+    <div class="p-3">
+      <div
+        v-if="loading"
+        class="py-8"
+      >
+        <Loader
+          color="primary"
+          size="w-24 h-24"
+          width="border-8"
+          :absolute="false"
+          display
+        />
+      </div>
+
+      <template v-else-if="hasSubmitted">
+        <div class="flex items-center justify-center text-center text-green">
+          <CheckCircleIcon class="h-24 w-24" />
+        </div>
+
+        <p class="md:prose-md prose mb-2 max-w-none text-center">
+          Thank you for your report about <strong>{{ eateryName }}</strong
+          >, we'll check it out, and if the eatery no longer qualifies, we'll
+          remove it from our website!
+        </p>
+
+        <div class="mt-4 flex-1 text-center">
+          <CoeliacButton
+            as="button"
+            type="button"
+            size="xxl"
+            label="Close"
+            @click="close()"
+          />
+        </div>
+      </template>
+
+      <template v-else>
+        <div
+          class="mb-4 flex flex-col space-y-3 border-b border-primary-light pb-4"
+        >
+          <p class="prose prose-sm">
+            Can you improve the details we've got for
+            <strong v-text="eateryName" />? Let us know using the options below,
+            submit the details and we'll check it out!
+          </p>
+
+          <p
+            class="prose prose-sm cursor-pointer border border-primary-light bg-primary-light/20 p-2"
+            @click="openReport()"
+          >
+            Has <strong v-text="eateryName" /> closed down, or no longer does
+            gluten free? Click here to report it instead!
+          </p>
+        </div>
+
+        <ul class="divide-blue-light flex flex-col divide-y">
+          <template v-for="field in fields">
+            <li
+              v-if="field.shouldDisplay"
+              :key="field.id"
+              class="flex flex-col py-1"
+            >
+              <div
+                v-if="field.updated"
+                class="bg-blue-light rounded bg-opacity-25 p-1 text-center"
+              >
+                Thanks for your suggestion!
+              </div>
+
+              <template v-else>
+                <div class="flex w-full items-center justify-between">
+                  <span
+                    :class="
+                      isFieldBeingEdited(field)
+                        ? 'text-blue-dark text-sm font-semibold'
+                        : ''
+                    "
+                    >{{ field.label }}</span
+                  >
+                  <span
+                    v-if="isFieldNotBeingEdited(field)"
+                    class="text-blue-dark cursor-pointer text-xs font-semibold transition hover:text-black"
+                    @click="openField(field)"
+                  >
+                    Update
+                  </span>
+                </div>
+
+                <div
+                  v-if="isFieldNotBeingEdited(field)"
+                  class="text-xs text-grey"
+                  :class="{
+                    capitalize: field.capitalise,
+                    truncate:
+                      field.truncate !== undefined ? field.truncate : true,
+                  }"
+                >
+                  {{ field.getter() || 'Not set' }}
+                </div>
+
+                <div
+                  v-if="isFieldBeingEdited(field)"
+                  class="flex flex-col space-y-2"
+                >
+                  <template v-if="field.isFormField">
+                    <component
+                      :is="field.formField.component"
+                      v-model="newValue"
+                      :name="field.id"
+                      :label="field.label"
+                      v-bind="field.formField.props || null"
+                      small
+                      hide-label
+                    />
+                  </template>
+
+                  <template v-else>
+                    <component
+                      :is="field.component.component"
+                      v-bind="field.component.props"
+                      @change="field.component.change"
+                    />
+                  </template>
+
+                  <div
+                    class="flex justify-between text-xs font-semibold xs:text-base"
+                  >
+                    <CoeliacButton
+                      theme="secondary"
+                      size="sm"
+                      as="button"
+                      type="button"
+                      label="Cancel"
+                      @click="cancelEditingField()"
+                    ></CoeliacButton>
+
+                    <CoeliacButton
+                      size="sm"
+                      as="button"
+                      type="button"
+                      label="Submit"
+                      @click="updateField()"
+                    ></CoeliacButton>
+                  </div>
+                </div>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+    </div>
+  </Modal>
+</template>

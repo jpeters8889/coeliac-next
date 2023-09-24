@@ -4,14 +4,7 @@ import RawInputField from '@/Components/Forms/RawInputField.vue';
 import { ref, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
-const props = withDefaults(
-  defineProps<
-    InputProps & {
-      label: string;
-    }
-  >(),
-  InputPropDefaults,
-);
+const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
 const emits = defineEmits(['update:modelValue']);
 
@@ -25,6 +18,7 @@ watch(value, () => {
 <template>
   <div>
     <label
+      v-if="hideLabel === false"
       :for="id"
       class="block font-medium leading-6 text-gray-900"
     >
@@ -39,6 +33,7 @@ watch(value, () => {
         :name="name"
         :placeholder="placeholder"
         :required="required"
+        :label="label"
         :type="type"
         borders
       />

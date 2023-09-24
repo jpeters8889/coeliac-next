@@ -36,7 +36,7 @@ watch(value, () => {
     <div class="ml-3 flex items-center">
       <input
         :id="name"
-        :checked="value"
+        v-model="value"
         :disabled="disabled"
         class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary xmd:h-5 xmd:w-5"
         type="checkbox"
