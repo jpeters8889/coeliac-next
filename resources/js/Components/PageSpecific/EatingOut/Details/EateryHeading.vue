@@ -5,7 +5,7 @@ import {
 } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
 import { computed } from 'vue';
-import Icon from '@/Components/Icon.vue';
+import { Link } from '@inertiajs/vue3';
 import StarRating from '@/Components/StarRating.vue';
 import EateryHeaderLinks from '@/Components/PageSpecific/EatingOut/Details/EateryHeaderLinks.vue';
 
@@ -89,14 +89,22 @@ const averageRating = (): StarRatingType =>
         v-if="eatery.town.name !== 'Nationwide'"
         class="flex space-x-3 text-xs font-semibold text-grey-darker"
       >
-        {{ eatery.town.name }}, {{ eatery.county.name }}
+        <Link :href="eatery.town.link"> {{ eatery.town.name }} </Link>,
+        <Link :href="eatery.county.link">
+          {{ eatery.county.name }}
+        </Link>
       </div>
 
       <div
         v-if="eatery.branch"
         class="flex space-x-3 text-xs font-semibold text-grey-darker"
       >
-        {{ eatery.branch.town.name }}, {{ eatery.branch.county.name }}
+        <Link :href="eatery.branch.town.link">
+          {{ eatery.branch.town.name }} </Link
+        >,
+        <Link :href="eatery.branch.county.link">
+          {{ eatery.branch.county.name }}
+        </Link>
       </div>
     </div>
 

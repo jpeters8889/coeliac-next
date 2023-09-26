@@ -20,6 +20,7 @@ const props = withDefaults(
     iconPosition?: 'left' | 'right';
     loading?: boolean;
     classes?: string;
+    disabled?: boolean;
   }>(),
   {
     theme: 'primary',
@@ -32,6 +33,7 @@ const props = withDefaults(
     iconPosition: 'left',
     loading: false,
     classes: '',
+    disabled: false,
   }
 );
 
@@ -92,6 +94,10 @@ const classes = computed((): string[] => {
     base.push('bg-secondary/80', 'hover:bg-secondary', 'text-black');
   }
 
+  if (props.disabled) {
+    base.push('cursor-not-allowed', 'opacity-50');
+  }
+
   base.push(props.classes);
 
   return base;
@@ -107,6 +113,7 @@ const emits = defineEmits(['click']);
     v-bind="{
       ...(props.as === 'button' ? { type: props.type } : null),
       ...(props.as === Link || props.as === 'a' ? { href: props.href } : null),
+      ...(props.as === 'button' && props.disabled ? { disabled: true } : null),
     }"
     @click="emits('click')"
   >

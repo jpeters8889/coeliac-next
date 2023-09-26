@@ -28,39 +28,19 @@ const emits = defineEmits(['close', 'openReport']);
 const editableData: Ref<EditableEateryData | undefined> =
   ref<EditableEateryData>();
 
-const loadData = () => {
-  loading.value = true;
+const fields: Ref<EditableEateryField[]> = ref([]);
 
-  axios
-    .get(`/api/wheretoeat/${props.eateryId}/suggest-edit`)
-    .then((response: AxiosResponse<DataResponse<EditableEateryData>>) => {
-      editableData.value = response.data.data;
-      loading.value = false;
-    });
-};
-
-onMounted(() => {
-  loadData();
-});
-
-const close = () => {
-  emits('close');
-
-  hasSubmitted.value = false;
-};
-
-const editing: Ref<EditableEateryField | null> = ref(null);
 const newValue: Ref<string | number | null | Array<string | number | object>> =
   ref(null);
 
-const fields = computed((): EditableEateryField[] => {
-  if (editableData.value === undefined) {
-    return [];
+const parseFields = () => {
+  if (!editableData.value) {
+    return;
   }
 
   const eatery: EditableEateryData = editableData.value;
 
-  return [
+  fields.value = [
     {
       id: 'address',
       label: 'Address',
@@ -125,7 +105,7 @@ const fields = computed((): EditableEateryField[] => {
           options: eatery.venue_type.values.map(
             (value): FormSelectOption => ({
               label: value.label,
-              value: value.id,
+              value: value.value,
             })
           ),
         },
@@ -145,7 +125,7 @@ const fields = computed((): EditableEateryField[] => {
           options: eatery.cuisine.values.map(
             (value): FormSelectOption => ({
               label: value.label,
-              value: value.id,
+              value: value.value,
             })
           ),
         },
@@ -213,7 +193,31 @@ const fields = computed((): EditableEateryField[] => {
       updated: false,
     },
   ];
+};
+
+const loadData = () => {
+  loading.value = true;
+
+  axios
+    .get(`/api/wheretoeat/${props.eateryId}/suggest-edit`)
+    .then((response: AxiosResponse<DataResponse<EditableEateryData>>) => {
+      editableData.value = response.data.data;
+      loading.value = false;
+      parseFields();
+    });
+};
+
+onMounted(() => {
+  loadData();
 });
+
+const close = () => {
+  emits('close');
+
+  hasSubmitted.value = false;
+};
+
+const editing: Ref<EditableEateryField | null> = ref(null);
 
 const isFieldBeingEdited = (field: EditableEateryField): boolean =>
   field.label === editing.value?.label;
@@ -241,30 +245,38 @@ const openField = (field: EditableEateryField): void => {
   editing.value = field;
 };
 
-const updateField = (): void => {
-  if (!newValue.value) {
-    // coeliac().error('Please complete the form before submitting!');
+const isSubmitting = ref(false);
+
+const currentFieldIndex = computed((): int | null => {
+  if (!editing.value) {
+    return null;
   }
 
-  // coeliac()
-  //   .request()
-  //   .post(`/api/wheretoeat/${this.id}/suggest-edit`, {
-  //     field: this.editing.id,
-  //     value: this.newValue,
-  //   })
-  //   .then(() => {
-  //     this.fields[this.currentFieldIndex].updated = true;
-  //     this.cancelEditingField();
-  //
-  //     coeliac().success(
-  //       'Thanks for suggesting an improvement to this location!'
-  //     );
-  //   })
-  //   .catch(() => {
-  //     coeliac().error(
-  //       'Sorry, we were unable to save your suggested edit, please try again...'
-  //     );
-  //   });
+  return fields.value.indexOf(editing.value);
+});
+
+const updateField = (): void => {
+  if (!editing.value || !newValue.value) {
+    return;
+  }
+
+  isSubmitting.value = true;
+
+  axios
+    .post(`/api/wheretoeat/${props.eateryId}/suggest-edit`, {
+      field: editing.value.id,
+      value: newValue.value,
+    })
+    .then(() => {
+      fields.value[currentFieldIndex.value].updated = true;
+      cancelEditingField();
+    })
+    .catch(() => {
+      //
+    })
+    .finally(() => {
+      isSubmitting.value = false;
+    });
 };
 
 const openReport = () => {
@@ -425,6 +437,8 @@ const openReport = () => {
                       as="button"
                       type="button"
                       label="Submit"
+                      :disabled="newValue === ''"
+                      :loading="isSubmitting"
                       @click="updateField()"
                     ></CoeliacButton>
                   </div>

@@ -210,7 +210,7 @@ type EditableEaterySelectableData = {
   id: number;
   label: string;
   values: {
-    id: number;
+    value: number;
     label: string;
     selected: boolean;
   }[];
@@ -229,12 +229,14 @@ type BaseEditableEateryField = {
 
 type BaseEditableEateryFieldForm = BaseEditableEateryField & {
   isFormField: true;
-  formField: EditableEateryFieldComponent;
+  formField: EditableEateryFieldComponent & {
+    value: () => string | number;
+  };
 };
 
 type BaseEditableEateryFieldComponent = BaseEditableEateryField & {
   isFormField: false;
-  component: Exclude<EditableEateryFieldComponent, 'value'> & {
+  component: EditableEateryFieldComponent & {
     change: (value: Object[]) => void;
   };
 };
@@ -245,6 +247,5 @@ export type EditableEateryField =
 
 type EditableEateryFieldComponent = {
   component: string;
-  value: () => string | number;
   props?: Partial<any>;
 };
