@@ -14,11 +14,33 @@ export type CountyPage = County & {
   towns: CountyPageTown[];
 };
 
+export type NationwidePage = County & {
+  eateries: number;
+  reviews: number;
+  chains: NationwideEatery[];
+};
+
 export type CountyPageTown = Town & {
   link: string;
   eateries: number;
   attractions: number;
   hotels: number;
+};
+
+export type NationwideEatery = {
+  cuisine?: string;
+  info: string;
+  key: number;
+  link: string;
+  name: string;
+  phone?: string;
+  reviews: {
+    number: number;
+    average: string;
+  };
+  type: string;
+  venue_type?: string;
+  website?: string;
 };
 
 export type Eatery = {

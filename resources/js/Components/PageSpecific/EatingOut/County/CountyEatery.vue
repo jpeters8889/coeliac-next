@@ -19,6 +19,7 @@ defineProps<{ eatery: CountyEateryType }>();
 
     <div class="flex justify-between">
       <Link
+        v-if="eatery.town.name !== 'Nationwide'"
         :href="eatery.town.link"
         class="hover:text-gray font-semibold text-primary-dark transition"
       >
