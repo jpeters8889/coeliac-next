@@ -121,8 +121,8 @@ const prepareForm = (): void => {
     service_rating: '',
     how_expensive: '',
     images: [],
-    ...(isAdmin() ? { adminReview: false } : null),
-    ...(props.eatery.county.id === 1 ? { branchName: branchName() } : null),
+    ...(isAdmin() ? { admin_review: false } : null),
+    ...(props.eatery.county.id === 1 ? { branch_name: branchName() } : null),
   });
 
   nextTick(() => {
@@ -276,7 +276,7 @@ const submittedText = computed((): string => {
               name="branchName"
               type="branchName"
               label="What branch did you eat at?"
-              :error="form.error.branch_name"
+              :error="form.errors.branch_name"
             />
           </div>
           <div class="flex-1">

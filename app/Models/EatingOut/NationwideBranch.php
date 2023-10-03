@@ -7,6 +7,8 @@ namespace App\Models\EatingOut;
 use App\Concerns\EatingOut\HasEateryDetails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 
 /**
  * @property Eatery $eatery
@@ -49,5 +51,19 @@ class NationwideBranch extends Model
             $this->eatery->slug,
             $this->slug,
         ]);
+    }
+
+    /**
+     * @param  Relation<self>  $query
+     * @return Relation<self>
+     */
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        if (app(Request::class)->wantsJson()) {
+            return $query->where('id', $value); /** @phpstan-ignore-line */
+        }
+
+        /** @phpstan-ignore-next-line  */
+        return $query->where('slug', $value);
     }
 }

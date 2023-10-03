@@ -78,6 +78,12 @@ defineProps<{
     </Card>
   </template>
 
+  <Card class="mt-3 flex flex-col space-y-4">
+    <h2 class="text-2xl font-semibold md:text-3xl">
+      List of Gluten Free Nationwide Chains
+    </h2>
+  </Card>
+
   <div class="group grid gap-3 md:grid-cols-3">
     <NationwideEateryCard
       v-for="eatery in county.chains"

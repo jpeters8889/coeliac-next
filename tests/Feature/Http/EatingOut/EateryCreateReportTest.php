@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\Http\EatingOut;
+namespace Tests\Feature\Http\EatingOut;
 
 use App\Actions\EatingOut\CreateEateryReportAction;
 use App\Models\EatingOut\Eatery;
@@ -33,12 +33,19 @@ class EateryCreateReportTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
+    protected function route(string $eatery = null): string
+    {
+        if ( ! $eatery) {
+            $eatery = $this->eatery->slug;
+        }
+
+        return route('eating-out.show.report.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => $eatery]);
+    }
+
     /** @test */
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
-        $this->post(
-            route('eating-out.show.report.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => 'foo'])
-        )->assertNotFound();
+        $this->post($this->route('foo'))->assertNotFound();
     }
 
     /** @test */
@@ -46,9 +53,7 @@ class EateryCreateReportTest extends TestCase
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
 
-        $this->post(
-            route('eating-out.show.report.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => $eatery->slug])
-        )->assertNotFound();
+        $this->post($this->route($eatery->slug))->assertNotFound();
     }
 
     /** @test */
@@ -89,9 +94,6 @@ class EateryCreateReportTest extends TestCase
 
     protected function submitForm(array $data): TestResponse
     {
-        return $this->post(
-            route('eating-out.show.report.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => $this->eatery->slug]),
-            $data
-        );
+        return $this->post($this->route(), $data);
     }
 }

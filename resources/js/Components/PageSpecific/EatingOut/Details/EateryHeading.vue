@@ -8,12 +8,13 @@ import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import StarRating from '@/Components/StarRating.vue';
 import EateryHeaderLinks from '@/Components/PageSpecific/EatingOut/Details/EateryHeaderLinks.vue';
+import Icon from '@/Components/Icon.vue';
 
 const props = defineProps<{
   eatery: DetailedEatery;
 }>();
 
-const icon = computed((): string => {
+const iconName = computed((): string => {
   if (props.eatery.type === 'Hotel / B&B') {
     return 'hotel';
   }
@@ -37,9 +38,9 @@ const averageRating = (): StarRatingType =>
         v-text="eatery.name"
       />
 
-      <div class="w-6 pt-2 text-primary xs:w-7">
+      <div class="w-10 pr-2 pt-2 text-primary">
         <Icon
-          :name="icon"
+          :name="iconName"
           class="h-10 w-10"
         />
       </div>
@@ -67,7 +68,7 @@ const averageRating = (): StarRatingType =>
     <div>
       <div class="flex flex-col text-sm font-semibold text-grey-darker">
         <a
-          v-if="eatery.county.id === 1 && eatery.branch"
+          v-if="eatery.county.id === 1"
           class="hover:text-black"
           href="/wheretoeat/nationwide"
         >

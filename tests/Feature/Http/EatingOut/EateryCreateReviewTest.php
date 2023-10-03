@@ -34,12 +34,24 @@ class EateryCreateReviewTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
+    protected function route(string $county = null, string $town = null, string $eatery = null): string
+    {
+        return route('eating-out.show.reviews.create', [
+            'county' => $county ?? $this->county->slug,
+            'town' => $town ?? $this->town->slug,
+            'eatery' => $eatery ?? $this->eatery->slug,
+        ]);
+    }
+
+    protected function data(array $data = []): EateryCreateReviewRequestFactory
+    {
+        return EateryCreateReviewRequestFactory::new($data);
+    }
+
     /** @test */
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
-        $this->post(
-            route('eating-out.show.reviews.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => 'foo'])
-        )->assertNotFound();
+        $this->post($this->route(eatery: 'foo'))->assertNotFound();
     }
 
     /** @test */
@@ -47,43 +59,41 @@ class EateryCreateReviewTest extends TestCase
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
 
-        $this->post(
-            route('eating-out.show.reviews.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => $eatery->slug])
-        )->assertNotFound();
+        $this->post($this->route(eatery: $eatery->slug))->assertNotFound();
     }
 
     /** @test */
     public function itErrorsWithoutAnInvalidRating(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => null])->create())
+        $this->submitForm($this->data(['rating' => null])->create())
             ->assertSessionHasErrors('rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => 'foo'])->create())
+        $this->submitForm($this->data(['rating' => 'foo'])->create())
             ->assertSessionHasErrors('rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => true])->create())
+        $this->submitForm($this->data(['rating' => true])->create())
             ->assertSessionHasErrors('rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => -1])->create())
+        $this->submitForm($this->data(['rating' => -1])->create())
             ->assertSessionHasErrors('rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => 6])->create())
+        $this->submitForm($this->data(['rating' => 6])->create())
             ->assertSessionHasErrors('rating');
     }
 
     /** @test */
     public function itFailsWithAnInvalidMethodValue(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['method' => null])->create())
+        $this->submitForm($this->data(['method' => null])->create())
             ->assertSessionHasErrors('method');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['method' => 123])->create())
+        $this->submitForm($this->data(['method' => 123])->create())
             ->assertSessionHasErrors('method');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['method' => false])->create())
+        $this->submitForm($this->data(['method' => false])->create())
             ->assertSessionHasErrors('method');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['method' => 'foo'])->create())
+        $this->submitForm($this->data(['method' => 'foo'])->create())
             ->assertSessionHasErrors('method');
     }
 
@@ -92,126 +102,115 @@ class EateryCreateReviewTest extends TestCase
     {
         $this->eatery->county->update(['county' => 'Nationwide']);
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['branch_name' => null])->create())
+        $this->submitForm($this->data(['branch_name' => 123])->create())
             ->assertSessionHasErrors('branch_name');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['branch_name' => 123])->create())
-            ->assertSessionHasErrors('branch_name');
-
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['branch_name' => false])->create())
+        $this->submitForm($this->data(['branch_name' => false])->create())
             ->assertSessionHasErrors('branch_name');
     }
 
     /** @test */
     public function itErrorsWhenSubmitAFullReviewWithoutAName(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['name' => null])->create())
+        $this->submitForm($this->data()->fullReview()->state(['name' => null])->create())
             ->assertSessionHasErrors('name');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['name' => 123])->create())
+        $this->submitForm($this->data()->fullReview()->state(['name' => 123])->create())
             ->assertSessionHasErrors('name');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['name' => true])->create())
+        $this->submitForm($this->data()->fullReview()->state(['name' => true])->create())
             ->assertSessionHasErrors('name');
     }
 
     /** @test */
     public function itErrorsWhenSubmitAFullReviewWithoutAEmail(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['email' => null])->create())
+        $this->submitForm($this->data()->fullReview()->state(['email' => null])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['email' => 123])->create())
+        $this->submitForm($this->data()->fullReview()->state(['email' => 123])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['email' => true])->create())
+        $this->submitForm($this->data()->fullReview()->state(['email' => true])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['email' => 'foo'])->create())
+        $this->submitForm($this->data()->fullReview()->state(['email' => 'foo'])->create())
             ->assertSessionHasErrors('email');
     }
 
     /** @test */
     public function itErrorsWhenSubmitAFullReviewWithoutAReviewField(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['review' => null])->create())
+        $this->submitForm($this->data()->fullReview()->state(['review' => null])->create())
             ->assertSessionHasErrors('review');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['review' => 123])->create())
+        $this->submitForm($this->data()->fullReview()->state(['review' => 123])->create())
             ->assertSessionHasErrors('review');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['review' => true])->create())
+        $this->submitForm($this->data()->fullReview()->state(['review' => true])->create())
             ->assertSessionHasErrors('review');
     }
 
     /** @test */
     public function itErrorsWithAnInvalidFoodRatingValue(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['food_rating' => 123])->create())
+        $this->submitForm($this->data()->fullReview()->state(['food_rating' => 123])->create())
             ->assertSessionHasErrors('food_rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['food_rating' => true])->create())
+        $this->submitForm($this->data()->fullReview()->state(['food_rating' => true])->create())
             ->assertSessionHasErrors('food_rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['food_rating' => 'foo'])->create())
+        $this->submitForm($this->data()->fullReview()->state(['food_rating' => 'foo'])->create())
             ->assertSessionHasErrors('food_rating');
     }
 
     /** @test */
     public function itErrorsWithAnInvalidServiceRatingValue(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['service_rating' => 123])->create())
+        $this->submitForm($this->data()->fullReview()->state(['service_rating' => 123])->create())
             ->assertSessionHasErrors('service_rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['service_rating' => true])->create())
+        $this->submitForm($this->data()->fullReview()->state(['service_rating' => true])->create())
             ->assertSessionHasErrors('service_rating');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->fullReview()->state(['service_rating' => 'foo'])->create())
+        $this->submitForm($this->data()->fullReview()->state(['service_rating' => 'foo'])->create())
             ->assertSessionHasErrors('service_rating');
     }
 
     /** @test */
     public function itErrorsWithoutAnInvalidHowExpensiveField(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['how_expensive' => 'foo'])->create())
+        $this->submitForm($this->data(['how_expensive' => 'foo'])->create())
             ->assertSessionHasErrors('how_expensive');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['how_expensive' => true])->create())
+        $this->submitForm($this->data(['how_expensive' => true])->create())
             ->assertSessionHasErrors('how_expensive');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['how_expensive' => -1])->create())
+        $this->submitForm($this->data(['how_expensive' => -1])->create())
             ->assertSessionHasErrors('how_expensive');
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['how_expensive' => 6])->create())
+        $this->submitForm($this->data(['how_expensive' => 6])->create())
             ->assertSessionHasErrors('how_expensive');
     }
 
     /** @test */
     public function itErrorsIfSubmittingMoreThan6Images(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['images' => [1, 2, 3, 4, 5, 6, 7]])->create())
+        $this->submitForm($this->data(['images' => [1, 2, 3, 4, 5, 6, 7]])->create())
             ->assertSessionHasErrors('images');
     }
 
     /** @test */
     public function itErrorsIfAnImageDoesntExistInTheTable(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['images' => [1]])->create())
+        $this->submitForm($this->data(['images' => [1]])->create())
             ->assertSessionHasErrors('images.0');
-    }
-
-    protected function submitForm(array $data): TestResponse
-    {
-        return $this->post(
-            route('eating-out.show.reviews.create', ['county' => $this->county, 'town' => $this->town, 'eatery' => $this->eatery->slug]),
-            $data
-        );
     }
 
     /** @test */
     public function itReturnsOkForRatingWithoutAReview(): void
     {
-        $this->submitForm(EateryCreateReviewRequestFactory::new()->create())->assertSessionHasNoErrors();
+        $this->submitForm($this->data()->create())->assertSessionHasNoErrors();
     }
 
     /** @test */
@@ -219,7 +218,7 @@ class EateryCreateReviewTest extends TestCase
     {
         $this->expectAction(CreateEateryReviewAction::class);
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => 5])->create());
+        $this->submitForm($this->data(['rating' => 5])->create());
 
     }
 
@@ -228,7 +227,7 @@ class EateryCreateReviewTest extends TestCase
     {
         $this->assertEmpty($this->eatery->reviews);
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new(['rating' => 5])->create());
+        $this->submitForm($this->data(['rating' => 5])->create());
 
         $this->assertNotEmpty($this->eatery->refresh()->reviews);
 
@@ -246,7 +245,7 @@ class EateryCreateReviewTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $this->submitForm(EateryCreateReviewRequestFactory::new()
+        $this->submitForm($this->data()
             ->fullReview()
             ->state([
                 'rating' => 4,
@@ -263,5 +262,10 @@ class EateryCreateReviewTest extends TestCase
         $this->assertEquals(4, $review->rating);
         $this->assertEquals('Foo Bar', $review->name);
         $this->assertEquals('foo@bar.com', $review->email);
+    }
+
+    protected function submitForm(array $data): TestResponse
+    {
+        return $this->post($this->route(), $data);
     }
 }

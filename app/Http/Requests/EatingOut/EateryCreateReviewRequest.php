@@ -31,7 +31,7 @@ class EateryCreateReviewRequest extends FormRequest
             'images.*' => ['string', 'exists:temporary_file_uploads,id'],
             'method' => ['in:website,app'],
             //'admin_review' => $this->user()?->isAdmin() ? ['boolean'] : ['sometimes', 'declined'],
-            'branch_name' => $this->isNationwide() ? ['required_with:name,email,review', 'string'] : ['prohibited'],
+            'branch_name' => $this->isNationwide() ? ['nullable', 'required_with:name,email,review', 'string'] : ['prohibited'],
         ];
     }
 

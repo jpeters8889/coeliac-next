@@ -248,7 +248,7 @@ class Eatery extends Model
             }
 
             if (Str::lower($this->town->town) === 'nationwide') {
-                return "{$this->name}, Nationwide";
+                return "{$this->name} Nationwide Chain";
             }
 
             return implode(', ', [

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\Http\EatingOut;
+namespace Tests\Feature\Http\EatingOut;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;

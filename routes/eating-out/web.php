@@ -11,18 +11,29 @@ use App\Http\Controllers\EatingOut\TownController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
+$prefixedEateryRoutes = function (string $namePrefix): callable {
+    return function () use ($namePrefix): void {
+        Route::get('/', EateryDetailsController::class)->name($namePrefix);
+
+        Route::post('/reviews', EateryCreateReviewController::class)
+            ->middleware([HandlePrecognitiveRequests::class])
+            ->name("{$namePrefix}.reviews.create");
+
+        Route::post('/report', EateryCreateReportController::class)
+            ->middleware([HandlePrecognitiveRequests::class])
+            ->name("{$namePrefix}.report.create");
+    };
+};
+
 Route::get('/nationwide', NationwideController::class)->name('eating-out.nationwide');
+Route::prefix('/nationwide/{eatery}')->group(
+    $prefixedEateryRoutes('eating-out.nationwide.show')
+);
+Route::prefix('/nationwide/{eatery}/{nationwideBranch}')->group(
+    $prefixedEateryRoutes('eating-out.nationwide.show.branch')
+);
+
 Route::get('/{county}', CountyController::class)->name('eating-out.county');
 Route::get('/{county}/{town}', TownController::class)->name('eating-out.town');
 
-Route::prefix('/{county}/{town}/{eatery}')->group(function (): void {
-    Route::get('/', EateryDetailsController::class)->name('eating-out.show');
-
-    Route::post('/reviews', EateryCreateReviewController::class)
-        ->middleware([HandlePrecognitiveRequests::class])
-        ->name('eating-out.show.reviews.create');
-
-    Route::post('/report', EateryCreateReportController::class)
-        ->middleware([HandlePrecognitiveRequests::class])
-        ->name('eating-out.show.report.create');
-});
+Route::prefix('/{county}/{town}/{eatery}')->group($prefixedEateryRoutes('eating-out.show'));
