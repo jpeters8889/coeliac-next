@@ -8,6 +8,7 @@ use App\Http\Response\Inertia;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use App\Models\EatingOut\NationwideBranch;
 use App\Resources\EatingOut\EateryDetailsResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
@@ -19,15 +20,22 @@ class EateryDetailsController
         EateryCounty $county,
         EateryTown $town,
         Eatery $eatery,
+        NationwideBranch $nationwideBranch,
         Request $request,
         Inertia $inertia,
     ): Response {
-        if ($request->routeIs('eating-out.nationwide.show')) {
+        if ($request->routeIs('eating-out.nationwide.show', 'eating-out.nationwide.show.branch')) {
             /** @var EateryCounty $county */
             $county = EateryCounty::query()->firstWhere('county', 'Nationwide');
 
             /** @var EateryTown $town */
             $town = EateryTown::query()->firstWhere('town', 'nationwide');
+        }
+
+        if ($request->routeIs('eating-out.nationwide.show.branch')) {
+            $nationwideBranch->load(['county', 'town']);
+
+            $eatery->setRelation('branch', $nationwideBranch);
         }
 
         $county->load(['country']);

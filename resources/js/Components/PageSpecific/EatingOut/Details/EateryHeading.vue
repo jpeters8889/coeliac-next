@@ -88,7 +88,7 @@ const averageRating = (): StarRatingType =>
 
       <div
         v-if="eatery.town.name !== 'Nationwide'"
-        class="flex space-x-3 text-xs font-semibold text-grey-darker"
+        class="1 flex space-x-3 text-xs font-semibold text-grey-darker"
       >
         <Link :href="eatery.town.link"> {{ eatery.town.name }} </Link>,
         <Link :href="eatery.county.link">
@@ -98,7 +98,7 @@ const averageRating = (): StarRatingType =>
 
       <div
         v-if="eatery.branch"
-        class="flex space-x-3 text-xs font-semibold text-grey-darker"
+        class="2 flex space-x-3 text-xs font-semibold text-grey-darker"
       >
         <Link :href="eatery.branch.town.link">
           {{ eatery.branch.town.name }} </Link

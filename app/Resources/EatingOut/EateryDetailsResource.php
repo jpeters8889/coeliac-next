@@ -9,6 +9,7 @@ use App\Models\EatingOut\EateryAttractionRestaurant;
 use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryReviewImage;
+use App\Models\EatingOut\NationwideBranch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,6 +32,9 @@ class EateryDetailsResource extends JsonResource
 
         /** @var Collection<int, EateryFeature> $features */
         $features = $this->features;
+
+        /** @var NationwideBranch | null $branch */
+        $branch = $this->relationLoaded('branch') ? $this->branch : null;
 
         return [
             'id' => $this->id,
@@ -114,6 +118,26 @@ class EateryDetailsResource extends JsonResource
                     'closes' => $this->openingTimes->closesAt(),
                 ],
                 'days' => $this->openingTimes->opening_times_array,
+            ] : null,
+            'branch' => $branch ? [
+                'name' => $branch->name,
+                'county' => [
+                    'id' => $branch->county_id,
+                    'name' => $branch->county->county,
+                    'link' => $branch->county->link(),
+                ],
+                'town' => [
+                    'id' => $branch->town_id,
+                    'name' => $branch->town->town,
+                    'link' => $branch->town->link(),
+                ],
+                'location' => [
+                    'address' => collect(explode("\n", $branch->address))
+                        ->map(fn (string $line) => trim($line))
+                        ->join(', '),
+                    'lat' => $branch->lat,
+                    'lng' => $branch->lng,
+                ],
             ] : null,
         ];
     }
