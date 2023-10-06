@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace App\Actions\EatingOut;
 
-use App\Models\EatingOut\EateryCounty;
-use App\Queries\EatingOut\CountyReviewsQuery;
+use App\Queries\EatingOut\MostReviewsInUkQuery;
 use App\Resources\EatingOut\CountyEateryResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
-class GetTopRatedPlacesInCountyAction
+class GetMostRatedPlacesAction
 {
     /** @return Collection<int, CountyEateryResource> */
-    public function handle(EateryCounty $county): Collection
+    public function handle(): Collection
     {
-        $key = "wheretoeat_county_{$county->slug}_top_rated_places";
+        $key = 'wheretoeat_most_rated_places';
 
         if (Cache::has($key)) {
             /** @var Collection<int, CountyEateryResource> $cached */
@@ -24,7 +23,7 @@ class GetTopRatedPlacesInCountyAction
             return $cached;
         }
 
-        $places = app(CountyReviewsQuery::class)($county, 'rating desc, rating_count desc');
+        $places = app(MostReviewsInUkQuery::class)('rating_count desc, rating desc');
 
         Cache::put($key, $places, now()->addDay());
 

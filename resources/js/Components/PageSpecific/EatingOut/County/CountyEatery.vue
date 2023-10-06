@@ -32,7 +32,7 @@ defineProps<{ eatery: CountyEateryType }>();
           size="w-5 h-5"
         />
         <p class="font-semibold text-grey-dark">
-          from {{ eatery.rating_count }} votes
+          {{ eatery.rating.toFixed(1) }} from {{ eatery.rating_count }} votes
         </p>
       </div>
     </div>

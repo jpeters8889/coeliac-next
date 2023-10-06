@@ -6,6 +6,7 @@ use App\Http\Controllers\EatingOut\CountyController;
 use App\Http\Controllers\EatingOut\EateryCreateReportController;
 use App\Http\Controllers\EatingOut\EateryCreateReviewController;
 use App\Http\Controllers\EatingOut\EateryDetailsController;
+use App\Http\Controllers\EatingOut\EatingOutController;
 use App\Http\Controllers\EatingOut\NationwideController;
 use App\Http\Controllers\EatingOut\TownController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -24,6 +25,8 @@ $prefixedEateryRoutes = function (string $namePrefix): callable {
             ->name("{$namePrefix}.report.create");
     };
 };
+
+Route::get('/', EatingOutController::class)->name('eating-out.index');
 
 Route::get('/nationwide', NationwideController::class)->name('eating-out.nationwide');
 Route::prefix('/nationwide/{eatery}')->group(

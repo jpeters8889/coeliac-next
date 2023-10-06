@@ -25,8 +25,8 @@ class CountyController
             ->metaTags($county->keywords())
             ->render('EatingOut/County', [
                 'county' => new CountyPageResource($county),
-                'topRated' => fn () => $getMostRatedPlacesInCounty->handle($county),
-                'mostRated' => fn () => $getTopRatedPlacesInCounty->handle($county),
+                'topRated' => fn () => $getTopRatedPlacesInCounty->handle($county),
+                'mostRated' => fn () => $getMostRatedPlacesInCounty->handle($county),
             ]);
     }
 }
