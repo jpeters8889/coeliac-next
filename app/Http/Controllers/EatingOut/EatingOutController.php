@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut;
 
+use App\Actions\EatingOut\GetCountyListAction;
 use App\Actions\EatingOut\GetMostRatedPlacesAction;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
 use App\Http\Response\Inertia;
@@ -11,8 +12,12 @@ use Inertia\Response;
 
 class EatingOutController
 {
-    public function __invoke(Inertia $inertia, GetTopRatedPlacesAction $getTopRatedPlacesAction, GetMostRatedPlacesAction $getMostRatedPlacesAction): Response
-    {
+    public function __invoke(
+        Inertia $inertia,
+        GetCountyListAction $getCountyListAction,
+        GetTopRatedPlacesAction $getTopRatedPlacesAction,
+        GetMostRatedPlacesAction $getMostRatedPlacesAction,
+    ): Response {
         return $inertia
             ->title('Gluten Free Places to Eat Guide')
             ->metaDescription('Coeliac Sanctuary where to eat guide | Places in the UK who can cater to Coeliac and gluten free diets')
@@ -23,7 +28,7 @@ class EatingOutController
                 'gluten free eating out uk', 'uk places to eat', 'gluten free attractions', 'gluten free hotels',
             ])
             ->render('EatingOut/Index', [
-                //                'county' => new CountyPageResource($county),
+                'countries' => fn () => $getCountyListAction->handle(),
                 'topRated' => fn () => $getTopRatedPlacesAction->handle(),
                 'mostRated' => fn () => $getMostRatedPlacesAction->handle(),
             ]);

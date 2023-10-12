@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Feature\Http\EatingOut;
 
+use App\Actions\EatingOut\GetCountyListAction;
 use App\Actions\EatingOut\GetMostRatedPlacesAction;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
 use App\Models\EatingOut\EateryCounty;
@@ -34,6 +35,14 @@ class EatingOutIndexTest extends TestCase
     }
 
     /** @test */
+    public function itCallsTheGetCountyListAction(): void
+    {
+        $this->expectAction(GetCountyListAction::class);
+
+        $this->visitPage();
+    }
+
+    /** @test */
     public function itCallsTheTopRatedPlacesAction(): void
     {
         $this->expectAction(GetTopRatedPlacesAction::class);
@@ -52,13 +61,6 @@ class EatingOutIndexTest extends TestCase
     /** @test */
     public function itRendersTheInertiaPage(): void
     {
-        $this->visitPage()
-            ->assertInertia(
-                fn (Assert $page) => $page
-                    ->component('EatingOut/Index')
-                //                    ->has('county')
-                //                    ->where('county.name', $this->county->county)
-                //                    ->etc()
-            );
+        $this->visitPage()->assertInertia(fn (Assert $page) => $page->component('EatingOut/Index'));
     }
 }

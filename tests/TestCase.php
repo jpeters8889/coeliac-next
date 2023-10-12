@@ -82,7 +82,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertTrue($matched, 'Failed asserting that array contains instance of ' . class_basename($class));
     }
 
-    protected function assertArrayHasKeys(array $keys, array|ArrayAccess $array): void
+    protected function assertArrayHasKeys(array|ArrayAccess $keys, array|ArrayAccess $array): void
     {
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $array);
