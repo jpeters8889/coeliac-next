@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import { ChevronDownIcon } from '@heroicons/vue/24/solid';
-import { CountyEatery as CountyEateryType } from '@/types/EateryTypes';
+import {
+  CountyEatery as CountyEateryType,
+  EateryCountryListProp,
+} from '@/types/EateryTypes';
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
+import EateryCountryCard from '@/Components/PageSpecific/EatingOut/Index/EateryCountryCard.vue';
 
 defineProps<{
+  countries: EateryCountryListProp;
   topRated: CountyEateryType[];
   mostRated: CountyEateryType[];
 }>();
@@ -92,4 +97,24 @@ defineProps<{
       </div>
     </Card>
   </template>
+
+  <Card class="mt-3 flex flex-col space-y-4">
+    <h2 class="text-2xl font-semibold md:text-3xl">
+      Gluten Free around the UK and Ireland
+    </h2>
+
+    <p class="prose prose-lg max-w-none">
+      Our eating out guide is split into countries, counties and then towns or
+      cities, click or tap on a country below to get started!
+    </p>
+
+    <div class="flex flex-col space-y-3">
+      <EateryCountryCard
+        v-for="(details, country) in countries"
+        :key="country"
+        :country="country"
+        :details="details"
+      />
+    </div>
+  </Card>
 </template>

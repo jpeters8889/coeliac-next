@@ -271,3 +271,23 @@ type EditableEateryFieldComponent = {
   component: string;
   props?: Partial<any>;
 };
+
+export type EateryCountryListProp = {
+  [T: string]: EateryCountryPropItem;
+};
+
+export type EateryCountryPropItem = {
+  list: EateryCountryList[];
+  counties: number;
+  eateries: number;
+};
+
+export type EateryCountryList = {
+  name: string;
+  slug: string;
+  eateries: number;
+  branches: number;
+  attractions: number;
+  hotels: number;
+  total: number;
+};
