@@ -24,7 +24,7 @@ class GetCountyListAction
 
         /** @var Collection<string, array{list: Collection<int, object{country: string, county: string, county_slug: string, branches: int, eateries: int, attractions: int, hotels: int}>, counties: int, count: int}> $places */
         $places = $this->getCountries()->map(function (Collection $places) {
-            $list = $places->map(fn($county) => $this->formatCountry($county));
+            $list = $places->map(fn ($county) => $this->formatCountry($county));
 
             return [
                 'list' => $list,
