@@ -16,13 +16,13 @@ class GetEateriesInTownActionTest extends GetEateriesTestCase
     /** @test */
     public function itReturnsTheNextClosureInTheAction(): void
     {
-        $this->assertInstanceOf(GetEateriesPipelineData::class, $this->callGetEateriesAction());
+        $this->assertInstanceOf(GetEateriesPipelineData::class, $this->callGetEateriesInTownAction());
     }
 
     /** @test */
     public function itReturnsEachEateryAPendingEatery(): void
     {
-        $collection = $this->callGetEateriesAction()->eateries;
+        $collection = $this->callGetEateriesInTownAction()->eateries;
 
         $collection->each(fn ($item) => $this->assertInstanceOf(PendingEatery::class, $item));
     }
@@ -32,7 +32,7 @@ class GetEateriesInTownActionTest extends GetEateriesTestCase
     {
         $eateries = new Collection(range(0, 4));
 
-        $newCollection = $this->callGetEateriesAction($eateries)->eateries;
+        $newCollection = $this->callGetEateriesInTownAction($eateries)->eateries;
 
         $this->assertCount(10, $newCollection); // 5 in setup, 5 from above
     }
@@ -48,7 +48,7 @@ class GetEateriesInTownActionTest extends GetEateriesTestCase
                 'venue_type_id' => EateryVenueType::query()->first()->id,
             ]);
 
-        $eateries = $this->callGetEateriesAction(filters: ['categories' => ['att']]);
+        $eateries = $this->callGetEateriesInTownAction(filters: ['categories' => ['att']]);
 
         $this->assertCount(1, $eateries->eateries);
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);
@@ -67,7 +67,7 @@ class GetEateriesInTownActionTest extends GetEateriesTestCase
                 'venue_type_id' => $venueType->id,
             ]);
 
-        $eateries = $this->callGetEateriesAction(filters: ['venueTypes' => ['test']]);
+        $eateries = $this->callGetEateriesInTownAction(filters: ['venueTypes' => ['test']]);
 
         $this->assertCount(1, $eateries->eateries);
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);
@@ -87,7 +87,7 @@ class GetEateriesInTownActionTest extends GetEateriesTestCase
 
         $feature->eateries()->attach($eatery);
 
-        $eateries = $this->callGetEateriesAction(filters: ['features' => ['test']]);
+        $eateries = $this->callGetEateriesInTownAction(filters: ['features' => ['test']]);
 
         $this->assertCount(1, $eateries->eateries);
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);

@@ -11,11 +11,15 @@ use Illuminate\Support\Str;
 
 /**
  * @property Collection<EaterySearch> $searches
- * @property mixed                        $term
+ * @property string                        $term
  * @property string $key
  */
 class EaterySearchTerm extends Model
 {
+    protected $casts = [
+        'range' => 'int',
+    ];
+
     protected $table = 'wheretoeat_search_terms';
 
     protected static function boot(): void
@@ -42,6 +46,8 @@ class EaterySearchTerm extends Model
     public function logSearch(): void
     {
         $this->searches()->create();
+
+        $this->touch();
     }
 
     /** @return HasMany<EaterySearch> */

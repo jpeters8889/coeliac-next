@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataObjects\EatingOut;
 
 use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EaterySearchTerm;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use App\Resources\EatingOut\EateryListResource;
@@ -25,8 +26,9 @@ class GetEateriesPipelineData extends Data
      * @param  null | LengthAwarePaginator<JsonResource>  $serialisedEateries
      */
     public function __construct(
-        public EateryTown $town,
         public array $filters,
+        public ?EateryTown $town = null,
+        public ?EaterySearchTerm $searchTerm = null,
         public ?Collection $eateries = null,
         public ?LengthAwarePaginator $paginator = null,
         public ?Collection $hydrated = null,

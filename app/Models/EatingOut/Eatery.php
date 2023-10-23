@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
+use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
+use App\DataObjects\EatingOut\LatLng;
 use App\Scopes\LiveScope;
+use App\Support\Helpers;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 /**
  * @property string $info
@@ -42,12 +46,14 @@ use Illuminate\Support\Str;
  * @property int | null $rating_count
  * @property int | null $average_expense
  * @property bool $has_been_rated
+ * @property float | null $distance
  *
  * @method transform(array $array)
  */
 class Eatery extends Model
 {
     use HasEateryDetails;
+    use Searchable;
 
     protected $casts = [
         'lat' => 'float',
@@ -75,6 +81,20 @@ class Eatery extends Model
 
             return $eatery;
         });
+    }
+
+    public static function searchAroundLatLng(LatLng $latLng, int $radius = 2): AlgoliaBuilder
+    {
+        $params = [
+            'aroundLatLng' => $latLng->toString(),
+            'aroundRadius' => Helpers::milesToMeters($radius),
+            'getRankingInfo' => true,
+        ];
+
+        /** @var AlgoliaBuilder $searcher */
+        $searcher = static::search();
+
+        return $searcher->with($params);
     }
 
     /**
@@ -341,5 +361,34 @@ class Eatery extends Model
             'places to eat', 'cafes', 'restaurants', 'eating out', 'catering to coeliac', 'eating out uk',
             'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
         ];
+    }
+
+    public function toSearchableArray(): array
+    {
+        return $this->transform([
+            'title' => $this->relationLoaded('town') ? $this->name . ', ' . $this->town->town : $this->name,
+            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') ? $this->town->town . ', ' . $this->county->county : '',
+            'town' => $this->relationLoaded('town') ? $this->town->town : '',
+            'county' => $this->relationLoaded('county') ? $this->county->county : '',
+            'address' => $this->address,
+            '_geoloc' => [
+                'lat' => $this->lat,
+                'lng' => $this->lng,
+            ],
+        ]);
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this->live;
+    }
+
+    /** @return Attribute<float | null, callable(float): void> */
+    public function distance(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Arr::get($this->attributes, 'distance'),
+            set: fn ($distance) => $this->attributes['distance'] = $distance,
+        );
     }
 }

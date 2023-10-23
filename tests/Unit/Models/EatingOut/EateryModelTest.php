@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCuisine;
 use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryOpeningTimes;
 use App\Models\EatingOut\EateryVenueType;
+use App\Support\Helpers;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Tests\TestCase;
 
 class EateryModelTest extends TestCase
@@ -105,5 +109,31 @@ class EateryModelTest extends TestCase
     public function itHasAnHasFeaturesScope(): void
     {
         $this->assertInstanceOf(Builder::class, Eatery::query()->hasFeatures([]));
+    }
+
+    /** @test */
+    public function itHasAStaticBuilderForLatLngSearch(): void
+    {
+        $latLng = new LatLng(51.1, 0.23);
+
+        $builder = Eatery::searchAroundLatLng($latLng);
+
+        $parameters = Arr::get((new ReflectionClosure($builder->callback))->getUseVariables(), 'parameters');
+
+        $this->assertArrayHasKey('aroundLatLng', $parameters);
+        $this->assertEquals($latLng->toString(), $parameters['aroundLatLng']);
+    }
+
+    /** @test */
+    public function itIncludesTheSearchRadiusInTheLatLngSearch(): void
+    {
+        $latLng = new LatLng(51.1, 0.23);
+
+        $builder = Eatery::searchAroundLatLng($latLng, 5);
+
+        $parameters = Arr::get((new ReflectionClosure($builder->callback))->getUseVariables(), 'parameters');
+
+        $this->assertArrayHasKey('aroundRadius', $parameters);
+        $this->assertEquals(Helpers::milesToMeters(5), $parameters['aroundRadius']);
     }
 }

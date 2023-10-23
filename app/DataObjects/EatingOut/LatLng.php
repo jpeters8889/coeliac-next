@@ -12,4 +12,9 @@ class LatLng extends Data
     {
         //
     }
+
+    public function toString(): string
+    {
+        return "{$this->lat},{$this->lng}";
+    }
 }

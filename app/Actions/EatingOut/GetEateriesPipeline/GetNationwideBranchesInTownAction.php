@@ -13,11 +13,16 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 class GetNationwideBranchesInTownAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
+        if ( ! $pipelineData->town) {
+            throw new RuntimeException('No Town');
+        }
+
         /** @var Builder<Eatery> $query */
         $query = NationwideBranch::query()
             /** @lang mysql */

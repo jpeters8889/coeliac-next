@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut;
 
-use App\Actions\EatingOut\GetFiltersForTownAction;
+use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Pipelines\EatingOut\GetEateriesPipeline;
 use App\Resources\EatingOut\TownPageResource;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
@@ -20,7 +21,7 @@ class TownController
         EateryCounty $county,
         EateryTown $town,
         Inertia $inertia,
-        GetFiltersForTownAction $getFiltersForTown,
+        GetFiltersForEateriesAction $getFiltersForTown,
         GetEateriesPipeline $getEateriesPipeline,
     ): Response {
         /** @var array{categories: string[], features: string[], venueTypes: string []}  $filters */
@@ -40,7 +41,7 @@ class TownController
             ->render('EatingOut/Town', [
                 'town' => fn () => new TownPageResource($town),
                 'eateries' => fn () => $getEateriesPipeline->run($town, $filters),
-                'filters' => fn () => $getFiltersForTown->handle($town, $filters),
+                'filters' => fn () => $getFiltersForTown->handle(fn (Builder $query) => $query->where('town_id', $town->id), $filters),
             ]);
     }
 }

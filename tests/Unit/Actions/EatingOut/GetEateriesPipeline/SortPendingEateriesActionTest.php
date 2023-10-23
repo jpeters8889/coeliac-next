@@ -11,7 +11,7 @@ class SortPendingEateriesActionTest extends GetEateriesTestCase
     /** @test */
     public function itSortsEateries(): void
     {
-        $eateries = $this->callGetEateriesAction()->eateries;
+        $eateries = $this->callGetEateriesInTownAction()->eateries;
         $eateries = $this->callGetBranchesAction($eateries)->eateries;
 
         $sortedEateries = $this->callSortEateriesAction($eateries)->eateries;

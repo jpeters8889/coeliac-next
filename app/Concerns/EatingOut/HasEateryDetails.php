@@ -97,7 +97,7 @@ trait HasEateryDetails
     public function fullLocation(): Attribute
     {
         return Attribute::get(function () {
-            if ( ! $this->relationLoaded('town')) {
+            if ( ! $this->relationLoaded('town') || ! $this->relationLoaded('county') || ! $this->relationLoaded('country')) {
                 return null;
             }
 

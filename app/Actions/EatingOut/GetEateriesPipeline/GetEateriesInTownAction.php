@@ -12,11 +12,16 @@ use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 class GetEateriesInTownAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
+        if ( ! $pipelineData->town) {
+            throw new RuntimeException('No Town');
+        }
+
         /** @var Builder<Eatery> $query */
         $query = Eatery::query()
             ->selectRaw('wheretoeat.id, null as branch_id, wheretoeat.name as ordering')

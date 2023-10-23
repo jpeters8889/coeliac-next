@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Modules\EatingOut\Http;
 
 use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInTownAction;
-use App\Actions\EatingOut\GetFiltersForTownAction;
+use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -74,7 +74,7 @@ class TownTest extends TestCase
     /** @test */
     public function itCallsTheGetFiltersForTownAction(): void
     {
-        $this->expectAction(GetFiltersForTownAction::class);
+        $this->expectAction(GetFiltersForEateriesAction::class);
 
         $this->visitTown();
     }

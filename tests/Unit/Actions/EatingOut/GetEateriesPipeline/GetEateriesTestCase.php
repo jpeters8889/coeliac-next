@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut\GetEateriesPipeline;
 
+use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToBranches;
+use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToEateries;
 use App\Actions\EatingOut\GetEateriesPipeline\CheckForMissingEateriesAction;
+use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchArea;
 use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInTownAction;
 use App\Actions\EatingOut\GetEateriesPipeline\GetNationwideBranchesInTownAction;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateBranchesAction;
@@ -19,19 +22,26 @@ use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryReview;
+use App\Models\EatingOut\EaterySearchTerm;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\EateryVenueType;
 use App\Models\EatingOut\NationwideBranch;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 abstract class GetEateriesTestCase extends TestCase
 {
+    use WithFaker;
+
     protected EateryCounty $county;
 
     protected EateryTown $town;
+
+    protected EaterySearchTerm $eaterySearchTerm;
 
     protected int $eateriesToCreate = 5;
 
@@ -44,6 +54,10 @@ abstract class GetEateriesTestCase extends TestCase
         parent::setUp();
 
         $this->seed(EateryScaffoldingSeeder::class);
+
+        $this->eaterySearchTerm = $this->create(EaterySearchTerm::class, [
+            'term' => 'London',
+        ]);
 
         $this->county = EateryCounty::query()->withoutGlobalScopes()->first();
         $this->town = EateryTown::query()->withoutGlobalScopes()->first();
@@ -79,7 +93,7 @@ abstract class GetEateriesTestCase extends TestCase
         }
     }
 
-    protected function callGetEateriesAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
+    protected function callGetEateriesInTownAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
     {
         $toReturn = null;
 
@@ -94,6 +108,36 @@ abstract class GetEateriesTestCase extends TestCase
         );
 
         $this->callAction(GetEateriesInTownAction::class, $pipelineData, $closure);
+
+        return $toReturn;
+    }
+
+    protected function callGetEateriesInSearchAreaAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
+    {
+        Http::preventStrayRequests();
+        $london = ['lat' => 51.50, 'lng' => 0.12, 'display_name' => 'London'];
+        $edinburgh = ['lat' => 55.95, 'lng' => -3.18, 'display_name' => 'Edinburgh'];
+
+        Eatery::query()->update([
+            'lat' => $london['lat'],
+            'lng' => $london['lng'],
+        ]);
+
+        Http::fake(['*' => Http::response([$london, $edinburgh])]);
+
+        $toReturn = null;
+
+        $closure = function (GetEateriesPipelineData $pipelineData) use (&$toReturn): void {
+            $toReturn = $pipelineData;
+        };
+
+        $pipelineData = new GetEateriesPipelineData(
+            searchTerm: $this->eaterySearchTerm,
+            filters: $filters,
+            eateries: $eateries,
+        );
+
+        $this->callAction(GetEateriesInSearchArea::class, $pipelineData, $closure);
 
         return $toReturn;
     }
@@ -139,7 +183,7 @@ abstract class GetEateriesTestCase extends TestCase
     protected function callPaginateEateriesAction(Collection $eateries = null): ?GetEateriesPipelineData
     {
         if ( ! $eateries) {
-            $eateries = $this->callGetEateriesAction()?->eateries;
+            $eateries = $this->callGetEateriesInTownAction()?->eateries;
             $eateries = $this->callGetBranchesAction($eateries)?->eateries;
         }
 
@@ -163,7 +207,7 @@ abstract class GetEateriesTestCase extends TestCase
     protected function callHydrateEateriesAction(Collection $eateries = null): ?GetEateriesPipelineData
     {
         if ( ! $eateries) {
-            $eateries = $this->callGetEateriesAction()?->eateries;
+            $eateries = $this->callGetEateriesInTownAction()?->eateries;
             $eateries = $this->callGetBranchesAction($eateries)?->eateries;
         }
 
@@ -185,10 +229,37 @@ abstract class GetEateriesTestCase extends TestCase
         return $toReturn;
     }
 
+    protected function callAppendDistanceToEateriesMethod(Collection $eateries, Collection $hydrated): ?GetEateriesPipelineData
+    {
+        $eateries = $eateries->map(function (PendingEatery $eatery) {
+            $eatery->distance = $this->faker->randomFloat();
+
+            return $eatery;
+        });
+
+        $toReturn = null;
+
+        $closure = function (GetEateriesPipelineData $pipelineData) use (&$toReturn): void {
+            $toReturn = $pipelineData;
+        };
+
+        $pipelineData = new GetEateriesPipelineData(
+            town: $this->town,
+            filters: [],
+            eateries: $eateries,
+            paginator: $this->callPaginateEateriesAction($eateries)?->paginator,
+            hydrated: $hydrated,
+        );
+
+        $this->callAction(AppendDistanceToEateries::class, $pipelineData, $closure);
+
+        return $toReturn;
+    }
+
     protected function callHydrateBranchesAction(Collection $eateries = null): ?GetEateriesPipelineData
     {
         if ( ! $eateries) {
-            $eateries = $this->callGetEateriesAction()?->eateries;
+            $eateries = $this->callGetEateriesInTownAction()?->eateries;
             $eateries = $this->callGetBranchesAction($eateries)?->eateries;
         }
 
@@ -206,6 +277,34 @@ abstract class GetEateriesTestCase extends TestCase
         );
 
         $this->callAction(HydrateBranchesAction::class, $pipelineData, $closure);
+
+        return $toReturn;
+    }
+
+    protected function callAppendDistanceToBranchesMethod(Collection $eateries, Collection $hydrated): ?GetEateriesPipelineData
+    {
+        $eateries = $eateries->map(function (PendingEatery $eatery, $index) {
+            $eatery->branchId = $index + 1;
+            $eatery->distance = $this->faker->randomFloat();
+
+            return $eatery;
+        });
+
+        $toReturn = null;
+
+        $closure = function (GetEateriesPipelineData $pipelineData) use (&$toReturn): void {
+            $toReturn = $pipelineData;
+        };
+
+        $pipelineData = new GetEateriesPipelineData(
+            town: $this->town,
+            filters: [],
+            eateries: $eateries,
+            paginator: $this->callPaginateEateriesAction($eateries)?->paginator,
+            hydratedBranches: $hydrated,
+        );
+
+        $this->callAction(AppendDistanceToBranches::class, $pipelineData, $closure);
 
         return $toReturn;
     }

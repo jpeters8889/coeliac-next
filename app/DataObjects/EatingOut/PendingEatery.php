@@ -12,6 +12,7 @@ class PendingEatery extends Data
         public int $id,
         public ?int $branchId,
         public string $ordering,
+        public ?float $distance = null,
     ) {
     }
 }
