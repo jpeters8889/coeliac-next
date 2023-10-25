@@ -100,6 +100,7 @@ export type TownEatery = Eatery & {
   };
   isNationwideBranch?: boolean;
   branch?: EateryNationwideBranch;
+  distance?: number;
 };
 
 export type EateryLocation = {

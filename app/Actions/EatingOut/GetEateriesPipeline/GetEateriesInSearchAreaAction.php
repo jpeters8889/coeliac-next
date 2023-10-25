@@ -16,7 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
-class GetEateriesInSearchArea implements GetEateriesPipelineActionContract
+class GetEateriesInSearchAreaAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {

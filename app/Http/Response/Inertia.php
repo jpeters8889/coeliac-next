@@ -68,21 +68,21 @@ class Inertia
         return $this;
     }
 
+    public function doNotTrack(): self
+    {
+        BaseInertia::share('meta.doNotTrack', true);
+
+        return $this;
+    }
+
     /**
-     * @param string $component
-     * @param array|Arrayable<int|string, mixed> $props
-     * @return Response
+     * @param  array|Arrayable<int|string, mixed>  $props
      */
     public function render(string $component, array|Arrayable $props = []): Response
     {
         return BaseInertia::render($component, $props);
     }
 
-    /**
-     * @param string|null $key
-     * @param mixed $default
-     * @return mixed
-     */
     public function getShared(string $key = null, mixed $default = null): mixed
     {
         return BaseInertia::getShared($key, $default);

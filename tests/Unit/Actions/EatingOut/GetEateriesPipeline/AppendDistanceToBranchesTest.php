@@ -9,7 +9,7 @@ use App\Models\EatingOut\NationwideBranch;
 class AppendDistanceToBranchesTest extends GetEateriesTestCase
 {
     /** @test */
-    public function itReturnsTheHydratedEateries(): void
+    public function itReturnsTheHydratedBranches(): void
     {
         $hydratedEateries = $this->callHydrateBranchesAction();
         $eateriesWithDistance = $this->callAppendDistanceToBranchesMethod($hydratedEateries->eateries, $hydratedEateries->hydratedBranches);

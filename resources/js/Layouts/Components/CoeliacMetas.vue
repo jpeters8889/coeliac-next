@@ -94,5 +94,11 @@ const metas: MetaProps = (<DefaultProps>usePage().props).meta as MetaProps;
     <template v-if="metas.schema">
       {{ metas.schema }}
     </template>
+
+    <meta
+      v-if="metas.doNotTrack"
+      name="”robots”"
+      content="”noindex”"
+    />
   </Head>
 </template>

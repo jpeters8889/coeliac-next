@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Modules\EatingOut\Http;
 
-use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInTownAction;
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use App\Pipelines\EatingOut\GetEateriesPipeline;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -66,7 +66,7 @@ class TownTest extends TestCase
     /** @test */
     public function itCallsTheGetEateriesInTownAction(): void
     {
-        $this->expectAction(GetEateriesInTownAction::class);
+        $this->expectPipelineToRun(GetEateriesPipeline::class);
 
         $this->visitTown();
     }

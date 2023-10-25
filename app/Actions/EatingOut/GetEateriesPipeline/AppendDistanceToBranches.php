@@ -18,18 +18,20 @@ class AppendDistanceToBranches implements GetEateriesPipelineActionContract
         /** @var Collection<int, PendingEatery> $results */
         $results = $pipelineData->eateries;
 
-        /** @var Collection<int, NationwideBranch> $hydratedBranches */
+        /** @var Collection<int, NationwideBranch> | null $hydratedBranches */
         $hydratedBranches = $pipelineData->hydratedBranches;
 
-        $pipelineData->hydratedBranches = $hydratedBranches->map(function (NationwideBranch $branch) use ($results) {
-            $rawData = $results->firstWhere('branchId', $branch->id);
+        if ($hydratedBranches) {
+            $pipelineData->hydratedBranches = $hydratedBranches->map(function (NationwideBranch $branch) use ($results) {
+                $rawData = $results->firstWhere('branchId', $branch->id);
 
-            if ($rawData && $rawData->distance) {
-                $branch->distance = $rawData->distance;
-            }
+                if ($rawData && $rawData->distance) {
+                    $branch->distance = $rawData->distance;
+                }
 
-            return $branch;
-        });
+                return $branch;
+            });
+        }
 
         return $next($pipelineData);
     }

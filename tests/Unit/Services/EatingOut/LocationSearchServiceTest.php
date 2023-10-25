@@ -29,7 +29,7 @@ class LocationSearchServiceTest extends TestCase
             $this->assertArrayHasKey('q', $queryStrings);
             $this->assertEquals('foo', $queryStrings['q']);
 
-            return Http::response([['lat' => 1, 'lng' => 1, 'display_name' => 'bar']]);
+            return Http::response([['lat' => 1, 'lon' => 1, 'display_name' => 'bar', 'type' => 'administrative']]);
         });
 
         app(LocationSearchService::class)->search('foo');
@@ -41,10 +41,10 @@ class LocationSearchServiceTest extends TestCase
         Http::fake(function (Request $request) {
             $queryStrings = $request->data();
 
-            $this->assertArrayHasKey('countryCodes', $queryStrings);
-            $this->assertEquals('gb,ie', $queryStrings['countryCodes']);
+            $this->assertArrayHasKey('countrycodes', $queryStrings);
+            $this->assertEquals('gb,ie', $queryStrings['countrycodes']);
 
-            return Http::response([['lat' => 1, 'lng' => 1, 'display_name' => 'bar']]);
+            return Http::response([['lat' => 1, 'lon' => 1, 'display_name' => 'bar', 'type' => 'administrative']]);
         });
 
         app(LocationSearchService::class)->search('foo');
@@ -67,8 +67,8 @@ class LocationSearchServiceTest extends TestCase
     /** @test */
     public function itReturnsEachItemAsALatLngInstance(): void
     {
-        $london = ['lat' => 51.50, 'lng' => 0.12, 'display_name' => 'London'];
-        $edinburgh = ['lat' => 55.95, 'lng' => -3.18, 'display_name' => 'Edinburgh'];
+        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
+        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
 
         Http::fake(['*' => Http::response([$london, $edinburgh])]);
 
@@ -76,27 +76,27 @@ class LocationSearchServiceTest extends TestCase
 
         $this->assertInstanceOf(LatLng::class, $results[0]);
         $this->assertEquals($london['lat'], $results[0]->lat);
-        $this->assertEquals($london['lng'], $results[0]->lng);
+        $this->assertEquals($london['lon'], $results[0]->lng);
         $this->assertEquals($london['display_name'], $results[0]->label);
 
         $this->assertInstanceOf(LatLng::class, $results[1]);
         $this->assertEquals($edinburgh['lat'], $results[1]->lat);
-        $this->assertEquals($edinburgh['lng'], $results[1]->lng);
+        $this->assertEquals($edinburgh['lon'], $results[1]->lng);
         $this->assertEquals($edinburgh['display_name'], $results[1]->label);
     }
 
     /** @test */
     public function itCanGetTheLatLngForAResult(): void
     {
-        $london = ['lat' => 51.50, 'lng' => 0.12, 'display_name' => 'London'];
-        $edinburgh = ['lat' => 55.95, 'lng' => -3.18, 'display_name' => 'Edinburgh'];
+        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
+        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
 
         Http::fake(['*' => Http::response([$london, $edinburgh])]);
 
         $latLng = app(LocationSearchService::class)->getLatLng('foo');
 
         $this->assertEquals($london['lat'], $latLng->lat);
-        $this->assertEquals($london['lng'], $latLng->lng);
+        $this->assertEquals($london['lon'], $latLng->lng);
         $this->assertEquals($london['display_name'], $latLng->label);
     }
 }

@@ -32,6 +32,7 @@ class NationwideBranch extends Model
     protected $casts = [
         'lat' => 'float',
         'lng' => 'float',
+        'live' => 'bool',
     ];
 
     public static function booted(): void
@@ -92,10 +93,10 @@ class NationwideBranch extends Model
     public function toSearchableArray(): array
     {
         return $this->transform([
-            'title' => $this->name . ', ' . $this->town->town,
-            'location' => $this->town->town . ', ' . $this->county->county,
-            'town' => $this->town->town,
-            'county' => $this->county->county,
+            'title' => $this->relationLoaded('town') ? $this->name . ', ' . $this->town->town : $this->name,
+            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') ? $this->town->town . ', ' . $this->county->county : '',
+            'town' => $this->relationLoaded('town') ? $this->town->town : '',
+            'county' => $this->relationLoaded('county') ? $this->county->county : '',
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,

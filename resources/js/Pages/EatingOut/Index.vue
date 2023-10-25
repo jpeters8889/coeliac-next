@@ -7,6 +7,7 @@ import {
 } from '@/types/EateryTypes';
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import EateryCountryCard from '@/Components/PageSpecific/EatingOut/Index/EateryCountryCard.vue';
+import LocationSearch from '@/Components/PageSpecific/EatingOut/LocationSearch.vue';
 
 defineProps<{
   countries: EateryCountryListProp;
@@ -42,7 +43,7 @@ defineProps<{
     </p>
   </Card>
 
-  <Card>Search</Card>
+  <LocationSearch />
 
   <Card class="mt-3 flex flex-col space-y-4">
     <a

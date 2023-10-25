@@ -7,7 +7,7 @@ namespace Tests\Unit\Actions\EatingOut\GetEateriesPipeline;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToBranches;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToEateries;
 use App\Actions\EatingOut\GetEateriesPipeline\CheckForMissingEateriesAction;
-use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchArea;
+use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchAreaAction;
 use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInTownAction;
 use App\Actions\EatingOut\GetEateriesPipeline\GetNationwideBranchesInTownAction;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateBranchesAction;
@@ -115,12 +115,12 @@ abstract class GetEateriesTestCase extends TestCase
     protected function callGetEateriesInSearchAreaAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
     {
         Http::preventStrayRequests();
-        $london = ['lat' => 51.50, 'lng' => 0.12, 'display_name' => 'London'];
-        $edinburgh = ['lat' => 55.95, 'lng' => -3.18, 'display_name' => 'Edinburgh'];
+        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
+        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
 
         Eatery::query()->update([
             'lat' => $london['lat'],
-            'lng' => $london['lng'],
+            'lng' => $london['lon'],
         ]);
 
         Http::fake(['*' => Http::response([$london, $edinburgh])]);
@@ -137,7 +137,7 @@ abstract class GetEateriesTestCase extends TestCase
             eateries: $eateries,
         );
 
-        $this->callAction(GetEateriesInSearchArea::class, $pipelineData, $closure);
+        $this->callAction(GetEateriesInSearchAreaAction::class, $pipelineData, $closure);
 
         return $toReturn;
     }

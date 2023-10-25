@@ -89,4 +89,12 @@ class InertiaResponseTest extends TestCase
 
         $this->assertEquals('foobar.jpg', $this->factory->getShared('meta.image'));
     }
+
+    /** @test */
+    public function itCanBeSetToNotTrack(): void
+    {
+        $this->factory->doNotTrack();
+
+        $this->assertTrue($this->factory->getShared('meta.doNotTrack'));
+    }
 }

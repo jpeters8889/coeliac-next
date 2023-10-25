@@ -43,6 +43,11 @@ class EaterySearchTerm extends Model
         });
     }
 
+    public function getRouteKeyName()
+    {
+        return 'key';
+    }
+
     public function logSearch(): void
     {
         $this->searches()->create();

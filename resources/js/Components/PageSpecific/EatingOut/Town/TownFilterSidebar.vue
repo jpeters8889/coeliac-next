@@ -7,7 +7,6 @@ import useScreensize from '@/composables/useScreensize';
 import { EateryFilters } from '@/types/EateryTypes';
 
 defineProps<{
-  town: string;
   filters: EateryFilters;
 }>();
 const viewSidebar = ref(false);
@@ -32,7 +31,6 @@ defineEmits(['filtersUpdated', 'sidebarClosed']);
   <div v-if="screenIsGreaterThanOrEqualTo('xmd')">
     <TownFilterSidebarContent
       :filters="filters"
-      :town="town"
       @updated="$emit('filtersUpdated', $event)"
     />
   </div>
@@ -48,7 +46,6 @@ defineEmits(['filtersUpdated', 'sidebarClosed']);
   >
     <TownFilterSidebarContent
       :filters="filters"
-      :town="town"
       @updated="$emit('filtersUpdated', $event)"
     />
   </Sidebar>

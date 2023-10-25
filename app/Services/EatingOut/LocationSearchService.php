@@ -20,24 +20,24 @@ class LocationSearchService
     public function search(string $term): Collection
     {
         return $this->callSearchService($term)
-            ->map(fn (array $result): LatLng => new LatLng($result['lat'], $result['lng'], $result['display_name']));
+            ->map(fn (array $result): LatLng => new LatLng((float) $result['lat'], (float) $result['lon'], $result['display_name']));
     }
 
     public function getLatLng(string $term): LatLng
     {
-        /** @var array{lat: float, lng: float, display_name: string} $result */
+        /** @var array{lat: float, lon: float, display_name: string} $result */
         $result = $this->callSearchService($term)->first();
 
-        return new LatLng($result['lat'], $result['lng'], $result['display_name']);
+        return new LatLng((float) $result['lat'], (float) $result['lon'], $result['display_name']);
     }
 
-    /** @return Collection<int, array{lat: float, lng: float, display_name: string}> */
+    /** @return Collection<int, array{lat: float, lon: float, display_name: string, type: string}> */
     protected function callSearchService(string $term): Collection
     {
         $response = $this->httpFactory
             ->get('https://nominatim.openstreetmap.org/search.php', [
                 'q' => $term,
-                'countryCodes' => 'gb,ie',
+                'countrycodes' => 'gb,ie',
                 'format' => 'jsonv2',
             ]);
 
@@ -45,9 +45,11 @@ class LocationSearchService
             throw new RuntimeException('Http request failed');
         }
 
-        /** @var Collection<int, array{lat: float, lng: float, display_name: string}> $collection */
+        $allowedTypes = ['administrative', 'postcode'];
+
+        /** @var Collection<int, array{lat: float, lon: float, display_name: string, type: string}> $collection */
         $collection = $response->collect();
 
-        return $collection;
+        return $collection->filter(fn (array $item) => in_array($item['type'], $allowedTypes));
     }
 }

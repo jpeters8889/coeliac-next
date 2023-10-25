@@ -42,6 +42,7 @@
         "@heroicons/vue": "^2.0.14",
         "@inertiajs/core": "^1.0.9",
         "@vue/eslint-config-typescript": "^11.0.2",
+        "@vueuse/core": "^10.5.0",
         "any-number-to-words": "^2.0.5",
         "axios": "^1.1.2",
         "eslint-import-resolver-alias": "^1.1.2",

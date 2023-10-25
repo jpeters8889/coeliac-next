@@ -31,7 +31,7 @@ $prefixedEateryRoutes = function (string $namePrefix): callable {
 Route::get('/', EatingOutController::class)->name('eating-out.index');
 
 Route::post('/search', SearchCreateController::class)->name('eating-out.search.create');
-Route::post('/search/{eaterySearchTerm}', EaterySearchResultsController::class)->name('eating-out.search.show');
+Route::get('/search/{eaterySearchTerm}', EaterySearchResultsController::class)->name('eating-out.search.show');
 
 Route::get('/nationwide', NationwideController::class)->name('eating-out.nationwide');
 Route::prefix('/nationwide/{eatery}')->group(

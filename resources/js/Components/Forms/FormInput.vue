@@ -13,6 +13,15 @@ const value = ref(props.modelValue);
 watch(value, () => {
   emits('update:modelValue', value.value);
 });
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (props.modelValue !== value.value) {
+      value.value = props.modelValue;
+    }
+  }
+);
 </script>
 
 <template>

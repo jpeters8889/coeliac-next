@@ -1,0 +1,145 @@
+<script lang="ts" setup>
+import Card from '@/Components/Card.vue';
+import { EateryFilters, TownEatery } from '@/types/EateryTypes';
+import TownHeading from '@/Components/PageSpecific/EatingOut/Town/TownHeading.vue';
+import Warning from '@/Components/Warning.vue';
+import { PaginatedResponse } from '@/types/GenericTypes';
+import EateryCard from '@/Components/PageSpecific/EatingOut/EateryCard.vue';
+import TownFilterSidebar from '@/Components/PageSpecific/EatingOut/Town/TownFilterSidebar.vue';
+import { Ref, ref } from 'vue';
+import useInfiniteScroll from '@/composables/useInfiniteScroll';
+import { router } from '@inertiajs/vue3';
+import useScreensize from '@/composables/useScreensize';
+import SearchResultsHeading from '@/Components/PageSpecific/EatingOut/SearchResults/SearchResultsHeading.vue';
+
+defineProps<{
+  term: string;
+  image: string;
+  eateries: PaginatedResponse<TownEatery>;
+  filters: EateryFilters;
+}>();
+
+const landmark: Ref<Element> = ref();
+
+const { items, reset } = useInfiniteScroll<TownEatery>('eateries', landmark);
+
+const { screenIsGreaterThanOrEqualTo } = useScreensize();
+
+const handleFiltersChanged = ({
+  filters,
+  preserveState,
+}: {
+  filters: EateryFilters;
+  preserveState: boolean;
+}) => {
+  const categoryFilter = filters.categories
+    .filter((filter) => filter.checked)
+    .map((filter) => filter.value);
+  const venueFilter = filters.venueTypes
+    .filter((filter) => filter.checked)
+    .map((filter) => filter.value);
+  const featureFilter = filters.features
+    .filter((filter) => filter.checked)
+    .map((filter) => filter.value);
+
+  reset();
+
+  const params: Record<string, any> & {
+    filter?: { [T in 'category' | 'venueType' | 'feature']?: string };
+  } = {};
+
+  if (categoryFilter.length || venueFilter.length || featureFilter.length) {
+    params.filter = {};
+
+    if (categoryFilter.length) {
+      params.filter.category = categoryFilter.join(',');
+    }
+
+    if (venueFilter.length) {
+      params.filter.venueType = venueFilter.join(',');
+    }
+
+    if (featureFilter.length) {
+      params.filter.feature = featureFilter.join(',');
+    }
+  }
+
+  router.get(window.location.pathname, params, {
+    preserveState: screenIsGreaterThanOrEqualTo('xmd') ? false : preserveState,
+    preserveScroll: true,
+  });
+};
+
+const reloadEateries = () => {
+  reset();
+
+  router.reload({
+    only: ['eateries'],
+    preserveState: true,
+    preserveScroll: true,
+  });
+};
+</script>
+
+<template>
+  <SearchResultsHeading
+    :term="term"
+    :image="image"
+  />
+
+  <Card class="mt-3 flex flex-col space-y-4">
+    <p class="prose-md prose max-w-none lg:prose-lg">
+      In our comprehensive eating out guide, you will find a wide range of
+      gluten-free options available at various locations around the UK, from
+      cafes, restaurants, attractions, to hotels, we've got you covered.
+    </p>
+
+    <p class="prose-md prose max-w-none lg:prose-lg">
+      The wealth of information in our guide is a result of the generous
+      contributions from people like you - fellow Coeliacs or individuals with
+      gluten intolerance, who are familiar with their local area. These
+      kind-hearted individuals take the time to share their knowledge and help
+      us build a comprehensive list of places to eat to help others, like you!
+    </p>
+
+    <Warning>
+      <p>
+        While we take every care to make sure our eating out guide is accurate,
+        places can change without notice, we always recommend that you check
+        ahead before making plans.
+      </p>
+
+      <p class="mt-2">
+        All eateries are recommended by our website visitors, and before going
+        live we check menus and independent reviews. All eateries listed in our
+        eating guide are in no way endorsed by Coeliac Sanctuary.
+      </p>
+    </Warning>
+  </Card>
+
+  <div class="relative md:flex xmd:space-x-2">
+    <TownFilterSidebar
+      :filters="filters"
+      @filters-updated="handleFiltersChanged"
+      @sidebar-closed="reloadEateries"
+    />
+
+    <div class="flex flex-col space-y-4 xmd:w-3/4">
+      <template v-if="items.length">
+        <EateryCard
+          v-for="eatery in items"
+          :key="eatery.link"
+          :eatery="eatery"
+        />
+      </template>
+
+      <Card
+        v-else
+        class="px-8 py-8 text-center text-xl"
+      >
+        No eateries found, try updating your filters!
+      </Card>
+      <div ref="landmark" />
+    </div>
+  </div>
+</template>

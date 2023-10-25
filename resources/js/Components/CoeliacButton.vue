@@ -5,7 +5,7 @@ import Loader from '@/Components/Loader.vue';
 
 const props = withDefaults(
   defineProps<{
-    label: string;
+    label?: string;
     theme?: 'primary' | 'faded' | 'secondary' | 'light';
     size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     bold?: boolean;
@@ -21,8 +21,10 @@ const props = withDefaults(
     loading?: boolean;
     classes?: string;
     disabled?: boolean;
+    iconOnly?: boolean;
   }>(),
   {
+    label: undefined,
     theme: 'primary',
     size: 'md',
     bold: false,
@@ -34,6 +36,7 @@ const props = withDefaults(
     loading: false,
     classes: '',
     disabled: false,
+    iconOnly: false,
   }
 );
 
@@ -118,14 +121,18 @@ const emits = defineEmits(['click']);
     @click="emits('click')"
   >
     <div :class="{ 'opacity-0': loading }">
-      {{ label }}
+      <template v-if="!iconOnly">{{ label }}</template>
 
       <component
         :is="icon"
         v-if="icon"
-        :class="iconPosition === 'right' ? '-mr-0.5 ml-2' : '-ml-0.5 mr-2'"
+        :class="{
+          '-mr-0.5 ml-2': !iconOnly && iconPosition === 'right',
+          '-ml-0.5 mr-2': !iconOnly && iconPosition === 'left',
+          'h-5 w-5': iconOnly,
+          'h-4 w-4': !iconOnly,
+        }"
         aria-hidden="true"
-        class="h-4 w-4"
       />
     </div>
 

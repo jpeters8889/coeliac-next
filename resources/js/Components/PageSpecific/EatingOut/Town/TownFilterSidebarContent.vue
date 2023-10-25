@@ -6,7 +6,6 @@ import { computed, ComputedRef, Ref, ref } from 'vue';
 import { EateryFilters } from '@/types/EateryTypes';
 
 const props = defineProps<{
-  town: string;
   filters: EateryFilters;
 }>();
 

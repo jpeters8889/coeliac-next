@@ -18,7 +18,7 @@ class SortPendingEateriesAction implements GetEateriesPipelineActionContract
         $eateries = $pipelineData->eateries;
 
         $pipelineData->eateries = $eateries
-            ->sort(fn (PendingEatery $a, PendingEatery $b) => strcmp($a->ordering, $b->ordering))
+            ->sort(fn (PendingEatery $a, PendingEatery $b) => strcmp((string) $a->ordering, (string) $b->ordering))
             ->values();
 
         return $next($pipelineData);

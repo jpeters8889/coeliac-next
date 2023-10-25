@@ -58,6 +58,7 @@ class Eatery extends Model
     protected $casts = [
         'lat' => 'float',
         'lng' => 'float',
+        'live' => 'bool',
     ];
 
     protected $table = 'wheretoeat';

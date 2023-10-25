@@ -59,6 +59,13 @@ const eateryLink = computed(() => {
           :phone="eatery.phone"
           :restaurants="eatery.restaurants"
         />
+
+        <p
+          v-if="eatery.distance"
+          class="prose-md prose max-w-none font-semibold"
+        >
+          Around {{ eatery.distance }} miles away...
+        </p>
       </div>
 
       <div

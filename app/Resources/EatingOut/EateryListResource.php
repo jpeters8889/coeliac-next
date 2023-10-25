@@ -71,6 +71,7 @@ class EateryListResource extends JsonResource
                 'number' => $this->reviews->count(),
                 'average' => $this->average_rating,
             ],
+            'distance' => $branch?->distance ?? $this->distance,
         ];
     }
 }

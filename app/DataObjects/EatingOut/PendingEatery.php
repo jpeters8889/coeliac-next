@@ -11,7 +11,7 @@ class PendingEatery extends Data
     public function __construct(
         public int $id,
         public ?int $branchId,
-        public string $ordering,
+        public string|float $ordering,
         public ?float $distance = null,
     ) {
     }

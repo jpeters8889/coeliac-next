@@ -17,7 +17,7 @@ use Spatie\LaravelData\Data;
 class GetEateriesPipelineData extends Data
 {
     /**
-     * @param  array{categories: string[], features: string[], venueTypes: string []}  $filters
+     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null}  $filters
      * @param  null | Collection<int, PendingEatery>  $eateries
      * @param  null | LengthAwarePaginator<PendingEatery>  $paginator
      * @param  null | Collection<int, Eatery>  $hydrated

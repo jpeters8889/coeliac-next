@@ -7,7 +7,7 @@ namespace Tests\Unit\Pipelines\EatingOut;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToBranches;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToEateries;
 use App\Actions\EatingOut\GetEateriesPipeline\CheckForMissingEateriesAction;
-use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchArea;
+use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchAreaAction;
 use App\Actions\EatingOut\GetEateriesPipeline\GetNationwideBranchesInSearchArea;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateBranchesAction;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateEateriesAction;
@@ -38,12 +38,12 @@ class GetSearchResultsPipelineTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
 
         Http::preventStrayRequests();
-        $london = ['lat' => 51.50, 'lng' => 0.12, 'display_name' => 'London'];
-        $edinburgh = ['lat' => 55.95, 'lng' => -3.18, 'display_name' => 'Edinburgh'];
+        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
+        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
 
         Eatery::query()->update([
             'lat' => $london['lat'],
-            'lng' => $london['lng'],
+            'lng' => $london['lon'],
         ]);
 
         Http::fake(['*' => Http::response([$london, $edinburgh])]);
@@ -58,7 +58,7 @@ class GetSearchResultsPipelineTest extends TestCase
             ->create([
                 'venue_type_id' => EateryVenueType::query()->first()->id,
                 'lat' => $london['lat'],
-                'lng' => $london['lng'],
+                'lng' => $london['lon'],
             ]);
 
         EateryFeature::query()->first()->eateries()->attach(Eatery::query()->first());
@@ -77,16 +77,15 @@ class GetSearchResultsPipelineTest extends TestCase
             ->count(10)
             ->create([
                 'lat' => $london['lat'],
-                'lng' => $london['lng'],
+                'lng' => $london['lon'],
             ]);
-
 
     }
 
     /** @test */
     public function itCallsTheActions(): void
     {
-        $this->expectPipelineToExecute(GetEateriesInSearchArea::class);
+        $this->expectPipelineToExecute(GetEateriesInSearchAreaAction::class);
         $this->expectPipelineToExecute(GetNationwideBranchesInSearchArea::class);
         $this->expectPipelineToExecute(SortPendingEateriesAction::class);
         $this->expectPipelineToExecute(PaginateEateriesAction::class);

@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-        Model::shouldBeStrict();
+        Model::shouldBeStrict( ! $this->app->runningInConsole());
 
         JsonResource::withoutWrapping();
     }

@@ -10,6 +10,7 @@ export type MetaProps = {
   tags: string[];
   image: string;
   schema?: string;
+  doNotTrack?: true;
   alternateMetas?: {
     [T: string]: string;
   };

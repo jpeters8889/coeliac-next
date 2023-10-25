@@ -7,7 +7,7 @@ namespace App\Pipelines\EatingOut;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToBranches;
 use App\Actions\EatingOut\GetEateriesPipeline\AppendDistanceToEateries;
 use App\Actions\EatingOut\GetEateriesPipeline\CheckForMissingEateriesAction;
-use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchArea;
+use App\Actions\EatingOut\GetEateriesPipeline\GetEateriesInSearchAreaAction;
 use App\Actions\EatingOut\GetEateriesPipeline\GetNationwideBranchesInSearchArea;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateBranchesAction;
 use App\Actions\EatingOut\GetEateriesPipeline\HydrateEateriesAction;
@@ -25,14 +25,14 @@ use Illuminate\Pipeline\Pipeline;
 class GetSearchResultsPipeline
 {
     /**
-     * @param  array{categories: string[], features: string[], venueTypes: string []}  $filters
+     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null}  $filters
      * @param  class-string<JsonResource>  $jsonResource
      * @return LengthAwarePaginator<JsonResource>
      */
     public function run(EaterySearchTerm $eaterySearchTerm, array $filters, string $jsonResource = EateryListResource::class): LengthAwarePaginator
     {
         $pipes = [
-            GetEateriesInSearchArea::class,
+            GetEateriesInSearchAreaAction::class,
             GetNationwideBranchesInSearchArea::class,
             SortPendingEateriesAction::class,
             PaginateEateriesAction::class,
