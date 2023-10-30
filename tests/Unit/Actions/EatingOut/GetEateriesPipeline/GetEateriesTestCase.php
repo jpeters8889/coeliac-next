@@ -30,7 +30,6 @@ use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 abstract class GetEateriesTestCase extends TestCase
@@ -114,16 +113,10 @@ abstract class GetEateriesTestCase extends TestCase
 
     protected function callGetEateriesInSearchAreaAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
     {
-        Http::preventStrayRequests();
-        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
-        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
-
         Eatery::query()->update([
-            'lat' => $london['lat'],
-            'lng' => $london['lon'],
+            'lat' => 55.5,
+            'lng' => -0.1,
         ]);
-
-        Http::fake(['*' => Http::response([$london, $edinburgh])]);
 
         $toReturn = null;
 

@@ -1,0 +1,132 @@
+<script lang="ts" setup>
+import Card from '@/Components/Card.vue';
+import { Link } from '@inertiajs/vue3';
+import Icon from '@/Components/Icon.vue';
+import LocationSearch from '@/Components/PageSpecific/EatingOut/LocationSearch.vue';
+
+type LinkType = {
+  title: String;
+  href: String;
+  description: String;
+  icon: String;
+};
+
+const links: LinkType[] = [
+  {
+    title: 'Eating Out Interactive Map',
+    href: '/wheretoeat/browse',
+    description:
+      'Not sure where to go? Check out our interactive map showing all of the gluten places to eat across the UK and Ireland.',
+    icon: 'map',
+  },
+  {
+    title: 'Eating Out Guide',
+    href: '/wheretoeat',
+    description:
+      "Coeliac Sanctuary's Eating Out guide, listing places all over the UK who can cater to Coeliac and gluten free diets, including attractions and hotels.",
+    icon: 'eatery',
+  },
+  {
+    title: 'Gluten Free Nationwide Chains',
+    href: '/wheretoeat/nationwide',
+    description:
+      'Nationwide chains across the UK that can cater to gluten free diets',
+    icon: 'dinner',
+  },
+  {
+    title: 'Coeliac Sanctuary - On the Go App',
+    href: '/wheretoeat/coeliac-sanctuary-on-the-go',
+    description: 'Get all of our Gluten Free places to eat in your pocket!',
+    icon: 'app',
+  },
+  {
+    title: 'Recommend A Place',
+    href: '/wheretoeat/recommend-a-place',
+    description:
+      'Do you know of somewhere missing from our eating out guide? Let us know!',
+    icon: 'reviews',
+  },
+];
+
+const elemClasses = (index: number): string[] => {
+  const base: string[] = [
+    'col-span-1',
+    'flex',
+    'transform',
+    'cursor-pointer',
+    'flex-col',
+    'divide-y',
+    'divide-gray-200',
+    'rounded-lg',
+    'bg-primary-light',
+    'bg-opacity-50',
+    'p-4',
+    'text-center',
+    'shadow',
+    'transition-all',
+    'transform',
+    'hover:scale-105',
+    'hover:bg-opacity-70',
+    'hover:shadow-lg',
+    'md:col-span-2',
+  ];
+
+  if (index === 3) {
+    base.push('md:col-span-2', 'md:col-start-2', 'md:w-full');
+  }
+
+  if (index === 4) {
+    base.push(
+      'xs:col-span-2',
+      'xs:mx-auto',
+      'xs:w-1/2',
+      'md:col-span-2',
+      'md:w-full'
+    );
+  }
+
+  return base;
+};
+</script>
+
+<template>
+  <h1
+    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow xxs:w-auto xxs:rounded xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 xs:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+  >
+    Gluten Free Places to Eat and Visit
+  </h1>
+
+  <LocationSearch />
+
+  <Card class="mt-3 flex flex-col space-y-4 md:p-6">
+    <ul
+      role="list"
+      class="grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-6 md:gap-6"
+    >
+      <li
+        v-for="(item, index) in links"
+        :key="item.title"
+        :class="elemClasses(index)"
+      >
+        <Link :href="item.href">
+          <div class="flex flex-1 flex-col space-y-4">
+            <Icon
+              class="mx-auto h-32 w-32 text-secondary"
+              :name="item.icon"
+            />
+
+            <h3
+              class="text-lg font-semibold md:text-xl lg:text-2xl"
+              v-text="item.title"
+            />
+
+            <p
+              class="prose prose-sm max-w-none text-gray-500 md:text-base lg:text-lg"
+              v-text="item.description"
+            />
+          </div>
+        </Link>
+      </li>
+    </ul>
+  </Card>
+</template>

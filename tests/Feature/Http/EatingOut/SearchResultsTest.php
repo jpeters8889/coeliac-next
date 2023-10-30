@@ -10,7 +10,6 @@ use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EaterySearchTerm;
 use App\Pipelines\EatingOut\GetSearchResultsPipeline;
 use Database\Seeders\EateryScaffoldingSeeder;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -30,11 +29,6 @@ class SearchResultsTest extends TestCase
         $this->create(Eatery::class);
 
         $this->eaterySearchTerm = $this->create(EaterySearchTerm::class, ['term' => 'London']);
-
-        $london = ['lat' => 51.50, 'lon' => 0.12, 'display_name' => 'London', 'type' => 'administrative'];
-        $edinburgh = ['lat' => 55.95, 'lon' => -3.18, 'display_name' => 'Edinburgh', 'type' => 'administrative'];
-
-        Http::fake(['*' => Http::response([$london, $edinburgh])]);
     }
 
     /** @test */

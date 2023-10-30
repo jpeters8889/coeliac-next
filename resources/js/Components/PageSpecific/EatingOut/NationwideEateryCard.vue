@@ -15,7 +15,7 @@ const eateryLink = computed(() => props.eatery.link);
 </script>
 
 <template>
-  <Card>
+  <Card class="flex flex-col justify-between">
     <div class="flex w-full">
       <div class="flex w-full flex-col">
         <EateryIntroduction

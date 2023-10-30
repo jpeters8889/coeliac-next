@@ -6,11 +6,6 @@ import FormInput from '@/Components/Forms/FormInput.vue';
 import FormSelect from '@/Components/Forms/FormSelect.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
-import { Ref, ref, watch } from 'vue';
-import { useDebounceFn } from '@vueuse/core';
-import axios, { AxiosResponse } from 'axios';
-import { DataResponse } from '@/types/GenericTypes';
-import Loader from '@/Components/Loader.vue';
 
 const form = useForm<{ term: string; range: 1 | 2 | 5 | 10 | 20 }>({
   term: '',
@@ -25,34 +20,6 @@ const rangeOptions: FormSelectOption[] = [
   { label: 'within 20 miles', value: 20 },
 ];
 
-type LocationResult = {
-  label: string;
-};
-
-const isSearching = ref(false);
-const hasSearched = ref(false);
-const skipWatcher = ref(false);
-const results: Ref<LocationResult[]> = ref([]);
-
-const searchForLocation = useDebounceFn(() => {
-  isSearching.value = true;
-
-  axios
-    .post('/api/wheretoeat/search', { term: form.term })
-    .then((response: AxiosResponse<DataResponse<LocationResult[]>>) => {
-      results.value = response.data.data;
-
-      hasSearched.value = true;
-      isSearching.value = false;
-    });
-}, 300);
-
-const selectLocation = (location: string) => {
-  skipWatcher.value = true;
-  form.term = location;
-  hasSearched.value = false;
-};
-
 const submitSearch = () => {
   if (form.term.length < 3) {
     return;
@@ -60,23 +27,6 @@ const submitSearch = () => {
 
   form.post('/wheretoeat/search');
 };
-
-watch(
-  () => form.term,
-  () => {
-    if (skipWatcher.value === true) {
-      skipWatcher.value = false;
-
-      return;
-    }
-
-    if (form.term.length < 3) {
-      return;
-    }
-
-    searchForLocation();
-  }
-);
 </script>
 
 <template>
@@ -90,47 +40,15 @@ watch(
       class="flex flex-col gap-2 sm:flex-row"
       @submit.prevent="submitSearch()"
     >
-      <div class="flex flex-1 flex-col">
-        <FormInput
-          v-model="form.term"
-          type="search"
-          label=""
-          placeholder="Search..."
-          name="term"
-          hide-label
-        />
-
-        <div
-          v-if="hasSearched"
-          class="results -mt-2 rounded-b border border-grey-off bg-white"
-        >
-          <div
-            v-if="isSearching"
-            class="p-4"
-          >
-            <Loader
-              color="primary"
-              :display="true"
-              :absolute="false"
-            />
-          </div>
-
-          <ul
-            v-else-if="results.length"
-            class="flex flex-col divide-y divide-grey-off"
-          >
-            <li
-              v-for="result in results"
-              :key="result.label"
-              class="cursor-pointer select-none p-2 text-sm transition-colors hover:bg-grey-off hover:bg-opacity-30"
-              @click="selectLocation(result.label)"
-              v-text="result.label"
-            />
-          </ul>
-
-          <span v-else> Sorry, no locations found... </span>
-        </div>
-      </div>
+      <FormInput
+        v-model="form.term"
+        type="search"
+        label=""
+        placeholder="Search..."
+        name="term"
+        hide-label
+        class="flex-1"
+      />
 
       <div class="flex space-x-2">
         <FormSelect

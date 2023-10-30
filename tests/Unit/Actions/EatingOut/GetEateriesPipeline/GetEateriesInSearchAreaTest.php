@@ -47,7 +47,7 @@ class GetEateriesInSearchAreaTest extends GetEateriesTestCase
                 'town_id' => $this->town->id,
                 'venue_type_id' => EateryVenueType::query()->first()->id,
                 'lat' => 51.50,
-                'lng' => 0.12,
+                'lng' => -0.12,
             ]);
 
         $eateries = $this->callGetEateriesInSearchAreaAction(filters: ['categories' => ['att']]);
@@ -68,7 +68,7 @@ class GetEateriesInSearchAreaTest extends GetEateriesTestCase
                 'town_id' => $this->town->id,
                 'venue_type_id' => $venueType->id,
                 'lat' => 51.50,
-                'lng' => 0.12,
+                'lng' => -0.12,
             ]);
 
         $eateries = $this->callGetEateriesInSearchAreaAction(filters: ['venueTypes' => ['test']]);
@@ -88,7 +88,7 @@ class GetEateriesInSearchAreaTest extends GetEateriesTestCase
                 'county_id' => $this->county->id,
                 'town_id' => $this->town->id,
                 'lat' => 51.50,
-                'lng' => 0.12,
+                'lng' => -0.12,
             ]);
 
         $feature->eateries()->attach($eatery);

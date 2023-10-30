@@ -84,7 +84,7 @@ defineProps<{
     </h2>
   </Card>
 
-  <div class="group grid gap-3 md:grid-cols-3">
+  <div class="group grid gap-3 md:grid-cols-2">
     <NationwideEateryCard
       v-for="eatery in county.chains"
       :key="eatery.key"
