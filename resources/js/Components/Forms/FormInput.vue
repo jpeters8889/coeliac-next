@@ -29,9 +29,14 @@ watch(
     <label
       v-if="hideLabel === false"
       :for="id"
-      class="block font-medium leading-6 text-gray-900"
+      class="block font-semibold leading-6 text-primary-dark"
     >
       {{ label }}
+      <span
+        v-if="required"
+        class="text-red"
+        v-text="'*'"
+      />
     </label>
     <div class="relative rounded-md shadow-sm">
       <RawInputField

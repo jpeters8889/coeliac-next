@@ -10,6 +10,8 @@ use App\Http\Controllers\EatingOut\EaterySearchResultsController;
 use App\Http\Controllers\EatingOut\EatingOutController;
 use App\Http\Controllers\EatingOut\EatingOutLandingController;
 use App\Http\Controllers\EatingOut\NationwideController;
+use App\Http\Controllers\EatingOut\RecommendAPlaceController;
+use App\Http\Controllers\EatingOut\RecommendAPlaceCreateController;
 use App\Http\Controllers\EatingOut\SearchCreateController;
 use App\Http\Controllers\EatingOut\TownController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
@@ -44,6 +46,9 @@ Route::prefix('wheretoeat')->group(function (): void {
     Route::prefix('/nationwide/{eatery}/{nationwideBranch}')->group(
         $prefixedEateryRoutes('eating-out.nationwide.show.branch')
     );
+
+    Route::get('/recommend-a-place', RecommendAPlaceController::class)->name('eating-out.recommend.index');
+    Route::post('/recommend-a-place', RecommendAPlaceCreateController::class)->name('eating-out.recommend.create');
 
     Route::get('/{county}', CountyController::class)->name('eating-out.county');
     Route::get('/{county}/{town}', TownController::class)->name('eating-out.town');
