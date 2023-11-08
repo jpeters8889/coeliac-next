@@ -13,8 +13,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /** @extends Resource<BlogTagModel> */
 class BlogTag extends Resource
 {
-    public static $displayInNavigation = false;
-
     public static string $model = BlogTagModel::class;
 
     public static $title = 'tag';

@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
+use App\Nova\Resources\EatingOut\Countries;
+use App\Nova\Resources\EatingOut\Eateries;
+use App\Nova\Resources\EatingOut\NationwideBranches;
+use App\Nova\Resources\EatingOut\NationwideEateries;
+use App\Nova\Resources\EatingOut\Towns;
 use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\BlogTag;
 use App\Nova\Resources\Main\Collection;
@@ -12,14 +18,19 @@ use App\Nova\Resources\Main\CollectionItem;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Jpeters8889\AddressField\FieldServiceProvider as AddressFieldServiceProvider;
 use Jpeters8889\AdvancedNovaMediaLibrary\AdvancedNovaMediaLibraryServiceProvider;
 use Jpeters8889\Body\FieldServiceProvider as BodyFieldServiceProvider;
+use Jpeters8889\EateryOpeningTimes\FieldServiceProvider as EateryOpeningTimesFieldServiceProvider;
+use Jpeters8889\PolymorphicPanel\FieldServiceProvider as PolymorphicPanelFieldServiceProvider;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Jpeters8889\PolymorphicPanel\FieldServiceProvider as PolymorphicPanelFieldServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -36,7 +47,38 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             RecipeNutritionalInformation::class,
 
             // Eating Out
-            Counties::class
+            Eateries::class,
+            NationwideEateries::class,
+            NationwideBranches::class,
+            Countries::class,
+            Counties::class,
+            Towns::class,
+        ]);
+    }
+
+    public function boot(): void
+    {
+        parent::boot();
+
+        Nova::withBreadcrumbs();
+
+        Nova::mainMenu(fn (Request $request) => [
+            MenuSection::make('Dashboards', [
+                MenuItem::dashboard(Main::class),
+            ])->icon('chart-bar'),
+
+            MenuSection::make('Main Site', [
+                MenuItem::resource(Blog::class),
+                MenuItem::resource(Recipe::class),
+                MenuItem::resource(Collection::class),
+            ])->icon('home'),
+
+            MenuSection::make('Eating Out', [
+                MenuItem::resource(Eateries::class),
+                MenuItem::resource(NationwideEateries::class),
+                MenuItem::resource(Counties::class),
+                MenuItem::resource(Towns::class),
+            ])->icon('map'),
         ]);
     }
 
@@ -44,16 +86,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function fields(): array
     {
         return [
+            AddressFieldServiceProvider::class,
             AdvancedNovaMediaLibraryServiceProvider::class,
             BodyFieldServiceProvider::class,
+            EateryOpeningTimesFieldServiceProvider::class,
             PolymorphicPanelFieldServiceProvider::class,
         ];
     }
 
     /**
      * Register the Nova routes.
-     *
-     * @return void
      */
     protected function routes(): void
     {
@@ -77,12 +119,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
-            new \App\Nova\Dashboards\Main(),
+            new Main(),
         ];
     }
 
     public function register(): void
     {
+        AddressFieldServiceProvider::setGoogleApiKey(config('services.google.maps.admin'));
+
         foreach ($this->fields() as $field) {
             $this->app->register($field);
         }

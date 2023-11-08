@@ -13,8 +13,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /** @extends Resource<RecipeAllergen> */
 class RecipeAllergens extends Resource
 {
-    public static $displayInNavigation = false;
-
     public static string $model = RecipeAllergen::class;
 
     public function fields(NovaRequest $request)

@@ -18,8 +18,6 @@ class CollectionItem extends Resource
 
     public static string $defaultSortField = 'position';
 
-    public static $displayInNavigation = false;
-
     public static string $model = CollectionItemModel::class;
 
     public static $perPageViaRelationship = 20;

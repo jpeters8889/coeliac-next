@@ -28,8 +28,6 @@ class Collection extends Resource
 {
     public static $clickAction = 'view';
 
-    public static $group = 'Main Site';
-
     public static string $model = CollectionModel::class;
 
     public static $title = 'title';
@@ -136,7 +134,7 @@ class Collection extends Resource
     }
 
     /**
-     * @param Builder<CollectionModel> $query
+     * @param  Builder<CollectionModel>  $query
      * @return Builder<CollectionModel>
      */
     public static function indexQuery(NovaRequest $request, $query)

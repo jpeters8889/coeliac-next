@@ -26,8 +26,6 @@ use Laravel\Nova\Panel;
 /** @extends Resource<RecipeModel> */
 class Recipe extends Resource
 {
-    public static $group = 'Main Site';
-
     public static string $model = RecipeModel::class;
 
     public static $title = 'title';

@@ -9,7 +9,7 @@
       class="flex p-1"
       :class="field.direction === 'column' ? 'w-full' : 'w-1/5'"
     >
-      <div class="w-full item rounded-lg">
+      <div class="item w-full rounded-lg">
         <Component
           :is="`form-${subField.component}`"
           :field="parseField(subField)"
@@ -20,10 +20,14 @@
   </div>
 </template>
 
-<style lang="scss">
-  .item {
-    background-color: rgba(var(--colors-gray-700), 0.3);
-  }
+<style>
+.item {
+  background-color: rgba(var(--colors-gray-200), 0.3);
+}
+
+.dark .item {
+  background-color: rgba(var(--colors-gray-700), 0.3);
+}
 </style>
 
 <script>
@@ -57,7 +61,7 @@ export default {
       const parsedFields = {};
 
       // eslint-disable-next-line no-return-assign
-      fields.forEach((value, key) => parsedFields[key] = value);
+      fields.forEach((value, key) => (parsedFields[key] = value));
 
       formData.append(this.field.attribute, JSON.stringify(parsedFields));
     },

@@ -12,8 +12,6 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /** @extends Resource<RecipeNutrition> */
 class RecipeNutritionalInformation extends Resource
 {
-    public static $displayInNavigation = false;
-
     public static string $model = RecipeNutrition::class;
 
     public function fields(NovaRequest $request)

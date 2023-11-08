@@ -22,8 +22,6 @@ use Laravel\Nova\Panel;
 /** @extends Resource<BlogModel> */
 class Blog extends Resource
 {
-    public static $group = 'Main Site';
-
     /** @var class-string<BlogModel> */
     public static string $model = BlogModel::class;
 

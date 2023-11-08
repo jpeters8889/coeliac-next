@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
+use App\Concerns\DisplaysMedia;
+use Error;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property string $town
@@ -18,8 +23,11 @@ use Illuminate\Support\Str;
  * @property Collection $liveEateries
  * @property Collection $eateries
  */
-class EateryTown extends Model
+class EateryTown extends Model implements HasMedia
 {
+    use DisplaysMedia;
+    use InteractsWithMedia;
+
     protected $table = 'wheretoeat_towns';
 
     protected static function booted(): void
@@ -88,5 +96,22 @@ class EateryTown extends Model
             'places to eat', 'cafes', 'restaurants', 'eating out', 'catering to coeliac', 'eating out uk',
             'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
         ];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('primary')->singleFile();
+    }
+
+    /** @return Attribute<string | null, never> */
+    public function image(): Attribute
+    {
+        return Attribute::get(function () { /** @phpstan-ignore-line */
+            try {
+                return $this->main_image;
+            } catch (Error $exception) { /** @phpstan-ignore-line */
+                return null;
+            }
+        });
     }
 }
