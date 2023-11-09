@@ -17,7 +17,7 @@ class AddressField extends Field
 
     public $showOnIndex = false;
 
-    public $showOnDetail = false;
+    public $showOnDetail = true;
 
     public $showOnCreation = true;
 

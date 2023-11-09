@@ -137,8 +137,6 @@ export default {
           address: this.address,
         })
         .then((response) => {
-          console.log(response);
-
           this.address = response.data.formatted_address.replace(/, /g, '\n');
           this.latitude = response.data.lat;
           this.longitude = response.data.lng;

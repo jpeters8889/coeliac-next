@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\EatingOut\EateryReview;
 use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Countries;
 use App\Nova\Resources\EatingOut\Eateries;
 use App\Nova\Resources\EatingOut\NationwideBranches;
 use App\Nova\Resources\EatingOut\NationwideEateries;
+use App\Nova\Resources\EatingOut\Reviews;
 use App\Nova\Resources\EatingOut\Towns;
 use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\BlogTag;
@@ -27,6 +29,7 @@ use Jpeters8889\Body\FieldServiceProvider as BodyFieldServiceProvider;
 use Jpeters8889\EateryOpeningTimes\FieldServiceProvider as EateryOpeningTimesFieldServiceProvider;
 use Jpeters8889\PolymorphicPanel\FieldServiceProvider as PolymorphicPanelFieldServiceProvider;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -53,6 +56,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Countries::class,
             Counties::class,
             Towns::class,
+            Reviews::class,
         ]);
     }
 
@@ -61,6 +65,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
+
+        $reviewCount = EateryReview::withoutGlobalScopes()->where('approved', false)->count();
 
         Nova::mainMenu(fn (Request $request) => [
             MenuSection::make('Dashboards', [
@@ -74,15 +80,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             ])->icon('home'),
 
             MenuSection::make('Eating Out', [
-                MenuItem::resource(Eateries::class),
-                MenuItem::resource(NationwideEateries::class),
-                MenuItem::resource(Counties::class),
-                MenuItem::resource(Towns::class),
+                MenuGroup::make('Locations', [
+                    MenuItem::resource(Eateries::class),
+                    MenuItem::resource(NationwideEateries::class),
+                    MenuItem::resource(Counties::class),
+                    MenuItem::resource(Towns::class),
+                ]),
+
+                MenuGroup::make('Feedback', [
+                    MenuItem::resource(Reviews::class)
+                        /** @phpstan-ignore-next-line  */
+                        ->withBadgeIf(fn () => $reviewCount, 'danger', fn () => $reviewCount > 0),
+                ]),
             ])->icon('map'),
         ]);
     }
 
-    /** @return class-string<ServiceProvider>[]  */
+    /** @return class-string<ServiceProvider>[] */
     protected function fields(): array
     {
         return [
@@ -132,7 +146,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         }
 
         Field::macro('deferrable', function () {
-            $this->deferrable = true; /** @phpstan-ignore-line */
+            /** @phpstan-ignore-next-line */
+            $this->deferrable = true;
 
             return $this;
         });

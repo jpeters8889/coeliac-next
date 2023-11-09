@@ -15,11 +15,13 @@ use App\Nova\Resources\EatingOut\PolymorphicPanels\EateryFeaturesPolymorphicPane
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Jpeters8889\AddressField\AddressField;
 use Jpeters8889\EateryOpeningTimes\EateryOpeningTimes;
 use Jpeters8889\PolymorphicPanel\PolymorphicPanel;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -38,6 +40,11 @@ class Eateries extends Resource
 
     public static $search = ['id', 'name', 'town', 'county'];
 
+    public function authorizedToView(Request $request)
+    {
+        return true;
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
@@ -47,16 +54,18 @@ class Eateries extends Resource
 
             Text::make('Location', 'full_location')
                 ->fullWidth()
-                ->exceptOnForms(),
+                ->onlyOnIndex(),
+
+            Text::make('Reviews', 'reviews_count')->fullWidth()->onlyOnIndex()->sortable()->filterable(),
 
             Panel::make('Location', [
                 BelongsTo::make('Town', resource: Towns::class)
-                    ->onlyOnForms()
+                    ->hideFromIndex()
                     ->fullWidth()
                     ->showCreateRelationButton(),
 
                 BelongsTo::make('County', resource: Counties::class)
-                    ->onlyOnForms()
+                    ->hideFromIndex()
                     ->fullWidth()
                     ->hide()
                     ->displayUsing(fn ($county) => $county->county)
@@ -74,7 +83,7 @@ class Eateries extends Resource
                     }),
 
                 BelongsTo::make('Country', resource: Countries::class)
-                    ->onlyOnForms()
+                    ->hideFromIndex()
                     ->fullWidth()
                     ->hide()
                     ->dependsOn(['county'], function (BelongsTo $field, NovaRequest $request): BelongsTo {
@@ -97,11 +106,11 @@ class Eateries extends Resource
             ]),
 
             new Panel('Contact Details', [
-                Text::make('Phone Number', 'phone')->fullWidth()->nullable()->rules(['max:50'])->onlyOnForms(),
+                Text::make('Phone Number', 'phone')->fullWidth()->nullable()->rules(['max:50'])->hideFromIndex(),
 
-                URL::make('Website')->fullWidth()->nullable()->rules(['max:255'])->onlyOnForms(),
+                URL::make('Website')->fullWidth()->nullable()->rules(['max:255'])->hideFromIndex(),
 
-                URL::make('GF Menu Link')->fullWidth()->nullable()->rules(['max:255'])->onlyOnForms(),
+                URL::make('GF Menu Link')->fullWidth()->nullable()->rules(['max:255'])->hideFromIndex(),
             ]),
 
             new Panel('Details', [
@@ -118,7 +127,7 @@ class Eateries extends Resource
                     ]),
 
                 Select::make('Venue Type', 'venue_type_id')
-                    ->onlyOnForms()
+                    ->hideFromIndex()
                     ->dependsOn(['type_id'], function (Select $field, NovaRequest $request) {
                         return match ($request->type_id) {
                             default => $field->options($this->getVenueTypes(1)),
@@ -130,7 +139,7 @@ class Eateries extends Resource
                     ->required(),
 
                 Select::make('Cuisine', 'cuisine_id')
-                    ->onlyOnForms()
+                    ->hideFromIndex()
                     ->fullWidth()
                     ->dependsOn(['type_id'], function (Select $field, NovaRequest $request) {
                         return match ($request->type_id) {
@@ -141,6 +150,7 @@ class Eateries extends Resource
                     ->required(),
 
                 Textarea::make('Info')
+                    ->alwaysShow()
                     ->dependsOn(['type_id'], function (Textarea $field, NovaRequest $request) {
                         return match ($request->type_id) {
                             2 => $field->hide()->nullable()->setValue(null),
@@ -164,6 +174,8 @@ class Eateries extends Resource
             ]),
 
             Boolean::make('Live'),
+
+            HasMany::make('Reviews', resource: Reviews::class),
         ];
     }
 
@@ -184,6 +196,7 @@ class Eateries extends Resource
                 'town' => fn (Relation $relation) => $relation->withoutGlobalScopes(),
                 'type', 'county.country', 'openingTimes',
             ])
+            ->withCount(['reviews' => fn (Builder $builder) => $builder->withoutGlobalScopes()])
             ->when($request->missing('orderByDirection'), fn (Builder $builder) => $builder->reorder('order_country')->orderBy('order_county')->orderBy('order_town'));
     }
 
