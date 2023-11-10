@@ -10,7 +10,9 @@ use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -31,9 +33,16 @@ class Reviews extends Resource
 
     public static $clickAction = 'preview';
 
+    public static $perPageViaRelationship = 25;
+
     public function authorizedToView(Request $request)
     {
         return true;
+    }
+
+    public static function authorizedToCreate(Request $request)
+    {
+        return false;
     }
 
     public function fields(Request $request): array
@@ -46,13 +55,20 @@ class Reviews extends Resource
                 ->exceptOnForms(),
 
             new Panel('User', [
-                Text::make('Name')->showOnPreview(),
+                Text::make('Name')->hideFromIndex()->showOnPreview(),
 
                 Email::make('Email')->hideFromIndex()->showOnPreview(),
 
                 Text::make('Ip')->withMeta(['disabled' => true])->hideFromIndex(),
 
-                Text::make('Method')->withMeta(['disabled' => true]),
+                Select::make('Method')
+                    ->displayUsingLabels()
+                    ->options([
+                        'website' => 'Website',
+                        'app' => 'App',
+                    ])
+                    ->filterable()
+                    ->withMeta(['disabled' => true]),
             ]),
 
             new Panel('Ratings', [
@@ -69,13 +85,13 @@ class Reviews extends Resource
 
                 Select::make('Food Rating')->displayUsingLabels()->options([
                     'poor' => 'Poor',
-                    'ok' => 'Ok',
+                    'good' => 'Good',
                     'excellent' => 'Excellent',
                 ])->showOnPreview(),
 
                 Select::make('Service Rating')->displayUsingLabels()->options([
                     'poor' => 'Poor',
-                    'ok' => 'Ok',
+                    'good' => 'Good',
                     'excellent' => 'Excellent',
                 ])->showOnPreview(),
             ]),
@@ -85,10 +101,14 @@ class Reviews extends Resource
 
                 Textarea::make('Review')->showOnPreview(),
 
-                Boolean::make('Approved')->showOnPreview(),
+                Boolean::make('Approved')->showOnPreview()->filterable(),
             ]),
 
-            //            HasMany::make('Images', 'images', EateryReviewImage::class),
+            Text::make('Images', 'images_count')->onlyOnIndex(),
+
+            DateTime::make('created_at')->exceptOnForms(),
+
+            HasMany::make('Images', 'images', ReviewImage::class),
         ];
     }
 
@@ -101,6 +121,6 @@ class Reviews extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->withoutGlobalScopes();
+        return $query->withoutGlobalScopes()->withCount(['images']);
     }
 }

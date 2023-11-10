@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\EatingOut\EateryRecommendation;
 use App\Models\EatingOut\EateryReview;
 use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Countries;
 use App\Nova\Resources\EatingOut\Eateries;
+use App\Nova\Resources\EatingOut\MyPlaces;
 use App\Nova\Resources\EatingOut\NationwideBranches;
 use App\Nova\Resources\EatingOut\NationwideEateries;
+use App\Nova\Resources\EatingOut\ReviewImage;
 use App\Nova\Resources\EatingOut\Reviews;
 use App\Nova\Resources\EatingOut\Towns;
 use App\Nova\Resources\Main\Blog;
@@ -57,6 +60,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Counties::class,
             Towns::class,
             Reviews::class,
+            ReviewImage::class,
+            MyPlaces::class,
         ]);
     }
 
@@ -67,6 +72,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::withBreadcrumbs();
 
         $reviewCount = EateryReview::withoutGlobalScopes()->where('approved', false)->count();
+        $myPlacesCount = EateryRecommendation::query()->where('email', 'contact@coeliacsanctuary.co.uk')->where('completed', false)->count();
 
         Nova::mainMenu(fn (Request $request) => [
             MenuSection::make('Dashboards', [
@@ -89,8 +95,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuGroup::make('Feedback', [
                     MenuItem::resource(Reviews::class)
-                        /** @phpstan-ignore-next-line  */
                         ->withBadgeIf(fn () => $reviewCount, 'danger', fn () => $reviewCount > 0),
+                ]),
+
+                MenuGroup::make('Recommendations', [
+                    MenuItem::resource(MyPlaces::class)
+                        ->withBadgeIf(fn () => $myPlacesCount, 'danger', fn () => $myPlacesCount > 0),
                 ]),
             ])->icon('map'),
         ]);

@@ -56,6 +56,18 @@ class EateryReviewImage extends Model
         return Attribute::get(fn () => $this->imageUrl($this->attributes['path']));
     }
 
+    /** @return Attribute<string, never> */
+    public function rawThumb(): Attribute
+    {
+        return Attribute::get(fn () => $this->attributes['thumb']);
+    }
+
+    /** @return Attribute<string, never> */
+    public function rawPath(): Attribute
+    {
+        return Attribute::get(fn () => $this->attributes['path']);
+    }
+
     protected function imageUrl(string $file): string
     {
         return app(FilesystemManager::class)->disk('review-images')->url($file);

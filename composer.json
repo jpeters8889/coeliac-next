@@ -32,7 +32,8 @@
         "spatie/laravel-sluggable": "^3.5.0",
         "spatie/schema-org": "^3.14",
         "jpeters8889/address-field": "@dev",
-        "jpeters8889/eatery-opening-times": "@dev"
+        "jpeters8889/eatery-opening-times": "@dev",
+        "jpeters8889/eatery-recommendation-listener": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9.2",
@@ -81,6 +82,10 @@
         {
             "type": "path",
             "url": "./nova-components/EateryOpeningTimes"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/EateryRecommendationListener"
         }
     ],
     "autoload": {

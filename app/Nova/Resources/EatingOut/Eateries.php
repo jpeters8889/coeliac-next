@@ -50,7 +50,10 @@ class Eateries extends Resource
         return [
             ID::make('id')->hide(),
 
-            Text::make('Name', 'name')->fullWidth()->rules(['required', 'max:200'])->sortable(),
+            Text::make('Name', 'name')
+                ->fullWidth()
+                ->rules(['required', 'max:200'])
+                ->sortable(),
 
             Text::make('Location', 'full_location')
                 ->fullWidth()
