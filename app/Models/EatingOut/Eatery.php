@@ -260,12 +260,12 @@ class Eatery extends Model
         });
     }
 
-    /** @return Attribute<string | null, never> */
+    /** @return Attribute<string, never> */
     public function fullName(): Attribute
     {
         return Attribute::get(function () {
             if ( ! $this->relationLoaded('town')) {
-                return null;
+                return $this->name;
             }
 
             if (Str::lower($this->town->town) === 'nationwide') {

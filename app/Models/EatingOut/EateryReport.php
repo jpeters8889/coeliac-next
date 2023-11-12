@@ -11,6 +11,8 @@ class EateryReport extends Model
 {
     protected $table = 'wheretoeat_place_reports';
 
+    protected $casts = ['completed' => 'bool'];
+
     /** @return BelongsTo<Eatery, EateryReport> */
     public function eatery(): BelongsTo
     {

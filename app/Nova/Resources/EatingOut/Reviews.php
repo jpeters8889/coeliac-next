@@ -33,8 +33,6 @@ class Reviews extends Resource
 
     public static $clickAction = 'preview';
 
-    public static $perPageViaRelationship = 25;
-
     public function authorizedToView(Request $request)
     {
         return true;

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\EatingOut\EateryRecommendation;
+use App\Models\EatingOut\EateryReport;
 use App\Models\EatingOut\EateryReview;
+use App\Models\EatingOut\EaterySuggestedEdit;
 use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Countries;
@@ -13,8 +15,11 @@ use App\Nova\Resources\EatingOut\Eateries;
 use App\Nova\Resources\EatingOut\MyPlaces;
 use App\Nova\Resources\EatingOut\NationwideBranches;
 use App\Nova\Resources\EatingOut\NationwideEateries;
+use App\Nova\Resources\EatingOut\PlaceRecommendations;
+use App\Nova\Resources\EatingOut\PlaceReports;
 use App\Nova\Resources\EatingOut\ReviewImage;
 use App\Nova\Resources\EatingOut\Reviews;
+use App\Nova\Resources\EatingOut\SuggestedEdits;
 use App\Nova\Resources\EatingOut\Towns;
 use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\BlogTag;
@@ -62,6 +67,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Reviews::class,
             ReviewImage::class,
             MyPlaces::class,
+            PlaceRecommendations::class,
+            PlaceReports::class,
+            SuggestedEdits::class,
         ]);
     }
 
@@ -72,7 +80,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::withBreadcrumbs();
 
         $reviewCount = EateryReview::withoutGlobalScopes()->where('approved', false)->count();
+        $reportsCount = EateryReport::query()->where('completed', false)->count();
         $myPlacesCount = EateryRecommendation::query()->where('email', 'contact@coeliacsanctuary.co.uk')->where('completed', false)->count();
+        $recommendationsCount = EateryRecommendation::query()->where('email', '!=', 'contact@coeliacsanctuary.co.uk')->where('completed', false)->count();
+        $suggestedEditsCount = EaterySuggestedEdit::query()->where('rejected', false)->where('accepted', false)->count();
 
         Nova::mainMenu(fn (Request $request) => [
             MenuSection::make('Dashboards', [
@@ -95,12 +106,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuGroup::make('Feedback', [
                     MenuItem::resource(Reviews::class)
-                        ->withBadgeIf(fn () => $reviewCount, 'danger', fn () => $reviewCount > 0),
+                        ->withBadgeIf(fn () => (string) $reviewCount, 'danger', fn () => $reviewCount > 0),
+
+                    MenuItem::resource(PlaceReports::class)
+                        ->withBadgeIf(fn () => (string) $reportsCount, 'danger', fn () => $reportsCount > 0),
+
+                    MenuItem::resource(SuggestedEdits::class)
+                        ->withBadgeIf(fn () => (string) $suggestedEditsCount, 'danger', fn () => $suggestedEditsCount > 0),
                 ]),
 
                 MenuGroup::make('Recommendations', [
                     MenuItem::resource(MyPlaces::class)
-                        ->withBadgeIf(fn () => $myPlacesCount, 'danger', fn () => $myPlacesCount > 0),
+                        ->withBadgeIf(fn () => (string) $myPlacesCount, 'danger', fn () => $myPlacesCount > 0),
+
+                    MenuItem::resource(PlaceRecommendations::class)
+                        ->withBadgeIf(fn () => (string) $recommendationsCount, 'danger', fn () => $recommendationsCount > 0),
                 ]),
             ])->icon('map'),
         ]);

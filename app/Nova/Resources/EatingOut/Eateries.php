@@ -179,6 +179,10 @@ class Eateries extends Resource
             Boolean::make('Live'),
 
             HasMany::make('Reviews', resource: Reviews::class),
+
+            HasMany::make('Suggested Edits', resource: SuggestedEdits::class),
+
+            HasMany::make('Reports', resource: PlaceReports::class),
         ];
     }
 

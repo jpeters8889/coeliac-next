@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -21,7 +22,7 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class MyPlaces extends Resource
+class PlaceRecommendations extends Resource
 {
     public static $model = EateryRecommendation::class;
 
@@ -32,9 +33,14 @@ class MyPlaces extends Resource
         return true;
     }
 
-    public static function createButtonLabel()
+    public static function authorizedToCreate(Request $request)
     {
-        return 'Create Place Recommendation';
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request)
+    {
+        return false;
     }
 
     public function fields(Request $request): array
@@ -42,9 +48,14 @@ class MyPlaces extends Resource
         return [
             ID::make()->hide(),
 
+            Panel::make('User', [
+                Text::make('name')->showOnPreview(),
+                Email::make('email')->showOnPreview(),
+            ]),
+
             Panel::make('Eatery', [
-                Text::make('Name', 'place_name')->required()->showOnPreview(),
-                Text::make('Location', 'place_location')->required()->showOnPreview(),
+                Text::make('Name', 'place_name')->showOnPreview(),
+                Text::make('Location', 'place_location')->showOnPreview(),
                 URL::make('URL', 'place_web_address')->showOnPreview(),
                 Select::make('Venue Type', 'place_venue_type_id')->displayUsingLabels()->options($this->getVenueTypes(1))->showOnPreview(),
                 Textarea::make('Details', 'place_details')->alwaysShow()->showOnPreview(),
@@ -74,7 +85,9 @@ class MyPlaces extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('email', 'contact@coeliacsanctuary.co.uk')->reorder('completed')->orderBy('created_at');
+        return $query->where('email', '!=', 'contact@coeliacsanctuary.co.uk')
+            ->reorder('completed')
+            ->orderBy('created_at');
     }
 
     protected function getVenueTypes($typeId = null): array

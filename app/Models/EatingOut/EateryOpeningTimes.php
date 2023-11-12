@@ -65,7 +65,7 @@ class EateryOpeningTimes extends Model
         });
     }
 
-    public function closesAt(string $day = null): string
+    public function closesAt(string $day = null): string | null
     {
         if ( ! $day) {
             $day = $this->currentDay();
@@ -74,7 +74,7 @@ class EateryOpeningTimes extends Model
         return $this->timeToString($day, 'end');
     }
 
-    public function opensAt(string $day = null): string
+    public function opensAt(string $day = null): string | null
     {
         if ( ! $day) {
             $day = $this->currentDay();
@@ -100,26 +100,30 @@ class EateryOpeningTimes extends Model
         ];
     }
 
-    protected function timeToString(string $today, string $suffix): string
+    protected function timeToString(string $today, string $suffix): ?string
     {
-        /** @var array $closesAt */
-        $closesAt = $this->formatTime("{$today}_{$suffix}");
+        /** @var array $time */
+        $time = $this->formatTime("{$today}_{$suffix}");
 
-        if ($closesAt[1] === 0) {
-            if ($closesAt[0] === 0) {
-                return 'midnight';
-            }
-
-            if ($closesAt[0] === 12) {
-                return 'midday';
-            }
-
-            $timeSuffix = $closesAt[0] < 12 ? 'am' : 'pm';
-
-            return ($closesAt[0] > 12 ? $closesAt[0] - 12 : $closesAt[0]) . $timeSuffix;
+        if ( ! $time) {
+            return 'Closed';
         }
 
-        return "{$closesAt[0]}:{$closesAt[1]}";
+        if ($time[0] === 0) {
+            return 'midnight';
+        }
+
+        if ($time[0] === 12) {
+            return 'midday';
+        }
+
+        $timeSuffix = $time[0] < 12 ? 'am' : 'pm';
+
+        if ($time[1] === 0) {
+            return ($time[0] > 12 ? $time[0] - 12 : $time[0]) . $timeSuffix;
+        }
+
+        return "{$time[0]}:{$time[1]}{$timeSuffix}";
     }
 
     /** @return Attribute<array<mixed>, never> */
