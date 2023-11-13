@@ -11,6 +11,7 @@ use Jpeters8889\AdvancedNovaMediaLibrary\Fields\Images;
 use Jpeters8889\Body\Body;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
@@ -37,7 +38,7 @@ class Blog extends Resource
             ID::make('id'),
 
             new Panel('Introduction', [
-                Text::make('Title')->fullWidth()->rules(['required', 'max:200']),
+                Text::make('Title')->fullWidth()->rules(['required', 'max:200'])->showWhenPeeking(),
 
                 Slug::make('Slug')->from('Title')
                     ->hideFromIndex()
@@ -50,7 +51,7 @@ class Blog extends Resource
                     ->showCreateRelationButton()
                     ->fullWidth(),
 
-                Textarea::make('Description')->onlyOnForms()->fullWidth()->rules(['required']),
+                Textarea::make('Description')->onlyOnForms()->fullWidth()->rules(['required'])->showWhenPeeking(),
             ]),
 
             VisibilityPanel::make(),
@@ -95,6 +96,8 @@ class Blog extends Resource
 
             URL::make('View', fn ($blog) => $blog->live ? $blog->link : null)
                 ->exceptOnForms(),
+
+            MorphMany::make('comments', resource: Comments::class),
         ];
     }
 }
