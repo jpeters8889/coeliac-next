@@ -6,6 +6,8 @@ namespace Tests\Feature\Http;
 
 use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
+use App\Actions\EatingOut\GetLatestEateriesForHomepageAction;
+use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
@@ -41,6 +43,22 @@ class HomepageTest extends TestCase
     public function itCallsTheGetLatestCollectionsForHomepageAction(): void
     {
         $this->expectAction(GetLatestCollectionsForHomepageAction::class);
+
+        $this->get(route('home'));
+    }
+
+    /** @test */
+    public function itCallsTheGetLatestReviewsForHomepageAction(): void
+    {
+        $this->expectAction(GetLatestReviewsForHomepageAction::class);
+
+        $this->get(route('home'));
+    }
+
+    /** @test */
+    public function itCallsTheGetLatestEateriesForHomepageAction(): void
+    {
+        $this->expectAction(GetLatestEateriesForHomepageAction::class);
 
         $this->get(route('home'));
     }

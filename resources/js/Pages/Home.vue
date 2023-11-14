@@ -6,19 +6,27 @@ import HomeHoverGroup from '@/Components/PageSpecific/Home/HomeHoverGroup.vue';
 import { HomeHoverItem } from '@/types/Types';
 import HomeCollection from '@/Components/PageSpecific/Home/HomeCollection.vue';
 import { HomepageCollection } from '@/types/CollectionTypes';
+import {
+  EaterySimpleHomeResource,
+  EaterySimpleReviewResource,
+} from '@/types/EateryTypes';
+import HomeLatestEateries from '@/Components/PageSpecific/Home/HomeLatestEateries.vue';
+import HomeLatestReviews from '@/Components/PageSpecific/Home/HomeLatestReviews.vue';
 
 defineProps<{
   blogs: HomeHoverItem[];
   recipes: HomeHoverItem[];
   collections: HomepageCollection[];
+  latestReviews: EaterySimpleReviewResource[];
+  latestEateries: EaterySimpleHomeResource[];
 }>();
 </script>
 
 <template>
   <HomeHero />
 
-  <div class="flex flex-col space-y-2 lg:flex-row lg:space-y-0 lg:space-x-2">
-    <div class="flex w-full flex-col space-y-2 lg:w-3/4">
+  <div class="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
+    <div class="flex w-full flex-col space-y-4 lg:w-3/4">
       <Card>
         <h1 class="mb-3 font-coeliac text-3xl font-semibold">
           Coeliac Sanctuary - Gluten Free Blog by Alison Peters
@@ -60,7 +68,7 @@ defineProps<{
       />
     </div>
 
-    <div class="w-full lg:w-1/4">
+    <div class="flex w-full flex-col space-y-4 lg:w-1/4">
       <Card
         class="space-y-4"
         faded
@@ -89,6 +97,10 @@ defineProps<{
           </Link>
         </p>
       </Card>
+
+      <HomeLatestReviews :reviews="latestReviews" />
+
+      <HomeLatestEateries :eateries="latestEateries" />
     </div>
   </div>
 </template>

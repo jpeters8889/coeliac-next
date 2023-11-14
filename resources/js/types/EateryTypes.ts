@@ -1,5 +1,4 @@
 import { CheckboxItem } from '@/types/Types';
-import { FormSelectOption } from '@/Components/Forms/Props';
 
 export type County = {
   name: string;
@@ -291,4 +290,21 @@ export type EateryCountryList = {
   attractions: number;
   hotels: number;
   total: number;
+};
+
+export type EaterySimpleReviewResource = {
+  rating: StarRating;
+  eatery: EaterySimpleHomeResource;
+  created_at: string;
+};
+
+export type EaterySimpleHomeResource = {
+  name: string;
+  link: string;
+  location: {
+    name: string;
+    link: string;
+  };
+  address: string;
+  created_at: string;
 };

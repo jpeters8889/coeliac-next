@@ -32,10 +32,10 @@ setInterval(() => {
 </script>
 <template>
   <div class="relative bg-primary-light/50">
-    <div class="mx-auto w-full max-w-7xl">
+    <div class="mx-auto w-full max-w-8xl">
       <div class="relative z-10">
         <div
-          class="relative py-10 px-6 sm:py-12 md:py-14 xmd:py-16 lg:py-20 xl:py-24"
+          class="relative px-6 py-10 sm:py-12 md:py-14 xmd:py-16 lg:py-20 xl:py-24"
         >
           <div class="mx-auto max-w-5xl">
             <h1

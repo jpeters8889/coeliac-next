@@ -46,8 +46,8 @@ class EateryCreateReviewRequest extends FormRequest
             && $this->input('email') === null
             && $this->input('review') === null;
 
-        if ($this->isNationwide()) {
-            return $this->input('branch_name') !== null && $requiredFieldsCheck;
+        if ( ! $requiredFieldsCheck && $this->isNationwide()) {
+            return $this->missing('branch_name');
         }
 
         return $requiredFieldsCheck;

@@ -8,7 +8,7 @@ import CoeliacFooter from '@/Layouts/Components/CoeliacFooter.vue';
     <CoeliacHeader />
 
     <section
-      class="mx-auto mb-3 flex w-full max-w-7xl flex-1 flex-col space-y-3"
+      class="mx-auto mb-3 flex w-full max-w-8xl flex-1 flex-col space-y-3"
     >
       <slot />
     </section>

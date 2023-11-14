@@ -23,7 +23,7 @@ const navigation: { links: { label: string; url: string }[] } = {
 
 <template>
   <footer class="bg-primary">
-    <div class="mx-auto max-w-7xl p-4 lg:grid lg:grid-cols-4 lg:gap-x-4">
+    <div class="mx-auto max-w-8xl p-4 lg:grid lg:grid-cols-4 lg:gap-x-4">
       <!-- Tagline -->
       <div class="mb-4">
         <h2 class="mb-2 text-xl font-semibold">Coeliac Sanctuary</h2>
@@ -67,7 +67,7 @@ const navigation: { links: { label: string; url: string }[] } = {
               required
               type="email"
             />
-            <div class="mt-4 sm:mt-0 sm:ml-4 sm:flex-shrink-0">
+            <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
               <CoeliacButton
                 as="button"
                 classes="w-full justify-center"

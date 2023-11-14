@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Nova\Actions\EatingOut;
 
 use App\Models\Comments\Comment;
-use App\Models\EatingOut\EateryReview;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
@@ -32,7 +31,7 @@ class ReplyToCommentComment extends Action
             }
 
             $comment->reply()->create([
-                'comment_reply' => $fields->reply
+                'comment_reply' => $fields->reply,
             ]);
 
             $comment->update(['approved' => true]);

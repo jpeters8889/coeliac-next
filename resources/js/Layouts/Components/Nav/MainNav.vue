@@ -25,7 +25,7 @@ onMounted(() => {
     class="mx-auto hidden md:flex md:items-center md:justify-center"
     :class="{
       'fixed top-0 h-10 w-screen bg-primary': isSticky,
-      'h-14 w-full max-w-7xl ': !isSticky,
+      'h-14 w-full max-w-8xl ': !isSticky,
     }"
   >
     <nav class="flex h-full text-lg">

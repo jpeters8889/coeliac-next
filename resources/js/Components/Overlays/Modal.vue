@@ -71,7 +71,7 @@ const slots = useSlots();
                 :class="{
                   'xs:max-w-md': size === 'small',
                   'sm:max-w-lg': size === 'medium',
-                  'sm:max-w-7xl': size === 'large',
+                  'sm:max-w-8xl': size === 'large',
                   'sm:max-w-[95%]': size === 'full',
                 }"
                 class="relative w-full max-w-[95%] transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8"

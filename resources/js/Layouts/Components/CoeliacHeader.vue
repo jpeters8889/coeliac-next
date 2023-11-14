@@ -24,7 +24,7 @@ const mobileNavOpen = ref(false);
       class="relative z-20"
     >
       <div
-        class="mx-auto flex w-full max-w-7xl items-center justify-between px-2"
+        class="mx-auto flex w-full max-w-8xl items-center justify-between px-2"
       >
         <div class="md:hidden">
           <a
