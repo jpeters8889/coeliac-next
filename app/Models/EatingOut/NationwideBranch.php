@@ -8,6 +8,7 @@ use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
 use App\DataObjects\EatingOut\LatLng;
 use App\Support\Helpers;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,7 +47,7 @@ class NationwideBranch extends Model
         });
     }
 
-    public static function searchAroundLatLng(LatLng $latLng, int $radius = 2): AlgoliaBuilder
+    public static function algoliaSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): AlgoliaBuilder
     {
         $params = [
             'aroundLatLng' => $latLng->toString(),
@@ -58,6 +59,27 @@ class NationwideBranch extends Model
         $searcher = static::search();
 
         return $searcher->with($params);
+    }
+
+    /** @return Builder<self> */
+    public static function databaseSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): Builder
+    {
+        return static::query()
+            ->selectRaw('(
+                        3959 * acos (
+                          cos ( radians(?) )
+                          * cos( radians( lat ) )
+                          * cos( radians( lng ) - radians(?) )
+                          + sin ( radians(?) )
+                          * sin( radians( lat ) )
+                        )
+                     ) AS distance', [
+                $latLng->lat,
+                $latLng->lng,
+                $latLng->lat,
+            ])->having('distance', '<=', $radius)
+            ->addSelect(['id', 'wheretoeat_id', 'lat', 'lng', 'name'])
+            ->orderBy('distance');
     }
 
     /** @return BelongsTo<Eatery, NationwideBranch> */

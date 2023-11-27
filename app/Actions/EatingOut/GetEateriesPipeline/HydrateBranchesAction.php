@@ -9,17 +9,21 @@ use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\NationwideBranch;
 use Closure;
-use Illuminate\Pagination\LengthAwarePaginator;
+use RuntimeException;
 
 class HydrateBranchesAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
-        /** @var LengthAwarePaginator<PendingEatery> $paginator */
-        $paginator = $pipelineData->paginator;
+        if ($pipelineData->paginator) {
+            $items = collect($pipelineData->paginator->items());
+        } elseif ($pipelineData->eateries) {
+            $items = $pipelineData->eateries;
+        } else {
+            throw new RuntimeException('No eateries');
+        }
 
-        $branchIds = collect($paginator->items())
-            ->reject(fn (PendingEatery $eatery) => $eatery->branchId === null)
+        $branchIds = $items->reject(fn (PendingEatery $eatery) => $eatery->branchId === null)
             ->map(fn (PendingEatery $eatery) => $eatery->branchId)
             ->values()
             ->toArray();

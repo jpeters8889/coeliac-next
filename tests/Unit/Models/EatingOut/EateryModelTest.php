@@ -116,7 +116,7 @@ class EateryModelTest extends TestCase
     {
         $latLng = new LatLng(51.1, 0.23);
 
-        $builder = Eatery::searchAroundLatLng($latLng);
+        $builder = Eatery::algoliaSearchAroundLatLng($latLng);
 
         $parameters = Arr::get((new ReflectionClosure($builder->callback))->getUseVariables(), 'parameters');
 
@@ -129,7 +129,7 @@ class EateryModelTest extends TestCase
     {
         $latLng = new LatLng(51.1, 0.23);
 
-        $builder = Eatery::searchAroundLatLng($latLng, 5);
+        $builder = Eatery::algoliaSearchAroundLatLng($latLng, 5);
 
         $parameters = Arr::get((new ReflectionClosure($builder->callback))->getUseVariables(), 'parameters');
 

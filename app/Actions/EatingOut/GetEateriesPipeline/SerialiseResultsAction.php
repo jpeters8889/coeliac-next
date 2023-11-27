@@ -6,7 +6,6 @@ namespace App\Actions\EatingOut\GetEateriesPipeline;
 
 use App\Contracts\EatingOut\GetEateriesPipelineActionContract;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
-use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,15 +19,17 @@ class SerialiseResultsAction implements GetEateriesPipelineActionContract
         /** @var Collection<int, Eatery> $eateries */
         $eateries = $pipelineData->hydrated;
 
-        /** @var LengthAwarePaginator<PendingEatery> $paginator */
-        $paginator = $pipelineData->paginator;
+        /** @var Collection<int, JsonResource> $serialisedEateries */
+        $serialisedEateries = $eateries->map(fn (Eatery $eatery) => new ($pipelineData->jsonResource)($eatery));
 
-        /** @var LengthAwarePaginator<JsonResource> $serialisedPaginator */
-        $serialisedPaginator = $paginator->setCollection(
-            $eateries->map(fn (Eatery $eatery) => new ($pipelineData->jsonResource)($eatery))
-        );
+        if ($pipelineData->paginator) {
+            $collection = $serialisedEateries;
 
-        $pipelineData->serialisedEateries = $serialisedPaginator;
+            /** @var LengthAwarePaginator<JsonResource> $serialisedEateries */
+            $serialisedEateries = $pipelineData->paginator->setCollection($collection);
+        }
+
+        $pipelineData->serialisedEateries = $serialisedEateries;
 
         return $next($pipelineData);
     }

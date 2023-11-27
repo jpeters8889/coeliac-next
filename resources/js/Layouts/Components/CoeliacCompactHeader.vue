@@ -38,53 +38,22 @@ const mobileNavOpen = ref(false);
         </div>
 
         <Link
-          class="my-2 flex h-[6.5rem] flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start"
+          class="my-2 flex flex-1 flex-col items-center xs:flex-row xs:justify-center"
           href="/"
         >
-          <Sealic class="-mb-3 xs:mb-0 xs:h-20 md:h-24" />
-
-          <div class="flex flex-col">
-            <h1
-              class="mt-2 text-center font-coeliac text-xl xs:ml-2 xs:mt-0 xs:text-left xs:text-3xl md:text-4xl"
-            >
-              Coeliac Sanctuary
-            </h1>
-            <span class="text-center font-coeliac text-xs md:text-base">
-              Gluten Free Blog by Alison Peters
-            </span>
-          </div>
+          <Sealic class="h-10" />
         </Link>
 
-        <div class="md:w-full md:max-w-xs">
-          <div class="h-14 w-14 p-2 md:hidden">
-            <div
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
-            >
-              <MagnifyingGlassIcon class="h-6 w-6" />
-            </div>
-          </div>
+        <MainNav />
 
+        <div class="h-14 w-14 p-2">
           <div
-            class="mt-8 hidden items-center rounded-xl bg-white bg-opacity-50 pr-2 transition focus-within:bg-opacity-90 md:flex"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
           >
-            <InputField
-              type="search"
-              name="search"
-              model-value=""
-              :background="false"
-              placeholder="Search..."
-            />
-
             <MagnifyingGlassIcon class="h-6 w-6" />
           </div>
         </div>
       </div>
-
-      <div
-        class="mx-auto hidden h-px w-4/5 bg-gradient-to-r from-white/20 via-white/40 to-white/20 md:block"
-      />
-
-      <MainNav />
     </div>
 
     <MobileNav

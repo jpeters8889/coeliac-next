@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Modules\EatingOut\Http;
+namespace Tests\Feature\Http\EatingOut;
 
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;

@@ -18,7 +18,6 @@ const classes = (): string[] => {
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
-    'shadow-sm',
     'outline-none',
     'sm:text-sm',
     'sm:leading-6',
@@ -28,7 +27,7 @@ const classes = (): string[] => {
   ];
 
   if (props.borders) {
-    base.push('border border-grey-off focus:border-grey-dark');
+    base.push('border border-grey-off focus:border-grey-dark shadow-sm');
   } else {
     base.push('border-0');
   }

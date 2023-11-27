@@ -84,18 +84,40 @@ class Eatery extends Model
         });
     }
 
-    public static function searchAroundLatLng(LatLng $latLng, int $radius = 2): AlgoliaBuilder
+    public static function algoliaSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): AlgoliaBuilder
     {
         $params = [
             'aroundLatLng' => $latLng->toString(),
             'aroundRadius' => Helpers::milesToMeters($radius),
             'getRankingInfo' => true,
+            'length' => 1000,
         ];
 
         /** @var AlgoliaBuilder $searcher */
         $searcher = static::search();
 
         return $searcher->with($params);
+    }
+
+    /** @return Builder<self> */
+    public static function databaseSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): Builder
+    {
+        return static::query()
+            ->selectRaw('(
+                        3959 * acos (
+                          cos ( radians(?) )
+                          * cos( radians( lat ) )
+                          * cos( radians( lng ) - radians(?) )
+                          + sin ( radians(?) )
+                          * sin( radians( lat ) )
+                        )
+                     ) AS distance', [
+                $latLng->lat,
+                $latLng->lng,
+                $latLng->lat,
+            ])->having('distance', '<=', $radius)
+            ->addSelect(['id', 'lat', 'lng', 'name', 'county_id'])
+            ->orderBy('distance');
     }
 
     /**

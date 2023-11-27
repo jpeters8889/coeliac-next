@@ -7,6 +7,7 @@ use App\Http\Controllers\EatingOut\EateryCreateReportController;
 use App\Http\Controllers\EatingOut\EateryCreateReviewController;
 use App\Http\Controllers\EatingOut\EateryDetailsController;
 use App\Http\Controllers\EatingOut\EaterySearchResultsController;
+use App\Http\Controllers\EatingOut\EatingOutBrowseController;
 use App\Http\Controllers\EatingOut\EatingOutController;
 use App\Http\Controllers\EatingOut\EatingOutLandingController;
 use App\Http\Controllers\EatingOut\NationwideController;
@@ -49,6 +50,9 @@ Route::prefix('wheretoeat')->group(function (): void {
 
     Route::get('/recommend-a-place', RecommendAPlaceController::class)->name('eating-out.recommend.index');
     Route::post('/recommend-a-place', RecommendAPlaceCreateController::class)->name('eating-out.recommend.create');
+
+    Route::get('/browse', EatingOutBrowseController::class)->name('eating-out.browse');
+    Route::get('/browse/{any}', EatingOutBrowseController::class)->where('any', '.*');
 
     Route::get('/{county}', CountyController::class)->name('eating-out.county');
     Route::get('/{county}/{town}', TownController::class)->name('eating-out.town');

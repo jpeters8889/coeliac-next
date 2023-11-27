@@ -27,7 +27,7 @@ class GetEateriesInSearchAreaAction implements GetEateriesPipelineActionContract
         $latLng = app(LocationSearchService::class)->getLatLng($pipelineData->searchTerm->term);
 
         /** @var EloquentCollection<int, Eatery> $ids */
-        $ids = Eatery::searchAroundLatLng($latLng, $pipelineData->searchTerm->range)->get();
+        $ids = Eatery::algoliaSearchAroundLatLng($latLng, $pipelineData->searchTerm->range)->get();
 
         $ids = $ids->load(['county'])
             ->reject(fn (Eatery $eatery) => $eatery->county->county === 'Nationwide')

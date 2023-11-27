@@ -13,6 +13,7 @@ class Inertia
 {
     public function __construct()
     {
+        BaseInertia::share('meta.baseUrl', config('app.url'));
         BaseInertia::share('meta.title', config('metas.title'));
         BaseInertia::share('meta.description', config('metas.description'));
         BaseInertia::share('meta.tags', config('metas.tags'));

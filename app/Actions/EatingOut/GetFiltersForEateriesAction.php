@@ -12,18 +12,27 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class GetFiltersForEateriesAction
 {
-    protected Closure $whereClause;
+    protected ?Closure $whereClause;
 
     protected array $filters;
 
-    public function handle(Closure $whereClause, array $filters = []): array
+    protected bool $withCount;
+
+    public function handle(Closure $whereClause = null, array $filters = [], bool $withCount = true): array
     {
+        if ($withCount && $whereClause === null) {
+            throw new RuntimeException('Missing where clause');
+        }
+
         $this->filters = $filters;
 
         $this->whereClause = $whereClause;
+
+        $this->withCount = $withCount;
 
         return [
             'categories' => $this->getCategories(),
@@ -32,19 +41,76 @@ class GetFiltersForEateriesAction
         ];
     }
 
+    /**
+     * @param  Builder<EateryType> | Builder<EateryVenueType> | Builder<EateryFeature>  $builder
+     * @return Builder<EateryType> | Builder<EateryVenueType> | Builder<EateryFeature>
+     */
+    protected function queryOrderClause(Builder $builder, string $field): Builder
+    {
+        if ($this->withCount && $this->whereClause) {
+            return $builder
+                ->withCount(['eateries' => fn (Builder $query) => call_user_func($this->whereClause, $query)])
+                ->orderByRaw("eateries_count desc, {$field} asc");
+        }
+
+        return $builder->orderBy($field);
+    }
+
     /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
     protected function getCategories(): Collection
     {
-        return EateryType::query()
-            ->withCount(['eateries' => fn (Builder $query) => call_user_func($this->whereClause, $query)])
-            ->orderByRaw('eateries_count desc, name asc')
-            ->get()
-            ->map(fn (EateryType $type): array => [
-                'value' => $type->type,
-                'label' => "{$type->name} - ({$type->eateries_count})",
-                'disabled' => false,
-                'checked' => $this->filterIsEnabled('categories', $type->type),
-            ]);
+        /** @var Builder<EateryType> $baseQuery */
+        $baseQuery = EateryType::query();
+
+        $baseQuery = $this->queryOrderClause($baseQuery, 'name');
+
+        /** @var Collection<int, EateryType> $categories */
+        $categories = $baseQuery->get();
+
+        return $categories->map(fn (EateryType $type): array => [
+            'value' => $type->type,
+            'label' => $type->name . ($this->withCount ? " - ({$type->eateries_count})" : ''),
+            'disabled' => false,
+            'checked' => $this->filterIsEnabled('categories', $type->type),
+        ]);
+    }
+
+    /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
+    protected function getVenueTypes(): Collection
+    {
+        /** @var Builder<EateryVenueType> $baseQuery */
+        $baseQuery = EateryVenueType::query();
+
+        $baseQuery = $this->queryOrderClause($baseQuery, 'venue_type');
+
+        /** @var Collection<int, EateryVenueType> $venueTypes */
+        $venueTypes = $baseQuery->get();
+
+        return $venueTypes->map(fn (EateryVenueType $venueType): array => [
+            'value' => $venueType->slug,
+            'label' => $venueType->venue_type . ($this->withCount ? " - ({$venueType->eateries_count})" : ''),
+            'disabled' => false,
+            'checked' => $this->filterIsEnabled('venueTypes', $venueType->slug),
+        ]);
+    }
+
+    /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
+    protected function getFeatures(): Collection
+    {
+        /** @var Builder<EateryFeature> $baseQuery */
+        $baseQuery = EateryFeature::query();
+
+        $baseQuery = $this->queryOrderClause($baseQuery, 'feature');
+
+        /** @var Collection<int, EateryFeature> $features */
+        $features = $baseQuery->get();
+
+        return $features->map(fn (EateryFeature $feature): array => [
+            'value' => $feature->slug,
+            'label' => $feature->feature . ($this->withCount ? " - ({$feature->eateries_count})" : ''),
+            'disabled' => false,
+            'checked' => $this->filterIsEnabled('features', $feature->slug),
+        ]);
     }
 
     protected function filterIsEnabled(string $key, string $value): bool
@@ -63,35 +129,5 @@ class GetFiltersForEateriesAction
         return collect($filters)
             ->map(fn (string $filter) => Str::lower($filter))
             ->contains(Str::lower($value));
-    }
-
-    /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
-    protected function getVenueTypes(): Collection
-    {
-        return EateryVenueType::query()
-            ->withCount(['eateries' => fn (Builder $query) => call_user_func($this->whereClause, $query)])
-            ->orderByRaw('eateries_count desc, venue_type asc')
-            ->get()
-            ->map(fn (EateryVenueType $venueType): array => [
-                'value' => $venueType->slug,
-                'label' => "{$venueType->venue_type} - ({$venueType->eateries_count})",
-                'disabled' => false,
-                'checked' => $this->filterIsEnabled('venueTypes', $venueType->slug),
-            ]);
-    }
-
-    /** @return Collection<int, array{value: string, label: string, disabled: bool, checked: bool}> */
-    protected function getFeatures(): Collection
-    {
-        return EateryFeature::query()
-            ->withCount(['eateries' => fn (Builder $query) => call_user_func($this->whereClause, $query)])
-            ->orderByRaw('eateries_count desc, feature asc')
-            ->get()
-            ->map(fn (EateryFeature $feature): array => [
-                'value' => $feature->slug,
-                'label' => "{$feature->feature} - ({$feature->eateries_count})",
-                'disabled' => false,
-                'checked' => $this->filterIsEnabled('features', $feature->slug),
-            ]);
     }
 }

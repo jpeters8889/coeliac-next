@@ -7,9 +7,8 @@ namespace App\DataObjects;
 use App\Models\TemporaryFileUpload;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use Spatie\LaravelData\Data;
 
-class TemporaryFileUploadPipelineData extends Data
+class TemporaryFileUploadPipelineData
 {
     public function __construct(
         public UploadedFile $file,

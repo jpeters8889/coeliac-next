@@ -38,7 +38,10 @@ watch(
         v-text="'*'"
       />
     </label>
-    <div class="relative rounded-md shadow-sm">
+    <div
+      class="relative rounded-md"
+      :class="borders ? 'shadow-sm' : ''"
+    >
       <RawInputField
         :id="id"
         v-model="value"
@@ -49,7 +52,7 @@ watch(
         :required="required"
         :label="label"
         :type="type"
-        borders
+        :borders="borders"
       />
       <div
         v-if="error"

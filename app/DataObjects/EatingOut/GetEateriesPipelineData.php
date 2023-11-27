@@ -12,9 +12,8 @@ use App\Resources\EatingOut\EateryListResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Spatie\LaravelData\Data;
 
-class GetEateriesPipelineData extends Data
+class GetEateriesPipelineData
 {
     /**
      * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null}  $filters
@@ -23,18 +22,19 @@ class GetEateriesPipelineData extends Data
      * @param  null | Collection<int, Eatery>  $hydrated
      * @param  null | Collection<int, NationwideBranch>  $hydratedBranches
      * @param  class-string<JsonResource>  $jsonResource,
-     * @param  null | LengthAwarePaginator<JsonResource>  $serialisedEateries
+     * @param  null | LengthAwarePaginator<JsonResource> | Collection<int, JsonResource>  $serialisedEateries
      */
     public function __construct(
         public array $filters,
         public ?EateryTown $town = null,
         public ?EaterySearchTerm $searchTerm = null,
+        public ?LatLng $latLng = null,
         public ?Collection $eateries = null,
         public ?LengthAwarePaginator $paginator = null,
         public ?Collection $hydrated = null,
         public ?Collection $hydratedBranches = null,
         public string $jsonResource = EateryListResource::class,
-        public ?LengthAwarePaginator $serialisedEateries = null,
+        public LengthAwarePaginator|Collection|null $serialisedEateries = null,
     ) {
     }
 }

@@ -9,27 +9,29 @@ use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use Closure;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 class CheckForMissingEateriesAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
-        /** @var LengthAwarePaginator<PendingEatery> $paginator */
-        $paginator = $pipelineData->paginator;
-
-        /** @var Collection<int, PendingEatery> $paginatedEateries */
-        $paginatedEateries = collect($paginator->items());
+        if ($pipelineData->paginator) {
+            $items = collect($pipelineData->paginator->items());
+        } elseif ($pipelineData->eateries) {
+            $items = $pipelineData->eateries;
+        } else {
+            throw new RuntimeException('No eateries');
+        }
 
         /** @var Collection<int, Eatery> $hydratedEateries */
         $hydratedEateries = $pipelineData->hydrated;
 
-        if ($paginatedEateries->count() === $hydratedEateries->count()) {
+        if ($items->count() === $hydratedEateries->count()) {
             return $next($pipelineData);
         }
 
-        $paginatedEateries->each(function (PendingEatery $pendingEatery, int $index) use (&$hydratedEateries): void {
+        $items->each(function (PendingEatery $pendingEatery, int $index) use (&$hydratedEateries): void {
             if ($hydratedEateries->get($index)?->id === $pendingEatery->id) {
                 return;
             }

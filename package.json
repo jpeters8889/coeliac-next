@@ -53,6 +53,7 @@
         "axios": "^1.1.2",
         "eslint-import-resolver-alias": "^1.1.2",
         "laravel-precognition-vue-inertia": "^0.5.1",
+        "ol": "^8.2.0",
         "vue": "^3.3"
     }
 }

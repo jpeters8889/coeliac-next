@@ -8,12 +8,14 @@ const props = withDefaults(
     size?: string;
     width?: string;
     color?: 'white' | 'primary' | 'secondary';
+    background?: boolean;
   }>(),
   {
     absolute: true,
     size: 'w-6 h-6',
     width: 'border-4',
     color: 'white',
+    background: false,
   }
 );
 
@@ -43,7 +45,10 @@ const classes = computed((): string[] => {
   <div
     v-if="display"
     class="left-0 top-0 flex h-full w-full items-center justify-center"
-    :class="absolute ? 'absolute' : ''"
+    :class="{
+      absolute: absolute,
+      'bg-black bg-opacity-50': background,
+    }"
   >
     <div :class="classes" />
   </div>

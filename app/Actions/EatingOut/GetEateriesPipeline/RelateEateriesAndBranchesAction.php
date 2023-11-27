@@ -10,8 +10,8 @@ use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
 use Closure;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use RuntimeException;
 
 class RelateEateriesAndBranchesAction implements GetEateriesPipelineActionContract
 {
@@ -23,11 +23,13 @@ class RelateEateriesAndBranchesAction implements GetEateriesPipelineActionContra
             return $next($pipelineData);
         }
 
-        /** @var LengthAwarePaginator<PendingEatery> $paginatedEateries */
-        $paginatedEateries = $pipelineData->paginator;
-
-        /** @var Collection<int, PendingEatery> $pendingEateries */
-        $pendingEateries = collect($paginatedEateries->items());
+        if ($pipelineData->paginator) {
+            $pendingEateries = collect($pipelineData->paginator->items());
+        } elseif ($pipelineData->eateries) {
+            $pendingEateries = $pipelineData->eateries;
+        } else {
+            throw new RuntimeException('No eateries');
+        }
 
         /** @var Collection<int, Eatery> $hydratedEateries */
         $hydratedEateries = $pipelineData->hydrated;

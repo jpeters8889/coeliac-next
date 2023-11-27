@@ -27,7 +27,7 @@ class GetNationwideBranchesInSearchArea implements GetEateriesPipelineActionCont
         $latLng = app(LocationSearchService::class)->getLatLng($pipelineData->searchTerm->term);
 
         /** @var Collection<int, NationwideBranch> $ids */
-        $ids = NationwideBranch::searchAroundLatLng($latLng, $pipelineData->searchTerm->range)->get();
+        $ids = NationwideBranch::algoliaSearchAroundLatLng($latLng, $pipelineData->searchTerm->range)->get();
 
         $ids = $ids->each(function (NationwideBranch $result): void {
             if (isset($result->scoutMetadata()['_rankingInfo']['geoDistance'])) {

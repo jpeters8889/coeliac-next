@@ -74,10 +74,15 @@ export type TownPage = Town & {
   image?: string;
 };
 
+export type EateryFilterItem = CheckboxItem & {
+  value: string;
+  label: string;
+};
+
 export type EateryFilters = {
-  categories: CheckboxItem[];
-  venueTypes: CheckboxItem[];
-  features: CheckboxItem[];
+  categories: EateryFilterItem[];
+  venueTypes: EateryFilterItem[];
+  features: EateryFilterItem[];
 };
 
 export type TownEatery = Eatery & {
@@ -102,10 +107,8 @@ export type TownEatery = Eatery & {
   distance?: number;
 };
 
-export type EateryLocation = {
+export type EateryLocation = LatLng & {
   address: string;
-  lat: number;
-  lng: number;
 };
 
 export type EateryNationwideBranch = {
@@ -307,4 +310,15 @@ export type EaterySimpleHomeResource = {
   };
   address: string;
   created_at: string;
+};
+
+export type LatLng = {
+  lat: number;
+  lng: number;
+};
+
+export type EateryBrowseResource = {
+  key: string;
+  isNationwideBranch: boolean;
+  location: LatLng;
 };

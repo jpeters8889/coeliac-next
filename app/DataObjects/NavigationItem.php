@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataObjects;
 
-use Spatie\LaravelData\Data;
-
-class NavigationItem extends Data
+class NavigationItem
 {
     public function __construct(
         public string $title,

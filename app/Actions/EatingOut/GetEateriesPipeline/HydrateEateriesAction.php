@@ -10,17 +10,20 @@ use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use Closure;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use RuntimeException;
 
 class HydrateEateriesAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
-        /** @var LengthAwarePaginator<PendingEatery> $paginator */
-        $paginator = $pipelineData->paginator;
-
-        $eateryIds = Arr::map($paginator->items(), fn (PendingEatery $eatery) => $eatery->id);
+        if ($pipelineData->paginator) {
+            $eateryIds = Arr::map($pipelineData->paginator->items(), fn (PendingEatery $eatery) => $eatery->id);
+        } elseif ($pipelineData->eateries) {
+            $eateryIds = $pipelineData->eateries->map(fn (PendingEatery $eatery) => $eatery->id)->toArray();
+        } else {
+            throw new RuntimeException('No eateries');
+        }
 
         $hydratedEateries = Eatery::query()
             ->with([

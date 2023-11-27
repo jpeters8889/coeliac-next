@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\EaterySuggestEditIndexController;
 use App\Http\Controllers\Api\EaterySuggestEditStoreController;
+use App\Http\Controllers\Api\EatingOutBrowseApiController;
+use App\Http\Controllers\Api\EatingOutFeaturesController;
 use App\Http\Controllers\Api\ReviewImageUploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +17,7 @@ Route::post('{eatery}/suggest-edit', EaterySuggestEditStoreController::class)
 
 Route::post('review/image-upload', ReviewImageUploadController::class)
     ->name('api.wheretoeat.review.image-upload');
+
+Route::get('features', EatingOutFeaturesController::class)->name('api.wheretoeat.features');
+
+Route::get('browse', EatingOutBrowseApiController::class)->name('api.wheretoeat.browse');
