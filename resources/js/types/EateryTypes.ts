@@ -79,10 +79,10 @@ export type EateryFilterItem = CheckboxItem & {
   label: string;
 };
 
+export type EateryFilterKeys = 'categories' | 'venueTypes' | 'features';
+
 export type EateryFilters = {
-  categories: EateryFilterItem[];
-  venueTypes: EateryFilterItem[];
-  features: EateryFilterItem[];
+  [T in EateryFilterKeys]: EateryFilterItem[];
 };
 
 export type TownEatery = Eatery & {

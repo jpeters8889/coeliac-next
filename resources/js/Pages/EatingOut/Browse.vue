@@ -14,6 +14,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   EateryBrowseResource,
   EateryFilterItem,
+  EateryFilterKeys,
   EateryFilters,
   LatLng,
 } from '@/types/EateryTypes';
@@ -33,6 +34,9 @@ import { usePage } from '@inertiajs/vue3';
 import { DefaultProps } from '@/types/DefaultProps';
 import 'ol/ol.css';
 
+type FilterKeys = 'category' | 'venueType' | 'feature';
+type UrlFilter = { [T in FilterKeys]?: string };
+
 defineOptions({
   layout: CoeliacCompact,
 });
@@ -41,7 +45,7 @@ const isLoading = ref(true);
 
 const wrapper: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>;
 
-const mapFilters: Ref<EateryFilters | undefined> = ref();
+const mapFilters: Ref<Partial<EateryFilters>> = ref({});
 
 const map: Ref<Map> = ref() as Ref<Map>;
 
@@ -87,6 +91,40 @@ const initialZoom = computed((): number => {
   }
 });
 
+const filtersForUrl: ComputedRef<{ filter: UrlFilter }> = computed(() => {
+  const filter: UrlFilter = {};
+
+  if (processedUrl.value.categories) {
+    filter.category = processedUrl.value.categories;
+  }
+
+  if (processedUrl.value.venueTypes) {
+    filter.venueType = processedUrl.value.venueTypes;
+  }
+
+  if (processedUrl.value.features) {
+    filter.feature = processedUrl.value.features;
+  }
+
+  return { filter };
+});
+
+const filtersForFilterBar: ComputedRef<
+  Partial<{ [T in EateryFilterKeys]: string[] }>
+> = computed(() => {
+  const rtr: Partial<{ [T in EateryFilterKeys]: string[] }> = {};
+
+  const keys: EateryFilterKeys[] = ['categories', 'venueTypes', 'features'];
+
+  keys.forEach((key) => {
+    if (processedUrl.value[key] !== undefined) {
+      rtr[key] = (<string>processedUrl.value[key]).split(',');
+    }
+  });
+
+  return rtr;
+});
+
 const getViewableRadius = (): number => {
   const latLng = transformExtent(
     map.value.getView().calculateExtent(map.value.getSize()),
@@ -108,50 +146,13 @@ const getLatLng = (): LatLng => {
   };
 };
 
-type UrlFilter = { [T in 'category' | 'venueType' | 'feature']?: string };
-
-const setFilters: ComputedRef<{ filter: UrlFilter }> = computed(() => {
-  const filter: UrlFilter = {};
-
-  if (
-    mapFilters.value?.categories.filter((f: EateryFilterItem) => f.checked)
-      .length
-  ) {
-    filter.category = mapFilters.value?.categories
-      .filter((f: EateryFilterItem) => f.checked)
-      .map((f: EateryFilterItem) => f.value)
-      .join(',');
-  }
-
-  if (
-    mapFilters.value?.venueTypes.filter((f: EateryFilterItem) => f.checked)
-      .length
-  ) {
-    filter.venueType = mapFilters.value?.venueTypes
-      .filter((f: EateryFilterItem) => f.checked)
-      .map((f: EateryFilterItem) => f.value)
-      .join(',');
-  }
-
-  if (
-    mapFilters.value?.features.filter((f: EateryFilterItem) => f.checked).length
-  ) {
-    filter.feature = mapFilters.value?.features
-      .filter((f: EateryFilterItem) => f.checked)
-      .map((f: EateryFilterItem) => f.value)
-      .join(',');
-  }
-
-  return { filter };
-});
-
 const getPlaces = async (): Promise<EateryBrowseResource[]> => {
   const response: AxiosResponse<DataResponse<EateryBrowseResource[]>> =
     await axios.get('/api/wheretoeat/browse', {
       params: {
         ...getLatLng(),
         radius: getViewableRadius(),
-        ...setFilters.value,
+        ...filtersForUrl.value,
       },
     });
 
@@ -181,7 +182,6 @@ const getEateryLatLng = (eatery: EateryBrowseResource): Coordinate =>
 const markerStyle = (): Style =>
   new Style({
     image: new Icon({
-      // crossOrigin: 'anonymous',
       size: [50, 50],
       src: '/images/svg/marker.svg',
     }),
@@ -300,37 +300,11 @@ const zoomIntoCluster = (pixel: Pixel) => {
     });
 };
 
-type CurrentFilter = { [T in 'category' | 'venueType' | 'feature']?: string[] };
-
-const currentFilters = computed((): CurrentFilter | undefined => {
-  if (!mapFilters.value) {
-    return undefined;
-  }
-
-  const { categories, features, venueTypes }: EateryFilters = mapFilters.value;
-
-  const filters: CurrentFilter = {};
-
-  if (categories.filter((feature) => feature.checked).length > 0) {
-    filters.category = categories
-      .filter((feature) => feature.checked)
-      .map((feature) => feature.value);
-  }
-
-  if (features.filter((feature) => feature.checked).length > 0) {
-    filters.feature = features
-      .filter((feature) => feature.checked)
-      .map((feature) => feature.value);
-  }
-
-  if (venueTypes.filter((venueType) => venueType.checked).length > 0) {
-    filters.venueType = venueTypes
-      .filter((venueType) => venueType.checked)
-      .map((venueType) => venueType.value);
-  }
-
-  return filters;
-});
+const getValueForFilter = (filter: EateryFilterKeys): string =>
+  (<EateryFilterItem[]>mapFilters.value[filter])
+    .filter((item) => item.checked)
+    .map((item) => item.value)
+    .join(',');
 
 const updateUrl = (latLng?: LatLng, zoom?: number) => {
   if (!latLng) {
@@ -343,15 +317,15 @@ const updateUrl = (latLng?: LatLng, zoom?: number) => {
 
   const paths = [`${latLng.lat},${latLng.lng}`, Math.round(zoom)];
 
-  const queryStrings: { [T in keyof EateryFilters]: string | undefined } = {
-    categories: currentFilters.value?.category
-      ? currentFilters.value.category.join(',')
+  const queryStrings: { [T in EateryFilterKeys]: string | undefined } = {
+    categories: mapFilters.value?.categories
+      ? getValueForFilter('categories')
       : undefined,
-    venueTypes: currentFilters.value?.venueType
-      ? currentFilters.value.venueType.join(',')
+    venueTypes: mapFilters.value?.venueTypes
+      ? getValueForFilter('venueTypes')
       : undefined,
-    features: currentFilters.value?.feature
-      ? currentFilters.value.feature.join(',')
+    features: mapFilters.value?.features
+      ? getValueForFilter('features')
       : undefined,
   };
 
@@ -418,6 +392,15 @@ const handleMapMove = () => {
 const handleFiltersChange = ({ filters }: { filters: EateryFilters }): void => {
   mapFilters.value = filters;
 
+  const keys: EateryFilterKeys[] = ['categories', 'venueTypes', 'features'];
+
+  keys.forEach((key) => {
+    processedUrl.value = {
+      ...processedUrl.value,
+      [key]: getValueForFilter(key),
+    };
+  });
+
   handleMapMove();
 };
 
@@ -467,11 +450,12 @@ const parseUrl = () => {
   processedUrl.value.latLng = latLng;
   processedUrl.value.zoom = zoom;
 
-  ['categories', 'venueTypes', 'features'].forEach((key) => {
+  const keys: EateryFilterKeys[] = ['categories', 'venueTypes', 'features'];
+
+  keys.forEach((key) => {
     if (queryStrings.has(key)) {
-      processedUrl.value[key as keyof EateryFilters] = queryStrings.get(
-        key
-      ) as string;
+      const value = queryStrings.get(key) as string;
+      processedUrl.value[key] = value;
     }
   });
 };
@@ -500,7 +484,10 @@ onMounted(async () => {
 
     <SearchMap />
 
-    <FilterMap @filters-updated="handleFiltersChange($event)" />
+    <FilterMap
+      :set-filters="filtersForFilterBar"
+      @filters-updated="handleFiltersChange($event)"
+    />
 
     <div
       id="map"

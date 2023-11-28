@@ -4,19 +4,51 @@ import { AdjustmentsHorizontalIcon } from '@heroicons/vue/24/solid';
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
 import TownFilterSidebarContent from '@/Components/PageSpecific/EatingOut/Town/TownFilterSidebarContent.vue';
 import axios, { AxiosResponse } from 'axios';
-import { EateryFilters } from '@/types/EateryTypes';
+import {
+  EateryFilterItem,
+  EateryFilterKeys,
+  EateryFilters,
+} from '@/types/EateryTypes';
 import { DataResponse } from '@/types/GenericTypes';
+
+const props = defineProps<{
+  setFilters: Partial<{ [T in EateryFilterKeys]?: string[] }>;
+}>();
 
 const viewSidebar = ref(false);
 const filters = ref();
 
-defineEmits(['filtersUpdated']);
+const emits = defineEmits(['filtersUpdated']);
 
 const getFilters = () => {
   axios
     .get('/api/wheretoeat/features')
     .then((response: AxiosResponse<DataResponse<EateryFilters>>) => {
-      filters.value = response.data.data;
+      const defaultFilters = response.data.data;
+
+      if (props.setFilters) {
+        const keys: EateryFilterKeys[] = [
+          'categories',
+          'venueTypes',
+          'features',
+        ];
+
+        keys.forEach((key) => {
+          props.setFilters[key]?.forEach((category: string) => {
+            const index = defaultFilters[key].indexOf(
+              defaultFilters[key].find(
+                (filter) => filter.value === category
+              ) as EateryFilterItem
+            );
+
+            defaultFilters[key][index].checked = true;
+          });
+        });
+      }
+
+      filters.value = defaultFilters;
+
+      emits('filtersUpdated', { filters: filters.value });
     });
 };
 
