@@ -64,10 +64,16 @@ onMounted(() => {
 <template>
   <div
     v-show="filters"
-    class="absolute bottom-0 right-0 z-10 p-4 xmd:hidden"
+    class="group absolute bottom-0 right-0 z-10 p-4"
   >
     <div
-      class="-ml-3 rounded-full border-2 border-white bg-primary p-3 text-white shadow transition"
+      class="absolute left-0 ml-[-10px] mt-[-28px] rounded-full border-2 border-white bg-secondary px-4 py-1 text-sm font-semibold uppercase leading-none opacity-0 transition-all duration-300 group-hover:opacity-70 group-hover:delay-500"
+    >
+      Filter
+    </div>
+
+    <div
+      class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow transition"
     >
       <AdjustmentsHorizontalIcon
         class="h-8 w-8"

@@ -155,6 +155,23 @@ export type DetailedEatery = Exclude<TownEatery, 'key'> & {
   };
 };
 
+export type EateryBrowseDetails = Exclude<
+  DetailedEatery,
+  | 'menu'
+  | 'reviews'
+  | 'features'
+  | 'opening_times'
+  | 'isNationwideBranch'
+  | 'branch'
+  | 'details'
+> & {
+  reviews: {
+    number: number;
+    average: StarRating;
+  };
+  full_location: string;
+};
+
 export type Days =
   | 'monday'
   | 'tuesday'

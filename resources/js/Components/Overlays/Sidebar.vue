@@ -13,8 +13,9 @@ withDefaults(
   defineProps<{
     open: boolean;
     side: 'left' | 'right';
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   }>(),
-  { side: 'left' },
+  { side: 'left', size: 'xs' }
 );
 
 const closeOverlay = () => emit('close');
@@ -65,7 +66,15 @@ const closeOverlay = () => emit('close');
                 leave-from="translate-x-0"
               >
                 <DialogPanel
-                  class="pointer-events-auto relative w-screen max-w-xs"
+                  class="pointer-events-auto relative w-screen"
+                  :class="{
+                    'max-w-xs': size === 'xs',
+                    'max-w-sm': size === 'sm',
+                    'max-w-md': size === 'md',
+                    'max-w-lg': size === 'lg',
+                    'max-w-xl': size === 'xl',
+                    'max-w-2xl': size === '2xl',
+                  }"
                 >
                   <TransitionChild
                     as="template"

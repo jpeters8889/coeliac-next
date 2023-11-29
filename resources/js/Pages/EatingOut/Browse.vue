@@ -33,6 +33,7 @@ import { Pixel } from 'ol/pixel';
 import { usePage } from '@inertiajs/vue3';
 import { DefaultProps } from '@/types/DefaultProps';
 import 'ol/ol.css';
+import PlaceDetails from '@/Components/PageSpecific/EatingOut/Browse/PlaceDetails.vue';
 
 type FilterKeys = 'category' | 'venueType' | 'feature';
 type UrlFilter = { [T in FilterKeys]?: string };
@@ -56,6 +57,9 @@ const processedUrl: Ref<{
   venueTypes?: string;
   features?: string;
 }> = ref({});
+
+const showPlaceDetails: Ref<false | { id: number; branchId?: number }> =
+  ref(false);
 
 const { currentBreakpoint, screenIsGreaterThanOrEqualTo } = useScreensize();
 
@@ -368,16 +372,14 @@ const handleMapClick = (event: MapBrowserEvent<MouseEvent>) => {
           return;
         }
 
-        const eatery = feature[0];
+        const eatery: FeatureLike = feature[0];
+        const eateryId = eatery.get('id');
+        const splitId = eateryId.split('-');
 
-        // this.placeDetails = {};
-        // this.getPlaceDetails(feature.get('id'));
-        //
-        // if (this.placeDetails === {}) {
-        //   return;
-        // }
-        //
-        // this.showSidebar = true;
+        showPlaceDetails.value = {
+          id: parseInt(splitId[0], 10),
+          branchId: splitId[1] ? parseInt(splitId[1], 10) : undefined,
+        };
       });
   } catch (e) {
     //
@@ -487,6 +489,13 @@ onMounted(async () => {
     <FilterMap
       :set-filters="filtersForFilterBar"
       @filters-updated="handleFiltersChange($event)"
+    />
+
+    <PlaceDetails
+      :show="showPlaceDetails !== false"
+      :place-id="showPlaceDetails ? showPlaceDetails.id : 0"
+      :branch-id="showPlaceDetails ? showPlaceDetails.branchId : undefined"
+      @close="showPlaceDetails = false"
     />
 
     <div

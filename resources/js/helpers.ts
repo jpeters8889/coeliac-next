@@ -42,3 +42,11 @@ export const loadScript = (script: string) =>
 
 export const ucfirst = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1);
+
+export const pluralise = (str: string, count: number): string => {
+  if (count === 1) {
+    return str;
+  }
+
+  return `${str}s`;
+};
