@@ -64,19 +64,19 @@ onMounted(() => {
 <template>
   <div
     v-show="filters"
-    class="group absolute bottom-0 right-0 z-10 p-4"
+    class="group absolute bottom-0 right-0 z-10 p-4 md:p-6"
   >
     <div
-      class="absolute left-0 ml-[-10px] mt-[-28px] rounded-full border-2 border-white bg-secondary px-4 py-1 text-sm font-semibold uppercase leading-none opacity-0 transition-all duration-300 group-hover:opacity-70 group-hover:delay-500"
+      class="absolute left-0 ml-[-10px] mt-[-28px] rounded-full border-2 border-white bg-secondary px-4 py-1 text-sm font-semibold uppercase leading-none opacity-0 transition-all duration-300 group-hover:opacity-70 group-hover:delay-500 md:ml-[8px] xmd:ml-[10px] xmd:mt-[-38px] xmd:text-base"
     >
       Filter
     </div>
 
     <div
-      class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow transition"
+      class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow transition md:shadow-lg"
     >
       <AdjustmentsHorizontalIcon
-        class="h-8 w-8"
+        class="h-8 w-8 md:h-12 md:w-12 xmd:h-14 xmd:w-14"
         @click="viewSidebar = true"
       />
     </div>

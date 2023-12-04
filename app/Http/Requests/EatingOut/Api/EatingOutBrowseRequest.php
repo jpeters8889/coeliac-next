@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Requests\EatingOut\Api;
 
 use App\DataObjects\EatingOut\LatLng;
+use App\Models\EatingOut\EateryFeature;
+use App\Models\EatingOut\EateryVenueType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EatingOutBrowseRequest extends FormRequest
 {
@@ -16,9 +19,9 @@ class EatingOutBrowseRequest extends FormRequest
             'lng' => ['required', 'numeric'],
             'radius' => ['required', 'numeric'],
             'filter' => ['array'],
-            'filter.category' => ['string'],
-            'filter.venueTypes' => ['string'],
-            'filter.features' => ['string'],
+            'filter.category' => ['string', Rule::in(['wte', 'att', 'hotel'])],
+            'filter.venueTypes' => ['string', Rule::exists(EateryVenueType::class, 'slug')],
+            'filter.features' => ['string', Rule::exists(EateryFeature::class, 'slug')],
         ];
     }
 

@@ -53,6 +53,7 @@ watch(
         :label="label"
         :type="type"
         :borders="borders"
+        :size="size"
       />
       <div
         v-if="error"

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Resources\EatingOut;
 
 use App\DataObjects\EatingOut\PendingEatery;
+use App\Enums\EatingOut\EateryType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,12 @@ class EateryBrowseResource extends JsonResource
                 'lat' => $this->lat,
                 'lng' => $this->lng,
             ],
+            'color' => $this->getColour(),
         ];
+    }
+
+    public function getColour(): string
+    {
+        return EateryType::from($this->typeId)->color();
     }
 }

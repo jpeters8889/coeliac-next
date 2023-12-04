@@ -32,12 +32,14 @@ export type InputProps = BaseFormInputProps & {
   label: string;
   error?: string;
   hideLabel?: boolean;
+  size?: 'default' | 'large';
 };
 
 export const InputPropDefaults: Partial<InputProps> = {
   ...BaseFormInputPropDefaults,
   type: 'text',
   hideLabel: false,
+  size: 'default',
 };
 
 export type TextareaProps = BaseFormInputProps & {

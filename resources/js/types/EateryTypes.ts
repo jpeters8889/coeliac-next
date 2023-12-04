@@ -338,4 +338,5 @@ export type EateryBrowseResource = {
   key: string;
   isNationwideBranch: boolean;
   location: LatLng;
+  color: string;
 };

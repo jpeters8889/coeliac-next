@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <meta name="author" content="Coeliac Sanctuary"/>
 
@@ -28,7 +28,7 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
-        function gtag(){
+        function gtag() {
             dataLayer.push(arguments);
         }
 
@@ -42,5 +42,18 @@
 </head>
 <body>
 @inertia
+@if(app()->isLocal())
+    <div class="absolute bottom-0 right-0 bg-red text-white text-xs font-semibold leading-0 p-1">
+        <span class="xxs:hidden">xxxs</span>
+        <span class="hidden xxs:block xs:hidden">xxs</span>
+        <span class="hidden xs:block sm:hidden">xs</span>
+        <span class="hidden sm:block md:hidden">sm</span>
+        <span class="hidden md:block xmd:hidden">md</span>
+        <span class="hidden xmd:block lg:hidden">xmd</span>
+        <span class="hidden lg:block xl:hidden">lg</span>
+        <span class="hidden xl:block 2xl:hidden">xl</span>
+        <span class="hidden 2xl:block">2xl</span>
+    </div>
+@endif
 </body>
 </html>

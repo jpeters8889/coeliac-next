@@ -7,6 +7,7 @@ namespace App\Actions\EatingOut\GetEateriesPipeline;
 use App\Contracts\EatingOut\GetEateriesPipelineActionContract;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
+use App\Models\EatingOut\EateryType;
 use App\Models\EatingOut\NationwideBranch;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,6 +51,7 @@ class GetNationwideBranchesInLatLngAction implements GetEateriesPipelineActionCo
             ordering: (string) $eatery->distance,
             lat: $eatery->lat,
             lng: $eatery->lng,
+            typeId: EateryType::EATERY,
         ));
 
         if ( ! $pipelineData->eateries instanceof Collection) {

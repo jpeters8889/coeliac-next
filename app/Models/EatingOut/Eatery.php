@@ -116,7 +116,7 @@ class Eatery extends Model
                 $latLng->lng,
                 $latLng->lat,
             ])->having('distance', '<=', $radius)
-            ->addSelect(['id', 'lat', 'lng', 'name', 'county_id'])
+            ->addSelect(['id', 'lat', 'lng', 'name', 'county_id', 'type_id'])
             ->orderBy('distance');
     }
 

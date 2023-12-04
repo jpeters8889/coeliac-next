@@ -25,7 +25,7 @@ class EateryBrowseDetailsResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'link' => $this->link(),
+            'link' => $this->relationLoaded('branch') ? $this->branch->link() : $this->link(),
             'full_location' => $this->full_location,
             'venue_type' => $this->venueType->venue_type,
             'type' => $this->type->name,
@@ -43,7 +43,7 @@ class EateryBrowseDetailsResource extends JsonResource
             'phone' => $this->phone,
             'reviews' => [
                 'number' => $this->reviews->count(),
-                'average' => (float)$this->average_rating,
+                'average' => (float) $this->average_rating,
             ],
         ];
     }

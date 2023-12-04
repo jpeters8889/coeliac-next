@@ -49,6 +49,7 @@ const wrapper: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>;
 const mapFilters: Ref<Partial<EateryFilters>> = ref({});
 
 const map: Ref<Map> = ref() as Ref<Map>;
+const view: Ref<View> = ref() as Ref<View>;
 
 const processedUrl: Ref<{
   latLng?: string;
@@ -183,11 +184,12 @@ const clearMarkers = (): void => {
 const getEateryLatLng = (eatery: EateryBrowseResource): Coordinate =>
   [eatery.location.lng, eatery.location.lat] as Coordinate;
 
-const markerStyle = (): Style =>
+const markerStyle = (color: string): Style =>
   new Style({
     image: new Icon({
       size: [50, 50],
       src: '/images/svg/marker.svg',
+      color,
     }),
   });
 
@@ -216,16 +218,18 @@ const clusterStyle = (feature: FeatureLike) => {
   });
 };
 
+const zoomLimit = (): number => {
+  if (screenIsGreaterThanOrEqualTo('lg')) {
+    return 11;
+  }
+
+  return 13;
+};
+
 const createMaMarkerLayer = (
   markers: Feature[]
 ): VectorLayer<VectorSource> | VectorLayer<Cluster> => {
-  let zoomLimit = 13;
-
-  if (screenIsGreaterThanOrEqualTo('lg')) {
-    zoomLimit = 11;
-  }
-
-  if (getZoom() < zoomLimit) {
+  if (getZoom() < zoomLimit()) {
     return new VectorLayer({
       properties: {
         name: 'markers',
@@ -263,10 +267,11 @@ const populateMap = (): void => {
             new Feature({
               id: eatery.key,
               geometry: new Point(fromLonLat(getEateryLatLng(eatery))),
+              color: eatery.color,
             })
         )
         .map((eatery: Feature) => {
-          eatery.setStyle(markerStyle());
+          eatery.setStyle(markerStyle(eatery.getProperties().color));
 
           return eatery;
         });
@@ -359,13 +364,7 @@ const handleMapClick = (event: MapBrowserEvent<MouseEvent>) => {
           return;
         }
 
-        let zoomLimit = 13;
-
-        if (screenIsGreaterThanOrEqualTo('lg')) {
-          zoomLimit = 11;
-        }
-
-        if (getZoom() < zoomLimit) {
+        if (getZoom() < zoomLimit()) {
           // cluster view
           zoomIntoCluster(event.pixel);
 
@@ -407,6 +406,11 @@ const handleFiltersChange = ({ filters }: { filters: EateryFilters }): void => {
 };
 
 const createMap = () => {
+  view.value = new View({
+    center: initialLatLng.value,
+    zoom: initialZoom.value,
+  });
+
   map.value = new Map({
     layers: [
       new TileLayer({
@@ -414,10 +418,7 @@ const createMap = () => {
       }),
     ],
     target: 'map',
-    view: new View({
-      center: initialLatLng.value,
-      zoom: initialZoom.value,
-    }),
+    view: view.value,
   });
 
   map.value.on('moveend', handleMapMove);
@@ -456,9 +457,18 @@ const parseUrl = () => {
 
   keys.forEach((key) => {
     if (queryStrings.has(key)) {
-      const value = queryStrings.get(key) as string;
-      processedUrl.value[key] = value;
+      processedUrl.value[key] = queryStrings.get(key) as string;
     }
+  });
+};
+
+const navigateTo = (latLng: LatLng): void => {
+  const coordinates = fromLonLat([latLng.lng, latLng.lat]);
+
+  view.value.animate({
+    center: coordinates,
+    duration: 1000,
+    zoom: zoomLimit(),
   });
 };
 
@@ -484,7 +494,10 @@ onMounted(async () => {
       background
     />
 
-    <SearchMap />
+    <SearchMap
+      @loading="isLoading = true"
+      @navigate-to="navigateTo($event)"
+    />
 
     <FilterMap
       :set-filters="filtersForFilterBar"
@@ -510,5 +523,12 @@ onMounted(async () => {
   left: auto;
   right: 0.5em;
   z-index: 50;
+}
+
+.ol-zoom button {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.75rem;
+  font-weight: 100;
 }
 </style>

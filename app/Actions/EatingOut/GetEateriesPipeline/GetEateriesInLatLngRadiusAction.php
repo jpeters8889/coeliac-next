@@ -48,6 +48,7 @@ class GetEateriesInLatLngRadiusAction implements GetEateriesPipelineActionContra
             ordering: $eatery->name,
             lat: $eatery->lat,
             lng: $eatery->lng,
+            typeId: $eatery->type_id,
         ));
 
         if ( ! $pipelineData->eateries instanceof Collection) {

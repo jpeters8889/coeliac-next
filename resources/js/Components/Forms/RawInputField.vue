@@ -26,6 +26,12 @@ const classes = (): string[] => {
     'focus:outline-none transition',
   ];
 
+  if (props.size) {
+    base.push(
+      'md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]'
+    );
+  }
+
   if (props.borders) {
     base.push('border border-grey-off focus:border-grey-dark shadow-sm');
   } else {

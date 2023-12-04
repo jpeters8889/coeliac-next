@@ -13,6 +13,7 @@ class PendingEatery
         public null|int|float $lat = null,
         public null|int|float $lng = null,
         public null|int|float $distance = null,
+        public ?int $typeId = null,
     ) {
     }
 }

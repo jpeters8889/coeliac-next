@@ -36,12 +36,16 @@ watch(
       return;
     }
 
-    axios
-      .get(`/api/wheretoeat/${props.placeId}`)
-      .then((response: AxiosResponse<EateryBrowseDetails>) => {
-        placeDetails.value = response.data;
-        isLoading.value = false;
-      });
+    let url = `/api/wheretoeat/${props.placeId}`;
+
+    if (props.branchId) {
+      url += `/?branchId=${props.branchId}`;
+    }
+
+    axios.get(url).then((response: AxiosResponse<EateryBrowseDetails>) => {
+      placeDetails.value = response.data;
+      isLoading.value = false;
+    });
   }
 );
 
