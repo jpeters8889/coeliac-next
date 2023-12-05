@@ -12,23 +12,22 @@ const classes = (): string[] => {
     'min-w-0',
     'appearance-none',
     'rounded-md',
-    'px-[calc(theme(spacing.3)-1px)]',
-    'py-[calc(theme(spacing[1.5])-1px)]',
-    'text-base',
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
     'outline-none',
-    'sm:text-sm',
-    'sm:leading-6',
     'xl:w-full',
     'focus:ring-0',
     'focus:outline-none transition',
   ];
 
-  if (props.size) {
+  if (props.size === 'large') {
     base.push(
-      'md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]'
+      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]'
+    );
+  } else {
+    base.push(
+      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6'
     );
   }
 

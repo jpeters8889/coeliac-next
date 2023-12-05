@@ -496,6 +496,7 @@ onMounted(async () => {
 
     <SearchMap
       @loading="isLoading = true"
+      @end-loading="isLoading = false"
       @navigate-to="navigateTo($event)"
     />
 

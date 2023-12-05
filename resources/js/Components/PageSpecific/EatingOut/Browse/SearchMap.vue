@@ -2,13 +2,15 @@
 import FormInput from '@/Components/Forms/FormInput.vue';
 import { ref, watch } from 'vue';
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+import { MapPinIcon } from '@heroicons/vue/24/solid';
 import axios, { AxiosResponse } from 'axios';
 import { LatLng } from '@/types/EateryTypes';
 
 const search = ref('');
 const hasError = ref(false);
+const errorMessage = ref('Please insert at least 3 characters...');
 
-const emits = defineEmits(['loading', 'navigate-to']);
+const emits = defineEmits(['loading', 'end-loading', 'navigate-to']);
 
 const handleSearch = () => {
   if (search.value.length < 3) {
@@ -24,7 +26,32 @@ const handleSearch = () => {
     .post('/api/wheretoeat/browse/search', { term: search.value })
     .then((response: AxiosResponse<LatLng>) => {
       emits('navigate-to', response.data);
+    })
+    .catch(() => {
+      errorMessage.value = 'Location not found...';
+      hasError.value = true;
+      emits('end-loading');
     });
+};
+
+const getLocation = () => {
+  emits('loading');
+
+  hasError.value = false;
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      emits('navigate-to', {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    },
+    () => {
+      errorMessage.value = 'Sorry, there was an error finding your location...';
+      hasError.value = true;
+      emits('end-loading');
+    }
+  );
 };
 
 watch(hasError, (check) => {
@@ -37,10 +64,10 @@ watch(hasError, (check) => {
 </script>
 
 <template>
-  <div class="absolute z-10 w-full p-2">
+  <div class="absolute z-10 w-[calc(100%-40px)] p-2">
     <div>
       <form
-        class="flex w-[calc(100%-35px)] max-w-lg items-center gap-2 rounded-md bg-white shadow"
+        class="flex w-full max-w-lg items-center gap-2 rounded-md bg-white shadow"
         :class="hasError ? 'border border-red' : ''"
         @submit.prevent="handleSearch()"
       >
@@ -57,11 +84,23 @@ watch(hasError, (check) => {
         />
 
         <button
-          class="mr-1 flex h-8 w-8 items-center justify-center rounded-full"
+          class="flex h-8 w-8 items-center justify-center rounded-full"
           :class="hasError ? 'bg-red' : 'bg-primary'"
           @click.prevent="handleSearch()"
         >
           <MagnifyingGlassIcon class="h-5 w-5" />
+        </button>
+
+        <div class="h-8 w-[1px] bg-grey-off" />
+
+        <button
+          class="mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-secondary"
+          type="button"
+          @click.prevent="getLocation()"
+        >
+          <MapPinIcon
+            class="h-5 w-5 opacity-50 transition-all hover:opacity-75"
+          />
         </button>
       </form>
     </div>
@@ -69,8 +108,7 @@ watch(hasError, (check) => {
     <div
       class="mt-1 w-[calc(100%-35px)] max-w-lg rounded-md bg-red bg-opacity-70 p-1 text-sm font-semibold leading-none text-white shadow transition-all"
       :class="hasError ? 'opacity-100' : 'opacity-0'"
-    >
-      Please insert at least 3 characters...
-    </div>
+      v-text="errorMessage"
+    />
   </div>
 </template>
