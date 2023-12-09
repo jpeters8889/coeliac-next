@@ -77,9 +77,8 @@ const submitForm = () => {
 
       <template v-else>
         <p class="md:prose-md prose mb-2 max-w-none">
-          Has {{ eateryName }} closed down? Or does it no longer do gluten free,
-          or does it not do gluten free properly? Or have the gluten free
-          options changed?
+          Has {{ eateryName }} shut down? Is it no longer offering gluten free
+          options, or have there been changes in the gluten free menu?
         </p>
 
         <p class="mb-2">
@@ -95,6 +94,7 @@ const submitForm = () => {
               <FormTextarea
                 v-model="form.details"
                 label=""
+                hide-label
                 required
                 name="details"
                 :rows="5"

@@ -74,7 +74,7 @@ const slots = useSlots();
                   'sm:max-w-8xl': size === 'large',
                   'sm:max-w-[95%]': size === 'full',
                 }"
-                class="relative w-full max-w-[95%] transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8"
+                class="relative w-auto max-w-[95%] transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8"
               >
                 <div
                   :class="{ hidden: !closeable }"

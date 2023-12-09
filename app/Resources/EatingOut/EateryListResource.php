@@ -6,6 +6,8 @@ namespace App\Resources\EatingOut;
 
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryAttractionRestaurant;
+use App\Models\EatingOut\EateryType;
+use App\Models\EatingOut\EateryVenueType;
 use App\Models\EatingOut\NationwideBranch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -26,6 +28,12 @@ class EateryListResource extends JsonResource
         /** @var NationwideBranch | null $branch */
         $branch = $this->relationLoaded('branch') ? $this->branch : null;
 
+        /** @var EateryVenueType $venueType */
+        $venueType = $this->venueType;
+
+        /** @var EateryType $eateryType */
+        $eateryType = $this->type;
+
         return [
             'name' => $this->name,
             'key' => $this->id . ($branch ? '-' . $branch->id : null),
@@ -33,13 +41,13 @@ class EateryListResource extends JsonResource
             'link' => $this->link(),
             'county' => [
                 'id' => $this->county_id,
-                'name' => $this->county->county,
-                'link' => $this->county->link(),
+                'name' => $this->county?->county,
+                'link' => $this->county?->link(),
             ],
             'town' => [
                 'id' => $this->town_id,
-                'name' => $this->town->town,
-                'link' => $this->town->link(),
+                'name' => $this->town?->town,
+                'link' => $this->town?->link(),
             ],
             'branch' => $branch ? [
                 'id' => $branch->id,
@@ -53,8 +61,8 @@ class EateryListResource extends JsonResource
                 ],
                 'link' => $branch->link(),
             ] : null,
-            'venue_type' => $this->venueType->venue_type,
-            'type' => $this->type->name,
+            'venue_type' => $venueType->venue_type,
+            'type' => $eateryType->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,
             'restaurants' => $this->restaurants->map($formatAttractions),

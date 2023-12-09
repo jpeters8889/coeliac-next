@@ -9,14 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-/**
- * @property string $name
- * @property string $email
- * @property string $comment
- * @property string $commentable_type
- * @property Comment | null $reply
- * @property string $published
- */
 class Comment extends Model
 {
     use DisplaysDates;
@@ -28,7 +20,7 @@ class Comment extends Model
     ];
 
     protected $casts = [
-        'approved' => 'bool'
+        'approved' => 'bool',
     ];
 
     /** @return HasOne<CommentReply> */

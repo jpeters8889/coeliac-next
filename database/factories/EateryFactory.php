@@ -29,12 +29,18 @@ class EateryFactory extends Factory
             'lat' => $this->faker->latitude,
             'lng' => $this->faker->longitude,
             'live' => true,
+            'closed_down' => false,
         ];
     }
 
     public function notLive(): self
     {
         return $this->state(fn () => ['live' => false]);
+    }
+
+    public function closedDown(): self
+    {
+        return $this->state(fn () => ['closed_down' => true]);
     }
 
     public function withOutSlug(): self

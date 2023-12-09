@@ -31,10 +31,10 @@ const averageRating = (): StarRatingType =>
 </script>
 
 <template>
-  <Card class="space-y-2">
+  <Card class="mt-2 space-y-2">
     <div class="flex items-center justify-between space-x-2">
       <h1
-        class="font-coeliac text-3xl font-semibold leading-tight"
+        class="font-coeliac text-3xl font-semibold leading-tight lg:mb-2 lg:text-5xl"
         v-text="eatery.name"
       />
 
@@ -48,9 +48,9 @@ const averageRating = (): StarRatingType =>
 
     <div
       v-if="eatery.reviews.user_reviews?.length > 0"
-      class="flex items-center justify-between sm:flex-row-reverse"
+      class="flex items-center justify-between gap-2 sm:flex-row-reverse"
     >
-      <span class="flex-1 sm:mr-2">
+      <span class="flex-1">
         Rated <strong>{{ eatery.reviews.average }} stars</strong> from
         <strong
           >{{ eatery.reviews.user_reviews.length }} review{{

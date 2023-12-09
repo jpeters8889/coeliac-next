@@ -15,7 +15,6 @@ use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
 use App\Support\Collections\CanBeCollected;
 use App\Support\Collections\Collectable;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,32 +28,8 @@ use Spatie\SchemaOrg\RestrictedDiet;
 use Spatie\SchemaOrg\Schema;
 
 /**
- * @property Carbon $created_at
- * @property Collection<RecipeAllergen> $allergens
- * @property bool $live
- * @property string $title
- * @property string $author
- * @property string $meta_description
- * @property mixed $prep_time
- * @property mixed $cook_time
  * @property string $servings
  * @property string $portion_size
- * @property RecipeNutrition $nutrition
- * @property string $ingredients
- * @property string $body
- * @property string $meta_tags
- * @property Collection<RecipeFeature> $features
- * @property string $method
- * @property string $description
- * @property string $link
- * @property int $id
- * @property Collection $meals
- * @property string $legacy_slug
- * @property string $slug
- * @property string $published
- * @property string $lastUpdated
- *
- * @method transform(array $array)
  */
 class Recipe extends Model implements Collectable, HasComments, HasMedia
 {
@@ -65,7 +40,6 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
-
     use InteractsWithMedia;
     use LinkableModel;
 
@@ -177,7 +151,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
             ->publisher(
                 Schema::organization()
                     ->name('Coeliac Sanctuary')
-                    ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
+                    ->logo(Schema::imageObject()->url($url . '/images/logo.svg'))
             );
     }
 
@@ -219,7 +193,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
             $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::LowLactoseDiet);
         }
 
-        if ($this->nutrition->calories < 400) {
+        if ($this->nutrition?->calories < 400) {
             $suitableFor[] = Schema::restrictedDiet()->identifier(RestrictedDiet::LowCalorieDiet);
         }
 
@@ -235,13 +209,13 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
     }
 
     /**
-     * @param Builder<Recipe> $builder
+     * @param  Builder<Recipe>  $builder
      * @return Builder<Recipe>
      */
     public function scopeHasFeatures(Builder $builder, array $features): Builder
     {
         return $builder->where(function (Builder $builder) use ($features) {
-            foreach($features as $feature) {
+            foreach ($features as $feature) {
                 $builder->whereHas('features', fn (Builder $builder) => $builder->where('slug', $feature));
             }
 
@@ -250,13 +224,13 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
     }
 
     /**
-     * @param Builder<Recipe> $builder
+     * @param  Builder<Recipe>  $builder
      * @return Builder<Recipe>
      */
     public function scopeHasMeals(Builder $builder, array $meals): Builder
     {
         return $builder->where(function (Builder $builder) use ($meals) {
-            foreach($meals as $meal) {
+            foreach ($meals as $meal) {
                 $builder->whereHas('meals', fn (Builder $builder) => $builder->where('slug', $meal));
             }
 
@@ -265,13 +239,13 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
     }
 
     /**
-     * @param Builder<Recipe> $builder
+     * @param  Builder<Recipe>  $builder
      * @return Builder<Recipe>
      */
     public function scopeHasFreeFrom(Builder $builder, array $freeFrom): Builder
     {
         return $builder->where(function (Builder $builder) use ($freeFrom) {
-            foreach($freeFrom as $allergen) {
+            foreach ($freeFrom as $allergen) {
                 $builder->whereHas('allergens', fn (Builder $builder) => $builder->where('slug', $allergen));
             }
 

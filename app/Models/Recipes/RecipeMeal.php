@@ -9,13 +9,7 @@ use App\Contracts\Recipes\FilterableRecipeRelation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * @property int $id
- * @property string $meal
- * @property null | int $recipes_count
- *
- * @implements  FilterableRecipeRelation<RecipeMeal>
- */
+/** @implements FilterableRecipeRelation<self> */
 class RecipeMeal extends Model implements FilterableRecipeRelation
 {
     use FiltersRecipeRelations;

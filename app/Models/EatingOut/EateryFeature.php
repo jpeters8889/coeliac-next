@@ -7,11 +7,6 @@ namespace App\Models\EatingOut;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * @property string $feature
- * @property int $id
- * @property int $type_id
- */
 class EateryFeature extends Model
 {
     protected $table = 'wheretoeat_features';

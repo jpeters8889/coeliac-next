@@ -72,7 +72,7 @@ class GetNationwideBranchesInSearchArea implements GetEateriesPipelineActionCont
             id: $eatery->id,
             branchId: $eatery->branch_id,
             ordering: $ids->firstWhere('id', $eatery->branch_id)?->distance ? (string) $ids->firstWhere('id', $eatery->branch_id)->distance : $eatery->ordering,
-            distance: $ids->firstWhere('id', $eatery->branch_id)?->distance,
+            distance: (float)$ids->firstWhere('id', $eatery->branch_id)?->distance,
         ));
 
         if ( ! $pipelineData->eateries instanceof Collection) {

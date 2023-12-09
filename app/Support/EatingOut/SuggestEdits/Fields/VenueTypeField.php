@@ -16,7 +16,7 @@ class VenueTypeField extends EditableField
 
     public function getCurrentValue(Eatery $eatery): ?string
     {
-        return $eatery->venueType->venue_type;
+        return $eatery->venueType?->venue_type;
     }
 
     public function getSuggestedValue(): string|int|null

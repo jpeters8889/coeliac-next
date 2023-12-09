@@ -51,7 +51,7 @@ const howExpensive = () => {
     class="sm:flex-row"
   >
     <div
-      class="hidden w-1/3 max-w-[250px] flex-col bg-grey-light sm:flex md:w-1/4"
+      class="hidden w-1/3 max-w-[250px] flex-col bg-primary-lightest sm:flex md:w-1/4"
     >
       <div class="flex h-8 items-center px-3">
         <StarRating
@@ -94,7 +94,7 @@ const howExpensive = () => {
 
     <div class="flex w-full flex-1 flex-col">
       <div
-        class="flex items-center justify-between border-b border-grey-off bg-grey-light px-3 py-1 text-sm sm:h-8 sm:justify-end"
+        class="flex items-center justify-between border-b border-grey-off bg-primary-lightest px-3 py-1 text-sm sm:h-8 sm:justify-end"
       >
         <div class="sm:hidden">
           <StarRating
@@ -133,7 +133,7 @@ const howExpensive = () => {
       </div>
 
       <div
-        class="flex items-center justify-between border-t border-grey-off bg-grey-light px-3 py-1 text-sm sm:hidden"
+        class="flex items-center justify-between border-t border-grey-off bg-primary-lightest px-3 py-1 text-sm sm:hidden"
       >
         <span>{{ review.name || '' }}</span>
         <span>{{ formatDate(review.published) }}</span>

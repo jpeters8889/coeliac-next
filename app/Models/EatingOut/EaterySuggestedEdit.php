@@ -18,15 +18,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property Eatery $eatery
- * @property int $id
- * @property string $status
- * @property string $field
- * @property string $value
- * @property bool $accepted
- * @property bool $rejected
- */
 class EaterySuggestedEdit extends Model
 {
     protected $table = 'wheretoeat_suggested_edits';

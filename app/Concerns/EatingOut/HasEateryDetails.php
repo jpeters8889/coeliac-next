@@ -17,18 +17,9 @@ use Illuminate\Support\Stringable;
 /**
  * @mixin Model
  *
- * @property string $name
- * @property EateryTown $town
- * @property EateryCounty $county
- * @property EateryCountry $country
- * @property string $address
- * @property int $lat
- * @property int $lng
- * @property bool $live
- * @property int $id
  * @property string $full_location
  * @property null|string $slug
- * @property number $town_id
+ * @property null|string|float $distance
  */
 trait HasEateryDetails
 {
@@ -54,7 +45,10 @@ trait HasEateryDetails
             return $this->slug;
         }
 
-        return Str::of($this->name ?: $this->town->town)
+        /** @var EateryTown $town */
+        $town = $this->town;
+
+        return Str::of($this->name ?: $town->town)
             ->when(
                 $this->hasDuplicateNameInTown(),
                 fn (Stringable $str) => $str->append(' ' . $this->eateryPostcode()),
@@ -97,7 +91,7 @@ trait HasEateryDetails
     public function fullLocation(): Attribute
     {
         return Attribute::get(function () {
-            if ( ! $this->relationLoaded('town') || ! $this->relationLoaded('county') || ! $this->relationLoaded('country')) {
+            if ( ! $this->relationLoaded('town') || ! $this->relationLoaded('county') || ! $this->relationLoaded('country') || ! $this->town || ! $this->county || ! $this->country) {
                 return null;
             }
 

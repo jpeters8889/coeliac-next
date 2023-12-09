@@ -9,11 +9,6 @@ use Tests\TestCase;
 
 class EatingOutBrowseSearchTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     protected function makeRequest(string $term = null): TestResponse
     {
         return $this->postJson(route('api.wheretoeat.browse.search', ['term' => $term]));
@@ -34,7 +29,7 @@ class EatingOutBrowseSearchTest extends TestCase
     /** @test */
     public function itReturnsOk(): void
     {
-        $this->makeRequest('foo')->assertOk();
+        $this->makeRequest('london')->assertOk();
     }
 
     /** @test */

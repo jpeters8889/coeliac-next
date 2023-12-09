@@ -12,7 +12,7 @@ use App\Models\EatingOut\NationwideBranch;
 use App\Resources\EatingOut\EateryDetailsResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
-use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class EateryDetailsController
 {
@@ -55,6 +55,8 @@ class EateryDetailsController
             ->metaTags($eatery->keywords())
             ->render('EatingOut/Details', [
                 'eatery' => fn () => new EateryDetailsResource($eatery),
-            ]);
+            ])
+            ->toResponse($request)
+            ->setStatusCode($eatery->closed_down ? Response::HTTP_GONE : Response::HTTP_OK);
     }
 }

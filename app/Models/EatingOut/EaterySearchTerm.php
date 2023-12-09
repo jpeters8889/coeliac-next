@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-/**
- * @property Collection<EaterySearch> $searches
- * @property string                        $term
- * @property string $key
- */
 class EaterySearchTerm extends Model
 {
     protected $casts = [

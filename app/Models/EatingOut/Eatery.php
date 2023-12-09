@@ -13,7 +13,6 @@ use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,30 +24,12 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $info
- * @property Collection<int, EateryAttractionRestaurant> $restaurants
- * @property string | null $website
- * @property EateryCuisine | null $cuisine
- * @property string | null $phone
- * @property EateryCountry $country
- * @property int $type_id
- * @property int $reviews_count
- * @property Collection<int, EateryFeature> $features
- * @property Collection<int, EateryReview> $reviews
- * @property EateryType $type
- * @property EateryVenueType $venueType
- * @property string $full_name
- * @property string $gf_menu_link
- * @property EateryOpeningTimes | null $openingTimes
- * @property int $county_id
  * @property string | null $average_rating
+ * @property string | null $average_expense
+ * @property bool | null $has_been_rated
  * @property int | null $rating
  * @property int | null $rating_count
- * @property int | null $average_expense
- * @property bool $has_been_rated
- * @property float | null $distance
- *
- * @method transform(array $array)
+ * @property string $full_name
  */
 class Eatery extends Model
 {
@@ -115,8 +96,10 @@ class Eatery extends Model
                 $latLng->lat,
                 $latLng->lng,
                 $latLng->lat,
-            ])->having('distance', '<=', $radius)
+            ])
+            ->having('distance', '<=', $radius)
             ->addSelect(['id', 'lat', 'lng', 'name', 'county_id', 'type_id'])
+            ->where('closed_down', false)
             ->orderBy('distance');
     }
 
@@ -149,8 +132,8 @@ class Eatery extends Model
     {
         return '/' . implode('/', [
             'wheretoeat',
-            $this->county->slug,
-            $this->town->slug,
+            $this->county?->slug,
+            $this->town?->slug,
             $this->slug,
         ]);
     }
@@ -286,7 +269,7 @@ class Eatery extends Model
     public function fullName(): Attribute
     {
         return Attribute::get(function () {
-            if ( ! $this->relationLoaded('town')) {
+            if ( ! $this->relationLoaded('town') || ! $this->town) {
                 return $this->name;
             }
 
@@ -297,8 +280,8 @@ class Eatery extends Model
             return implode(', ', [
                 $this->name,
                 $this->town->town,
-                $this->county->county,
-                $this->country->country,
+                $this->county?->county,
+                $this->country?->country,
             ]);
         });
     }
@@ -321,7 +304,7 @@ class Eatery extends Model
     public function typeDescription(): Attribute
     {
         return Attribute::get(function () {
-            if ( ! $this->relationLoaded('type')) {
+            if ( ! $this->relationLoaded('type') || ! $this->type) {
                 return null;
             }
 
@@ -376,10 +359,12 @@ class Eatery extends Model
 
     public function keywords(): array
     {
+        $town = $this->town?->town;
+
         return [
             $this->name, $this->full_name, "{$this->name} gluten free",
-            "gluten free {$this->town}", "coeliac {$this->town} eateries", "gluten free {$this->town} eateries",
-            'gluten free places to eat in the uk', "gluten free places to eat in {$this->town}",
+            "gluten free {$town}", "coeliac {$town} eateries", "gluten free {$town} eateries",
+            'gluten free places to eat in the uk', "gluten free places to eat in {$town}",
             'gluten free places to eat', 'gluten free cafes', 'gluten free restaurants', 'gluten free uk',
             'places to eat', 'cafes', 'restaurants', 'eating out', 'catering to coeliac', 'eating out uk',
             'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
@@ -389,10 +374,10 @@ class Eatery extends Model
     public function toSearchableArray(): array
     {
         return $this->transform([
-            'title' => $this->relationLoaded('town') ? $this->name . ', ' . $this->town->town : $this->name,
-            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') ? $this->town->town . ', ' . $this->county->county : '',
-            'town' => $this->relationLoaded('town') ? $this->town->town : '',
-            'county' => $this->relationLoaded('county') ? $this->county->county : '',
+            'title' => $this->relationLoaded('town') && $this->town ? $this->name . ', ' . $this->town->town : $this->name,
+            'location' => $this->relationLoaded('town') && $this->town && $this->relationLoaded('county') && $this->county ? $this->town->town . ', ' . $this->county->county : '',
+            'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
+            'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -403,7 +388,7 @@ class Eatery extends Model
 
     public function shouldBeSearchable(): bool
     {
-        return $this->live;
+        return $this->live && ! $this->closed_down;
     }
 
     /** @return Attribute<float | null, callable(float): void> */

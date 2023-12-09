@@ -21,6 +21,7 @@ use Jpeters8889\EateryOpeningTimes\EateryOpeningTimes;
 use Jpeters8889\PolymorphicPanel\PolymorphicPanel;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
@@ -39,6 +40,11 @@ class Eateries extends Resource
     public static $title = 'name';
 
     public static $search = ['id', 'name', 'town', 'county'];
+
+    public function authorizedToReplicate(Request $request)
+    {
+        return true;
+    }
 
     public function authorizedToView(Request $request)
     {
@@ -63,6 +69,7 @@ class Eateries extends Resource
 
             Panel::make('Location', [
                 BelongsTo::make('Town', resource: Towns::class)
+                    ->searchable()
                     ->hideFromIndex()
                     ->fullWidth()
                     ->showCreateRelationButton(),
@@ -176,7 +183,15 @@ class Eateries extends Resource
                 PolymorphicPanel::make('Features', new EateryFeaturesPolymorphicPanel())->display('row'),
             ]),
 
-            Boolean::make('Live'),
+            Boolean::make('Live')->filterable(),
+
+            Boolean::make('Closed Down')
+                ->filterable()
+                ->help('If a location has closed down, then as long as it is still live then it will be removed from lists and maps, but the page will still load for search engines.'),
+
+            DateTime::make('Created At')->exceptOnForms(),
+
+            DateTime::make('Last Updated', 'updated_at')->exceptOnForms(),
 
             HasMany::make('Reviews', resource: Reviews::class),
 

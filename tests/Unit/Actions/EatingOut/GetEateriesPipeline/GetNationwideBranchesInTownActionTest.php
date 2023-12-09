@@ -117,4 +117,14 @@ class GetNationwideBranchesInTownActionTest extends GetEateriesTestCase
         $this->assertCount(1, $eateries);
         $this->assertEquals($eatery->id, $eateries->first()->id);
     }
+
+    /** @test */
+    public function itDoesntGetEateriesThatAreMarkedAsClosedDown(): void
+    {
+        Eatery::query()->update(['closed_down' => true]);
+
+        $eateries = $this->callGetBranchesAction();
+
+        $this->assertCount(0, $eateries->eateries);
+    }
 }

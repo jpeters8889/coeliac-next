@@ -9,12 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-/**
- * @property string $tag;
- * @property string $slug;
- * @property int $id
- * @property int | null $blogs_count
- */
 class BlogTag extends Model
 {
     use HasSlug;

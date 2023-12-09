@@ -15,8 +15,6 @@ use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
 use App\Support\Collections\CanBeCollected;
 use App\Support\Collections\Collectable;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -24,21 +22,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\SchemaOrg\Blog as BlogSchema;
 use Spatie\SchemaOrg\Schema;
 
-/**
- * @property string $title
- * @property Collection<BlogTag> $tags
- * @property string $meta_description
- * @property string $meta_tags
- * @property int $id
- * @property string $body
- * @property bool $live
- * @property Carbon $created_at
- * @property string $description
- * @property Carbon $updated_at
- * @property string $published
- * @property string $lastUpdated
- * @property null | int $comments_count
- */
 class Blog extends Model implements Collectable, HasComments, HasMedia
 {
     use CanBeCollected;
@@ -49,7 +32,6 @@ class Blog extends Model implements Collectable, HasComments, HasMedia
     use HasLegacyImage;
     use Imageable;
     use InteractsWithMedia;
-
     use LinkableModel;
 
     protected static function booted(): void
@@ -103,7 +85,7 @@ class Blog extends Model implements Collectable, HasComments, HasMedia
             ->publisher(
                 Schema::organization()
                     ->name('Coeliac Sanctuary')
-                    ->logo(Schema::imageObject()->url($url . "/images/logo.svg"))
+                    ->logo(Schema::imageObject()->url($url . '/images/logo.svg'))
             );
     }
 }

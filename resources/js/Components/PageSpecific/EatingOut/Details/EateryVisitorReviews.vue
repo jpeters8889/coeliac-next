@@ -33,7 +33,10 @@ const reviews = computed(
     </div>
   </Card>
 
-  <EateryAddReview :eatery="eatery" />
+  <EateryAddReview
+    v-if="!eatery.closed_down"
+    :eatery="eatery"
+  />
 
   <Card v-if="hasJustBeenRated">
     <p>
@@ -42,11 +45,13 @@ const reviews = computed(
   </Card>
 
   <template v-if="reviews.length">
-    <EateryVisitorReview
-      v-for="review in reviews"
-      :key="review.id"
-      :eatery-name="eatery.name"
-      :review="review"
-    />
+    <div class="mt-4 flex flex-col space-y-4">
+      <EateryVisitorReview
+        v-for="review in reviews"
+        :key="review.id"
+        :eatery-name="eatery.name"
+        :review="review"
+      />
+    </div>
   </template>
 </template>

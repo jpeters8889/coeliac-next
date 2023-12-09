@@ -8,7 +8,6 @@ use App\Concerns\DisplaysMedia;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,13 +15,6 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-/**
- * @property string $town
- * @property EateryCounty $county
- * @property string $slug
- * @property Collection $liveEateries
- * @property Collection $eateries
- */
 class EateryTown extends Model implements HasMedia
 {
     use DisplaysMedia;
@@ -63,7 +55,9 @@ class EateryTown extends Model implements HasMedia
     /** @return HasMany<Eatery> */
     public function liveEateries(): HasMany
     {
-        return $this->hasMany(Eatery::class, 'town_id')->where('live', true);
+        return $this->hasMany(Eatery::class, 'town_id')
+            ->where('live', true)
+            ->when(!request()?->routeIs('eating-out.show'), fn(Builder $builder) => $builder->where('closed_down', false));
     }
 
     /** @return HasMany<NationwideBranch> */
@@ -82,7 +76,7 @@ class EateryTown extends Model implements HasMedia
     {
         return '/' . implode('/', [
             'wheretoeat',
-            $this->county->slug,
+            $this->county?->slug,
             $this->slug,
         ]);
     }

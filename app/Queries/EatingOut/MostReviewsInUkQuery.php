@@ -27,7 +27,7 @@ class MostReviewsInUkQuery
             ->take(3)
             ->get()
             ->map(function (Eatery $eatery) {
-                $eatery->town->setRelation('county', $eatery->county);
+                $eatery->town?->setRelation('county', $eatery->county);
 
                 return $eatery;
             })

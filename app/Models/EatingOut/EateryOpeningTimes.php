@@ -11,23 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 /**
- * @property string $country
- * @property string $monday_start
- * @property string $monday_end
- * @property string $tuesday_start
- * @property string $tuesday_end
- * @property string $wednesday_start
- * @property string $wednesday_end
- * @property string $thursday_start
- * @property string $thursday_end
- * @property string $friday_start
- * @property string $friday_end
- * @property string $saturday_start
- * @property string $saturday_end
- * @property string $sunday_start
- * @property string $sunday_end
  * @property bool $is_open_now
- * @property array | null $opening_times_array
+ * @property array $opening_times_array
  */
 class EateryOpeningTimes extends Model
 {
@@ -65,7 +50,7 @@ class EateryOpeningTimes extends Model
         });
     }
 
-    public function closesAt(string $day = null): string | null
+    public function closesAt(?string $day = null): ?string
     {
         if ( ! $day) {
             $day = $this->currentDay();
@@ -74,7 +59,7 @@ class EateryOpeningTimes extends Model
         return $this->timeToString($day, 'end');
     }
 
-    public function opensAt(string $day = null): string | null
+    public function opensAt(?string $day = null): ?string
     {
         if ( ! $day) {
             $day = $this->currentDay();

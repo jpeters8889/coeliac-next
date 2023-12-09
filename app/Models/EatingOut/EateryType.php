@@ -7,14 +7,12 @@ namespace App\Models\EatingOut;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property string $type
- * @property string $name
- */
 class EateryType extends Model
 {
     public const EATERY = 1;
+
     public const ATTRACTION = 2;
+
     public const HOTEL = 3;
 
     protected $table = 'wheretoeat_types';

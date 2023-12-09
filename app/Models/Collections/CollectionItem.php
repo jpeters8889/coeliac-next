@@ -10,15 +10,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
-/**
- * @property string $title
- * @property string $meta_description
- * @property string $main_image
- * @property string $square_image
- * @property string $lastUpdated
- * @property string $link
- * @property Collection $collection
- */
 class CollectionItem extends Model implements Sortable
 {
     use SortableTrait;

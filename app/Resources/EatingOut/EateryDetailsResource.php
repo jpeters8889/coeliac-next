@@ -7,6 +7,7 @@ namespace App\Resources\EatingOut;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryAttractionRestaurant;
 use App\Models\EatingOut\EateryFeature;
+use App\Models\EatingOut\EateryOpeningTimes;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryReviewImage;
 use App\Models\EatingOut\NationwideBranch;
@@ -36,21 +37,28 @@ class EateryDetailsResource extends JsonResource
         /** @var NationwideBranch | null $branch */
         $branch = $this->relationLoaded('branch') ? $this->branch : null;
 
+        /** @var EateryReview | null $adminReview */
+        $adminReview = $this->adminReview;
+
+        /** @var EateryOpeningTimes | null $eateryOpeningTimes */
+        $eateryOpeningTimes = $this->openingTimes;
+
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'closed_down' => $this->closed_down, // @todo add this to front end
             'county' => [
                 'id' => $this->county_id,
-                'name' => $this->county->county,
-                'link' => $this->county->link(),
+                'name' => $this->county?->county,
+                'link' => $this->county?->link(),
             ],
             'town' => [
                 'id' => $this->town_id,
-                'name' => $this->town->town,
-                'link' => $this->town->link(),
+                'name' => $this->town?->town,
+                'link' => $this->town?->link(),
             ],
-            'venue_type' => $this->venueType->venue_type,
-            'type' => $this->type->name,
+            'venue_type' => $this->venueType?->venue_type,
+            'type' => $this->type?->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,
             'menu' => $this->gf_menu_link,
@@ -74,16 +82,16 @@ class EateryDetailsResource extends JsonResource
                     'thumbnail' => $image->thumb,
                     'path' => $image->path,
                 ]) : [],
-                'admin_review' => $this->adminReview ? [
-                    'published' => $this->adminReview->created_at,
-                    'date_diff' => $this->adminReview->human_date,
-                    'body' => $this->adminReview->review,
-                    'rating' => (float) $this->adminReview->rating,
-                    'expense' => $this->adminReview->price,
-                    'food_rating' => $this->adminReview->food_rating,
-                    'service_rating' => $this->adminReview->service_rating,
-                    'branch_name' => $this->adminReview->branch_name,
-                    'images' => $this->adminReview->images->count() > 0 ? $this->adminReview->images->map(fn (EateryReviewImage $image) => [
+                'admin_review' => $adminReview ? [
+                    'published' => $adminReview->created_at,
+                    'date_diff' => $adminReview->human_date,
+                    'body' => $adminReview->review,
+                    'rating' => (float) $adminReview->rating,
+                    'expense' => $adminReview->price,
+                    'food_rating' => $adminReview->food_rating,
+                    'service_rating' => $adminReview->service_rating,
+                    'branch_name' => $adminReview->branch_name,
+                    'images' => $adminReview->images->count() > 0 ? $adminReview->images->map(fn (EateryReviewImage $image) => [
                         'id' => $image->id,
                         'thumbnail' => $image->thumb,
                         'path' => $image->path,
@@ -111,25 +119,25 @@ class EateryDetailsResource extends JsonResource
                 'name' => $feature->feature,
                 'slug' => $feature->slug,
             ]),
-            'opening_times' => $this->openingTimes ? [
-                'is_open_now' => $this->openingTimes->is_open_now,
+            'opening_times' => $eateryOpeningTimes ? [
+                'is_open_now' => $eateryOpeningTimes->is_open_now,
                 'today' => [
-                    'opens' => $this->openingTimes->opensAt(),
-                    'closes' => $this->openingTimes->closesAt(),
+                    'opens' => $eateryOpeningTimes->opensAt(),
+                    'closes' => $eateryOpeningTimes->closesAt(),
                 ],
-                'days' => $this->openingTimes->opening_times_array,
+                'days' => $eateryOpeningTimes->opening_times_array,
             ] : null,
             'branch' => $branch ? [
                 'name' => $branch->name,
                 'county' => [
                     'id' => $branch->county_id,
-                    'name' => $branch->county->county,
-                    'link' => $branch->county->link(),
+                    'name' => $branch->county?->county,
+                    'link' => $branch->county?->link(),
                 ],
                 'town' => [
                     'id' => $branch->town_id,
-                    'name' => $branch->town->town,
-                    'link' => $branch->town->link(),
+                    'name' => $branch->town?->town,
+                    'link' => $branch->town?->link(),
                 ],
                 'location' => [
                     'address' => collect(explode("\n", $branch->address))
@@ -139,6 +147,8 @@ class EateryDetailsResource extends JsonResource
                     'lng' => $branch->lng,
                 ],
             ] : null,
+            'last_updated' => $this->updated_at,
+            'last_updated_human' => $this->updated_at?->diffForHumans(),
         ];
     }
 }

@@ -129,6 +129,7 @@ export type EateryNationwideBranch = {
 
 export type DetailedEatery = Exclude<TownEatery, 'key'> & {
   id: number;
+  closed_down: boolean;
   menu?: string;
   reviews: {
     number: number;
@@ -153,6 +154,8 @@ export type DetailedEatery = Exclude<TownEatery, 'key'> & {
       [T in Days]: OpeningTime;
     };
   };
+  last_updated: string;
+  last_updated_human: string;
 };
 
 export type EateryBrowseDetails = Exclude<

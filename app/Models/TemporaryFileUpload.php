@@ -7,10 +7,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-/**
- * @property string $filename
- * @property string $path
- */
 class TemporaryFileUpload extends Model
 {
     protected $casts = ['delete_at' => 'datetime'];

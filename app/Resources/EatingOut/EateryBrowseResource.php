@@ -28,6 +28,6 @@ class EateryBrowseResource extends JsonResource
 
     public function getColour(): string
     {
-        return EateryType::from($this->typeId)->color();
+        return EateryType::from((int) $this->typeId)->color();
     }
 }

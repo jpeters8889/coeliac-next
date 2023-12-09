@@ -17,10 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
-/**
- * @property Eatery $eatery
- * @property float | null $distance
- */
 class NationwideBranch extends Model
 {
     use HasEateryDetails;
@@ -93,7 +89,7 @@ class NationwideBranch extends Model
         return '/' . implode('/', [
             'wheretoeat',
             'nationwide',
-            $this->eatery->slug,
+            $this->eatery?->slug,
             $this->slug,
         ]);
     }
@@ -115,10 +111,10 @@ class NationwideBranch extends Model
     public function toSearchableArray(): array
     {
         return $this->transform([
-            'title' => $this->relationLoaded('town') ? $this->name . ', ' . $this->town->town : $this->name,
-            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') ? $this->town->town . ', ' . $this->county->county : '',
-            'town' => $this->relationLoaded('town') ? $this->town->town : '',
-            'county' => $this->relationLoaded('county') ? $this->county->county : '',
+            'title' => $this->relationLoaded('town') && $this->town ? $this->name . ', ' . $this->town->town : $this->name,
+            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town  && $this->county ? $this->town->town . ', ' . $this->county->county : '',
+            'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
+            'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,

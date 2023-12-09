@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ReviewImage } from '@/types/EateryTypes';
-import { nextTick, Ref, ref } from 'vue';
+import { Ref, ref } from 'vue';
 import Modal from '@/Components/Overlays/Modal.vue';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid';
 

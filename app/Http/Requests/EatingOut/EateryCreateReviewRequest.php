@@ -14,7 +14,7 @@ class EateryCreateReviewRequest extends FormRequest
         /** @var Eatery $eatery */
         $eatery = $this->route('eatery');
 
-        return $eatery->county->county === 'Nationwide';
+        return $eatery->county?->county === 'Nationwide';
     }
 
     public function rules(): array

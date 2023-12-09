@@ -29,8 +29,10 @@ class GetEateriesInSearchAreaAction implements GetEateriesPipelineActionContract
         /** @var EloquentCollection<int, Eatery> $ids */
         $ids = Eatery::algoliaSearchAroundLatLng($latLng, $pipelineData->searchTerm->range)->get();
 
-        $ids = $ids->load(['county'])
-            ->reject(fn (Eatery $eatery) => $eatery->county->county === 'Nationwide')
+        $ids = $ids
+            ->reject(fn (Eatery $eatery) => $eatery->closed_down)
+            ->load(['county'])
+            ->reject(fn (Eatery $eatery) => $eatery->county?->county === 'Nationwide')
             ->each(function ($result): void {
                 if (isset($result->scoutMetadata()['_rankingInfo']['geoDistance'])) {
                     $distance = round($result->scoutMetadata()['_rankingInfo']['geoDistance'] / 1609, 1);

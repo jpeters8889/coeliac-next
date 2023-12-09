@@ -11,6 +11,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SimpleEateryResource extends JsonResource
 {
+    public function eateryName(Eatery|NationwideBranch $resource): string
+    {
+        if ($resource instanceof Eatery) {
+            return $resource->name;
+        }
+
+        /** @var Eatery $eatery */
+        $eatery = $resource->eatery;
+
+        if ( ! $resource->name) {
+            return $eatery->name;
+        }
+
+        return "{$resource->name} - {$eatery->name}";
+    }
+
     /** @return array<string, mixed> */
     public function toArray(Request $request)
     {
@@ -18,11 +34,11 @@ class SimpleEateryResource extends JsonResource
         $resource = $this->resource;
 
         return [
-            'name' => $resource instanceof Eatery ? $resource->name : ($resource->name ? "{$resource->name} - {$resource->eatery->name}" : $resource->eatery->name),
+            'name' => $this->eateryName($resource),
             'link' => $resource->link(),
             'location' => [
                 'name' => $resource->full_location,
-                'link' => $resource->town->link(),
+                'link' => $resource->town?->link(),
             ],
             'address' => collect(explode("\n", $resource->address))
                 ->map(fn (string $line) => trim($line))

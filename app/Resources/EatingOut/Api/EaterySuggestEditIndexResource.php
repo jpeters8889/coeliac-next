@@ -43,16 +43,19 @@ class EaterySuggestEditIndexResource extends JsonResource
 
     protected function getVenueType(): array
     {
+        /** @var EateryVenueType $eateryVenueType */
+        $eateryVenueType = $this->venueType;
+
         return [
-            'id' => $this->venueType->id,
-            'label' => $this->venueType->venue_type,
+            'id' => $eateryVenueType->id,
+            'label' => $eateryVenueType->venue_type,
             'values' => EateryVenueType::query()
                 ->orderBy('venue_type')
                 ->get()
                 ->map(fn (EateryVenueType $venueType) => [
                     'value' => $venueType->id,
                     'label' => $venueType->venue_type,
-                    'selected' => $venueType->id === $this->venueType->id,
+                    'selected' => $venueType->id === $eateryVenueType->id,
                 ]),
         ];
     }

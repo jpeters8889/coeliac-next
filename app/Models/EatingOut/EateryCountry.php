@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * @property string $country
  * @property string $image
  */
 class EateryCountry extends Model

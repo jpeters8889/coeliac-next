@@ -21,7 +21,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
-        Menu::build();
+        Nova::booted(function (): void {
+            Menu::build();
+        });
     }
 
     public function register(): void

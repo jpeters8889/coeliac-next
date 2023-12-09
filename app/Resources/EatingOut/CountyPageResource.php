@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resources\EatingOut;
 
+use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EateryCounty;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,10 +18,13 @@ class CountyPageResource extends JsonResource
         $this->load('activeTowns', 'activeTowns.county', 'activeTowns.liveEateries', 'activeTowns.liveBranches');
         $this->loadCount(['eateries', 'reviews']);
 
+        /** @var EateryCountry $country */
+        $country = $this->country;
+
         return [
             'name' => $this->county,
             'slug' => $this->slug,
-            'image' => $this->image ?? $this->country->image,
+            'image' => $this->image ?? $country->image,
             'towns' => new CountyTownCollection($this->activeTowns),
             'eateries' => $this->eateries_count,
             'reviews' => $this->reviews_count,

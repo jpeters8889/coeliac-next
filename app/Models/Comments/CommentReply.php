@@ -8,10 +8,6 @@ use App\Concerns\DisplaysDates;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property string $comment_reply
- * @property string $published
- */
 class CommentReply extends Model
 {
     use DisplaysDates;

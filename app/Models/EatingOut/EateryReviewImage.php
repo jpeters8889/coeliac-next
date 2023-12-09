@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\Str;
 
-/**
- * @property Eatery $eatery
- * @property string $id
- * @property mixed $rating
- */
 class EateryReviewImage extends Model
 {
     protected $table = 'wheretoeat_review_images';

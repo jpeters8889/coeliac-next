@@ -69,4 +69,12 @@ class EateryDetailsTest extends TestCase
                     ->etc()
             );
     }
+
+    /** @test */
+    public function itReturnsHttpGoneIfTheLocationHasClosedDown(): void
+    {
+        $this->eatery->update(['closed_down' => true]);
+
+        $this->visitEatery()->assertGone();
+    }
 }

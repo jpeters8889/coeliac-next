@@ -12,15 +12,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property Eatery $eatery
- * @property int $id
- * @property int $rating
- * @property int $wheretoeat_id
- * @property bool $admin_review
- * @property int $how_expensive
  * @property Carbon $created_at
  * @property string $human_date
- * @property array{value: int, label: string} | null $price
+ * @property string $rating
+ * @property array | null $price
  */
 class EateryReview extends Model
 {
@@ -37,6 +32,7 @@ class EateryReview extends Model
     protected $casts = [
         'admin_review' => 'bool',
         'approved' => 'bool',
+        'how_expensive' => 'int',
     ];
 
     protected static function booted(): void
@@ -59,7 +55,7 @@ class EateryReview extends Model
             }
 
             /** @var float $average */
-            $average = $this->eatery->reviews()->average('rating');
+            $average = $this->eatery?->reviews()->average('rating');
 
             return number_format($average, 1);
         });
@@ -73,7 +69,7 @@ class EateryReview extends Model
                 return null;
             }
 
-            return $this->eatery->reviews()->count();
+            return $this->eatery?->reviews()->count();
         });
     }
 

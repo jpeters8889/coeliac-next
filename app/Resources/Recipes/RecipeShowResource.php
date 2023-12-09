@@ -7,6 +7,7 @@ namespace App\Resources\Recipes;
 use App\Models\Recipes\Recipe;
 use App\Models\Recipes\RecipeAllergen;
 use App\Models\Recipes\RecipeFeature;
+use App\Models\Recipes\RecipeNutrition;
 use App\Resources\Collections\FeaturedInCollectionSimpleCardViewResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,6 +21,9 @@ class RecipeShowResource extends JsonResource
     {
         $this->load(['associatedCollections', 'associatedCollections.collection', 'associatedCollections.collection.media']);
 
+        /** @var RecipeNutrition $nutrition */
+        $nutrition = $this->nutrition;
+
         return [
             'id' => $this->id,
             'print_url' => route('recipe.print', ['recipe' => $this]),
@@ -32,7 +36,7 @@ class RecipeShowResource extends JsonResource
             'description' => $this->description,
             'ingredients' => Str::markdown($this->ingredients, [
                 'renderer' => [
-                    'soft_break' => "<br />",
+                    'soft_break' => '<br />',
                 ],
             ]),
             'method' => Str::markdown($this->method),
@@ -45,14 +49,14 @@ class RecipeShowResource extends JsonResource
             'nutrition' => [
                 'servings' => $this->servings,
                 'portion_size' => $this->portion_size,
-                'calories' => $this->nutrition->calories,
-                'carbs' => $this->nutrition->carbs,
-                'fibre' => $this->nutrition->fibre,
-                'fat' => $this->nutrition->fat,
-                'sugar' => $this->nutrition->sugar,
-                'protein' => $this->nutrition->protein,
+                'calories' => $nutrition->calories,
+                'carbs' => $nutrition->carbs,
+                'fibre' => $nutrition->fibre,
+                'fat' => $nutrition->fat,
+                'sugar' => $nutrition->sugar,
+                'protein' => $nutrition->protein,
             ],
-            'featured_in' => FeaturedInCollectionSimpleCardViewResource::collection($this->associatedCollections)
+            'featured_in' => FeaturedInCollectionSimpleCardViewResource::collection($this->associatedCollections),
         ];
     }
 

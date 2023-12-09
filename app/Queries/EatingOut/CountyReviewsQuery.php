@@ -29,7 +29,7 @@ class CountyReviewsQuery
             ->get()
             ->map(function (Eatery $eatery) use ($county) {
                 $eatery->setRelation('county', $county);
-                $eatery->town->setRelation('county', $county);
+                $eatery->town?->setRelation('county', $county);
 
                 return $eatery;
             })

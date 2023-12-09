@@ -7,10 +7,6 @@ namespace App\Models\EatingOut;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property string $cuisine
- * @property int $id
- */
 class EateryCuisine extends Model
 {
     protected $table = 'wheretoeat_cuisines';

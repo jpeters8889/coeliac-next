@@ -26,6 +26,7 @@ class GetEateriesInTownAction implements GetEateriesPipelineActionContract
         $query = Eatery::query()
             ->selectRaw('wheretoeat.id, null as branch_id, wheretoeat.name as ordering')
             ->where('town_id', $pipelineData->town->id)
+            ->where('closed_down', false)
             ->orderBy('ordering');
 
         if (Arr::has($pipelineData->filters, 'categories') && $pipelineData->filters['categories'] !== null) {

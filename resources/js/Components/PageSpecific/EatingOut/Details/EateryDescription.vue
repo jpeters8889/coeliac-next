@@ -1,33 +1,10 @@
 <script lang="ts" setup>
 import { DetailedEatery } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
-import { onMounted, ref, watch } from 'vue';
-import ReportEateryModal from '@/Components/PageSpecific/EatingOut/Details/Modals/ReportEateryModal.vue';
 
-const props = defineProps<{
+defineProps<{
   eatery: DetailedEatery;
-  openReport: boolean;
 }>();
-
-const showReportPlaceModal = ref(false);
-
-const emits = defineEmits(['resetForceOpen']);
-
-onMounted(() => {
-  showReportPlaceModal.value = props.openReport;
-});
-
-watch(
-  () => props.openReport,
-  () => {
-    showReportPlaceModal.value = props.openReport;
-  }
-);
-
-const closeReportModal = () => {
-  showReportPlaceModal.value = false;
-  emits('resetForceOpen');
-};
 </script>
 
 <template>
@@ -57,18 +34,6 @@ const closeReportModal = () => {
       />
     </template>
 
-    <a
-      class="mt-2 cursor-pointer text-xs font-semibold italic text-grey-dark transition hover:text-grey-darkest"
-      @click.prevent="showReportPlaceModal = true"
-    >
-      Is there a problem with this location? Let us know.
-    </a>
+    <p class="text-sm italic">Last Updated: {{ eatery.last_updated_human }}</p>
   </Card>
-
-  <ReportEateryModal
-    :eatery-name="eatery.name"
-    :eatery-id="eatery.id"
-    :show="showReportPlaceModal"
-    @close="closeReportModal()"
-  />
 </template>

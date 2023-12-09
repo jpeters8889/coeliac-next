@@ -2,34 +2,45 @@
 import { DetailedEatery } from '@/types/EateryTypes';
 import EateryHeading from '@/Components/PageSpecific/EatingOut/Details/EateryHeading.vue';
 import EateryDescription from '@/Components/PageSpecific/EatingOut/Details/EateryDescription.vue';
-import EaterySuggestEdits from '@/Components/PageSpecific/EatingOut/Details/EaterySuggestEdits.vue';
 import EateryLocation from '@/Components/PageSpecific/EatingOut/Details/EateryLocation.vue';
 import EateryAdminReview from '@/Components/PageSpecific/EatingOut/Details/EateryAdminReview.vue';
 import EateryVisitorPhotos from '@/Components/PageSpecific/EatingOut/Details/EateryVisitorPhotos.vue';
 import EateryVisitorReviews from '@/Components/PageSpecific/EatingOut/Details/EateryVisitorReviews.vue';
-import { ref } from 'vue';
+import EateryFeedbackLinks from '@/Components/PageSpecific/EatingOut/Details/EateryFeedbackLinks.vue';
+import { Ref, ref } from 'vue';
+import { formatDate } from '../../helpers';
 
 defineProps<{
   eatery: DetailedEatery;
 }>();
 
-const forceOpenReport = ref(false);
+const reviewsElem: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>;
+
+const goToReview = () => {
+  reviewsElem.value.scrollIntoView({
+    behavior: 'smooth',
+  });
+};
 </script>
 
 <template>
+  <div
+    v-if="eatery.closed_down"
+    class="bg-red px-3 py-1 text-lg font-semibold text-white"
+  >
+    This eatery was unfortunately marked as closed down on
+    {{ formatDate(eatery.last_updated) }}.
+  </div>
+
   <EateryHeading :eatery="eatery" />
 
-  <EateryDescription
+  <EateryFeedbackLinks
+    v-if="!eatery.closed_down"
     :eatery="eatery"
-    :open-report="forceOpenReport"
-    @reset-force-open="forceOpenReport = false"
+    @go-to-review="goToReview()"
   />
 
-  <EaterySuggestEdits
-    :id="eatery.id"
-    :name="eatery.name"
-    @open-report="forceOpenReport = true"
-  />
+  <EateryDescription :eatery="eatery" />
 
   <EateryLocation
     v-if="eatery.county.id !== 1 || eatery.branch"
@@ -47,5 +58,7 @@ const forceOpenReport = ref(false);
     :eatery="eatery"
   />
 
-  <EateryVisitorReviews :eatery="eatery" />
+  <div ref="reviewsElem">
+    <EateryVisitorReviews :eatery="eatery" />
+  </div>
 </template>
