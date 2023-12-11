@@ -9,17 +9,17 @@ defineProps<{ collection: HomepageCollection }>();
 
 <template>
   <Card>
-    <h2 class="font-coeliac text-3xl font-semibold">
+    <h2 class="font-coeliac text-3xl font-semibold md:text-5xl">
       {{ collection.title }}
     </h2>
 
     <p
-      class="prose-md prose max-w-none"
+      class="prose max-w-none sm:prose-lg"
       v-html="collection.description"
     />
 
     <div
-      class="my-2 mx-auto h-px w-4/5 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40"
+      class="mx-auto my-2 h-px w-4/5 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40"
     />
 
     <section class="group grid grid-cols-1 sm:grid-cols-3">

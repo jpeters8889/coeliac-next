@@ -57,7 +57,7 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <Card class="flex h-auto flex-col space-y-3 !p-0 xmd:h-full">
+  <Card class="flex h-auto flex-col space-y-3 !p-0">
     <div
       class="flex items-center justify-between border-b border-grey-off bg-grey-off-light p-3"
     >

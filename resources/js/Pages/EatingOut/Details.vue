@@ -8,6 +8,7 @@ import EateryVisitorPhotos from '@/Components/PageSpecific/EatingOut/Details/Eat
 import EateryVisitorReviews from '@/Components/PageSpecific/EatingOut/Details/EateryVisitorReviews.vue';
 import EateryFeedbackLinks from '@/Components/PageSpecific/EatingOut/Details/EateryFeedbackLinks.vue';
 import { Ref, ref } from 'vue';
+import EateryFeatures from '@/Components/PageSpecific/EatingOut/Details/EateryFeatures.vue';
 import { formatDate } from '../../helpers';
 
 defineProps<{
@@ -41,6 +42,12 @@ const goToReview = () => {
   />
 
   <EateryDescription :eatery="eatery" />
+
+  <EateryFeatures
+    v-if="eatery.features?.length > 0"
+    :name="eatery.name"
+    :features="eatery.features"
+  />
 
   <EateryLocation
     v-if="eatery.county.id !== 1 || eatery.branch"

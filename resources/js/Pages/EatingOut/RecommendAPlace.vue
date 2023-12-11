@@ -55,26 +55,26 @@ const submit = () => {
     <Heading>Recommend A Place</Heading>
 
     <template v-if="!hasSubmitted">
-      <p class="prose-md prose max-w-none">
+      <p class="prose max-w-none md:prose-lg">
         Do you know a place that needs adding to our guide? Well give us as much
         details as possible below and we'll check it out, verify it and get it
         added to our list!
       </p>
 
-      <p class="prose-md prose max-w-none">
+      <p class="prose max-w-none md:prose-lg">
         We rely on people like you providing us with information on places where
         people can eat out safely and helping us create a great eating out
         guide!
       </p>
 
-      <p class="prose-md prose max-w-none">
+      <p class="prose max-w-none md:prose-lg">
         Our eating out guide is full of independent eateries around the UK and
         Ireland, and we list
         <Link href="/wheretoeat/nationwide">nationwide chains</Link>, such as
         Nando's, Bella Italia separately.
       </p>
 
-      <p class="prose-md prose max-w-none">
+      <p class="prose max-w-none md:prose-lg">
         Don't forget to check out our
         <Link href="/eating-out">eating guide</Link> first to see if the place
         you're recommending already listed.
@@ -92,6 +92,7 @@ const submit = () => {
           label="Your Name"
           name="name"
           required
+          borders
         />
 
         <FormInput
@@ -103,6 +104,7 @@ const submit = () => {
           label="Your Email"
           name="email"
           required
+          borders
         />
 
         <hr />
@@ -114,6 +116,7 @@ const submit = () => {
           label="Place Name"
           name="placeName"
           required
+          borders
         />
 
         <FormTextarea
@@ -132,6 +135,7 @@ const submit = () => {
           :error="form.errors['place.url']"
           label="Place Website"
           name="placeUrl"
+          borders
         />
 
         <FormSelect

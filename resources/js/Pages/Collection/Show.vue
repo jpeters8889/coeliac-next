@@ -14,7 +14,7 @@ defineProps<{ collection: CollectionPage }>();
     </Heading>
 
     <div
-      class="prose prose-lg max-w-none font-semibold"
+      class="prose prose-lg max-w-none font-semibold md:prose-xl"
       v-text="collection.description"
     />
 
@@ -39,7 +39,7 @@ defineProps<{ collection: CollectionPage }>();
     class="space-y-3"
   >
     <article
-      class="prose prose-lg max-w-none"
+      class="prose prose-lg max-w-none md:prose-xl"
       v-html="collection.body"
     />
   </Card>

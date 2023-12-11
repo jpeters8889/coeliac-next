@@ -27,12 +27,12 @@ defineProps<{
 
   <div class="flex flex-col space-y-4 lg:flex-row lg:space-x-4 lg:space-y-0">
     <div class="flex w-full flex-col space-y-4 lg:w-3/4">
-      <Card>
-        <h1 class="mb-3 font-coeliac text-3xl font-semibold">
+      <Card class="md:p-5">
+        <h1 class="mb-3 font-coeliac text-3xl font-semibold md:text-5xl">
           Coeliac Sanctuary - Gluten Free Blog by Alison Peters
         </h1>
 
-        <div class="prose max-w-none">
+        <div class="prose max-w-none sm:prose-lg">
           <p>
             Welcome to Coeliac Sanctuary, your ultimate sanctuary for Coeliac
             disease. I provide a wealth of resources, tips, and tricks tailored
@@ -79,7 +79,7 @@ defineProps<{
           src="/images/misc/alison.jpg"
         />
 
-        <p>
+        <p class="prose max-w-none sm:prose-lg">
           <strong>Hey, I'm Alison</strong>, I was diagnosed with Coeliac in
           2014, Coeliac Sanctuary blossomed from the tough time I was going
           through during diagnosis and almost 12 months of tests as a way to

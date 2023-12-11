@@ -10,13 +10,14 @@ import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
 import Sealic from '@/Svg/Sealic.vue';
 import { Link } from '@inertiajs/vue3';
 import InputField from '@/Components/Forms/RawInputField.vue';
-import CoeliacButton from '@/Components/CoeliacButton.vue';
+import { MetaProps } from '@/types/DefaultProps';
 
+defineProps<{ metas: MetaProps }>();
 const mobileNavOpen = ref(false);
 </script>
 
 <template>
-  <CoeliacMetas />
+  <CoeliacMetas :metas="metas" />
 
   <div class="relative bg-primary shadow-lg">
     <div
@@ -41,7 +42,7 @@ const mobileNavOpen = ref(false);
           class="my-2 flex h-[6.5rem] flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start"
           href="/"
         >
-          <Sealic class="-mb-3 xs:mb-0 xs:h-20 md:h-24" />
+          <Sealic class="lg:h-30 -mb-3 xs:mb-0 xs:h-20 md:h-24" />
 
           <div class="flex flex-col">
             <h1

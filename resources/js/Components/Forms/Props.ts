@@ -28,7 +28,7 @@ export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
 };
 
 export type InputProps = BaseFormInputProps & {
-  type?: 'text' | 'number' | 'search' | 'email';
+  type?: 'text' | 'number' | 'search' | 'email' | 'url';
   label: string;
   error?: string;
   hideLabel?: boolean;
@@ -80,6 +80,7 @@ export type FormSelectProps = BaseFormProps & {
   placeholder?: string;
   hideLabel?: boolean;
   error?: string;
+  size?: 'default' | 'large';
 };
 
 export const FormSelectPropsDefaults: Partial<FormSelectProps> = {
@@ -88,6 +89,7 @@ export const FormSelectPropsDefaults: Partial<FormSelectProps> = {
   placeholder: 'Select an option',
   hideLabel: false,
   error: undefined,
+  size: 'default',
 };
 
 export type FormStepperProps = BaseFormProps & {

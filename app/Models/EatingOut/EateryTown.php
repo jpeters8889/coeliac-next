@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -46,6 +48,33 @@ class EateryTown extends Model implements HasMedia
         return 'slug';
     }
 
+    /**
+     * @param  Relation<self>  $query
+     * @param  string  $value
+     * @param  ?string  $field
+     * @return Relation<self>
+     */
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        if (app(Request::class)->wantsJson()) {
+            return $query->where('id', $value); /** @phpstan-ignore-line */
+        }
+
+        if (app(Request::class)->route('county')) {
+            /** @var EateryCounty $county | string */
+            $county = app(Request::class)->route('county');
+
+            if ( ! $county instanceof EateryCounty) {
+                $county = EateryCounty::query()->where('slug', $county)->firstOrFail();
+            }
+
+            return $county->towns()->where('slug', $value);
+        }
+
+        /** @phpstan-ignore-next-line  */
+        return $query->where('slug', $value);
+    }
+
     /** @return HasMany<Eatery> */
     public function eateries(): HasMany
     {
@@ -55,9 +84,14 @@ class EateryTown extends Model implements HasMedia
     /** @return HasMany<Eatery> */
     public function liveEateries(): HasMany
     {
-        return $this->hasMany(Eatery::class, 'town_id')
-            ->where('live', true)
-            ->when(!request()?->routeIs('eating-out.show'), fn(Builder $builder) => $builder->where('closed_down', false));
+        /** @var HasMany<Eatery> $relation */
+        $relation = $this->hasMany(Eatery::class, 'town_id')->where('live', true);
+
+        if ( ! request()->routeIs('eating-out.show')) {
+            $relation->where('closed_down', false);
+        }
+
+        return $relation;
     }
 
     /** @return HasMany<NationwideBranch> */

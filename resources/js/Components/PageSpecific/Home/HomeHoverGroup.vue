@@ -15,7 +15,7 @@ withDefaults(
 
 <template>
   <Card>
-    <h2 class="font-coeliac text-3xl font-semibold">
+    <h2 class="font-coeliac text-3xl font-semibold md:text-5xl">
       {{ title }}
     </h2>
 

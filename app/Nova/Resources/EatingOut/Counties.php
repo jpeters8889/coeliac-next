@@ -47,6 +47,8 @@ class Counties extends Resource
                 ->fullWidth()
                 ->rules(['required', 'max:200', 'unique:wheretoeat_counties,slug']),
 
+            Text::make('Lat / Lng', 'latlng')->fullWidth()->rules(['required']),
+
             Select::make('Country', 'country_id')
                 ->displayUsingLabels()
                 ->filterable()

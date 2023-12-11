@@ -31,7 +31,9 @@ const submitSearch = () => {
 
 <template>
   <Card class="flex flex-col space-y-3 !bg-primary-light !bg-opacity-50">
-    <p class="prose-md font-weight-bold prose max-w-none">
+    <p
+      class="font-weight-bold prose-xl max-w-none text-center font-semibold md:prose-2xl"
+    >
       Looking for somewhere specific? Search by postcode or town below to get
       places to eat near you!
     </p>
@@ -48,6 +50,7 @@ const submitSearch = () => {
         name="term"
         hide-label
         class="flex-1"
+        size="large"
       />
 
       <div class="flex space-x-2">
@@ -56,6 +59,7 @@ const submitSearch = () => {
           name="range"
           :options="rangeOptions"
           class="flex-1"
+          size="large"
         />
 
         <CoeliacButton

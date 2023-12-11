@@ -16,12 +16,12 @@ defineProps<{
       >
         <h4
           v-if="restaurant.name"
-          class="font-semibold"
+          class="text-lg font-semibold md:text-xl"
         >
           {{ restaurant.name }}
         </h4>
 
-        <p class="text-sm">
+        <p class="prose max-w-none md:prose-lg">
           {{ restaurant.info }}
         </p>
       </div>
@@ -29,7 +29,7 @@ defineProps<{
 
     <template v-else>
       <p
-        class="prose max-w-none md:prose-lg"
+        class="prose max-w-none sm:prose-lg"
         v-html="eatery.info"
       />
     </template>

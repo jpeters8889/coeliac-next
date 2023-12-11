@@ -6,7 +6,7 @@ const props = withDefaults(
     name: string;
     class?: string;
   }>(),
-  { class: 'w-6 h-6' },
+  { class: 'w-6 h-6' }
 );
 
 const filepath = `../../icons/${props.name}.svg`;

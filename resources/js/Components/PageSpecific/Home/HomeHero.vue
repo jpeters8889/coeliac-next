@@ -39,11 +39,11 @@ setInterval(() => {
         >
           <div class="mx-auto max-w-5xl">
             <h1
-              class="mx-auto bg-secondary/60 p-2 text-center text-2xl font-semibold tracking-tight text-gray-900 sm:w-4/5 sm:leading-8"
+              class="mx-auto bg-secondary/60 p-2 text-center text-2xl font-semibold tracking-tight text-gray-900 sm:w-4/5 sm:text-3xl sm:leading-10"
               v-text="activeItem.title"
             />
             <p
-              class="mx-auto mt-6 bg-white/70 p-2 text-center text-lg leading-6 text-gray-600 sm:w-4/5 sm:leading-8"
+              class="prose prose-lg mx-auto mt-6 max-w-none bg-white/70 p-2 text-center text-lg leading-6 text-gray-600 sm:prose-xl sm:w-4/5 sm:leading-8"
             >
               Check out our online shop for some great coeliac related goodies,
               including our fantastic travel cards for when you go abroad, our

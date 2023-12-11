@@ -30,13 +30,16 @@ defineProps<{ recipe: RecipeDetailCard }>();
       <div class="mt-4 flex flex-1 flex-col space-y-3">
         <Link :href="recipe.link">
           <h2
-            class="text-xl font-semibold transition hover:text-primary-dark group-hover:text-primary-dark"
+            class="text-xl font-semibold transition hover:text-primary-dark group-hover:text-primary-dark md:text-2xl"
             v-text="recipe.title"
           />
         </Link>
 
         <div class="flex flex-1">
-          <p v-text="recipe.description" />
+          <p
+            class="prose max-w-none md:prose-lg"
+            v-text="recipe.description"
+          />
         </div>
       </div>
     </div>

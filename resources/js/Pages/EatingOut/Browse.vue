@@ -179,6 +179,9 @@ const getMarkersLayer = (): VectorLayer<VectorSource> | undefined => {
 const clearMarkers = (): void => {
   map.value.removeLayer(getMarkersLayer() as VectorLayer<VectorSource>);
   map.value.removeLayer(getMarkersLayer() as VectorLayer<VectorSource>);
+  map.value.removeLayer(getMarkersLayer() as VectorLayer<VectorSource>);
+  map.value.removeLayer(getMarkersLayer() as VectorLayer<VectorSource>);
+  map.value.removeLayer(getMarkersLayer() as VectorLayer<VectorSource>);
 };
 
 const getEateryLatLng = (eatery: EateryBrowseResource): Coordinate =>
@@ -219,6 +222,10 @@ const clusterStyle = (feature: FeatureLike) => {
 };
 
 const zoomLimit = (): number => {
+  if (screenIsGreaterThanOrEqualTo('2xl')) {
+    return 5;
+  }
+
   if (screenIsGreaterThanOrEqualTo('lg')) {
     return 11;
   }

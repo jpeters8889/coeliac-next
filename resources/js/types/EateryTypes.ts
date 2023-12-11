@@ -7,6 +7,7 @@ export type County = {
 };
 
 export type CountyPage = County & {
+  latlng: string;
   image?: string;
   eateries: number;
   reviews: number;
@@ -70,6 +71,7 @@ export type Town = {
 };
 
 export type TownPage = Town & {
+  latlng: string;
   link: string;
   image?: string;
 };

@@ -49,7 +49,7 @@ onMounted(() => {
 
       <NavItem
         label="Eating Out"
-        href="eating-out"
+        href="/eating-out"
         :active="
           $page.url.startsWith('/wheretoeat') ||
           $page.url.startsWith('/eating-out')

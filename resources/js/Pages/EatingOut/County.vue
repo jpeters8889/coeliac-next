@@ -18,6 +18,7 @@ defineProps<{
 <template>
   <CountyHeading
     :eateries="county.eateries"
+    :latlng="county.latlng"
     :image="county.image"
     :name="county.name"
     :reviews="county.reviews"

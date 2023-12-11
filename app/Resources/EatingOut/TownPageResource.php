@@ -26,6 +26,7 @@ class TownPageResource extends JsonResource
             'name' => $this->town,
             'slug' => $this->slug,
             'image' => $this->image ?? $county->image ?? $country->image,
+            'latlng' => $this->latlng,
             'county' => new TownCountyResource($county),
         ];
     }

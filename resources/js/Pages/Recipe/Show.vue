@@ -36,7 +36,7 @@ const loadMoreComments = () => {
         history.pushState(
           null,
           '',
-          `${window.location.origin}${window.location.pathname}`,
+          `${window.location.origin}${window.location.pathname}`
         );
 
         if (!page.props.comments) {
@@ -49,7 +49,7 @@ const loadMoreComments = () => {
 
         return false;
       },
-    },
+    }
   );
 };
 </script>
@@ -61,7 +61,7 @@ const loadMoreComments = () => {
     </Heading>
 
     <div
-      class="prose prose-lg max-w-none font-semibold"
+      class="prose prose-lg max-w-none font-semibold md:prose-xl"
       v-text="recipe.description"
     />
 
@@ -165,7 +165,7 @@ const loadMoreComments = () => {
     <h2 class="text-xl font-semibold text-primary-dark">Ingredients</h2>
 
     <div
-      class="prose prose-lg max-w-none"
+      class="prose prose-lg max-w-none md:prose-xl"
       v-html="recipe.ingredients"
     />
 
@@ -190,11 +190,11 @@ const loadMoreComments = () => {
     <h3 class="text-xl font-semibold text-primary-dark">Method</h3>
 
     <article
-      class="prose prose-lg max-w-none"
+      class="prose prose-lg max-w-none md:prose-xl"
       v-html="recipe.method"
     />
 
-    <h3 class="mt-4 mb-2 text-base font-semibold">
+    <h3 class="mb-2 mt-4 text-base font-semibold">
       Nutritional Information (Per {{ recipe.nutrition.portion_size }})
     </h3>
 

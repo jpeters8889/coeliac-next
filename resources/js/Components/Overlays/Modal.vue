@@ -16,11 +16,13 @@ withDefaults(
     closeable?: boolean;
     noPadding?: boolean;
     size?: 'small' | 'medium' | 'large' | 'xl' | 'full';
+    width?: 'w-full' | 'w-auto';
   }>(),
   {
     closeable: true,
     noPadding: false,
     size: 'medium',
+    width: 'w-auto',
   }
 );
 
@@ -69,6 +71,7 @@ const slots = useSlots();
             >
               <DialogPanel
                 :class="{
+                  [width]: true,
                   'xs:max-w-md': size === 'small',
                   'sm:max-w-lg': size === 'medium',
                   'sm:max-w-8xl': size === 'large',

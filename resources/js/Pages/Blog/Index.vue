@@ -3,7 +3,7 @@ import Card from '@/Components/Card.vue';
 import BlogDetailCard from '@/Components/PageSpecific/Blogs/BlogDetailCard.vue';
 import Heading from '@/Components/Heading.vue';
 import Paginator from '@/Components/Paginator.vue';
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import {
   AdjustmentsHorizontalIcon,
@@ -37,7 +37,7 @@ const refreshPage = () => {
     {
       preserveState: true,
       only: ['blogs', 'tags'],
-    },
+    }
   );
 };
 
@@ -63,7 +63,7 @@ const closeTagSidebar = (): void => {
       Coeliac Sanctuary Blogs tagged with {{ activeTag.tag }}
     </Heading>
 
-    <p>
+    <p class="prose max-w-none md:prose-lg">
       Our motto is that we're more than just a gluten free blog, but blogs are
       still the heart and soul of Coeliac Sanctuary, we'll write about a bit of
       everything, from coeliac news, new products, guides, and more, we're sure
@@ -75,7 +75,7 @@ const closeTagSidebar = (): void => {
         <CoeliacButton
           v-if="activeTag"
           :icon="ArrowUturnLeftIcon"
-          as="Link"
+          :as="Link"
           bold
           classes="cursor-pointer"
           href="/blog"

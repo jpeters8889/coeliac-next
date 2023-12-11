@@ -49,7 +49,7 @@ const refreshPage = (preserveScroll = true) => {
       only: ['recipes', 'features', 'meals', 'freeFrom', 'setFilters'],
       preserveState: true,
       preserveScroll,
-    },
+    }
   );
 };
 
@@ -112,7 +112,7 @@ const selectAllergen = (freeFrom: string[]): void => {
   <Card class="mt-3 flex flex-col space-y-4">
     <Heading> Coeliac Sanctuary Recipes </Heading>
 
-    <p>
+    <p class="prose max-w-none md:prose-lg">
       Why not check out some of our fabulous, gluten free, coeliac recipes! All
       of our recipes are tried and tested by us, and as much as we can, we will
       always use simple, easy to get ingredients, readily available in most

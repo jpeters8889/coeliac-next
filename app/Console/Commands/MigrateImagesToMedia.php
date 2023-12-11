@@ -17,7 +17,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class MigrateImagesToMedia extends Command
 {
-    protected $signature = 'coeliac:migrate-images {module}';
+    protected $signature = 'one-time:coeliac:migrate-images {module}';
 
     protected array $modules = [
         'blog' => Blog::class,

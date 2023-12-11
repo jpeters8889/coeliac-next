@@ -30,7 +30,18 @@ class EateryFeaturesPolymorphicPanel implements PolymorphicResource
     /** @phpstan-param  Collection<int, EateryFeature>  $relationship */
     public function check($key, Collection $relationship): bool
     {
-        return $relationship->filter(fn (EateryFeature $feature) => $feature->feature === Str::headline($key))->count() === 1;
+        return $relationship->filter(function (EateryFeature $feature) use ($key) {
+            $feature = Str::of($feature->feature)
+                ->lower()
+                ->toString();
+
+            $key = Str::of($key)
+                ->headline()
+                ->lower()
+                ->toString();
+
+            return $feature === $key;
+        })->count() === 1;
     }
 
     /**

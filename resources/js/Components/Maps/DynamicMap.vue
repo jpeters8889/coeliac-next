@@ -25,6 +25,7 @@ onMounted(() => {
       streetViewControl: false,
       rotateControl: false,
       fullscreenControl: false,
+      gestureHandling: 'greedy',
     });
 
     // eslint-disable-next-line no-new

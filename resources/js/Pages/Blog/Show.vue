@@ -35,7 +35,7 @@ const loadMoreComments = () => {
         history.pushState(
           null,
           '',
-          `${window.location.origin}${window.location.pathname}`,
+          `${window.location.origin}${window.location.pathname}`
         );
 
         if (!event.props.comments) {
@@ -48,7 +48,7 @@ const loadMoreComments = () => {
 
         return false;
       },
-    },
+    }
   );
 };
 </script>
@@ -60,7 +60,7 @@ const loadMoreComments = () => {
     </Heading>
 
     <p
-      class="prose prose-lg max-w-none font-semibold"
+      class="prose prose-lg max-w-none font-semibold md:prose-xl"
       v-text="blog.description"
     />
 
@@ -121,7 +121,7 @@ const loadMoreComments = () => {
   </Card>
 
   <Card>
-    <div class="prose prose-lg max-w-none">
+    <div class="prose prose-lg max-w-none md:prose-xl">
       <RenderedString>{{ blog.body }}</RenderedString>
     </div>
   </Card>

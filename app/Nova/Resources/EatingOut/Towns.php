@@ -44,6 +44,8 @@ class Towns extends Resource
                 ->fullWidth()
                 ->rules(['required', 'max:200', 'unique:wheretoeat_towns,slug']),
 
+            Text::make('Lat / Lng', 'latlng')->fullWidth()->rules(['required']),
+
             BelongsTo::make('County', resource: Counties::class)
                 ->filterable()
                 ->fullWidth()

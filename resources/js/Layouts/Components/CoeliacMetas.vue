@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Head, usePage } from '@inertiajs/vue3';
-import { DefaultProps, MetaProps } from '@/types/DefaultProps';
+import { Head } from '@inertiajs/vue3';
+import { MetaProps } from '@/types/DefaultProps';
 
-const metas: MetaProps = (<DefaultProps>usePage().props).meta as MetaProps;
+defineProps<{ metas: MetaProps }>();
 </script>
 
 <template>

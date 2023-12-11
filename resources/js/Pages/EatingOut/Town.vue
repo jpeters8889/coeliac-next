@@ -84,6 +84,7 @@ const reloadEateries = () => {
     :county="town.county"
     :image="town.image"
     :name="town.name"
+    :latlng="town.latlng"
   />
 
   <Card class="mt-3 flex flex-col space-y-4">
@@ -120,7 +121,6 @@ const reloadEateries = () => {
   <div class="relative md:flex xmd:space-x-2">
     <TownFilterSidebar
       :filters="filters"
-      :town="town.name"
       @filters-updated="handleFiltersChanged"
       @sidebar-closed="reloadEateries"
     />
@@ -136,7 +136,7 @@ const reloadEateries = () => {
 
       <Card
         v-else
-        class="py-8 px-8 text-center text-xl"
+        class="px-8 py-8 text-center text-xl"
       >
         No eateries found, try updating your filters!
       </Card>

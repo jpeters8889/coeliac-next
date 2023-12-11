@@ -138,6 +138,8 @@ namespace App\Models\Collections{
 /**
  * App\Models\Collections\Collection
  *
+ * @property string $description
+ * @property string $meta_tags
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -239,6 +241,12 @@ namespace App\Models\EatingOut{
 /**
  * App\Models\EatingOut\Eatery
  *
+ * @property string | null $average_rating
+ * @property string | null $average_expense
+ * @property bool | null $has_been_rated
+ * @property int | null $rating
+ * @property int | null $rating_count
+ * @property string $full_name
  * @property int $id
  * @property string $name
  * @property string|null $slug
@@ -317,6 +325,7 @@ namespace App\Models\EatingOut{
 /**
  * App\Models\EatingOut\EateryCountry
  *
+ * @property string $image
  * @property int $id
  * @property string $country
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -339,6 +348,7 @@ namespace App\Models\EatingOut{
  * @property int $id
  * @property string $county
  * @property string $slug
+ * @property string|null $latlng
  * @property string $legacy
  * @property int $country_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -400,6 +410,8 @@ namespace App\Models\EatingOut{
 /**
  * App\Models\EatingOut\EateryOpeningTimes
  *
+ * @property bool $is_open_now
+ * @property array $opening_times_array
  * @property int $id
  * @property int $wheretoeat_id
  * @property string|null $monday_start
@@ -482,13 +494,16 @@ namespace App\Models\EatingOut{
 /**
  * App\Models\EatingOut\EateryReview
  *
+ * @property Carbon $created_at
+ * @property string $human_date
+ * @property string $rating
+ * @property array | null $price
  * @property int $id
  * @property int $wheretoeat_id
- * @property string $rating
  * @property string $ip
  * @property string|null $name
  * @property string|null $email
- * @property string|null $how_expensive
+ * @property int|null $how_expensive
  * @property string|null $food_rating
  * @property string|null $service_rating
  * @property string|null $branch_name
@@ -496,7 +511,6 @@ namespace App\Models\EatingOut{
  * @property bool $admin_review
  * @property string $method
  * @property bool $approved
- * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\EatingOut\Eatery $eatery
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\EatingOut\EateryReviewImage> $images
@@ -591,6 +605,7 @@ namespace App\Models\EatingOut{
  * @property int $id
  * @property string $town
  * @property string $slug
+ * @property string|null $latlng
  * @property string $legacy
  * @property int $county_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -713,6 +728,8 @@ namespace App\Models\Recipes{
 /**
  * App\Models\Recipes\Recipe
  *
+ * @property string $servings
+ * @property string $portion_size
  * @property int $id
  * @property string $title
  * @property string $slug
@@ -774,6 +791,7 @@ namespace App\Models\Recipes{
 /**
  * App\Models\Recipes\RecipeAllergen
  *
+ * @implements FilterableRecipeRelation<self>
  * @property int $id
  * @property string $allergen
  * @property string $slug
@@ -795,6 +813,7 @@ namespace App\Models\Recipes{
 /**
  * App\Models\Recipes\RecipeFeature
  *
+ * @implements FilterableRecipeRelation<self>
  * @property int $id
  * @property string $feature
  * @property string $slug
@@ -816,6 +835,7 @@ namespace App\Models\Recipes{
 /**
  * App\Models\Recipes\RecipeMeal
  *
+ * @implements FilterableRecipeRelation<self>
  * @property int $id
  * @property string $meal
  * @property string $slug

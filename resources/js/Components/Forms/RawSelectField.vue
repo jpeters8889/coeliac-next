@@ -16,20 +16,25 @@ const classes = (): string[] => {
     'min-w-0',
     'appearance-none',
     'rounded-md',
-    'px-[calc(theme(spacing.3)-1px)]',
-    'py-[calc(theme(spacing[1.5])-1px)]',
-    'text-base',
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
     'shadow-sm',
     'outline-none',
-    'sm:text-sm',
-    'sm:leading-6',
     'focus:ring-0',
     'focus:outline-none transition',
     'w-full',
   ];
+
+  if (props.size === 'large') {
+    base.push(
+      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]'
+    );
+  } else {
+    base.push(
+      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6'
+    );
+  }
 
   if (props.borders) {
     base.push('border border-grey-off focus:border-grey-dark');

@@ -68,11 +68,11 @@ const classes = computed((): string[] => {
       break;
     }
     case 'xl': {
-      base.push('px-6', 'py-3', 'text-base');
+      base.push('px-6', 'py-3', 'text-base', 'md:text-lg');
       break;
     }
     case 'xxl': {
-      base.push('px-12', 'py-3', 'text-lg', 'font-semibold');
+      base.push('px-12', 'py-3', 'text-lg', 'font-semibold', 'md:text-xl');
       break;
     }
   }
@@ -120,21 +120,24 @@ const emits = defineEmits(['click']);
     }"
     @click="emits('click')"
   >
-    <div :class="{ 'opacity-0': loading }">
-      <template v-if="!iconOnly">{{ label }}</template>
+    <span
+      v-if="!iconOnly"
+      :class="{ 'opacity-0': loading }"
+      v-text="label"
+    />
 
-      <component
-        :is="icon"
-        v-if="icon"
-        :class="{
-          '-mr-0.5 ml-2': !iconOnly && iconPosition === 'right',
-          '-ml-0.5 mr-2': !iconOnly && iconPosition === 'left',
-          'h-5 w-5': iconOnly,
-          'h-4 w-4': !iconOnly,
-        }"
-        aria-hidden="true"
-      />
-    </div>
+    <component
+      :is="icon"
+      v-if="icon"
+      :class="{
+        '-mr-0.5 ml-2': !iconOnly && iconPosition === 'right',
+        '-ml-0.5 mr-2': !iconOnly && iconPosition === 'left',
+        'h-5 w-5': iconOnly,
+        'h-4 w-4': !iconOnly,
+        'opacity-0': loading,
+      }"
+      aria-hidden="true"
+    />
 
     <Loader :display="loading || false" />
   </component>

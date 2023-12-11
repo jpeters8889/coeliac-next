@@ -52,11 +52,14 @@ const styles = () => ({
     :open="zoom"
     no-padding
     size="large"
+    width="w-full"
     @close="zoom = false"
   >
-    <DynamicMap
-      :lat="lat"
-      :lng="lng"
-    />
+    <div class="min-w-full">
+      <DynamicMap
+        :lat="lat"
+        :lng="lng"
+      />
+    </div>
   </Modal>
 </template>

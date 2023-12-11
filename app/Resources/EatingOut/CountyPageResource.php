@@ -24,6 +24,7 @@ class CountyPageResource extends JsonResource
         return [
             'name' => $this->county,
             'slug' => $this->slug,
+            'latlng' => $this->latlng,
             'image' => $this->image ?? $country->image,
             'towns' => new CountyTownCollection($this->activeTowns),
             'eateries' => $this->eateries_count,

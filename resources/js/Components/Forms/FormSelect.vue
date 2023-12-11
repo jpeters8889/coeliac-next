@@ -3,7 +3,6 @@ import {
   FormSelectProps,
   FormSelectPropsDefaults,
 } from '@/Components/Forms/Props';
-import RawInputField from '@/Components/Forms/RawInputField.vue';
 import { ref, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 import RawSelectField from '@/Components/Forms/RawSelectField.vue';
@@ -48,6 +47,7 @@ watch(value, () => {
         :label="label"
         :options="options"
         :disabled="disabled"
+        :size="size"
         borders
       />
       <div

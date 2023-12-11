@@ -122,6 +122,7 @@ const submitComment = () => {
         label="Your Name"
         name="name"
         required
+        borders
       />
 
       <FormInput
@@ -132,6 +133,7 @@ const submitComment = () => {
         label="Email Address"
         name="email"
         required
+        borders
         type="email"
       />
 

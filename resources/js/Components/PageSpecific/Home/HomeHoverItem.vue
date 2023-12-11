@@ -31,7 +31,7 @@ defineProps<{ item: HomeHoverItemType }>();
       />
 
       <h2
-        class="p-2 text-center text-base font-semibold transition group-hover:text-primary-dark"
+        class="p-2 text-center text-base font-semibold transition group-hover:text-primary-dark md:text-lg"
         v-text="item.title"
       />
     </Link>

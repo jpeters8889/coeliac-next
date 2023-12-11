@@ -1,15 +1,12 @@
 <script lang="ts" setup>
-import {
-  DocumentArrowUpIcon,
-  EnvelopeOpenIcon,
-  MapIcon,
-} from '@heroicons/vue/24/outline';
+import { DocumentArrowUpIcon, MapIcon } from '@heroicons/vue/24/outline';
 import { Link } from '@inertiajs/vue3';
 import { County } from '@/types/EateryTypes';
 
 const props = defineProps<{
   name: string;
   county: County;
+  latlng: string;
   image?: string;
 }>();
 
@@ -18,16 +15,13 @@ const linkCards = [
     title: 'Recommend a place',
     description: `Do you know somewhere in <span class="font-semibold">${props.name}, ${props.county.name}</span> that offers gluten free that we don't have listed? Let us know!`,
     icon: DocumentArrowUpIcon,
+    href: '/wheretoeat/recommend-a-place',
   },
   {
     title: 'Map',
     description: `Browse an interactive map of <span class="font-semibold">${props.name}, ${props.county.name}</span> with all of the places we know about marked that offer gluten free!`,
     icon: MapIcon,
-  },
-  {
-    title: 'Subscribe',
-    description: `Subscribe to <span class="font-semibold">${props.name}, ${props.county.name}</span> and get notified straight into your inbox whenever we add a new location!`,
-    icon: EnvelopeOpenIcon,
+    href: `/wheretoeat/browse/${props.latlng}/13`,
   },
 ];
 </script>
@@ -54,20 +48,21 @@ const linkCards = [
       </div>
     </div>
 
-    <div class="absolute bottom-0 mb-2 grid w-full grid-cols-3 gap-2 px-2">
-      <div
+    <div class="absolute bottom-0 mb-2 grid w-full grid-cols-2 gap-2 px-2">
+      <Link
         v-for="item in linkCards"
         :key="item.title"
         class="flex-shrink-0"
+        :href="item.href"
       >
         <div
-          class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded rounded bg-gradient-to-br from-primary/90 to-primary-light/90 p-2 shadow shadow-lg transition duration-500 hover:sm:from-primary/95 hover:sm:to-primary-light/95 md:justify-between md:p-4"
+          class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded bg-gradient-to-br from-primary/90 to-primary-light/90 p-2 shadow-lg transition duration-500 hover:sm:from-primary/95 hover:sm:to-primary-light/95 md:justify-between md:p-4"
         >
           <div
             class="flex flex-1 flex-col items-center justify-center xs:w-full xs:flex-row md:flex-none md:items-start"
           >
             <div
-              class="mb-2 hidden flex-1 xs:mb-4 xs:mb-0 xs:mr-4 xs:block xs:flex-none"
+              class="mb-2 hidden flex-1 xs:mb-0 xs:mr-4 xs:block xs:flex-none"
             >
               <component
                 :is="item.icon"
@@ -86,7 +81,7 @@ const linkCards = [
             v-html="item.description"
           />
         </div>
-      </div>
+      </Link>
     </div>
 
     <img

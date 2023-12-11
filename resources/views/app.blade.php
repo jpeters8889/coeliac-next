@@ -43,7 +43,7 @@
 <body>
 @inertia
 @if(app()->isLocal())
-    <div class="absolute bottom-0 right-0 bg-red text-white text-xs font-semibold leading-0 p-1">
+    <div class="fixed bottom-0 right-0 bg-red text-white text-xs font-semibold leading-0 p-1">
         <span class="xxs:hidden">xxxs</span>
         <span class="hidden xxs:block xs:hidden">xxs</span>
         <span class="hidden xs:block sm:hidden">xs</span>

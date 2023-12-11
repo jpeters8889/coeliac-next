@@ -19,7 +19,13 @@ class EateryTownFactory extends Factory
             'county_id' => 1,
             'town' => $town,
             'slug' => Str::slug($town),
+            'latlng' => 'foo',
             'legacy' => Str::slug($town),
         ];
+    }
+
+    public function withoutLatLng(): self
+    {
+        return $this->state(['latlng' => null]);
     }
 }

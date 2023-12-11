@@ -24,12 +24,12 @@ defineProps<{
   </h1>
 
   <Card class="mt-3 flex flex-col space-y-4">
-    <p class="prose prose-lg max-w-none">
+    <p class="prose prose-lg max-w-none md:prose-xl">
       Our Where to Eat guide lists 1,000s of independent eateries all over the
       UK and Ireland that offer gluten free options or have a gluten free menu.
     </p>
 
-    <p class="prose prose-lg max-w-none">
+    <p class="prose prose-lg max-w-none md:prose-xl">
       Most of the places to eat listed in our guide are contributed by people
       like you, other Coeliac's or people with a gluten intolerance who know of
       local places in their local area and are kind enough to let us know
@@ -63,7 +63,7 @@ defineProps<{
         Top rated places to eat gluten free around the UK and Ireland
       </h2>
 
-      <p class="prose prose-lg max-w-none">
+      <p class="prose prose-lg max-w-none md:prose-xl">
         These are the top rated places to eat gluten free in our eating out
         guide, voted by people just like you!
       </p>
@@ -84,7 +84,7 @@ defineProps<{
         Most rated places to eat gluten free around the UK and Ireland
       </h2>
 
-      <p class="prose prose-lg max-w-none">
+      <p class="prose prose-lg max-w-none md:prose-xl">
         These are the top gluten free places in our eating guide gluten that
         have had the most people leave reviews!
       </p>
@@ -104,7 +104,7 @@ defineProps<{
       Gluten Free around the UK and Ireland
     </h2>
 
-    <p class="prose prose-lg max-w-none">
+    <p class="prose prose-lg max-w-none md:prose-xl">
       Our eating out guide is split into countries, counties and then towns or
       cities, click or tap on a country below to get started!
     </p>

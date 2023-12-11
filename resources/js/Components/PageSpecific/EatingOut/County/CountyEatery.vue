@@ -21,7 +21,7 @@ defineProps<{ eatery: CountyEateryType }>();
       <Link
         v-if="eatery.town.name !== 'Nationwide'"
         :href="eatery.town.link"
-        class="hover:text-gray font-semibold text-primary-dark transition"
+        class="font-semibold text-primary-dark transition hover:text-grey md:text-lg"
       >
         {{ eatery.town.name }}
       </Link>
@@ -38,18 +38,18 @@ defineProps<{ eatery: CountyEateryType }>();
     </div>
 
     <p
-      class="flex-1"
+      class="prose max-w-none flex-1 md:prose-lg"
       v-html="eatery.info"
     />
 
     <div class="flex flex-col space-y-1">
       <p
-        class="text-xs text-grey-dark"
+        class="text-xs text-grey-dark md:text-sm"
         v-html="eatery.address"
       />
       <Link
         :href="eatery.town.link"
-        class="text-xs font-semibold text-grey-darker transition hover:text-grey-darkest"
+        class="text-xs font-semibold text-grey-darker transition hover:text-grey-darkest md:text-sm"
       >
         View all places in {{ eatery.town.name }}
       </Link>
