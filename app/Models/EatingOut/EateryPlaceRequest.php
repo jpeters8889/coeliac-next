@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class EateryPlaceRequest extends Model
 {
+    protected $table = 'place_requests';
+
     protected $casts = [
         'completed' => 'bool',
     ];

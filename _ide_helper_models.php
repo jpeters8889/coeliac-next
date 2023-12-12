@@ -442,6 +442,13 @@ namespace App\Models\EatingOut{
 /**
  * App\Models\EatingOut\EateryPlaceRequest
  *
+ * @property int $id
+ * @property string $name
+ * @property string $addOrRemove
+ * @property string $details
+ * @property bool $completed
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|EateryPlaceRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EateryPlaceRequest newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|EateryPlaceRequest query()
@@ -875,6 +882,518 @@ namespace App\Models\Recipes{
 	class RecipeNutrition extends \Eloquent {}
 }
 
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Category
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $description
+ * @property string $slug
+ * @property string $meta_keywords
+ * @property string $meta_description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $absolute_link
+ * @property-read string|null $first_legacy_image
+ * @property-read string $link
+ * @property-read string|null $main_legacy_image
+ * @property-read string|null $main_legacy_image_raw
+ * @property-read string|null $social_legacy_image
+ * @property-read string|null $square_legacy_image
+ * @property-read string|null $square_legacy_image_raw
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Legacy\ImageAssociations> $images
+ * @property-read int|null $images_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read int|null $products_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category query()
+ */
+	class Category extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\DiscountCode
+ *
+ * @property int $id
+ * @property int $type_id
+ * @property string $name
+ * @property string $code
+ * @property string $start_at
+ * @property string $end_at
+ * @property int $max_claims
+ * @property int|null $min_spend
+ * @property int $deduction
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read int|null $orders_count
+ * @property-read \App\Models\Shop\DiscountCodeType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode query()
+ */
+	class DiscountCode extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\DiscountCodeType
+ *
+ * @property int $id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\DiscountCode> $codes
+ * @property-read int|null $codes_count
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType query()
+ */
+	class DiscountCodeType extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\DiscountCodesUsed
+ *
+ * @property int $id
+ * @property int $discount_id
+ * @property int $order_id
+ * @property int $discount_amount
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\DiscountCode|null $code
+ * @property-read \App\Models\Shop\Order $order
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed query()
+ */
+	class DiscountCodesUsed extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Feedback
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $feedback
+ * @property int $product_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback query()
+ */
+	class Feedback extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Order
+ *
+ * @property int $id
+ * @property int $state_id
+ * @property int $postage_country_id
+ * @property string $token
+ * @property string|null $order_key
+ * @property int|null $user_id
+ * @property int|null $user_address_id
+ * @property string|null $shipped_at
+ * @property int $newsletter_signup
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\UserAddress|null $address
+ * @property-read \App\Models\Shop\DiscountCode|null $discountCode
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderItem> $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\Shop\Payment|null $payment
+ * @property-read \App\Models\Shop\PostageCountry $postageCountry
+ * @property-read \App\Models\Shop\OrderReviewInvitation|null $reviewInvitation
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $reviewedItems
+ * @property-read int|null $reviewed_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReview> $reviews
+ * @property-read int|null $reviews_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Source> $sources
+ * @property-read int|null $sources_count
+ * @property-read \App\Models\Shop\OrderState $state
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ */
+	class Order extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\OrderItem
+ *
+ * @property int $id
+ * @property int $order_id
+ * @property int $product_id
+ * @property int $product_variant_id
+ * @property int $quantity
+ * @property string $product_title
+ * @property int $product_price
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Order $order
+ * @property-read \App\Models\Shop\Product $product
+ * @property-read \App\Models\Shop\ProductVariant $variant
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()
+ */
+	class OrderItem extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\OrderReview
+ *
+ * @property int $id
+ * @property int|null $order_id
+ * @property string|null $invitation_id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\OrderReviewInvitation|null $invitation
+ * @property-read \App\Models\Shop\Order|null $order
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $products
+ * @property-read int|null $products_count
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReview newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReview newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReview query()
+ */
+	class OrderReview extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\OrderReviewInvitation
+ *
+ * @property string $id
+ * @property int $sent
+ * @property int $order_id
+ * @property string|null $sent_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Order $order
+ * @property-read \App\Models\Shop\OrderReview|null $review
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation query()
+ */
+	class OrderReviewInvitation extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\OrderReviewItem
+ *
+ * @property int $id
+ * @property int $review_id
+ * @property int|null $order_id
+ * @property int $product_id
+ * @property string $rating
+ * @property string|null $review
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Order|null $order
+ * @property-read \App\Models\Shop\OrderReview|null $parent
+ * @property-read \App\Models\Shop\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem query()
+ */
+	class OrderReviewItem extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\OrderState
+ *
+ * @property int $id
+ * @property string $state
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $order
+ * @property-read int|null $order_count
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderState newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderState newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderState query()
+ */
+	class OrderState extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Payment
+ *
+ * @property int $id
+ * @property int $order_id
+ * @property int $subtotal
+ * @property int $discount
+ * @property int $postage
+ * @property int $total
+ * @property int $payment_type_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Order $order
+ * @property-read \App\Models\Shop\PaymentResponse|null $response
+ * @property-read \App\Models\Shop\PaymentType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
+ */
+	class Payment extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\PaymentResponse
+ *
+ * @property int $id
+ * @property int $payment_id
+ * @property string $response
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Payment $payment
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse query()
+ */
+	class PaymentResponse extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\PaymentType
+ *
+ * @property int $id
+ * @property string $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Payment> $payment
+ * @property-read int|null $payment_count
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentType query()
+ */
+	class PaymentType extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\PostageCountry
+ *
+ * @property int $id
+ * @property int $postage_area_id
+ * @property string $country
+ * @property string $iso_code
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\PostageCountryArea $area
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry query()
+ */
+	class PostageCountry extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\PostageCountryArea
+ *
+ * @property int $id
+ * @property string $area
+ * @property string $delivery_timescale
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\PostageCountry> $countries
+ * @property-read int|null $countries_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\PostagePrice> $postagePrices
+ * @property-read int|null $postage_prices_count
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea query()
+ */
+	class PostageCountryArea extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\PostagePrice
+ *
+ * @property int $id
+ * @property int $postage_country_area_id
+ * @property int $shipping_method_id
+ * @property int $max_weight
+ * @property int $price
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\PostageCountryArea $area
+ * @property-read \App\Models\Shop\ShippingMethod $shippingMethod
+ * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice query()
+ */
+	class PostagePrice extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Product
+ *
+ * @property int $currentPrice
+ * @property null | int $oldPrice
+ * @property int $id
+ * @property string $title
+ * @property int $pinned
+ * @property string $meta_description
+ * @property string $meta_keywords
+ * @property string $slug
+ * @property string $description
+ * @property string $long_description
+ * @property int $shipping_method_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Feedback> $feedback
+ * @property-read int|null $feedback_count
+ * @property-read string $absolute_link
+ * @property-read string|null $first_legacy_image
+ * @property-read string $link
+ * @property-read string|null $main_legacy_image
+ * @property-read string|null $main_legacy_image_raw
+ * @property-read string|null $social_legacy_image
+ * @property-read string|null $square_legacy_image
+ * @property-read string|null $square_legacy_image_raw
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Legacy\ImageAssociations> $images
+ * @property-read int|null $images_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductPrice> $prices
+ * @property-read int|null $prices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $reviews
+ * @property-read int|null $reviews_count
+ * @property-read \App\Models\Shop\ShippingMethod $shippingMethod
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\TravelCardSearchTerm> $travelCardSearchTerms
+ * @property-read int|null $travel_card_search_terms_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductVariant> $variants
+ * @property-read int|null $variants_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product query()
+ */
+	class Product extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\ProductPrice
+ *
+ * @property int $id
+ * @property int $product_id
+ * @property int $price
+ * @property int $sale_price
+ * @property \Carbon\Carbon $start_at
+ * @property \Carbon\Carbon|null $end_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice query()
+ */
+	class ProductPrice extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\ProductVariant
+ *
+ * @property int $id
+ * @property int $product_id
+ * @property int $live
+ * @property string $title
+ * @property int $weight
+ * @property int $quantity
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shop\Product $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant query()
+ */
+	class ProductVariant extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\ShippingMethod
+ *
+ * @property int $id
+ * @property string $shipping_method
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductPrice> $prices
+ * @property-read int|null $prices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read int|null $products_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod query()
+ */
+	class ShippingMethod extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\Source
+ *
+ * @property int $id
+ * @property string $source
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Source newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Source newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Source query()
+ */
+	class Source extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\TravelCardSearchTerm
+ *
+ * @property int $id
+ * @property string $term
+ * @property string $type
+ * @property int $hits
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read int|null $products_count
+ * @method static \Illuminate\Database\Eloquent\Builder|TravelCardSearchTerm newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TravelCardSearchTerm newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|TravelCardSearchTerm query()
+ */
+	class TravelCardSearchTerm extends \Eloquent {}
+}
+
 namespace App\Models{
 /**
  * App\Models\TemporaryFileUpload
@@ -922,5 +1441,35 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  */
 	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\UserAddress
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $type
+ * @property string $name
+ * @property string $line_1
+ * @property string|null $line_2
+ * @property string|null $line_3
+ * @property string $town
+ * @property string $postcode
+ * @property string $country
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read int|null $orders_count
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserAddress withoutTrashed()
+ */
+	class UserAddress extends \Eloquent {}
 }
 
