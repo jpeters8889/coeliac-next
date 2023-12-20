@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Concerns;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
  * @mixin Model
  *
- * @property mixed $link
- * @property mixed $absolute_link
+ * @property string $link
+ * @property string $absolute_link
  */
 trait LinkableModel
 {
@@ -20,14 +21,16 @@ trait LinkableModel
         $this->append('link');
     }
 
-    public function getLinkAttribute(): string
+    /** @return Attribute<string, never> */
+    public function link(): Attribute
     {
-        return '/' . $this->linkRoot() . '/' . $this->linkColumn();
+        return Attribute::get(fn () => '/' . $this->linkRoot() . '/' . $this->linkColumn());
     }
 
-    public function getAbsoluteLinkAttribute(): string
+    /** @return Attribute<string, never> */
+    public function absoluteLink(): Attribute
     {
-        return config('app.url') . $this->link;
+        return Attribute::get(fn () => config('app.url') . $this->link);
     }
 
     protected function linkRoot(): string

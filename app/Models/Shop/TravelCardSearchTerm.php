@@ -11,11 +11,11 @@ class TravelCardSearchTerm extends Model
 {
     protected $table = 'shop_product_travel_cards_search_terms';
 
-    /** @return BelongsToMany<Product> */
+    /** @return BelongsToMany<ShopProduct> */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(
-            Product::class,
+            ShopProduct::class,
             'shop_product_assigned_travel_card_search_terms',
             'search_term_id',
             'product_id',

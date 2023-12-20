@@ -95,9 +95,7 @@ namespace App\Models\Blogs{
  * @property-read int|null $associated_collections_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comments\Comment> $comments
  * @property-read int|null $comments_count
- * @property-read string $absolute_link
  * @property-read string|null $first_legacy_image
- * @property-read string $link
  * @property-read string|null $main_legacy_image
  * @property-read string|null $main_legacy_image_raw
  * @property-read string|null $social_legacy_image
@@ -154,9 +152,7 @@ namespace App\Models\Collections{
  * @property \Illuminate\Support\Carbon|null $remove_from_homepage
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $absolute_link
  * @property-read string|null $first_legacy_image
- * @property-read string $link
  * @property-read string|null $main_legacy_image
  * @property-read string|null $main_legacy_image_raw
  * @property-read string|null $social_legacy_image
@@ -769,9 +765,7 @@ namespace App\Models\Recipes{
  * @property-read int|null $comments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Recipes\RecipeFeature> $features
  * @property-read int|null $features_count
- * @property-read string $absolute_link
  * @property-read string|null $first_legacy_image
- * @property-read string $link
  * @property-read string|null $main_legacy_image
  * @property-read string|null $main_legacy_image_raw
  * @property-read string|null $social_legacy_image
@@ -884,7 +878,7 @@ namespace App\Models\Recipes{
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Category
+ * App\Models\Shop\ShopCategory
  *
  * @property int $id
  * @property string $title
@@ -894,9 +888,7 @@ namespace App\Models\Shop{
  * @property string $meta_description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $absolute_link
  * @property-read string|null $first_legacy_image
- * @property-read string $link
  * @property-read string|null $main_legacy_image
  * @property-read string|null $main_legacy_image_raw
  * @property-read string|null $social_legacy_image
@@ -906,18 +898,18 @@ namespace App\Models\Shop{
  * @property-read int|null $images_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopProduct> $products
  * @property-read int|null $products_count
- * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCategory query()
  */
-	class Category extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+	class ShopCategory extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\DiscountCode
+ * App\Models\Shop\ShopDiscountCode
  *
  * @property int $id
  * @property int $type_id
@@ -930,36 +922,36 @@ namespace App\Models\Shop{
  * @property int $deduction
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
  * @property-read int|null $orders_count
- * @property-read \App\Models\Shop\DiscountCodeType $type
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCode query()
+ * @property-read \App\Models\Shop\ShopDiscountCodeType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCode newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCode newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCode query()
  */
-	class DiscountCode extends \Eloquent {}
+	class ShopDiscountCode extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\DiscountCodeType
+ * App\Models\Shop\ShopDiscountCodeType
  *
  * @property int $id
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\DiscountCode> $codes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopDiscountCode> $codes
  * @property-read int|null $codes_count
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodeType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodeType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodeType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodeType query()
  */
-	class DiscountCodeType extends \Eloquent {}
+	class ShopDiscountCodeType extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\DiscountCodesUsed
+ * App\Models\Shop\ShopDiscountCodesUsed
  *
  * @property int $id
  * @property int $discount_id
@@ -967,18 +959,18 @@ namespace App\Models\Shop{
  * @property int $discount_amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\DiscountCode|null $code
- * @property-read \App\Models\Shop\Order $order
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DiscountCodesUsed query()
+ * @property-read \App\Models\Shop\ShopDiscountCode $code
+ * @property-read \App\Models\Shop\ShopOrder $order
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodesUsed newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodesUsed newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopDiscountCodesUsed query()
  */
-	class DiscountCodesUsed extends \Eloquent {}
+	class ShopDiscountCodesUsed extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Feedback
+ * App\Models\Shop\ShopFeedback
  *
  * @property int $id
  * @property string $name
@@ -986,17 +978,17 @@ namespace App\Models\Shop{
  * @property int $product_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Product $product
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback query()
+ * @property-read \App\Models\Shop\ShopProduct $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopFeedback newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopFeedback newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopFeedback query()
  */
-	class Feedback extends \Eloquent {}
+	class ShopFeedback extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Order
+ * App\Models\Shop\ShopOrder
  *
  * @property int $id
  * @property int $state_id
@@ -1010,30 +1002,30 @@ namespace App\Models\Shop{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\UserAddress|null $address
- * @property-read \App\Models\Shop\DiscountCode|null $discountCode
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderItem> $items
+ * @property-read \App\Models\Shop\ShopDiscountCode|null $discountCode
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderItem> $items
  * @property-read int|null $items_count
- * @property-read \App\Models\Shop\Payment|null $payment
- * @property-read \App\Models\Shop\PostageCountry $postageCountry
- * @property-read \App\Models\Shop\OrderReviewInvitation|null $reviewInvitation
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $reviewedItems
+ * @property-read \App\Models\Shop\ShopPayment|null $payment
+ * @property-read \App\Models\Shop\ShopPostageCountry $postageCountry
+ * @property-read \App\Models\Shop\ShopOrderReviewInvitation|null $reviewInvitation
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderReviewItem> $reviewedItems
  * @property-read int|null $reviewed_items_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReview> $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderReview> $reviews
  * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Source> $sources
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopSource> $sources
  * @property-read int|null $sources_count
- * @property-read \App\Models\Shop\OrderState $state
+ * @property-read \App\Models\Shop\ShopOrderState $state
  * @property-read \App\Models\User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Order query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder query()
  */
-	class Order extends \Eloquent {}
+	class ShopOrder extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\OrderItem
+ * App\Models\Shop\ShopOrderItem
  *
  * @property int $id
  * @property int $order_id
@@ -1044,19 +1036,19 @@ namespace App\Models\Shop{
  * @property int $product_price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Order $order
- * @property-read \App\Models\Shop\Product $product
- * @property-read \App\Models\Shop\ProductVariant $variant
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderItem query()
+ * @property-read \App\Models\Shop\ShopOrder $order
+ * @property-read \App\Models\Shop\ShopProduct $product
+ * @property-read \App\Models\Shop\ShopProductVariant $variant
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderItem query()
  */
-	class OrderItem extends \Eloquent {}
+	class ShopOrderItem extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\OrderReview
+ * App\Models\Shop\ShopOrderReview
  *
  * @property int $id
  * @property int|null $order_id
@@ -1064,20 +1056,20 @@ namespace App\Models\Shop{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\OrderReviewInvitation|null $invitation
- * @property-read \App\Models\Shop\Order|null $order
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $products
+ * @property-read \App\Models\Shop\ShopOrderReviewInvitation|null $invitation
+ * @property-read \App\Models\Shop\ShopOrder|null $order
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderReviewItem> $products
  * @property-read int|null $products_count
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReview newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReview newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReview query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReview newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReview newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReview query()
  */
-	class OrderReview extends \Eloquent {}
+	class ShopOrderReview extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\OrderReviewInvitation
+ * App\Models\Shop\ShopOrderReviewInvitation
  *
  * @property string $id
  * @property int $sent
@@ -1085,18 +1077,18 @@ namespace App\Models\Shop{
  * @property string|null $sent_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Order $order
- * @property-read \App\Models\Shop\OrderReview|null $review
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewInvitation query()
+ * @property-read \App\Models\Shop\ShopOrder $order
+ * @property-read \App\Models\Shop\ShopOrderReview|null $review
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewInvitation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewInvitation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewInvitation query()
  */
-	class OrderReviewInvitation extends \Eloquent {}
+	class ShopOrderReviewInvitation extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\OrderReviewItem
+ * App\Models\Shop\ShopOrderReviewItem
  *
  * @property int $id
  * @property int $review_id
@@ -1106,36 +1098,36 @@ namespace App\Models\Shop{
  * @property string|null $review
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Order|null $order
- * @property-read \App\Models\Shop\OrderReview|null $parent
- * @property-read \App\Models\Shop\Product $product
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderReviewItem query()
+ * @property-read \App\Models\Shop\ShopOrder|null $order
+ * @property-read \App\Models\Shop\ShopOrderReview|null $parent
+ * @property-read \App\Models\Shop\ShopProduct $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderReviewItem query()
  */
-	class OrderReviewItem extends \Eloquent {}
+	class ShopOrderReviewItem extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\OrderState
+ * App\Models\Shop\ShopOrderState
  *
  * @property int $id
  * @property string $state
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $order
- * @property-read int|null $order_count
- * @method static \Illuminate\Database\Eloquent\Builder|OrderState newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderState newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|OrderState query()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderState newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderState newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopOrderState query()
  */
-	class OrderState extends \Eloquent {}
+	class ShopOrderState extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Payment
+ * App\Models\Shop\ShopPayment
  *
  * @property int $id
  * @property int $order_id
@@ -1146,53 +1138,53 @@ namespace App\Models\Shop{
  * @property int $payment_type_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Order $order
- * @property-read \App\Models\Shop\PaymentResponse|null $response
- * @property-read \App\Models\Shop\PaymentType $type
- * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
+ * @property-read \App\Models\Shop\ShopOrder $order
+ * @property-read \App\Models\Shop\ShopPaymentResponse|null $response
+ * @property-read \App\Models\Shop\ShopPaymentType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment query()
  */
-	class Payment extends \Eloquent {}
+	class ShopPayment extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\PaymentResponse
+ * App\Models\Shop\ShopPaymentResponse
  *
  * @property int $id
  * @property int $payment_id
- * @property string $response
+ * @property array $response
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Payment $payment
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentResponse query()
+ * @property-read \App\Models\Shop\ShopPayment $payment
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentResponse newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentResponse newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentResponse query()
  */
-	class PaymentResponse extends \Eloquent {}
+	class ShopPaymentResponse extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\PaymentType
+ * App\Models\Shop\ShopPaymentType
  *
  * @property int $id
  * @property string $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Payment> $payment
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopPayment> $payment
  * @property-read int|null $payment_count
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PaymentType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPaymentType query()
  */
-	class PaymentType extends \Eloquent {}
+	class ShopPaymentType extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\PostageCountry
+ * App\Models\Shop\ShopPostageCountry
  *
  * @property int $id
  * @property int $postage_area_id
@@ -1200,39 +1192,39 @@ namespace App\Models\Shop{
  * @property string $iso_code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\PostageCountryArea $area
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read \App\Models\Shop\ShopPostageCountryArea $area
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
  * @property-read int|null $orders_count
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountry query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountry newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountry newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountry query()
  */
-	class PostageCountry extends \Eloquent {}
+	class ShopPostageCountry extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\PostageCountryArea
+ * App\Models\Shop\ShopPostageCountryArea
  *
  * @property int $id
  * @property string $area
  * @property string $delivery_timescale
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\PostageCountry> $countries
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopPostageCountry> $countries
  * @property-read int|null $countries_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\PostagePrice> $postagePrices
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopPostagePrice> $postagePrices
  * @property-read int|null $postage_prices_count
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostageCountryArea query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountryArea newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountryArea newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostageCountryArea query()
  */
-	class PostageCountryArea extends \Eloquent {}
+	class ShopPostageCountryArea extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\PostagePrice
+ * App\Models\Shop\ShopPostagePrice
  *
  * @property int $id
  * @property int $postage_country_area_id
@@ -1241,18 +1233,18 @@ namespace App\Models\Shop{
  * @property int $price
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\PostageCountryArea $area
- * @property-read \App\Models\Shop\ShippingMethod $shippingMethod
- * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PostagePrice query()
+ * @property-read \App\Models\Shop\ShopPostageCountryArea $area
+ * @property-read \App\Models\Shop\ShopShippingMethod $shippingMethod
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostagePrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostagePrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopPostagePrice query()
  */
-	class PostagePrice extends \Eloquent {}
+	class ShopPostagePrice extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Product
+ * App\Models\Shop\ShopProduct
  *
  * @property int $currentPrice
  * @property null | int $oldPrice
@@ -1267,13 +1259,11 @@ namespace App\Models\Shop{
  * @property int $shipping_method_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Category> $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopCategory> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Feedback> $feedback
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopFeedback> $feedback
  * @property-read int|null $feedback_count
- * @property-read string $absolute_link
  * @property-read string|null $first_legacy_image
- * @property-read string $link
  * @property-read string|null $main_legacy_image
  * @property-read string|null $main_legacy_image_raw
  * @property-read string|null $social_legacy_image
@@ -1283,45 +1273,45 @@ namespace App\Models\Shop{
  * @property-read int|null $images_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductPrice> $prices
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopProductPrice> $prices
  * @property-read int|null $prices_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\OrderReviewItem> $reviews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderReviewItem> $reviews
  * @property-read int|null $reviews_count
- * @property-read \App\Models\Shop\ShippingMethod $shippingMethod
+ * @property-read \App\Models\Shop\ShopShippingMethod $shippingMethod
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\TravelCardSearchTerm> $travelCardSearchTerms
  * @property-read int|null $travel_card_search_terms_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductVariant> $variants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopProductVariant> $variants
  * @property-read int|null $variants_count
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProduct query()
  */
-	class Product extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
+	class ShopProduct extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\ProductPrice
+ * App\Models\Shop\ShopProductPrice
  *
  * @property int $id
  * @property int $product_id
  * @property int $price
  * @property int $sale_price
- * @property \Carbon\Carbon $start_at
- * @property \Carbon\Carbon|null $end_at
+ * @property \Illuminate\Support\Carbon $start_at
+ * @property \Illuminate\Support\Carbon|null $end_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Product $product
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductPrice query()
+ * @property-read \App\Models\Shop\ShopProduct $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductPrice newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductPrice newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductPrice query()
  */
-	class ProductPrice extends \Eloquent {}
+	class ShopProductPrice extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\ProductVariant
+ * App\Models\Shop\ShopProductVariant
  *
  * @property int $id
  * @property int $product_id
@@ -1331,48 +1321,48 @@ namespace App\Models\Shop{
  * @property int $quantity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Shop\Product $product
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant query()
+ * @property-read \App\Models\Shop\ShopProduct $product
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductVariant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductVariant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopProductVariant query()
  */
-	class ProductVariant extends \Eloquent {}
+	class ShopProductVariant extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\ShippingMethod
+ * App\Models\Shop\ShopShippingMethod
  *
  * @property int $id
  * @property string $shipping_method
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ProductPrice> $prices
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopPostagePrice> $prices
  * @property-read int|null $prices_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopProduct> $products
  * @property-read int|null $products_count
- * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ShippingMethod query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingMethod newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingMethod query()
  */
-	class ShippingMethod extends \Eloquent {}
+	class ShopShippingMethod extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
 /**
- * App\Models\Shop\Source
+ * App\Models\Shop\ShopSource
  *
  * @property int $id
  * @property string $source
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
  * @property-read int|null $orders_count
- * @method static \Illuminate\Database\Eloquent\Builder|Source newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Source newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Source query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopSource newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopSource newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopSource query()
  */
-	class Source extends \Eloquent {}
+	class ShopSource extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
@@ -1385,7 +1375,7 @@ namespace App\Models\Shop{
  * @property int $hits
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopProduct> $products
  * @property-read int|null $products_count
  * @method static \Illuminate\Database\Eloquent\Builder|TravelCardSearchTerm newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TravelCardSearchTerm newQuery()
@@ -1424,18 +1414,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string|null $phone
  * @property string|null $password
- * @property string|null $api_token
- * @property int $user_level_id
  * @property string|null $remember_token
- * @property string|null $last_logged_in_at
- * @property string|null $last_visited_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $welcome_valid_until
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAddress> $addresses
+ * @property-read int|null $addresses_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
@@ -1460,7 +1448,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\Order> $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
  * @property-read int|null $orders_count
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newModelQuery()

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Shop\Order;
+use App\Models\Shop\ShopOrder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,9 +20,9 @@ class UserAddress extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /** @return HasMany<Order> */
+    /** @return HasMany<ShopOrder> */
     public function orders(): HasMany
     {
-        return $this->hasMany(Order::class, 'user_address_id');
+        return $this->hasMany(ShopOrder::class, 'user_address_id');
     }
 }

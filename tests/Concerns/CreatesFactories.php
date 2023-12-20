@@ -6,6 +6,7 @@ namespace Tests\Concerns;
 
 use Database\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Factory as IlluminateFactory;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /** @mixin TestCase */
@@ -26,10 +27,19 @@ trait CreatesFactories
      * @template T
      *
      * @param  class-string<T>  $what
-     * @return T
+     * @return ($countOrAttributes is positive-int ? Collection<int, T> : T)
      */
-    protected function create(string $what, array $attributes = [])
+    protected function create(string $what, array|int $countOrAttributes = [], array $otherAttributes = [])
     {
-        return $this->build($what)->create($attributes);
+        $count = is_array($countOrAttributes) ? 1 : $countOrAttributes;
+        $attributes = is_array($countOrAttributes) ? $countOrAttributes : $otherAttributes;
+
+        $factory = $this->build($what);
+
+        if ($count > 1) {
+            $factory->count($count);
+        }
+
+        return $factory->create($attributes);
     }
 }
