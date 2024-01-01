@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Response;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia as BaseInertia;
 use Inertia\LazyProp;
 use Inertia\Response;
@@ -18,6 +19,10 @@ class Inertia
         BaseInertia::share('meta.description', config('metas.description'));
         BaseInertia::share('meta.tags', config('metas.tags'));
         BaseInertia::share('meta.image', config('metas.image'));
+
+        if (Request::routeIs('shop.product')) {
+            BaseInertia::share('productShippingText', config('coeliac.shop.product_postage_description'));
+        }
     }
 
     public function title(string $title): self
@@ -84,7 +89,7 @@ class Inertia
         return BaseInertia::render($component, $props);
     }
 
-    public function getShared(string $key = null, mixed $default = null): mixed
+    public function getShared(?string $key = null, mixed $default = null): mixed
     {
         return BaseInertia::getShared($key, $default);
     }

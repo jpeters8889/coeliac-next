@@ -8,6 +8,7 @@ use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Support\Helpers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,12 +18,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
+use Money\Money;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property int $currentPrice
  * @property null | int $oldPrice
+ * @property float $averageRating
+ * @property array{current_price: string, old_price?: string} $price
  */
 class ShopProduct extends Model implements HasMedia
 {
@@ -36,6 +40,11 @@ class ShopProduct extends Model implements HasMedia
     protected static function booted(): void
     {
         static::addGlobalScope(fn (Builder $builder) => $builder->whereHas('variants'));
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
     public function registerMediaCollections(): void
@@ -124,18 +133,24 @@ class ShopProduct extends Model implements HasMedia
         });
     }
 
-    /** @return Attribute<array{current_price: int, old_price?: int}, never> */
+    /** @return Attribute<array{current_price: string, old_price?: string}, never> */
     public function price(): Attribute
     {
         return Attribute::get(function () {
-            $rtr = ['current_price' => $this->currentPrice];
+            $rtr = ['current_price' => Helpers::formatMoney(Money::GBP($this->currentPrice))];
 
             if ($this->oldPrice !== null && $this->oldPrice !== 0) {
-                $rtr['old_price'] = $this->oldPrice;
+                $rtr['old_price'] = Helpers::formatMoney(Money::GBP($this->oldPrice));
             }
 
             return $rtr;
         });
+    }
+
+    /** @return Attribute<float, never> */
+    public function averageRating(): Attribute
+    {
+        return Attribute::get(fn () => round($this->reviews->average('rating') * 2) / 2);
     }
 
     protected function linkRoot(): string

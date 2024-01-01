@@ -14,8 +14,11 @@
     "guzzlehttp/guzzle": "^7.8.1",
     "inertiajs/inertia-laravel": "^0.6.11",
     "intervention/image": "^2.7.2",
+    "jpeters8889/address-field": "@dev",
     "jpeters8889/advanced-nova-media-library": "dev-master",
     "jpeters8889/body": "*",
+    "jpeters8889/eatery-opening-times": "@dev",
+    "jpeters8889/eatery-recommendation-listener": "@dev",
     "jpeters8889/polymorphic-panel": "*",
     "laravel/framework": "^10.38.1",
     "laravel/nova": "^4.32.11",
@@ -23,6 +26,7 @@
     "laravel/scout": "^10.6.1",
     "laravel/tinker": "^2.8.2",
     "league/flysystem-aws-s3-v3": "^3.22.0",
+    "moneyphp/money": "^4.3",
     "pixelcreation/nova-field-sortable": "^3.2",
     "spatie/eloquent-sortable": "^4.1.0",
     "spatie/geocoder": "^3.15",
@@ -31,9 +35,7 @@
     "spatie/laravel-medialibrary": "^10.15.0",
     "spatie/laravel-sluggable": "^3.5.0",
     "spatie/schema-org": "^3.14",
-    "jpeters8889/address-field": "@dev",
-    "jpeters8889/eatery-opening-times": "@dev",
-    "jpeters8889/eatery-recommendation-listener": "@dev"
+      "ext-intl": "*"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.9.2",

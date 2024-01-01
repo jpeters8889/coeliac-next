@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Recipes;
 
-use App\Actions\Comments\GetCommentsForItemAction;
 use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
 use App\Actions\Recipes\GetRecipesForIndexAction;
 use App\Http\Response\Inertia;
@@ -12,14 +11,13 @@ use App\Models\Recipes\Recipe;
 use App\Models\Recipes\RecipeAllergen;
 use App\Models\Recipes\RecipeFeature;
 use App\Models\Recipes\RecipeMeal;
-use App\Resources\Recipes\RecipeShowResource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-class RecipeController
+class RecipeIndexController
 {
-    public function index(
+    public function __invoke(
         Inertia $inertia,
         Request $request,
         GetRecipesForIndexAction $getRecipesForIndexAction,
@@ -42,28 +40,6 @@ class RecipeController
                 'meals' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeMeal::class, $filters),
                 'freeFrom' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeAllergen::class, $filters),
                 'setFilters' => fn () => $filters,
-            ]);
-    }
-
-    public function show(Recipe $recipe, Inertia $inertia, GetCommentsForItemAction $getCommentsForItemAction): Response
-    {
-        return $inertia
-            ->title($recipe->title)
-            ->metaDescription($recipe->meta_description)
-            ->metaTags(explode(',', $recipe->meta_tags))
-            ->metaImage($recipe->social_image)
-            ->schema($recipe->schema()->toScript())
-            ->alternateMetas([
-                'article:publisher' => 'https://www.facebook.com/coeliacsanctuary',
-                'article:section' => 'Food',
-                'article:published_time' => $recipe->created_at,
-                'article:modified_time' => $recipe->updated_at,
-                'article:author' => 'Coeliac Sanctuary',
-                'article.tags' => $recipe->meta_tags,
-            ])
-            ->render('Recipe/Show', [
-                'recipe' => new RecipeShowResource($recipe),
-                'comments' => fn () => $getCommentsForItemAction->handle($recipe),
             ]);
     }
 

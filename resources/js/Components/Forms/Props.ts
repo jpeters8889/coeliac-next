@@ -33,6 +33,8 @@ export type InputProps = BaseFormInputProps & {
   error?: string;
   hideLabel?: boolean;
   size?: 'default' | 'large';
+  min?: number;
+  max?: number;
 };
 
 export const InputPropDefaults: Partial<InputProps> = {
@@ -40,6 +42,8 @@ export const InputPropDefaults: Partial<InputProps> = {
   type: 'text',
   hideLabel: false,
   size: 'default',
+  min: undefined,
+  max: undefined,
 };
 
 export type TextareaProps = BaseFormInputProps & {

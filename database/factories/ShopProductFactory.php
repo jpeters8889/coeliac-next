@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
 
 class ShopProductFactory extends Factory
@@ -22,5 +23,17 @@ class ShopProductFactory extends Factory
             'shipping_method_id' => 1,
             'pinned' => false,
         ];
+    }
+
+    public function inCategory(ShopCategory $category): self
+    {
+        return $this->afterCreating(function (ShopProduct $product) use ($category): void {
+            $product->categories()->attach($category);
+        });
+    }
+
+    public function pinned(): self
+    {
+        return $this->state(fn () => ['pinned' => true]);
     }
 }

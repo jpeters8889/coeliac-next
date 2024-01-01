@@ -15,7 +15,7 @@ class ShopCategoryFactory extends Factory
         return [
             'title' => $this->faker->name,
             'description' => $this->faker->sentence,
-            'slug' => $this->faker->slug(3),
+            'slug' => $this->faker->slug(2),
             'meta_keywords' => $this->faker->sentence,
             'meta_description' => $this->faker->sentence,
         ];

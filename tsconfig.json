@@ -19,8 +19,9 @@
     }
   },
   "include": [
+      "./resources/js/*.ts",
       "./resources/js/**/*",
-      "./tailwind.config.js",
+      "./*.js",
   ],
   "exclude": ["node_modules", "public"]
 }

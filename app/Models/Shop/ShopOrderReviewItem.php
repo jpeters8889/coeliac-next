@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShopOrderReviewItem extends Model
 {
+    protected $casts = [
+        'rating' => 'float',
+    ];
+
     /** @return BelongsTo<ShopProduct, self> */
     public function product(): BelongsTo
     {

@@ -31,6 +31,11 @@ class ShopCategory extends Model implements HasMedia
         ));
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     /** @return BelongsToMany<ShopProduct> */
     public function products(): BelongsToMany
     {

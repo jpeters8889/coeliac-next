@@ -10,12 +10,12 @@ const close = () => emit('close');
 
 const links: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
-  { label: 'Shop', href: '/' },
+  { label: 'Shop', href: '/shop' },
   { label: 'Gluten Free Travel Cards', href: '/' },
   { label: 'Blogs', href: '/blog' },
-  { label: 'Eating Out', href: '/' },
-  { label: 'Recipes', href: '/' },
-  { label: 'Collections', href: '/' },
+  { label: 'Eating Out', href: '/eating-out' },
+  { label: 'Recipes', href: '/recipe' },
+  { label: 'Collections', href: '/collection' },
   { label: 'Info', href: '/' },
   { label: 'About Us', href: '/' },
   { label: 'FAQ', href: '/' },

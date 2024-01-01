@@ -12,6 +12,10 @@ use App\Models\Recipes\RecipeAllergen;
 use App\Models\Recipes\RecipeFeature;
 use App\Models\Recipes\RecipeMeal;
 use App\Models\Recipes\RecipeNutrition;
+use App\Models\Shop\ShopCategory;
+use App\Models\Shop\ShopProduct;
+use App\Models\Shop\ShopProductPrice;
+use App\Models\Shop\ShopProductVariant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\UploadedFile;
@@ -21,7 +25,7 @@ use Tests\TestCase;
 /** @mixin TestCase */
 trait SeedsWebsite
 {
-    protected function withBlogs($count = 10, callable $then = null): static
+    protected function withBlogs($count = 10, ?callable $then = null): static
     {
         Storage::fake('media');
 
@@ -46,7 +50,7 @@ trait SeedsWebsite
         return $this;
     }
 
-    protected function withRecipes($count = 10, callable $then = null): static
+    protected function withRecipes($count = 10, ?callable $then = null): static
     {
         Storage::fake('media');
 
@@ -74,7 +78,7 @@ trait SeedsWebsite
         return $this;
     }
 
-    protected function withCollections($count = 10, callable $then = null): static
+    protected function withCollections($count = 10, ?callable $then = null): static
     {
         Storage::fake('media');
 
@@ -89,6 +93,56 @@ trait SeedsWebsite
             ->each(function (Collection $collection): void {
                 $collection->addMedia(UploadedFile::fake()->image('collection.jpg'))->toMediaCollection('primary');
                 $collection->addMedia(UploadedFile::fake()->image('collection.jpg'))->toMediaCollection('social');
+            });
+
+        if ($then) {
+            $then();
+        }
+
+        return $this;
+    }
+
+    protected function withCategoriesAndProducts($categories = 5, $products = 2, $variants = 1, ?callable $then = null): static
+    {
+        Storage::fake('media');
+
+        $this->build(ShopCategory::class)
+            ->count($categories)
+            ->sequence(fn (Sequence $sequence) => [
+                'id' => $sequence->index + 1,
+                'title' => "Category {$sequence->index}",
+                'created_at' => Carbon::now()->subDays($sequence->index),
+            ])
+            ->create()
+            ->each(function (ShopCategory $category) use ($products, $variants): void {
+                $category->addMedia(UploadedFile::fake()->image('category.jpg'))->toMediaCollection('primary');
+                $category->addMedia(UploadedFile::fake()->image('category.jpg'))->toMediaCollection('social');
+
+                $this->build(ShopProduct::class)
+                    ->count($products)
+                    ->sequence(fn (Sequence $sequence) => [
+                        'id' => $category->id . ($sequence->index + 1),
+                        'title' => "Product {$sequence->index}",
+                        'created_at' => Carbon::now()->subDays($sequence->index),
+                    ])
+                    ->has($this->build(ShopProductPrice::class), 'prices')
+                    ->create()
+                    ->each(function (ShopProduct $product) use ($category, $variants): void {
+                        $product->addMedia(UploadedFile::fake()->image('product.jpg'))->toMediaCollection('primary');
+                        $product->addMedia(UploadedFile::fake()->image('product.jpg'))->toMediaCollection('social');
+
+                        $category->products()->attach($product);
+
+                        $this->build(ShopProductVariant::class)
+                            ->count($variants)
+                            ->belongsToProduct($product)
+                            ->sequence(fn (Sequence $sequence) => [
+                                'id' => $product->id . ($sequence->index + 1),
+                                'title' => "Variant {$sequence->index}",
+                                'created_at' => Carbon::now()->subDays($sequence->index),
+                            ])
+                            ->create();
+                    });
             });
 
         if ($then) {

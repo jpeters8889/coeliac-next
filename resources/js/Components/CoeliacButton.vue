@@ -135,6 +135,7 @@ const emits = defineEmits(['click']);
         'h-5 w-5': iconOnly,
         'h-4 w-4': !iconOnly,
         'opacity-0': loading,
+        'h-6 w-6': size === 'xxl',
       }"
       aria-hidden="true"
     />

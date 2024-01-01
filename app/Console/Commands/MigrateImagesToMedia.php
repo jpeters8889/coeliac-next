@@ -9,6 +9,8 @@ use App\Legacy\ImageAssociations;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Models\Recipes\Recipe;
+use App\Models\Shop\ShopCategory;
+use App\Models\Shop\ShopProduct;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
@@ -23,18 +25,24 @@ class MigrateImagesToMedia extends Command
         'blog' => Blog::class,
         'recipe' => Recipe::class,
         'collection' => Collection::class,
+        'shop-category' => ShopCategory::class,
+        'shop-product' => ShopProduct::class,
     ];
 
     protected array $with = [
         'blog' => ['images'],
         'recipe' => ['images'],
         'collection' => ['images'],
+        'shop-category' => ['images'],
+        'shop-product' => ['images'],
     ];
 
     protected array $handlers = [
         'blog' => 'processBlog',
         'recipe' => 'processRecipe',
         'collection' => 'processCollection',
+        'shop-category' => 'processShopCategory',
+        'shop-product' => 'processShopProduct',
     ];
 
     public function handle(): void
@@ -137,6 +145,46 @@ class MigrateImagesToMedia extends Command
 
             /** @phpstan-ignore-next-line */
             $collection->addMediaFromUrl($collection->main_legacy_image)->toMediaCollection('primary');
+        } catch (Exception $e) {
+            //
+        }
+
+        $progress->advance();
+    }
+
+    protected function processShopCategory(ShopCategory $shopCategory, ProgressBar $progress): void
+    {
+        ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Shop\Models\ShopCategory')
+            ->update(['imageable_type' => ShopCategory::class]);
+
+        $shopCategory->refresh();
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $shopCategory->addMediaFromUrl($shopCategory->social_legacy_image)->toMediaCollection('social');
+
+            /** @phpstan-ignore-next-line */
+            $shopCategory->addMediaFromUrl($shopCategory->main_legacy_image)->toMediaCollection('primary');
+        } catch (Exception $e) {
+            //
+        }
+
+        $progress->advance();
+    }
+
+    protected function processShopProduct(ShopProduct $shopProduct, ProgressBar $progress): void
+    {
+        ImageAssociations::query()->where('imageable_type', 'Coeliac\Modules\Shop\Models\ShopProduct')
+            ->update(['imageable_type' => ShopProduct::class]);
+
+        $shopProduct->refresh();
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $shopProduct->addMediaFromUrl($shopProduct->social_legacy_image)->toMediaCollection('social');
+
+            /** @phpstan-ignore-next-line */
+            $shopProduct->addMediaFromUrl($shopProduct->main_legacy_image)->toMediaCollection('primary');
         } catch (Exception $e) {
             //
         }

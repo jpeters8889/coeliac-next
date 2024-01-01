@@ -2,20 +2,26 @@
 const props = withDefaults(
   defineProps<{
     shadow?: boolean;
-    theme?: 'white' | 'primary' | 'primary-light' | 'secondary';
+    theme?: 'white' | 'primary' | 'primary-light' | 'secondary' | 'transparent';
     faded?: boolean;
     noPadding?: boolean;
+    noFlex?: boolean;
   }>(),
   {
     theme: 'white',
     shadow: true,
     faded: false,
     noPadding: false,
+    noFlex: false,
   }
 );
 
 const classes = (): string[] => {
-  const base: string[] = ['flex', 'flex-col', 'rounded'];
+  const base: string[] = ['rounded'];
+
+  if (!props.noFlex) {
+    base.push('flex', 'flex-col');
+  }
 
   if (!props.noPadding) {
     base.push('p-4');

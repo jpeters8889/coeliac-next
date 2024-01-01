@@ -1,14 +1,22 @@
 <script lang="ts" setup>
 import { InputPropDefaults, InputProps } from '@/Components/Forms/Props';
 import RawInputField from '@/Components/Forms/RawInputField.vue';
-import { ref, watch } from 'vue';
+import { defineModel, ref, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
 const emits = defineEmits(['update:modelValue']);
 
-const value = ref(props.modelValue);
+const [value, modifiers] = defineModel({
+  set(v: string): string | number {
+    if (modifiers.number) {
+      return parseInt(v, 10);
+    }
+
+    return v;
+  },
+});
 
 watch(value, () => {
   emits('update:modelValue', value.value);
@@ -30,6 +38,11 @@ watch(
       v-if="hideLabel === false"
       :for="id"
       class="block font-semibold leading-6 text-primary-dark"
+      :class="
+        size === 'large'
+          ? 'text-base md:text-lg xl:text-xl'
+          : 'text-base xl:text-lg'
+      "
     >
       {{ label }}
       <span
@@ -54,6 +67,8 @@ watch(
         :type="type"
         :borders="borders"
         :size="size"
+        :min="min"
+        :max="max"
       />
       <div
         v-if="error"

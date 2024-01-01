@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+import Card from '@/Components/Card.vue';
+import { ShopCategoryIndex } from '@/types/Shop';
+
+defineProps<{
+  category: ShopCategoryIndex;
+}>();
+</script>
+
+<template>
+  <Card
+    theme="transparent"
+    no-flex
+    no-padding
+    :shadow="false"
+  >
+    <Link
+      class="group block px-4 sm:px-6 2xl:px-0"
+      :href="category.link"
+    >
+      <div class="relative overflow-hidden rounded xmd:h-[32rem]">
+        <div class="absolute inset-0">
+          <img
+            :src="category.image"
+            :alt="category.title"
+            class="h-full w-full object-cover object-center"
+          />
+        </div>
+        <div class="relative h-72 w-full xmd:hidden" />
+        <div class="relative h-32 w-full xmd:hidden" />
+        <div
+          class="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-primary-dark bg-opacity-75 p-4 backdrop-blur backdrop-filter xs:flex xs:items-center xs:justify-between xmd:inset-x-auto xmd:inset-y-0 xmd:w-96 xmd:flex-col xmd:items-start xmd:rounded-br-none xmd:rounded-tl-lg xmd:p-6"
+        >
+          <div>
+            <h2
+              class="text-xl font-semibold text-white xmd:text-2xl xl:text-3xl"
+              v-text="category.title"
+            />
+            <p
+              class="mt-1 text-sm text-gray-300 xmd:mt-2 xmd:text-base xl:mt-3 xl:text-lg"
+              v-text="category.description"
+            />
+          </div>
+
+          <div
+            class="mt-6 flex flex-shrink-0 items-center justify-center rounded-md border border-white border-opacity-25 bg-primary-dark bg-opacity-0 px-4 py-3 text-base font-medium text-white hover:bg-opacity-50 xs:ml-8 xs:mt-0 xmd:ml-0 xmd:w-full xl:text-lg"
+          >
+            Shop Now
+          </div>
+        </div>
+      </div>
+    </Link>
+  </Card>
+</template>

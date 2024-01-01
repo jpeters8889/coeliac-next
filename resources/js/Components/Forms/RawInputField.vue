@@ -1,7 +1,18 @@
 <script lang="ts" setup>
 import { InputPropDefaults, InputProps } from '@/Components/Forms/Props';
+import { defineModel } from 'vue';
 
 const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
+
+const [value, modifiers] = defineModel({
+  set(v: string): string | number {
+    if (modifiers.number) {
+      return parseInt(v, 10);
+    }
+
+    return v;
+  },
+});
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -66,6 +77,8 @@ const classes = (): string[] => {
       ...(id ? { id } : null),
       ...(autocomplete ? { autocomplete } : null),
       ...(placeholder ? { placeholder } : null),
+      ...(min ? { min } : null),
+      ...(max ? { max } : null),
     }"
     @input="emit('update:modelValue', $event.target.value)"
   />

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('blog')->group(base_path('routes/blogs/web.php'));
 Route::prefix('collection')->group(base_path('routes/collections/web.php'));
 Route::prefix('recipe')->group(base_path('routes/recipes/web.php'));
+Route::prefix('shop')->group(base_path('routes/shop/web.php'));
 Route::prefix('')->group(base_path('routes/eating-out/web.php'));
 
 Route::get('/', HomeController::class)->name('home');
