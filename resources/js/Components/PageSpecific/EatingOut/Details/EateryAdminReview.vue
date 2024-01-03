@@ -64,9 +64,11 @@ const reviewBody = computed(() => {
     <div class="flex flex-col space-y-2">
       <ul
         v-if="hasRatings"
-        class="mb-2 flex flex-1 flex-col space-y-1 rounded border border-primary bg-primary-light bg-opacity-25 p-1 text-sm xs:flex-row xs:justify-around xs:space-y-0"
+        class="mb-2 grid grid-cols-1 gap-1 leading-none xs:grid-cols-4 xs:gap-3"
       >
-        <li class="text-md mb-2 flex items-center space-x-1">
+        <li
+          class="text-md flex items-center space-x-1 rounded bg-primary-light bg-opacity-50 px-3 py-2"
+        >
           <strong>Our Rating</strong>
           <StarRating
             :rating="<StarRatingType>review.rating"
@@ -77,27 +79,34 @@ const reviewBody = computed(() => {
 
         <li
           v-if="review.expense"
+          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
           v-html="howExpensive()"
         />
-        <li v-if="review.food_rating">
+        <li
+          v-if="review.food_rating"
+          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
+        >
           <strong>Food</strong>: {{ ucfirst(review.food_rating) }}
         </li>
-        <li v-if="review.service_rating">
+        <li
+          v-if="review.service_rating"
+          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
+        >
           <strong>Service</strong>: {{ ucfirst(review.service_rating) }}
         </li>
       </ul>
 
       <p
-        class="md:prose-md prose max-w-none"
+        class="prose max-w-none md:prose-lg xl:prose-xl"
         v-html="reviewBody"
       />
 
       <template v-if="review.body?.length > 500 && !displayFullReview">
         <a
-          class="cursor-pointer text-lg font-semibold text-primary-dark hover:underline"
+          class="cursor-pointer text-lg font-semibold text-primary-dark hover:underline xl:text-xl"
           @click.prevent="displayFullReview = true"
-          >Read our full review!</a
-        >
+          v-text="'Read our full review!'"
+        />
       </template>
 
       <div

@@ -59,4 +59,5 @@ export type ShopProductReview = {
   review: string;
   rating: StarRating;
   date: string;
+  date_diff: string;
 };

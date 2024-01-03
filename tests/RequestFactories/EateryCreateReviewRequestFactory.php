@@ -13,19 +13,13 @@ class EateryCreateReviewRequestFactory extends RequestFactory
         return [
             'method' => 'website',
             'rating' => $this->faker->numberBetween(1, 5),
-        ];
-    }
-
-    public function fullReview(): self
-    {
-        return $this->state([
             'name' => $this->faker->name,
             'email' => $this->faker->email,
             'food_rating' => $this->faker->randomElement(['poor', 'good', 'excellent']),
             'service_rating' => $this->faker->randomElement(['poor', 'good', 'excellent']),
             'how_expensive' => $this->faker->numberBetween(1, 5),
             'review' => $this->faker->paragraph,
-        ]);
+        ];
     }
 
     public function forBranch(): self

@@ -18,6 +18,7 @@ class ShopProductReviewResource extends JsonResource
             'review' => $this->review,
             'rating' => $this->rating,
             'date' => $this->created_at,
+            'date_diff' => $this->created_at?->diffForHumans(),
         ];
     }
 }

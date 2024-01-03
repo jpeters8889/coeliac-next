@@ -58,7 +58,7 @@ const isSelected = (index: number): boolean => {
   <div>
     <span
       v-if="label"
-      class="block text-lg font-semibold text-primary-dark"
+      class="block text-lg font-semibold text-primary-dark xl:text-xl"
     >
       {{ label }}
       <span
@@ -68,9 +68,9 @@ const isSelected = (index: number): boolean => {
       />
     </span>
 
-    <div class="flex max-w-[600px] items-center">
+    <div class="flex max-w-[600px] flex-col xs:flex-row xs:items-center">
       <div
-        class="flex justify-start"
+        class="flex justify-center xs:justify-start"
         :class="wrapperClasses"
       >
         <template
@@ -101,15 +101,16 @@ const isSelected = (index: number): boolean => {
           leave-class="opacity-100"
           leave-to-class="opacity-0"
         >
-          <div class="flex h-6 min-w-[180px] flex-1 items-center transition">
+          <div
+            class="mt-1 flex h-6 min-w-[180px] flex-1 items-center transition xs:mt-0"
+          >
             <div
-              class="border-[0.75rem] border-transparent border-r-secondary"
+              class="hidden border-[0.75rem] border-transparent border-r-secondary xs:block"
             />
             <div
-              class="flex h-6 w-full items-center bg-secondary px-4 text-center text-sm font-semibold xxs:text-base xs:text-base"
-            >
-              {{ displayText }}
-            </div>
+              class="flex h-6 w-full items-center justify-center rounded bg-secondary text-sm font-semibold xs:justify-start xs:rounded-none xs:px-4 xs:text-base"
+              v-text="displayText"
+            />
           </div>
         </transition>
       </template>

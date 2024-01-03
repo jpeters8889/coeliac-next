@@ -26,7 +26,7 @@ class EateryCreateReviewController
         $createEateryReviewAction->handle($eatery, [
             ...$requestData,
             'ip' => $request->ip(),
-            'approved' => $request->shouldReviewBeApproved(),
+            'approved' => false,
         ]);
 
         return redirect()->back();

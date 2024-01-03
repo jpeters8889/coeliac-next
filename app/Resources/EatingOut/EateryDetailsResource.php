@@ -114,6 +114,10 @@ class EateryDetailsResource extends JsonResource
                         'path' => $image->path,
                     ]) : [],
                 ]),
+                'ratings' => collect(range(5, 1))->map(fn ($rating) => [
+                    'rating' => $rating,
+                    'count' => $reviews->filter(fn (EateryReview $reviewItem) => (int) $reviewItem->rating === $rating)->count(),
+                ]),
             ],
             'features' => $features->map(fn (EateryFeature $feature) => [
                 'name' => $feature->feature,

@@ -32,35 +32,12 @@ class CreateEateryReviewsActionTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesAStandardRating(): void
-    {
-        $this->assertEmpty($this->eatery->reviews);
-
-        $data = [
-            ...EateryCreateReviewRequestFactory::new(['rating' => 5])->create(),
-            'ip' => $this->faker->ipv4,
-            'approved' => true,
-        ];
-
-        $this->callAction(CreateEateryReviewAction::class, $this->eatery, $data);
-
-        $this->assertNotEmpty($this->eatery->refresh()->reviews);
-
-        $review = EateryReview::query()->withoutGlobalScopes()->first();
-
-        $this->assertTrue($review->approved);
-        $this->assertEquals(5, $review->rating);
-        $this->assertEquals('', $review->name);
-    }
-
-    /** @test */
     public function itCreatesAFullRatingThatIsNotApproved(): void
     {
         $this->assertEmpty($this->eatery->reviews);
 
         $data = [
             ...EateryCreateReviewRequestFactory::new()
-                ->fullReview()
                 ->state([
                     'rating' => 4,
                     'name' => 'Foo Bar',
@@ -88,7 +65,6 @@ class CreateEateryReviewsActionTest extends TestCase
     {
         $data = [
             ...EateryCreateReviewRequestFactory::new()
-                ->fullReview()
                 ->state([
                     'rating' => 4,
                     'name' => 'Foo Bar',
@@ -110,7 +86,6 @@ class CreateEateryReviewsActionTest extends TestCase
     {
         $data = [
             ...EateryCreateReviewRequestFactory::new()
-                ->fullReview()
                 ->state([
                     'rating' => 4,
                     'name' => 'Foo Bar',

@@ -110,70 +110,70 @@ class EateryCreateReviewTest extends TestCase
     }
 
     /** @test */
-    public function itErrorsWhenSubmitAFullReviewWithoutAName(): void
+    public function itErrorsWithoutAName(): void
     {
-        $this->submitForm($this->data()->fullReview()->state(['name' => null])->create())
+        $this->submitForm($this->data()->state(['name' => null])->create())
             ->assertSessionHasErrors('name');
 
-        $this->submitForm($this->data()->fullReview()->state(['name' => 123])->create())
+        $this->submitForm($this->data()->state(['name' => 123])->create())
             ->assertSessionHasErrors('name');
 
-        $this->submitForm($this->data()->fullReview()->state(['name' => true])->create())
+        $this->submitForm($this->data()->state(['name' => true])->create())
             ->assertSessionHasErrors('name');
     }
 
     /** @test */
-    public function itErrorsWhenSubmitAFullReviewWithoutAEmail(): void
+    public function itErrorsWithoutAEmail(): void
     {
-        $this->submitForm($this->data()->fullReview()->state(['email' => null])->create())
+        $this->submitForm($this->data()->state(['email' => null])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm($this->data()->fullReview()->state(['email' => 123])->create())
+        $this->submitForm($this->data()->state(['email' => 123])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm($this->data()->fullReview()->state(['email' => true])->create())
+        $this->submitForm($this->data()->state(['email' => true])->create())
             ->assertSessionHasErrors('email');
 
-        $this->submitForm($this->data()->fullReview()->state(['email' => 'foo'])->create())
+        $this->submitForm($this->data()->state(['email' => 'foo'])->create())
             ->assertSessionHasErrors('email');
     }
 
     /** @test */
-    public function itErrorsWhenSubmitAFullReviewWithoutAReviewField(): void
+    public function itErrorsWithoutAReviewField(): void
     {
-        $this->submitForm($this->data()->fullReview()->state(['review' => null])->create())
+        $this->submitForm($this->data()->state(['review' => null])->create())
             ->assertSessionHasErrors('review');
 
-        $this->submitForm($this->data()->fullReview()->state(['review' => 123])->create())
+        $this->submitForm($this->data()->state(['review' => 123])->create())
             ->assertSessionHasErrors('review');
 
-        $this->submitForm($this->data()->fullReview()->state(['review' => true])->create())
+        $this->submitForm($this->data()->state(['review' => true])->create())
             ->assertSessionHasErrors('review');
     }
 
     /** @test */
     public function itErrorsWithAnInvalidFoodRatingValue(): void
     {
-        $this->submitForm($this->data()->fullReview()->state(['food_rating' => 123])->create())
+        $this->submitForm($this->data()->state(['food_rating' => 123])->create())
             ->assertSessionHasErrors('food_rating');
 
-        $this->submitForm($this->data()->fullReview()->state(['food_rating' => true])->create())
+        $this->submitForm($this->data()->state(['food_rating' => true])->create())
             ->assertSessionHasErrors('food_rating');
 
-        $this->submitForm($this->data()->fullReview()->state(['food_rating' => 'foo'])->create())
+        $this->submitForm($this->data()->state(['food_rating' => 'foo'])->create())
             ->assertSessionHasErrors('food_rating');
     }
 
     /** @test */
     public function itErrorsWithAnInvalidServiceRatingValue(): void
     {
-        $this->submitForm($this->data()->fullReview()->state(['service_rating' => 123])->create())
+        $this->submitForm($this->data()->state(['service_rating' => 123])->create())
             ->assertSessionHasErrors('service_rating');
 
-        $this->submitForm($this->data()->fullReview()->state(['service_rating' => true])->create())
+        $this->submitForm($this->data()->state(['service_rating' => true])->create())
             ->assertSessionHasErrors('service_rating');
 
-        $this->submitForm($this->data()->fullReview()->state(['service_rating' => 'foo'])->create())
+        $this->submitForm($this->data()->state(['service_rating' => 'foo'])->create())
             ->assertSessionHasErrors('service_rating');
     }
 
@@ -208,7 +208,7 @@ class EateryCreateReviewTest extends TestCase
     }
 
     /** @test */
-    public function itReturnsOkForRatingWithoutAReview(): void
+    public function itReturnsOk(): void
     {
         $this->submitForm($this->data()->create())->assertSessionHasNoErrors();
     }
@@ -223,30 +223,12 @@ class EateryCreateReviewTest extends TestCase
     }
 
     /** @test */
-    public function itCreatesAStandardRatingThatIsApproved(): void
-    {
-        $this->assertEmpty($this->eatery->reviews);
-
-        $this->submitForm($this->data(['rating' => 5])->create());
-
-        $this->assertNotEmpty($this->eatery->refresh()->reviews);
-
-        $review = EateryReview::query()->withoutGlobalScopes()->first();
-
-        $this->assertTrue($review->approved);
-        $this->assertEquals(5, $review->rating);
-        $this->assertEquals('', $review->name);
-    }
-
-    /** @test */
     public function itCreatesAFullRatingThatIsNotApproved(): void
     {
         $this->assertEmpty($this->eatery->reviews);
 
-        $this->withoutExceptionHandling();
-
         $this->submitForm($this->data()
-            ->fullReview()
+
             ->state([
                 'rating' => 4,
                 'name' => 'Foo Bar',

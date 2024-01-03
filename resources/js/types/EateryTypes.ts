@@ -144,6 +144,10 @@ export type DetailedEatery = Exclude<TownEatery, 'key'> & {
     images?: ReviewImage[];
     admin_review?: Exclude<EateryReview, ['id', 'name']>;
     user_reviews: EateryReview[];
+    ratings: {
+      rating: StarRating;
+      count: number;
+    }[];
   };
   features?: {
     name: string;
