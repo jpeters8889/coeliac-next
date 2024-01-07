@@ -26,13 +26,14 @@ class ShopProductResource extends JsonResource
                 'count' => $this->reviews->count(),
                 'breakdown' => collect(range(5, 1))->map(fn ($rating) => [
                     'rating' => $rating,
-                    'count' => $this->reviews->filter(fn (ShopOrderReviewItem $reviewItem) => (int)$reviewItem->rating === $rating)->count(),
+                    'count' => $this->reviews->filter(fn (ShopOrderReviewItem $reviewItem) => (int) $reviewItem->rating === $rating)->count(),
                 ]),
             ]),
             'category' => $this->whenLoaded('categories', [
                 'title' => $this->categories->first()?->title,
                 'link' => $this->categories->first()?->link,
             ]),
+            'variant_title' => $this->variant_title,
             'variants' => ShopProductVariantResource::collection($this->variants),
         ];
     }

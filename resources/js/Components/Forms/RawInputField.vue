@@ -29,7 +29,10 @@ const classes = (): string[] => {
     'outline-none',
     'xl:w-full',
     'focus:ring-0',
-    'focus:outline-none transition',
+    'focus:outline-none',
+    'transition',
+    'disabled:text-gray-300',
+    'disabled:cursor-not-allowed',
   ];
 
   if (props.size === 'large') {
@@ -77,6 +80,7 @@ const classes = (): string[] => {
       ...(id ? { id } : null),
       ...(autocomplete ? { autocomplete } : null),
       ...(placeholder ? { placeholder } : null),
+      ...(disabled ? { disabled } : null),
       ...(min ? { min } : null),
       ...(max ? { max } : null),
     }"

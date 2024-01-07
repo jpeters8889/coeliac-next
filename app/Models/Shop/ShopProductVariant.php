@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShopProductVariant extends Model
 {
+    protected $casts = [
+        'icon' => 'json',
+    ];
+
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());

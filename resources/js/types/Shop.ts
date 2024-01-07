@@ -31,6 +31,7 @@ export type ShopProductDetail = ShopBaseProduct & {
     current_price: string;
     old_price?: string;
   };
+  variant_title: string;
   variants: ShopProductVariant[];
   category: {
     title: string;
@@ -42,6 +43,10 @@ export type ShopProductDetail = ShopBaseProduct & {
 export type ShopProductVariant = {
   id: number;
   title: string;
+  icon?: {
+    component: string;
+    color: string;
+  };
   quantity: number;
 };
 

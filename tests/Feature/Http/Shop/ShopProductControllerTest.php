@@ -59,7 +59,7 @@ class ShopProductControllerTest extends TestCase
                 fn (Assert $page) => $page
                     ->component('Shop/Product')
                     ->has('product', fn (Assert $page) => $page->hasAll([
-                        'id', 'title', 'description', 'long_description', 'image', 'prices', 'rating', 'variants', 'category',
+                        'id', 'title', 'description', 'long_description', 'image', 'prices', 'rating', 'variants', 'category', 'variant_title',
                     ]))
             );
     }

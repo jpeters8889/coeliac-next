@@ -69,6 +69,7 @@ watch(
         :size="size"
         :min="min"
         :max="max"
+        :disabled="disabled"
       />
       <div
         v-if="error"

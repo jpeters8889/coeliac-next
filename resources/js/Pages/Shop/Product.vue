@@ -2,24 +2,15 @@
 import Card from '@/Components/Card.vue';
 import { ShopProductDetail, ShopProductReview } from '@/types/Shop';
 import { PaginatedResponse } from '@/types/GenericTypes';
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  RadioGroup,
-  RadioGroupDescription,
-  RadioGroupLabel,
-  RadioGroupOption,
-} from '@headlessui/vue';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
 import StarRating from '@/Components/StarRating.vue';
 import { nextTick, Ref, ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
-import CoeliacButton from '@/Components/CoeliacButton.vue';
 import Modal from '@/Components/Overlays/Modal.vue';
-import FormInput from '@/Components/Forms/FormInput.vue';
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
+import ProductAddBasketForm from '@/Components/PageSpecific/Shop/ProductAddBasketForm.vue';
 
 const props = defineProps<{
   product: ShopProductDetail;
@@ -27,8 +18,6 @@ const props = defineProps<{
   productShippingText: string;
 }>();
 
-const selectedVariant = ref();
-const quantity = ref(1);
 const viewImage = ref(false);
 
 const additionalDetails = ref([
@@ -70,11 +59,12 @@ const loadMoreReviews = () => {
       preserveScroll: true,
       preserveState: true,
       only: ['reviews'],
+      replace: true,
       onSuccess: (event: {
         props: { reviews?: PaginatedResponse<ShopProductReview> };
       }) => {
         // eslint-disable-next-line no-restricted-globals
-        history.pushState(
+        history.replaceState(
           null,
           '',
           `${window.location.origin}${window.location.pathname}`
@@ -97,7 +87,7 @@ const loadMoreReviews = () => {
 
 <template>
   <Card class="m-3 flex flex-col space-y-4 p-0">
-    <div class="mx-auto p-3 sm:p-4">
+    <div class="mx-auto">
       <!-- Product details -->
       <div class="space-y-3 md:self-end lg:space-y-4">
         <nav>
@@ -147,10 +137,20 @@ const loadMoreReviews = () => {
 
           <section class="flex flex-col space-y-5 lg:col-span-2">
             <div class="flex items-center md:items-start">
-              <p
-                class="text-3xl font-semibold leading-none xs:text-4xl"
-                v-text="product.prices.current_price"
-              />
+              <div class="flex flex-col">
+                <p v-if="product.prices.old_price">
+                  was
+                  <span
+                    class="font-semibold text-red line-through"
+                    v-text="product.prices.old_price"
+                  />
+                  now
+                </p>
+                <p
+                  class="text-3xl font-semibold leading-none xs:text-4xl"
+                  v-text="product.prices.current_price"
+                />
+              </div>
 
               <div
                 v-if="product.rating"
@@ -180,77 +180,7 @@ const loadMoreReviews = () => {
             </div>
 
             <!-- Product form -->
-            <div
-              class="mt-3 w-full md:col-start-1 md:row-start-2 md:max-w-lg md:self-start"
-            >
-              <form class="flex w-full flex-col space-y-3">
-                <div
-                  v-if="product.variants.length > 1"
-                  class="sm:flex sm:justify-between"
-                >
-                  <RadioGroup v-model="selectedVariant">
-                    <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <RadioGroupOption
-                        v-for="variant in product.variants"
-                        :key="variant.id"
-                        v-slot="{ active, checked }"
-                        as="template"
-                        :value="variant"
-                      >
-                        <div
-                          :class="[
-                            active ? 'ring-2 ring-indigo-500' : '',
-                            'relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none',
-                          ]"
-                        >
-                          <RadioGroupLabel
-                            as="p"
-                            class="text-base font-medium text-gray-900"
-                            >{{ variant.title }}</RadioGroupLabel
-                          >
-                          <RadioGroupDescription
-                            v-if="false"
-                            as="p"
-                            class="mt-1 text-sm text-gray-500"
-                            >{{ variant.title }}</RadioGroupDescription
-                          >
-                          <div
-                            :class="[
-                              active ? 'border' : 'border-2',
-                              checked
-                                ? 'border-indigo-500'
-                                : 'border-transparent',
-                              'pointer-events-none absolute -inset-px rounded-lg',
-                            ]"
-                            aria-hidden="true"
-                          />
-                        </div>
-                      </RadioGroupOption>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div class="w-full *:w-full sm:flex sm:justify-between">
-                  <FormInput
-                    v-model.number="quantity"
-                    type="number"
-                    label="Quantity"
-                    name="quantity"
-                    size="large"
-                    :min="1"
-                    borders
-                  />
-                </div>
-
-                <div class="flex items-center justify-between">
-                  <CoeliacButton
-                    as="button"
-                    size="xxl"
-                    label="Add To Basket"
-                  />
-                </div>
-              </form>
-            </div>
+            <ProductAddBasketForm :product="product" />
           </section>
         </div>
       </div>
