@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Shop;
 
+use App\Enums\Shop\OrderState;
 use App\Models\User;
 use App\Models\UserAddress;
 use Illuminate\Database\Eloquent\Model;
@@ -12,9 +13,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Str;
 
 class ShopOrder extends Model
 {
+    protected $casts = [
+        'state_id' => OrderState::class,
+    ];
+
+    protected static function booted(): void
+    {
+        self::creating(function (self $order): void {
+            if ($order->state_id === null) {
+                $order->state_id = OrderState::BASKET;
+            }
+
+            if ( ! $order->postage_country_id) {
+                $order->postage_country_id = 1;
+            }
+
+            $order->token = Str::random(8);
+        });
+    }
+
     /** @return BelongsTo<ShopOrderState, self> */
     public function state(): BelongsTo
     {

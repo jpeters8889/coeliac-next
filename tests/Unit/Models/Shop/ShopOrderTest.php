@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopDiscountCodesUsed;
 use App\Models\Shop\ShopOrder;
@@ -28,6 +29,32 @@ class ShopOrderTest extends TestCase
         parent::setUp();
 
         $this->seed(ShopScaffoldingSeeder::class);
+    }
+
+    /** @test */
+    public function itHasADefaultState(): void
+    {
+        $order = $this->create(ShopOrder::class);
+
+        $this->assertEquals(OrderState::BASKET, $order->state_id);
+    }
+
+    /** @test */
+    public function itHasADefaultPostageCountry(): void
+    {
+        $order = $this->create(ShopOrder::class);
+
+        $this->assertEquals(1, $order->postage_country_id);
+    }
+
+    /** @test */
+    public function itHasADefaultToken(): void
+    {
+        $order = $this->create(ShopOrder::class, [
+            'token' => null,
+        ]);
+
+        $this->assertNotNull($order->token);
     }
 
     /** @test */
@@ -99,7 +126,9 @@ class ShopOrderTest extends TestCase
     /** @test */
     public function itHasAPostageCountry(): void
     {
-        $order = $this->create(ShopOrder::class);
+        $order = $this->create(ShopOrder::class, [
+            'postage_country_id' => $this->build(ShopPostageCountry::class),
+        ]);
 
         $this->assertInstanceOf(ShopPostageCountry::class, $order->postageCountry);
     }

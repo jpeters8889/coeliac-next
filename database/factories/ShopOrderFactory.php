@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
-use App\Models\Shop\ShopPostageCountry;
 use App\Models\User;
 use App\Models\UserAddress;
 use Carbon\Carbon;
@@ -19,14 +18,7 @@ class ShopOrderFactory extends Factory
     public function definition()
     {
         return [
-            'state_id' => OrderState::BASKET->value,
             'token' => Str::random(8),
-            'postage_country_id' => self::factoryForModel(ShopPostageCountry::class),
-            'user_id' => self::factoryForModel(User::class)
-                ->has(self::factoryForModel(UserAddress::class)->asShipping(), 'addresses')
-                ->create()
-                ->id,
-            'user_address_id' => 1,
         ];
     }
 
@@ -48,6 +40,13 @@ class ShopOrderFactory extends Factory
     {
         return $this->state(fn () => [
             'state_id' => OrderState::BASKET,
+        ]);
+    }
+
+    public function asExpired()
+    {
+        return $this->state(fn () => [
+            'state_id' => OrderState::EXPIRED,
         ]);
     }
 

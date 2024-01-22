@@ -36,7 +36,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => \App\Models\Media::class,
+    'media_model' => App\Models\Media::class,
 
     /*
      * The fully qualified class name of the model used for temporary uploads.
@@ -65,7 +65,7 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => \App\Media\PathGenerator::class,
+    'path_generator' => App\Media\PathGenerator::class,
 
     /*
      * Here you can specify which path generator should be used for the given class.

@@ -22,18 +22,18 @@ use Laravel\Nova\Resource as NovaResource;
  */
 abstract class Resource extends NovaResource
 {
-    /** @var Collection<int, Field>  */
+    /** @var Collection<int, Field> */
     protected static Collection $deferrableFields;
 
     public static $clickAction = 'edit';
 
-    /** @param Resource<TModel> $resource */
+    /** @param resource<TModel> $resource */
     public static function redirectAfterUpdate(NovaRequest $request, $resource)
     {
         return '/resources/' . static::uriKey();
     }
 
-    /** @param Resource<TModel> $resource */
+    /** @param resource<TModel> $resource */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
         return '/resources/' . static::uriKey();
@@ -83,5 +83,10 @@ abstract class Resource extends NovaResource
         $fields = $fields->reject(fn ($field) => property_exists($field, 'deferrable') && $field->deferrable);
 
         return parent::fillFields($request, $model, $fields);
+    }
+
+    public function authorizedToDelete(Request $request): bool
+    {
+        return false;
     }
 }

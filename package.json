@@ -22,7 +22,9 @@
         "build-eatery-recommendation-listener": "cd nova-components/EateryRecommendationListener && npm run dev",
         "build-eatery-recommendation-listener-prod": "cd nova-components/EateryRecommendationListener && npm run prod",
         "build-eatery-locations-repeater": "cd nova-components/EateryLocationsRepeater && npm run dev",
-        "build-eatery-locations-repeater-prod": "cd nova-components/EateryLocationsRepeater && npm run prod"
+        "build-eatery-locations-repeater-prod": "cd nova-components/EateryLocationsRepeater && npm run prod",
+        "build-key-value-index-table": "cd nova-components/KeyValueIndexTable && npm run dev",
+        "build-key-value-index-table-prod": "cd nova-components/KeyValueIndexTable && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Console\Commands\CleanUpOldProductPricesCommand;
 use App\Console\Commands\GetCountyLatLngCommand;
 use App\Console\Commands\GetTownLatLngCommand;
 use App\Console\Commands\MigrateImagesToMedia;
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
         GetCountyLatLngCommand::class,
         GetTownLatLngCommand::class,
         MigrateImagesToMedia::class,
+        CleanUpOldProductPricesCommand::class,
     ];
 
     /**

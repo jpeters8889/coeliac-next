@@ -23,6 +23,8 @@ use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\Collection;
 use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
+use App\Nova\Resources\Shop\Categories;
+use App\Nova\Resources\Shop\Products;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
@@ -71,6 +73,13 @@ class Menu
                     MenuItem::resource(PlaceRecommendations::class)->withBadgeIf(fn () => (string) $recommendationsCount, 'danger', fn () => $recommendationsCount > 0),
                 ]),
             ])->icon('map'),
+
+            MenuSection::make('Shop', [
+                MenuGroup::make('Inventory', [
+                    MenuItem::resource(Categories::class),
+                    MenuItem::resource(Products::class),
+                ]),
+            ])->icon('shopping-bag'),
         ]);
     }
 }
