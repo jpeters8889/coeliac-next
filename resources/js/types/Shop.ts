@@ -18,6 +18,7 @@ export type ShopBaseProduct = {
 };
 
 export type ShopProductIndex = ShopBaseProduct & {
+  id: number;
   link: string;
   price: string;
   number_of_variants: number;
@@ -66,3 +67,32 @@ export type ShopProductReview = {
   date: string;
   date_diff: string;
 };
+
+export type ShopBasketItem = {
+  id: number;
+  title: string;
+  link: string;
+  variant: string;
+  item_price: string;
+  line_price: string;
+  quantity: number;
+  image: string;
+};
+
+export type CheckoutContactStep = {
+  name: string;
+  email: string;
+  email_confirmation: string;
+  phone?: string;
+};
+
+export type CheckoutShippingStep = {
+  address_1: string;
+  address_2?: string;
+  address_3?: string;
+  town: string;
+  county: string;
+  postcode: string;
+};
+
+export type CheckoutForm = CheckoutContactStep & CheckoutShippingStep;

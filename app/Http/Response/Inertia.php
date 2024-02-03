@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Response;
 
+use App\Actions\Shop\GetOrderItemsAction;
+use App\Actions\Shop\ResolveBasketAction;
+use App\Resources\Shop\ShopOrderItemResource;
+use App\Support\Helpers;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia as BaseInertia;
 use Inertia\LazyProp;
 use Inertia\Response;
+use Money\Money;
 
 class Inertia
 {
@@ -22,6 +28,10 @@ class Inertia
 
         if (Request::routeIs('shop.product')) {
             BaseInertia::share('productShippingText', config('coeliac.shop.product_postage_description'));
+        }
+
+        if (Request::hasCookie('basket_token')) {
+            $this->includeBasket();
         }
     }
 
@@ -81,9 +91,7 @@ class Inertia
         return $this;
     }
 
-    /**
-     * @param  array|Arrayable<int|string, mixed>  $props
-     */
+    /** @param array<string, mixed> | Arrayable<string, mixed> $props */
     public function render(string $component, array|Arrayable $props = []): Response
     {
         return BaseInertia::render($component, $props);
@@ -97,5 +105,28 @@ class Inertia
     public function lazy(callable $callback): LazyProp
     {
         return BaseInertia::lazy($callback);
+    }
+
+    protected function includeBasket(): void
+    {
+        /** @var string $token */
+        $token = Request::cookie('basket_token');
+
+        $basket = app(ResolveBasketAction::class)->handle($token, false);
+
+        if ( ! $basket) {
+            return;
+        }
+
+        $items = app(GetOrderItemsAction::class)->handle($basket);
+
+        /** @var Collection<int, ShopOrderItemResource> $collection */
+        $collection = app(GetOrderItemsAction::class)->handle($basket)->collection;
+
+        /** @var int $subtotal */
+        $subtotal = $collection->map(fn (ShopOrderItemResource $item) => $item->product_price * $item->quantity)->sum();
+
+        BaseInertia::share('basket.items', $items);
+        BaseInertia::share('basket.subtotal', Helpers::formatMoney(Money::GBP($subtotal)));
     }
 }

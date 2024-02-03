@@ -14,7 +14,7 @@ const [value, modifiers] = defineModel({
   },
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'focus', 'blur']);
 
 const classes = (): string[] => {
   const base = [
@@ -85,5 +85,7 @@ const classes = (): string[] => {
       ...(max ? { max } : null),
     }"
     @input="emit('update:modelValue', $event.target.value)"
+    @focus="emit('focus')"
+    @blur="emit('blur')"
   />
 </template>

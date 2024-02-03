@@ -11,6 +11,7 @@ import Modal from '@/Components/Overlays/Modal.vue';
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
 import ProductAddBasketForm from '@/Components/PageSpecific/Shop/ProductAddBasketForm.vue';
+import useAddToBasket from '@/composables/useAddToBasket';
 
 const props = defineProps<{
   product: ShopProductDetail;

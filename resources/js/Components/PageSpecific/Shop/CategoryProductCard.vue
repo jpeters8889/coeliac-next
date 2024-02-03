@@ -7,6 +7,7 @@ import { computed } from 'vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import useScreensize from '@/composables/useScreensize';
 import { ShoppingBagIcon } from '@heroicons/vue/24/solid';
+import useAddToBasket from '@/composables/useAddToBasket';
 
 const props = defineProps<{
   product: ShopProductIndex;
@@ -23,6 +24,17 @@ const ratingText = computed((): string | null => {
 });
 
 const { screenIsGreaterThanOrEqualTo } = useScreensize();
+
+const { addBasketForm, prepareAddBasketForm, submitAddBasketForm } =
+  useAddToBasket();
+
+prepareAddBasketForm(props.product.id, props.product.primary_variant);
+
+const addToBasket = () => {
+  submitAddBasketForm({
+    only: ['basket'],
+  });
+};
 </script>
 
 <template>
@@ -79,14 +91,18 @@ const { screenIsGreaterThanOrEqualTo } = useScreensize();
       "
     >
       <CoeliacButton
+        :as="Link"
         label="Find out more"
         classes="text-center text-white"
         :size="screenIsGreaterThanOrEqualTo('xl') ? 'xxl' : 'lg'"
+        :href="product.link"
         bold
       />
 
       <CoeliacButton
         v-if="product.number_of_variants === 1"
+        as="button"
+        type="button"
         label="Add to Basket"
         classes="text-center"
         theme="secondary"
@@ -96,6 +112,8 @@ const { screenIsGreaterThanOrEqualTo } = useScreensize();
         icon-position="right"
         :size="screenIsGreaterThanOrEqualTo('xl') ? 'xxl' : 'lg'"
         bold
+        :loading="addBasketForm.processing"
+        @click="addToBasket()"
       />
     </div>
   </div>

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { InputPropDefaults, InputProps } from '@/Components/Forms/Props';
 import RawInputField from '@/Components/Forms/RawInputField.vue';
-import { defineModel, ref, watch } from 'vue';
+import { defineModel, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'focus', 'blur']);
 
 const [value, modifiers] = defineModel({
   set(v: string): string | number {
@@ -70,6 +70,8 @@ watch(
         :min="min"
         :max="max"
         :disabled="disabled"
+        @focus="emits('focus')"
+        @blur="emits('blur')"
       />
       <div
         v-if="error"

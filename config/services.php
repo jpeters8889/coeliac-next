@@ -16,6 +16,11 @@ return [
     |
     */
 
+    'getAddress' => [
+        'url' => env('GET_ADDRESS_URL', 'https://api.getaddress.io'),
+        'key' => env('GET_ADDRESS_KEY'),
+    ],
+
     'google' => [
         'maps' => [
             'admin' => env('GOOGLE_MAP_ADMIN'),

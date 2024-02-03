@@ -12,6 +12,7 @@ use App\Enums\Shop\ShippingMethod;
 use App\Models\Shop\ShopDiscountCodeType;
 use App\Models\Shop\ShopOrderState;
 use App\Models\Shop\ShopPaymentType;
+use App\Models\Shop\ShopPostageCountry;
 use App\Models\Shop\ShopPostageCountryArea;
 use App\Models\Shop\ShopShippingMethod;
 use Illuminate\Database\Seeder;
@@ -41,6 +42,13 @@ class ShopScaffoldingSeeder extends Seeder
                 'delivery_timescale' => $postageArea->deliveryEstimate(),
             ]);
         }
+
+        ShopPostageCountry::query()->create([
+            'id' => 1,
+            'postage_area_id' => PostageArea::UK->value,
+            'country' => 'UK',
+            'iso_code' => 'uk',
+        ]);
 
         foreach (PaymentType::cases() as $paymentType) {
             ShopPaymentType::query()->create([

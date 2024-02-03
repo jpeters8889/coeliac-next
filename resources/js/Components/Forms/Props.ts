@@ -28,7 +28,7 @@ export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
 };
 
 export type InputProps = BaseFormInputProps & {
-  type?: 'text' | 'number' | 'search' | 'email' | 'url';
+  type?: 'text' | 'number' | 'search' | 'email' | 'url' | 'phone';
   label: string;
   error?: string;
   hideLabel?: boolean;

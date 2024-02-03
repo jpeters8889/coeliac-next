@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import { createApp, DefineComponent, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
+import { createPinia } from 'pinia';
 import Coeliac from '@/Layouts/Coeliac.vue';
 import ArticleHeader from '@/Components/ArticleHeader.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
@@ -31,10 +32,13 @@ createInertiaApp({
   },
 
   setup({ el, App, props, plugin }) {
+    const pinia = createPinia();
+
     createApp({ render: () => h(App, props) })
       .component('article-header', ArticleHeader)
       .component('article-image', ArticleImage)
       .use(plugin)
+      .use(pinia)
       .mount(el);
   },
 });

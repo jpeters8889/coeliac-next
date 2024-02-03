@@ -9,6 +9,8 @@ const props = withDefaults(
     width?: string;
     color?: 'white' | 'primary' | 'secondary';
     background?: boolean;
+    onTop?: boolean;
+    blur?: boolean;
   }>(),
   {
     absolute: true,
@@ -16,6 +18,8 @@ const props = withDefaults(
     width: 'border-4',
     color: 'white',
     background: false,
+    onTop: false,
+    blur: false,
   }
 );
 
@@ -48,6 +52,8 @@ const classes = computed((): string[] => {
     :class="{
       absolute: absolute,
       'bg-black bg-opacity-50': background,
+      'z-[999]': onTop,
+      'backdrop-blur-sm': blur,
     }"
   >
     <div :class="classes" />

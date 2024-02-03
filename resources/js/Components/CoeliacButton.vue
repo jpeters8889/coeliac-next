@@ -55,7 +55,7 @@ const classes = computed((): string[] => {
 
   switch (props.size) {
     case 'sm': {
-      base.push('px-3', 'py-2', 'text-sm leading-4');
+      base.push('px-3', 'py-2', 'text-sm leading-none');
       break;
     }
     case 'md':
@@ -140,6 +140,9 @@ const emits = defineEmits(['click']);
       aria-hidden="true"
     />
 
-    <Loader :display="loading || false" />
+    <Loader
+      :display="loading || false"
+      :color="theme === 'faded' ? 'primary' : 'white'"
+    />
   </component>
 </template>

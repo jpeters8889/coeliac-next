@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 return [
 
     'name' => env('APP_NAME', 'Coeliac Sanctuary'),
@@ -71,6 +70,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HttpClientServiceProvider::class,
     ],
 
 ];

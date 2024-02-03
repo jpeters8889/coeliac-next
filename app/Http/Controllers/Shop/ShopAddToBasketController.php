@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Shop;
 use App\Actions\Shop\AddProductToBasketAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Http\Requests\Shop\AddToBasketRequest;
+use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopProduct;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -22,12 +23,16 @@ class ShopAddToBasketController
         try {
             /** @var string | null $token */
             $token = $request->cookies->get('basket_token');
+
+            /** @var ShopOrder $order */
             $order = $resolveBasketAction->handle($token);
 
             $product = ShopProduct::query()->findOrFail($request->integer('product_id'));
             $variant = $product->variants()->findOrFail($request->integer('variant_id'));
 
             $addProductToBasketAction->handle($order, $product, $variant, $request->integer('quantity'));
+
+            DB::commit();
 
             return redirect()
                 ->back()

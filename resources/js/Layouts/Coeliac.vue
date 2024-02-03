@@ -2,7 +2,6 @@
 import CoeliacHeader from '@/Layouts/Components/CoeliacHeader.vue';
 import CoeliacFooter from '@/Layouts/Components/CoeliacFooter.vue';
 import { MetaProps } from '@/types/DefaultProps';
-import { ShoppingBagIcon } from '@heroicons/vue/24/solid';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import ShopBasketHeader from '@/Layouts/Components/ShopBasketHeader.vue';
@@ -10,7 +9,11 @@ import ShopFooterCta from '@/Layouts/Components/ShopFooterCta.vue';
 
 defineProps<{ meta: MetaProps }>();
 
-const isShop = computed((): boolean => usePage().component.includes('Shop'));
+const isShop = computed(
+  (): boolean =>
+    usePage().component.includes('Shop') &&
+    usePage().component !== 'Shop/Checkout'
+);
 </script>
 
 <template>

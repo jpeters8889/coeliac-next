@@ -10,10 +10,11 @@ import CoeliacButton from '@/Components/CoeliacButton.vue';
 import Icon from '@/Components/Icon.vue';
 import { ShopProductDetail, ShopProductVariant } from '@/types/Shop';
 import { computed, onMounted, ref, Ref, watch } from 'vue';
+import useAddToBasket from '@/composables/useAddToBasket';
 
 const props = defineProps<{ product: ShopProductDetail }>();
 
-const selectedVariant: Ref<undefined | ShopProductVariant> = ref();
+const selectedVariant: Ref<ShopProductVariant | undefined> = ref();
 const quantity: Ref<number> = ref(1);
 const isInStock: Ref<boolean> = ref(true);
 
@@ -28,10 +29,14 @@ const checkStock = () => {
 
 const availableQuantity = computed(() => selectedVariant.value?.quantity);
 
+const { addBasketForm, prepareAddBasketForm, submitAddBasketForm } =
+  useAddToBasket();
+
 onMounted(() => {
   if (props.product.variants.length === 1) {
     // eslint-disable-next-line prefer-destructuring
     selectedVariant.value = props.product.variants[0];
+    prepareAddBasketForm(props.product.id, selectedVariant.value.id);
   }
 
   checkStock();
@@ -39,15 +44,37 @@ onMounted(() => {
 
 watch(selectedVariant, () => {
   checkStock();
+  prepareAddBasketForm(
+    props.product.id,
+    (<ShopProductVariant>selectedVariant.value).id
+  );
+
   quantity.value = 1;
 });
+
+watch(quantity, () => {
+  prepareAddBasketForm(
+    props.product.id,
+    (<ShopProductVariant>selectedVariant.value).id,
+    quantity.value
+  );
+});
+
+const addToBasket = () => {
+  submitAddBasketForm({
+    only: ['basket'],
+  });
+};
 </script>
 
 <template>
   <div
     class="mt-3 w-full md:col-start-1 md:row-start-2 md:max-w-lg md:self-start"
   >
-    <form class="flex w-full flex-col space-y-3">
+    <form
+      class="flex w-full flex-col space-y-3"
+      @submit.prevent="addToBasket()"
+    >
       <div
         v-if="product.variants.length > 1"
         class="w-full sm:flex sm:justify-between"

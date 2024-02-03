@@ -1,0 +1,85 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { watchDebounced } from '@vueuse/core';
+import useShopStore from '@/stores/useShopStore';
+
+const props = defineProps<{ address: string }>();
+
+const latlng = ref<{ lat?: number; lng?: number }>({});
+
+onMounted(() => {
+  navigator.geolocation.getCurrentPosition(
+    (result) => {
+      latlng.value = {
+        lat: result.coords.latitude,
+        lng: result.coords.longitude,
+      };
+    },
+    null,
+    {
+      enableHighAccuracy: false,
+    }
+  );
+});
+
+const emits = defineEmits(['setAddress']);
+
+const country = ref(useShopStore().selectedCountry);
+
+const hasSelectedAddress = ref(false);
+const searchResults = ref<{ id: string; address: string }[]>([]);
+
+const selectAddress = async (id: string) => {
+  const response = await axios.get(`/api/shop/address-search/${id}`);
+
+  emits('setAddress', response.data);
+  hasSelectedAddress.value = true;
+  searchResults.value = [];
+};
+
+const handleSearch = async () => {
+  if (hasSelectedAddress.value) {
+    hasSelectedAddress.value = false;
+    return;
+  }
+
+  if (props.address.length < 2) {
+    return;
+  }
+
+  const request = await axios.post('/api/shop/address-search', {
+    search: props.address,
+    country: country.value,
+    lat: latlng.value.lat,
+    lng: latlng.value.lng,
+  });
+
+  searchResults.value = request.data;
+};
+
+watchDebounced(() => props.address, handleSearch, { debounce: 200 });
+</script>
+
+<template>
+  <div class="relative">
+    <slot />
+
+    <div
+      v-if="
+        !hasSelectedAddress && searchResults.length > 0 && address.length >= 2
+      "
+      class="absolute right-0 top-full z-[999] mt-px max-h-60 w-full overflow-scroll border border-grey-darker bg-white shadow"
+    >
+      <ul class="divide-y divide-grey-off">
+        <li
+          v-for="result in searchResults"
+          :key="result.id"
+          class="cursor-pointer p-2 transition-all hover:bg-grey-off/30"
+          @click="selectAddress(result.id)"
+          v-text="result.address"
+        />
+      </ul>
+    </div>
+  </div>
+</template>

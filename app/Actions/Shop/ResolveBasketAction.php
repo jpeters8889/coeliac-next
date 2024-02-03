@@ -9,15 +9,23 @@ use App\Models\Shop\ShopOrder;
 
 class ResolveBasketAction
 {
-    public function handle(?string $token = null): ShopOrder
+    public function handle(?string $token = null, bool $create = true): ?ShopOrder
     {
         if ($token) {
-            return ShopOrder::query()
+            $basket = ShopOrder::query()
                 ->where('token', $token)
                 ->where('state_id', OrderState::BASKET)
-                ->firstOrCreate();
+                ->first();
+
+            if ($basket) {
+                return $basket;
+            }
         }
 
-        return ShopOrder::create();
+        if ($create) {
+            return ShopOrder::create();
+        }
+
+        return null;
     }
 }

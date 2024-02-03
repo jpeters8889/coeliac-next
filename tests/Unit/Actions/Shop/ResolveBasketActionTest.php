@@ -48,4 +48,14 @@ class ResolveBasketActionTest extends TestCase
         $order = ShopOrder::query()->first();
         $this->assertEquals(OrderState::BASKET, $order->state_id);
     }
+
+    /** @test */
+    public function itWillNotCreateABasketIfTheCreateFlagIsFalse(): void
+    {
+        $this->assertDatabaseEmpty(ShopOrder::class);
+
+        $this->callAction(ResolveBasketAction::class, null, false);
+
+        $this->assertDatabaseEmpty(ShopOrder::class);
+    }
 }

@@ -49,6 +49,5 @@ defineProps<{
       :key="product.link"
       :product="product"
     />
-    >
   </div>
 </template>
