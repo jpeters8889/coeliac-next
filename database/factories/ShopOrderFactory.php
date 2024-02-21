@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\Shop\OrderState;
+use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopOrder;
-use App\Models\User;
-use App\Models\UserAddress;
+use App\Models\Shop\ShopShippingAddress;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -22,17 +22,17 @@ class ShopOrderFactory extends Factory
         ];
     }
 
-    public function forUser(User $user)
+    public function forCustomer(ShopCustomer $customer)
     {
         return $this->state(fn () => [
-            'user_id' => $user->id,
+            'customer_id' => $customer->id,
         ]);
     }
 
-    public function toAddress(UserAddress $address)
+    public function toAddress(ShopShippingAddress $address)
     {
         return $this->state(fn () => [
-            'user_address_id' => $address->id,
+            'shipping_address_id' => $address->id,
         ]);
     }
 
@@ -40,6 +40,14 @@ class ShopOrderFactory extends Factory
     {
         return $this->state(fn () => [
             'state_id' => OrderState::BASKET,
+        ]);
+    }
+
+    public function asPending()
+    {
+        return $this->state(fn () => [
+            'state_id' => OrderState::PENDING,
+            'payment_intent_id' => $this->faker->uuid,
         ]);
     }
 

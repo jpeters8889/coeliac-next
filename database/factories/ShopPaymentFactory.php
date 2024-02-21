@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\Shop\PaymentType;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPayment;
 
@@ -20,7 +19,7 @@ class ShopPaymentFactory extends Factory
             'discount' => 0,
             'postage' => 100,
             'total' => 200,
-            'payment_type_id' => PaymentType::STRIPE->value,
+            'payment_type_id' => null,
         ];
     }
 

@@ -36,7 +36,8 @@
         "spatie/laravel-data": "^2.2.3",
         "spatie/laravel-medialibrary": "^10.15.0",
         "spatie/laravel-sluggable": "^3.5.0",
-        "spatie/schema-org": "^3.23"
+        "spatie/schema-org": "^3.23",
+        "stripe/stripe-php": "^13.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9.2",

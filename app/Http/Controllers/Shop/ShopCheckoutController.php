@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Shop;
 
-use App\Actions\Shop\CalculateOrderPostageAction;
+use App\Actions\Shop\CalculateOrderTotalsAction;
+use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Http\Response\Inertia;
@@ -23,7 +24,7 @@ class ShopCheckoutController
         Request $request,
         ResolveBasketAction $resolveBasketAction,
         GetOrderItemsAction $getOrderItemsAction,
-        CalculateOrderPostageAction $calculateOrderPostageAction,
+        CalculateOrderTotalsAction $calculateOrderTotalsAction,
     ): Response {
         /** @var string | null $token */
         $token = $request->cookies->get('basket_token');
@@ -44,23 +45,18 @@ class ShopCheckoutController
             /** @var Collection<int, ShopOrderItemResource> $collection */
             $collection = $items->collection;
 
-            /** @var int $subtotal */
-            $subtotal = $collection->map(fn (ShopOrderItemResource $item) => $item->product_price * $item->quantity)->sum();
-
-            $postage = $calculateOrderPostageAction->handle($collection, $country);
-
-            $total = $subtotal + $postage;
+            ['subtotal' => $subtotal, 'postage' => $postage, 'total' => $total] = $calculateOrderTotalsAction->handle($collection, $country);
 
             $props = [
                 'has_basket' => true,
-                'countries' => ShopPostageCountry::query()
+                'countries' => fn () => ShopPostageCountry::query()
                     ->orderBy('country')
                     ->get()
                     ->map(fn (ShopPostageCountry $postageCountry) => [
                         'value' => $postageCountry->id,
                         'label' => $postageCountry->country,
                     ]),
-                'basket' => [
+                'basket' => fn () => [
                     'items' => $items,
                     'selected_country' => $basket->postage_country_id,
                     'delivery_timescale' => $basket->postageCountry?->area?->delivery_timescale,
@@ -68,6 +64,7 @@ class ShopCheckoutController
                     'postage' => Helpers::formatMoney(Money::GBP($postage)),
                     'total' => Helpers::formatMoney(Money::GBP($total)),
                 ],
+                'payment_intent' => fn () => app(CreatePaymentIntentAction::class)->handle($basket, $total),
             ];
         }
 

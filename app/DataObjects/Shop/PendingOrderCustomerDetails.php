@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\DataObjects\Shop;
+
+use App\Http\Requests\Shop\CompleteOrderRequest;
+
+readonly class PendingOrderCustomerDetails
+{
+    public function __construct(
+        public string $name,
+        public string $email,
+        public ?string $phone = null,
+    ) {
+        //
+    }
+
+    public static function createFromRequest(CompleteOrderRequest $request)
+    {
+        return new static(
+            name: $request->string('contact.name')->title()->toString(),
+            email: $request->string('contact.email')->toString(),
+            phone: $request->has('contact.phone') ? $request->string('contact.phone')->toString() : null,
+        );
+    }
+}

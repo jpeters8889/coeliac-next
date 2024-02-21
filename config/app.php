@@ -71,6 +71,7 @@ return [
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\HttpClientServiceProvider::class,
+        App\Providers\StripeServiceProvider::class,
     ],
 
 ];

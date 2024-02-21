@@ -909,6 +909,25 @@ namespace App\Models\Shop{
 
 namespace App\Models\Shop{
 /**
+ * App\Models\Shop\ShopCustomer
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string|null $phone
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopShippingAddress> $addresses
+ * @property-read int|null $addresses_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCustomer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCustomer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopCustomer query()
+ */
+	class ShopCustomer extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
  * App\Models\Shop\ShopDiscountCode
  *
  * @property int $id
@@ -991,17 +1010,19 @@ namespace App\Models\Shop{
  * App\Models\Shop\ShopOrder
  *
  * @property int $id
- * @property int $state_id
+ * @property \App\Enums\Shop\OrderState $state_id
  * @property int $postage_country_id
  * @property string $token
  * @property string|null $order_key
- * @property int|null $user_id
- * @property int|null $user_address_id
+ * @property string|null $payment_intent_id
+ * @property int|null $customer_id
+ * @property int|null $shipping_address_id
  * @property string|null $shipped_at
  * @property int $newsletter_signup
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\UserAddress|null $address
+ * @property-read \App\Models\Shop\ShopShippingAddress|null $address
+ * @property-read \App\Models\Shop\ShopCustomer|null $customer
  * @property-read \App\Models\Shop\ShopDiscountCode|null $discountCode
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrderItem> $items
  * @property-read int|null $items_count
@@ -1015,7 +1036,6 @@ namespace App\Models\Shop{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopSource> $sources
  * @property-read int|null $sources_count
  * @property-read \App\Models\Shop\ShopOrderState $state
- * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShopOrder query()
@@ -1094,7 +1114,7 @@ namespace App\Models\Shop{
  * @property int $review_id
  * @property int|null $order_id
  * @property int $product_id
- * @property string $rating
+ * @property float $rating
  * @property string|null $review
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -1135,12 +1155,13 @@ namespace App\Models\Shop{
  * @property int $discount
  * @property int $postage
  * @property int $total
- * @property int $payment_type_id
+ * @property string|null $payment_type_id
+ * @property int|null $fee
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Shop\ShopOrder $order
  * @property-read \App\Models\Shop\ShopPaymentResponse|null $response
- * @property-read \App\Models\Shop\ShopPaymentType $type
+ * @property-read \App\Models\Shop\ShopPaymentType|null $type
  * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ShopPayment query()
@@ -1154,6 +1175,7 @@ namespace App\Models\Shop{
  *
  * @property int $id
  * @property int $payment_id
+ * @property string|null $charge_id
  * @property array $response
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -1248,6 +1270,8 @@ namespace App\Models\Shop{
  *
  * @property int $currentPrice
  * @property null | int $oldPrice
+ * @property float $averageRating
+ * @property array{current_price: string, old_price?: string} $price
  * @property int $id
  * @property string $title
  * @property int $pinned
@@ -1257,6 +1281,7 @@ namespace App\Models\Shop{
  * @property string $description
  * @property string $long_description
  * @property int $shipping_method_id
+ * @property string $variant_title
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopCategory> $categories
@@ -1319,6 +1344,7 @@ namespace App\Models\Shop{
  * @property string $title
  * @property int $weight
  * @property int $quantity
+ * @property array|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Shop\ShopProduct $product
@@ -1327,6 +1353,36 @@ namespace App\Models\Shop{
  * @method static \Illuminate\Database\Eloquent\Builder|ShopProductVariant query()
  */
 	class ShopProductVariant extends \Eloquent {}
+}
+
+namespace App\Models\Shop{
+/**
+ * App\Models\Shop\ShopShippingAddress
+ *
+ * @property int $id
+ * @property int $customer_id
+ * @property string $name
+ * @property string $line_1
+ * @property string|null $line_2
+ * @property string|null $line_3
+ * @property string $town
+ * @property string|null $county
+ * @property string $postcode
+ * @property string $country
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Shop\ShopCustomer|null $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|ShopShippingAddress withoutTrashed()
+ */
+	class ShopShippingAddress extends \Eloquent {}
 }
 
 namespace App\Models\Shop{
@@ -1417,8 +1473,6 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\UserAddress> $addresses
- * @property-read int|null $addresses_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -1429,35 +1483,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  */
 	class User extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\UserAddress
- *
- * @property int $id
- * @property int $user_id
- * @property string $type
- * @property string $name
- * @property string $line_1
- * @property string|null $line_2
- * @property string|null $line_3
- * @property string $town
- * @property string $postcode
- * @property string $country
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Shop\ShopOrder> $orders
- * @property-read int|null $orders_count
- * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress query()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|UserAddress withoutTrashed()
- */
-	class UserAddress extends \Eloquent {}
 }
 

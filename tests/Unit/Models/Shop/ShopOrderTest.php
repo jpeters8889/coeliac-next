@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Models\Shop;
 
 use App\Enums\Shop\OrderState;
+use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopDiscountCodesUsed;
 use App\Models\Shop\ShopOrder;
@@ -15,9 +16,8 @@ use App\Models\Shop\ShopOrderReviewItem;
 use App\Models\Shop\ShopOrderState;
 use App\Models\Shop\ShopPayment;
 use App\Models\Shop\ShopPostageCountry;
+use App\Models\Shop\ShopShippingAddress;
 use App\Models\Shop\ShopSource;
-use App\Models\User;
-use App\Models\UserAddress;
 use Database\Seeders\ShopScaffoldingSeeder;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
@@ -68,28 +68,28 @@ class ShopOrderTest extends TestCase
     }
 
     /** @test */
-    public function itHasAUser(): void
+    public function itHasACustomer(): void
     {
-        $user = $this->create(User::class);
+        $customer = $this->create(ShopCustomer::class);
 
         $order = $this->build(ShopOrder::class)
-            ->forUser($user)
+            ->forCustomer($customer)
             ->create();
 
-        $this->assertInstanceOf(User::class, $order->user);
-        $this->assertTrue($order->user->is($user));
+        $this->assertInstanceOf(ShopCustomer::class, $order->customer);
+        $this->assertTrue($order->customer->is($customer));
     }
 
     /** @test */
     public function itHasAnAddress(): void
     {
-        $address = $this->create(UserAddress::class);
+        $address = $this->create(ShopShippingAddress::class);
 
         $order = $this->build(ShopOrder::class)
             ->toAddress($address)
             ->create();
 
-        $this->assertInstanceOf(UserAddress::class, $order->address);
+        $this->assertInstanceOf(ShopShippingAddress::class, $order->address);
         $this->assertTrue($order->address->is($address));
     }
 

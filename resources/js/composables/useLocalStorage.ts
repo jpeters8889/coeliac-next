@@ -16,5 +16,9 @@ export default () => {
     return JSON.parse(rtr);
   };
 
-  return { putInLocalStorage, getFromLocalStorage };
+  const removeFromLocalStorage = (key: string): void => {
+    localStorage.removeItem(key);
+  };
+
+  return { putInLocalStorage, getFromLocalStorage, removeFromLocalStorage };
 };

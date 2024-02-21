@@ -95,4 +95,38 @@ export type CheckoutShippingStep = {
   postcode: string;
 };
 
-export type CheckoutForm = CheckoutContactStep & CheckoutShippingStep;
+export type CheckoutBillingStep = CheckoutShippingStep & {
+  name: string;
+  country: string;
+};
+
+export type CheckoutForm = {
+  contact: CheckoutContactStep;
+  shipping: CheckoutShippingStep;
+  billing: CheckoutBillingStep;
+};
+
+export type CheckoutFormErrors = CheckoutForm & {
+  basket: string;
+};
+
+export type OrderCompleteProps = {
+  id: string;
+  subtotal: string;
+  postage: string;
+  total: string;
+  shipping: string[];
+  products: ShopBasketItem[];
+  payment: CardPayment | PaypalPayment;
+};
+
+type CardPayment = {
+  type: 'Card' | 'Google Pay' | 'Apple Pay' | 'Samsung Pay';
+  expiry?: string;
+  lastDigits?: string;
+};
+
+type PaypalPayment = {
+  type: 'PayPal';
+  paypalAccount?: string;
+};

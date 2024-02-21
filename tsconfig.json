@@ -8,20 +8,31 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "resolveJsonModule": true,
     "types": [
-        "vite/client",
-        "googlemaps",
-        "google.maps"
+      "vite/client",
+      "googlemaps",
+      "google.maps",
+      "stripe-v3"
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["resources/js/*"]
-    }
+      "@/*": [
+        "resources/js/*"
+      ]
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
   "include": [
-      "./resources/js/*.ts",
-      "./resources/js/**/*",
-      "./*.js",
+    "./resources/js/*.ts",
+    "./resources/js/**/*",
+    "./*.js",
+    "node_modules/@types/stripe-v3/index.d.ts"
   ],
-  "exclude": ["node_modules", "public"]
+  "exclude": [
+    "node_modules",
+    "public"
+  ]
 }

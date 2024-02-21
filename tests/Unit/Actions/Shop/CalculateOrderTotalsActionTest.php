@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions\Shop;
 
 use App\Actions\Shop\AddProductToBasketAction;
-use App\Actions\Shop\CalculateOrderPostageAction;
+use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Enums\Shop\PostageArea;
 use App\Enums\Shop\ShippingMethod;
@@ -21,7 +21,7 @@ use Illuminate\Support\Collection;
 use RuntimeException;
 use Tests\TestCase;
 
-class CalculateOrderPostageActionTest extends TestCase
+class CalculateOrderTotalsActionTest extends TestCase
 {
     protected Collection $itemsCollection;
 
@@ -52,6 +52,8 @@ class CalculateOrderPostageActionTest extends TestCase
             'order_id' => $this->order->id,
             'product_id' => $this->product->id,
             'product_variant_id' => $this->variant->id,
+            'product_price' => 300,
+            'quantity' => 2,
         ]);
 
         $this->itemsCollection = $this->callAction(GetOrderItemsAction::class, $this->order)->collection;
@@ -65,11 +67,30 @@ class CalculateOrderPostageActionTest extends TestCase
     }
 
     /** @test */
-    public function itReturnsThePostagePrice(): void
+    public function itReturnsAnArrayWithTheCorrectKeys(): void
     {
-        $price = $this->callAction(CalculateOrderPostageAction::class, $this->itemsCollection, $this->order->postageCountry);
+        $keys = ['subtotal', 'postage', 'total'];
 
-        $this->assertEquals(150, $price);
+        $result = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKeys($keys, $result);
+    }
+
+    /** @test */
+    public function itCalculatesTheSubtotal(): void
+    {
+        ['subtotal' => $subtotal] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
+
+        $this->assertEquals(600, $subtotal);
+    }
+
+    /** @test */
+    public function itCalculatesThePostagePrice(): void
+    {
+        ['postage' => $postage] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
+
+        $this->assertEquals(150, $postage);
     }
 
     /** @test */
@@ -88,7 +109,7 @@ class CalculateOrderPostageActionTest extends TestCase
 
         $this->order->update(['postage_country_id' => $country->id]);
 
-        $price = $this->callAction(CalculateOrderPostageAction::class, $this->itemsCollection, $this->order->postageCountry);
+        ['postage' => $price] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
 
         $this->assertEquals(300, $price);
     }
@@ -103,7 +124,7 @@ class CalculateOrderPostageActionTest extends TestCase
             'price' => 100,
         ]);
 
-        $price = $this->callAction(CalculateOrderPostageAction::class, $this->itemsCollection, $this->order->postageCountry);
+        ['postage' => $price] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
 
         $this->assertEquals(100, $price);
     }
@@ -130,7 +151,7 @@ class CalculateOrderPostageActionTest extends TestCase
 
         $this->itemsCollection = $this->callAction(GetOrderItemsAction::class, $this->order)->collection;
 
-        $price = $this->callAction(CalculateOrderPostageAction::class, $this->itemsCollection, $this->order->postageCountry);
+        ['postage' => $price] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
 
         $this->assertEquals(300, $price);
     }
@@ -144,6 +165,14 @@ class CalculateOrderPostageActionTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Can not calculate postage');
 
-        $this->callAction(CalculateOrderPostageAction::class, $this->itemsCollection, $this->order->postageCountry);
+        $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
+    }
+
+    /** @test */
+    public function itCalculatesTheTotalPrice(): void
+    {
+        ['total' => $total] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
+
+        $this->assertEquals(750, $total);
     }
 }

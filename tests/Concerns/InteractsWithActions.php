@@ -21,7 +21,7 @@ trait InteractsWithActions
     /**
      * @param  class-string  $action
      */
-    protected function expectAction(string $action, ...$args): self
+    protected function expectAction(string $action, array $args = [], bool $once = true, mixed $return = null): self
     {
         $mockery = $this->partialMock($action)->shouldReceive('handle');
 
@@ -33,7 +33,13 @@ trait InteractsWithActions
             $mockery->withArgs($args);
         }
 
-        $mockery->once();
+        if ($return) {
+            $mockery->andReturn($return);
+        }
+
+        if ($once) {
+            $mockery->once();
+        }
 
         return $this;
     }

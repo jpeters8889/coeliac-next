@@ -1,7 +1,5 @@
 import { useForm } from 'laravel-precognition-vue-inertia';
 import eventBus from '@/eventBus';
-import { ValidationConfig } from 'laravel-precognition/dist/types';
-import { InertiaForm } from '@inertiajs/vue3/types/useForm';
 import { VisitOptions } from '@inertiajs/core';
 
 type AddBasketPayload = {

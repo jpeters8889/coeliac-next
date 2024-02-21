@@ -12,11 +12,16 @@ use App\Resources\Shop\ShopOrderItemResource;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
-class CalculateOrderPostageAction
+class CalculateOrderTotalsAction
 {
-    /** @param Collection<int, ShopOrderItemResource> $items */
-    public function handle(Collection $items, ShopPostageCountry $country): int
+    /**
+     * @param Collection<int, ShopOrderItemResource> $items
+     * @return array{subtotal: int, postage: int, total: int}
+     */
+    public function handle(Collection $items, ShopPostageCountry $country): array
     {
+        $subtotal = $items->map(fn (ShopOrderItemResource $item) => $item->product_price * $item->quantity)->sum();
+
         $shippingMethod = $items->max(function (ShopOrderItemResource $resource) {
             /** @var ShopProduct $product */
             $product = $resource->product;
@@ -39,6 +44,14 @@ class CalculateOrderPostageAction
             ->orderBy('max_weight')
             ->firstOr(fn () => throw new RuntimeException('Can not calculate postage'));
 
-        return $postagePrice->price;
+        $postage = $postagePrice->price;
+
+        $total = $subtotal + $postage;
+
+        return [
+            'subtotal' => $subtotal,
+            'postage' => $postage,
+            'total' => $total,
+        ];
     }
 }

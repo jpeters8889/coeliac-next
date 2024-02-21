@@ -7,8 +7,8 @@ namespace App\Enums\Shop;
 enum OrderState: int
 {
     case BASKET = 1;
-    case PAID = 2;
-    case PRINTED = 3;
+    case PENDING = 2;
+    case PAID = 3;
     case SHIPPED = 4;
     case COMPLETE = 5;
     case REFUNDED = 6;
@@ -19,8 +19,8 @@ enum OrderState: int
     {
         return match ($this) {
             self::BASKET => 'Basket',
+            self::PENDING => 'Pending',
             self::PAID => 'Paid',
-            self::PRINTED => 'Printed',
             self::SHIPPED => 'Shipped',
             self::COMPLETE => 'Complete',
             self::REFUNDED => 'Refunded',

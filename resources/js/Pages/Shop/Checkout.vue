@@ -1,21 +1,47 @@
 <script lang="ts" setup>
 import Card from '@/Components/Card.vue';
-import { CheckoutForm, ShopBasketItem } from '@/types/Shop';
+import { CheckoutForm, CheckoutFormErrors, ShopBasketItem } from '@/types/Shop';
 import Heading from '@/Components/Heading.vue';
 import CheckoutItems from '@/Components/PageSpecific/Shop/Checkout/CheckoutItems.vue';
 import CheckoutTotals from '@/Components/PageSpecific/Shop/Checkout/CheckoutTotals.vue';
 import { FormSelectOption } from '@/Components/Forms/Props';
 import ContactDetails from '@/Components/PageSpecific/Shop/Checkout/Form/ContactDetails.vue';
-import { useForm } from 'laravel-precognition-vue-inertia';
-import { Ref, ref } from 'vue';
+import { computed, nextTick, reactive, Ref, ref, watch } from 'vue';
 import ShippingDetails from '@/Components/PageSpecific/Shop/Checkout/Form/ShippingDetails.vue';
 import useShopStore from '@/stores/useShopStore';
 import useLocalStorage from '@/composables/useLocalStorage';
+import PaymentDetails from '@/Components/PageSpecific/Shop/Checkout/Form/PaymentDetails.vue';
+import Loader from '@/Components/Loader.vue';
+import useUrl from '@/composables/useUrl';
+import axios, { AxiosError } from 'axios';
+import useStripeStore from '@/stores/useStripeStore';
+import { getAlpha2Code, registerLocale } from 'i18n-iso-countries';
+import en from 'i18n-iso-countries/langs/en.json';
+import { StripeElements } from '@stripe/stripe-js/types/stripe-js/elements-group';
+import { usePage } from '@inertiajs/vue3';
+import eventBus from '@/eventBus';
+
+type SectionKeys = 'details' | 'shipping' | 'payment' | '_complete';
+type FormSection = {
+  [T in SectionKeys]: {
+    active: boolean;
+    complete: boolean;
+    error: boolean;
+  };
+};
+
+type SectionComponent = {
+  component: string;
+  key: SectionKeys;
+  next: SectionKeys;
+  additionalProps: Record<string, any>;
+};
 
 type NoBasketProps = {
   has_basket: false;
   countries: undefined;
   basket: undefined;
+  payment_intent: undefined;
 };
 
 type BasketProps = {
@@ -29,33 +55,124 @@ type BasketProps = {
     postage: string;
     total: string;
   };
+  payment_intent: string;
 };
 
-defineProps<NoBasketProps | BasketProps>();
+registerLocale(en);
+
+const showLoader = ref(false);
+
+const props = defineProps<NoBasketProps | BasketProps>();
 const store = useShopStore();
+const errors = computed<Partial<CheckoutFormErrors>>(() => store.getErrors);
+
+const basketError = ref<HTMLParagraphElement | null>(null);
+
+if (usePage().props.errors) {
+  store.setErrors(usePage().props.errors);
+
+  nextTick(() => {
+    basketError.value?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  eventBus.$on('payment-widget-loaded', () => {
+    basketError.value?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
 
 const { getFromLocalStorage, putInLocalStorage } = useLocalStorage();
 
-const form = useForm<CheckoutForm>(
-  'post',
-  '/shop/basket',
-  getFromLocalStorage<CheckoutForm>('checkout-form', store.toForm)
-);
+const createGenericError = (
+  message: string = 'An unknown error has occurred, you have not been charged.'
+): void => {
+  store.setErrors({
+    basket: message,
+  });
+};
+
+const submitPendingOrder = async (payload: CheckoutForm): Promise<boolean> => {
+  try {
+    await axios.post('/shop/basket', payload);
+
+    return true;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      if (error.status === 422 && error.response?.data?.errors) {
+        store.setErrors(error.response.data.errors);
+
+        return false;
+      }
+    }
+
+    createGenericError();
+
+    return false;
+  }
+};
+
+const stripePayload = (elements: StripeElements, payload: CheckoutForm) => ({
+  elements,
+  confirmParams: {
+    return_url: useUrl().generateUrl('done'),
+    payment_method_data: {
+      billing_details: {
+        name: payload.billing.name,
+        email: payload.contact.email,
+        phone: payload.contact.phone,
+        address: {
+          line1: payload.billing.address_1,
+          line2:
+            payload.billing.address_2 +
+            (payload.billing.address_3 ? `, ${payload.billing.address_3}` : ''),
+          city: payload.billing.town,
+          state: payload.billing.county,
+          postal_code: payload.billing.postcode,
+          country:
+            getAlpha2Code(payload.billing.country, 'en') ||
+            payload.billing.country,
+        },
+      },
+    },
+  },
+});
+
+const revertPendingOrder = async (): Promise<void> => {
+  await axios.delete('/shop/basket');
+};
+
+const prepareOrder = async () => {
+  showLoader.value = true;
+  const payload = store.toForm;
+
+  if (!(await submitPendingOrder(payload))) {
+    return;
+  }
+
+  const stripeStore = useStripeStore();
+
+  await stripeStore.instantiate(props.payment_intent as string);
+  const { error } = await stripeStore.stripe.confirmPayment(
+    stripePayload(stripeStore.elements, payload)
+  );
+
+  if (error.type === 'card_error' || error.type === 'validation_error') {
+    createGenericError(error.message);
+  } else {
+    createGenericError();
+  }
+
+  await revertPendingOrder();
+
+  // clearUpCompletedOrder(); // this needs moving to confirm?
+
+  showLoader.value = false;
+};
 
 if (getFromLocalStorage('checkout-form')) {
   store.setForm(getFromLocalStorage('checkout-form'));
 }
 
-type SectionKeys = 'details' | 'shipping' | 'billing' | 'payment';
-type FormSection = {
-  [T in SectionKeys]: {
-    active: boolean;
-    complete: boolean;
-    error: boolean;
-  };
-};
-
-const sections: Ref<FormSection> = ref(
+const sections: FormSection = reactive(
   getFromLocalStorage<FormSection>('checkout-steps', {
     details: {
       active: true,
@@ -63,11 +180,6 @@ const sections: Ref<FormSection> = ref(
       error: false,
     },
     shipping: {
-      active: false,
-      complete: false,
-      error: false,
-    },
-    billing: {
       active: false,
       complete: false,
       error: false,
@@ -80,27 +192,93 @@ const sections: Ref<FormSection> = ref(
   })
 );
 
+const activeSection: Ref<SectionKeys> = ref(
+  getFromLocalStorage('checkout-active-section', 'details')
+);
+
 const completeSection = (section: SectionKeys, next: SectionKeys) => {
   putInLocalStorage('checkout-form', store.toForm);
-  form.defaults(store.toForm);
-  form.reset();
 
-  sections.value = {
-    ...sections.value,
-    [section]: {
-      active: false,
+  if (next === '_complete') {
+    sections.payment = {
+      active: true,
       complete: true,
       error: false,
-    },
-    [next]: {
-      active: true,
-      complete: false,
-      error: false,
-    },
+    };
+
+    prepareOrder();
+
+    return;
+  }
+
+  sections[section] = {
+    active: false,
+    complete: true,
+    error: false,
+  };
+  sections[next] = {
+    active: true,
+    complete: false,
+    error: false,
   };
 
-  putInLocalStorage('checkout-steps', sections.value);
+  activeSection.value = next;
+
+  putInLocalStorage('checkout-steps', sections);
+  putInLocalStorage('checkout-active-section', next);
 };
+
+const toggleSection = (section: SectionKeys) => {
+  sections[activeSection.value].active = false;
+  sections[section].active = true;
+};
+
+watch(
+  () => errors,
+  () => {
+    store.setErrors(errors);
+
+    sections.details.error = !!errors.value?.contact;
+    sections.shipping.error = !!errors.value?.shipping;
+
+    if (sections.details.error) {
+      sections.details.active = true;
+      sections.payment.active = false;
+
+      return;
+    }
+
+    if (sections.shipping.error) {
+      sections.shipping.active = true;
+      sections.payment.active = false;
+    }
+  }
+);
+
+const sectionComponents: SectionComponent[] = [
+  {
+    component: ContactDetails,
+    key: 'details',
+    next: 'shipping',
+    additionalProps: {},
+  },
+  {
+    component: ShippingDetails,
+    key: 'shipping',
+    next: 'payment',
+    additionalProps: {
+      canLookupPostcode: props.basket?.selected_country === 1,
+    },
+  },
+  {
+    component: PaymentDetails,
+    key: 'payment',
+    next: '_complete',
+    additionalProps: {
+      paymentToken: props.payment_intent,
+    },
+  },
+];
 </script>
 
 <template>
@@ -114,6 +292,17 @@ const completeSection = (section: SectionKeys, next: SectionKeys) => {
   </Card>
 
   <template v-if="has_basket && basket">
+    <Loader
+      :display="showLoader"
+      class="fixed h-screen w-screen"
+      blur
+      size="w-24 h-24"
+      on-top
+      color="secondary"
+      width="border-[12px]"
+      :absolute="false"
+    />
+
     <div class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 xl:grid-cols-3">
       <Card
         theme="primary-light"
@@ -131,20 +320,26 @@ const completeSection = (section: SectionKeys, next: SectionKeys) => {
       </Card>
 
       <Card class="xl:col-span-2">
-        <form class="flex flex-col gap-5 divide-y divide-grey-off-light">
-          <ContactDetails
-            :show="sections.details.active"
-            :completed="sections.details.complete"
-            @continue="completeSection('details', 'shipping')"
+        <div class="flex flex-col gap-5 divide-y divide-grey-off-light">
+          <component
+            :is="section.component"
+            v-for="section in sectionComponents"
+            :key="section.key"
+            :show="sections[section.key].active"
+            :completed="sections[section.key].complete"
+            :error="sections[section.key].error"
+            v-bind="section.additionalProps"
+            @continue="completeSection(section.key, section.next)"
+            @toggle="toggleSection(section.key)"
           />
 
-          <ShippingDetails
-            :show="sections.shipping.active"
-            :completed="sections.shipping.complete"
-            :can-lookup-postcode="basket.selected_country === 1"
-            @continue="completeSection('shipping', 'billing')"
+          <p
+            v-if="errors?.basket"
+            ref="basketError"
+            class="-mt-4 !border-t-0 text-lg font-semibold text-red lg:text-xl"
+            v-text="errors.basket"
           />
-        </form>
+        </div>
       </Card>
     </div>
   </template>

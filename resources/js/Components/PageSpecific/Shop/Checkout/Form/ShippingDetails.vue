@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import FormInput from '@/Components/Forms/FormInput.vue';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ComputedRef, reactive, ref, watch } from 'vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ArrowRightIcon, CheckIcon } from '@heroicons/vue/24/outline';
 import useShopStore from '@/stores/useShopStore';
 import AddressLookup from '@/Components/PageSpecific/Shop/Checkout/Form/Components/AddressLookup.vue';
 import { CheckoutShippingStep } from '@/types/Shop';
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid';
 
-defineProps<{
-  show: boolean;
-  completed: boolean;
-  canLookupPostcode: boolean;
-}>();
+defineProps<{ show: boolean; completed: boolean; error: boolean }>();
 
-defineEmits(['continue']);
+const emits = defineEmits(['continue', 'toggle']);
 
 const store = useShopStore();
 
 const data = reactive({ ...store.shippingDetails });
 const { customerName } = store;
-const errors = store.getErrors;
+const errors: ComputedRef<Partial<CheckoutShippingStep>> = computed(
+  () => store.getErrors.shipping || {}
+);
 
 const disableButton = computed((): boolean => {
   if (data.address_1 === '') {
@@ -48,7 +47,17 @@ const handleAddressLookup = (address: CheckoutShippingStep) => {
 
 const addressActive = ref(false);
 
-watch(data, () => store.setShippingDetails(data));
+watch(data, () => {
+  store.setShippingDetails(data);
+});
+
+const submitForm = () => {
+  if (disableButton.value) {
+    return;
+  }
+
+  emits('continue');
+};
 </script>
 
 <template>
@@ -56,18 +65,28 @@ watch(data, () => store.setShippingDetails(data));
     <h2
       class="flex justify-between text-3xl font-semibold"
       :class="{
-        'text-primary-dark': show || completed,
-        'text-grey-off': !show,
+        'text-primary-dark': !error && (show || completed),
+        'text-grey-off': !error && !show,
+        'text-red': error,
       }"
+      @click="completed ? $emit('toggle') : undefined"
     >
       <span>Shipping Details</span>
       <CheckIcon
-        v-if="completed"
+        v-if="completed && !error"
         class="h-8 w-8 text-green"
+      />
+      <ExclamationCircleIcon
+        v-if="error"
+        class="h-8 w-8 text-red"
       />
     </h2>
 
-    <template v-if="show">
+    <form
+      v-if="show"
+      class="flex flex-col space-y-6 pt-4"
+      @keyup.enter="submitForm()"
+    >
       <p class="prose !mt-2 max-w-none xl:prose-lg">
         Thanks {{ customerName }}, next we need to know where to send your
         order.
@@ -80,7 +99,7 @@ watch(data, () => store.setShippingDetails(data));
       >
         <FormInput
           v-model="data.address_1"
-          :error="errors.address_1"
+          :error="errors?.address_1"
           label="Address (Line 1)"
           name="address_1"
           autocomplete="off"
@@ -93,7 +112,7 @@ watch(data, () => store.setShippingDetails(data));
 
       <FormInput
         v-model="data.address_2"
-        :error="errors.address_2"
+        :error="errors?.address_2"
         label="Address (Line 2)"
         name="address_2"
         autocomplete="address_2"
@@ -102,7 +121,7 @@ watch(data, () => store.setShippingDetails(data));
 
       <FormInput
         v-model="data.address_3"
-        :error="errors.address_3"
+        :error="errors?.address_3"
         label="Address (Line 3)"
         name="address_3"
         autocomplete="address_3"
@@ -111,7 +130,7 @@ watch(data, () => store.setShippingDetails(data));
 
       <FormInput
         v-model="data.town"
-        :error="errors.town"
+        :error="errors?.town"
         label="Town / City"
         name="town"
         autocomplete="town"
@@ -121,7 +140,7 @@ watch(data, () => store.setShippingDetails(data));
 
       <FormInput
         v-model="data.county"
-        :error="errors.county"
+        :error="errors?.county"
         label="County"
         name="county"
         autocomplete="county"
@@ -130,7 +149,7 @@ watch(data, () => store.setShippingDetails(data));
 
       <FormInput
         v-model="data.postcode"
-        :error="errors.postcode"
+        :error="errors?.postcode"
         label="Postcode"
         name="postcode"
         autocomplete="postcode"
@@ -149,8 +168,8 @@ watch(data, () => store.setShippingDetails(data));
         :icon="ArrowRightIcon"
         icon-position="right"
         :disabled="disableButton"
-        @click="$emit('continue')"
+        @click="submitForm()"
       />
-    </template>
+    </form>
   </div>
 </template>

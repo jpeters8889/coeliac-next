@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Models\Shop;
 
 use App\Enums\Shop\OrderState;
-use App\Models\User;
-use App\Models\UserAddress;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,16 +40,16 @@ class ShopOrder extends Model
         return $this->belongsTo(ShopOrderState::class, 'state_id');
     }
 
-    /** @return BelongsTo<User, self> */
-    public function user(): BelongsTo
+    /** @return BelongsTo<ShopCustomer, self> */
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(ShopCustomer::class);
     }
 
-    /** @return BelongsTo<UserAddress, self> */
+    /** @return BelongsTo<ShopShippingAddress, self> */
     public function address(): BelongsTo
     {
-        return $this->belongsTo(UserAddress::class, 'user_address_id')->withTrashed();
+        return $this->belongsTo(ShopShippingAddress::class, 'shipping_address_id')->withTrashed();
     }
 
     /** @return HasOne<ShopPayment> */

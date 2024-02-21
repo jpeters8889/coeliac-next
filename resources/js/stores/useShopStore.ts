@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
 import {
+  CheckoutBillingStep,
   CheckoutContactStep,
   CheckoutForm,
+  CheckoutFormErrors,
   CheckoutShippingStep,
 } from '@/types/Shop';
 
@@ -10,15 +12,16 @@ type Keys = keyof CheckoutForm;
 type State = {
   data: CheckoutForm;
   country: string;
-  errors: Partial<CheckoutForm>;
+  errors: Partial<CheckoutFormErrors>;
 };
 
 type Getters = {
   toForm: (state: State) => CheckoutForm;
-  getErrors: (state: State) => Partial<CheckoutForm>;
+  getErrors: (state: State) => Partial<CheckoutFormErrors>;
   customerName: (state: State) => string;
   userDetails: (state: State) => CheckoutContactStep;
   shippingDetails: (state: State) => CheckoutShippingStep;
+  billingDetails: (state: State) => CheckoutBillingStep;
   selectedCountry: (state: State) => string;
 };
 
@@ -26,7 +29,8 @@ type Actions = {
   setForm: (state: Partial<CheckoutForm>) => void;
   setUserDetails: (state: CheckoutContactStep) => void;
   setShippingDetails: (state: CheckoutShippingStep) => void;
-  setErrors: (state: Partial<CheckoutForm>) => void;
+  setBillingDetails: (state: CheckoutBillingStep) => void;
+  setErrors: (state: Partial<CheckoutFormErrors>) => void;
   setCountry: (country: string) => void;
 };
 
@@ -35,18 +39,32 @@ const useShopStore = defineStore<'shop-checkout', State, Getters, Actions>(
   {
     state: () => ({
       data: {
-        // user
-        name: '',
-        email: '',
-        email_confirmation: '',
-        phone: '',
+        contact: {
+          name: '',
+          email: '',
+          email_confirmation: '',
+          phone: '',
+        },
 
-        // shipping
-        address_1: '',
-        address_2: '',
-        address_3: '',
-        town: '',
-        postcode: '',
+        shipping: {
+          address_1: '',
+          address_2: '',
+          address_3: '',
+          town: '',
+          county: '',
+          postcode: '',
+        },
+
+        billing: {
+          name: '',
+          address_1: '',
+          address_2: '',
+          address_3: '',
+          town: '',
+          county: '',
+          postcode: '',
+          country: '',
+        },
       },
 
       country: '',
@@ -56,20 +74,10 @@ const useShopStore = defineStore<'shop-checkout', State, Getters, Actions>(
     getters: {
       toForm: (state) => state.data,
       getErrors: (state) => state.errors,
-      customerName: (state) => state.data.name,
-      userDetails: (state): CheckoutContactStep => ({
-        name: state.data.name,
-        email: state.data.email,
-        email_confirmation: state.data.email_confirmation,
-        phone: state.data.phone,
-      }),
-      shippingDetails: (state): CheckoutShippingStep => ({
-        address_1: state.data.address_1,
-        address_2: state.data.address_2,
-        address_3: state.data.address_3,
-        town: state.data.town,
-        postcode: state.data.postcode,
-      }),
+      customerName: (state) => state.data.contact.name,
+      userDetails: (state) => state.data.contact,
+      shippingDetails: (state) => state.data.shipping,
+      billingDetails: (state) => state.data.billing,
       selectedCountry: (state) => state.country,
     },
     actions: {
@@ -78,14 +86,17 @@ const useShopStore = defineStore<'shop-checkout', State, Getters, Actions>(
       },
       setForm(state) {
         Object.keys(state).forEach((key) => {
-          this.data[<Keys>key] = <string>state[<Keys>key];
+          this.data[<Keys>key] = <any>state[<Keys>key];
         });
       },
       setUserDetails(details) {
-        this.setForm(details);
+        this.setForm({ contact: details });
       },
       setShippingDetails(details) {
-        this.setForm(details);
+        this.setForm({ shipping: details });
+      },
+      setBillingDetails(details) {
+        this.setForm({ billing: details });
       },
       setCountry(country: string) {
         this.country = country;

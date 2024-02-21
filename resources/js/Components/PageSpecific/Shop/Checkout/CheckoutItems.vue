@@ -6,6 +6,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import QuantitySwitcher from '@/Components/PageSpecific/Shop/Checkout/QuantitySwitcher.vue';
 import Loader from '@/Components/Loader.vue';
+import eventBus from '@/eventBus';
 
 defineProps<{ items: ShopBasketItem[] }>();
 
@@ -26,9 +27,10 @@ const alterQuantity = (
     },
     {
       preserveScroll: true,
-      only: ['basket', 'has_basket'],
+      only: ['basket', 'has_basket', 'payment_intent'],
       onSuccess: () => {
         loadingItem.value = null;
+        eventBus.$emit('refresh-payment-element');
       },
     }
   );
@@ -39,7 +41,10 @@ const removeItem = (item: ShopBasketItem) => {
 
   router.delete(`/shop/basket/${item.id}`, {
     preserveScroll: true,
-    only: ['basket', 'has_basket'],
+    only: ['basket', 'has_basket', 'payment_intent'],
+    onSuccess: () => {
+      eventBus.$emit('refresh-payment-element');
+    },
   });
 };
 </script>

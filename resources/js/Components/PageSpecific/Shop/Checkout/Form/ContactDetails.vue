@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import FormInput from '@/Components/Forms/FormInput.vue';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ComputedRef, reactive, watch } from 'vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ArrowRightIcon, CheckIcon } from '@heroicons/vue/24/outline';
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid';
 import useShopStore from '@/stores/useShopStore';
+import { CheckoutContactStep } from '@/types/Shop';
 
-defineProps<{ show: boolean; completed: boolean }>();
-defineEmits(['continue']);
+defineProps<{ show: boolean; completed: boolean; error: boolean }>();
+const emits = defineEmits(['continue', 'toggle']);
 
 const store = useShopStore();
 
 const data = reactive({ ...store.userDetails });
-const errors = store.getErrors;
+const errors: ComputedRef<Partial<CheckoutContactStep>> = computed(
+  () => store.getErrors.contact || {}
+);
 
 const disableButton = computed((): boolean => {
   if (!data) {
@@ -33,6 +37,14 @@ const disableButton = computed((): boolean => {
   return false;
 });
 
+const submitForm = () => {
+  if (disableButton.value) {
+    return;
+  }
+
+  emits('continue');
+};
+
 watch(data, () => store.setUserDetails(data));
 </script>
 
@@ -41,18 +53,28 @@ watch(data, () => store.setUserDetails(data));
     <h2
       class="flex items-center justify-between text-3xl font-semibold"
       :class="{
-        'text-primary-dark': show || completed,
-        'text-grey-off': !show,
+        'text-primary-dark': !error && (show || completed),
+        'text-grey-off': !error && !show,
+        'text-red': error,
       }"
+      @click="completed ? $emit('toggle') : undefined"
     >
       <span>Your Details</span>
       <CheckIcon
-        v-if="completed"
+        v-if="completed && !error"
         class="h-8 w-8 text-green"
+      />
+      <ExclamationCircleIcon
+        v-if="error"
+        class="h-8 w-8 text-red"
       />
     </h2>
 
-    <template v-if="show">
+    <form
+      v-if="show"
+      class="flex flex-col space-y-6"
+      @keyup.enter="submitForm()"
+    >
       <p class="prose !mt-2 max-w-none xl:prose-lg">
         To start the checkout process we just need some basic details from you
         including your name, the email address for your order confirmation, and
@@ -111,8 +133,8 @@ watch(data, () => store.setUserDetails(data));
         :icon="ArrowRightIcon"
         icon-position="right"
         :disabled="disableButton"
-        @click="$emit('continue')"
+        @click="submitForm()"
       />
-    </template>
+    </form>
   </div>
 </template>

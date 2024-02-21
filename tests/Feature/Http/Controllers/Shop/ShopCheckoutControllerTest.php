@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Feature\Http\Controllers\Shop;
 
-use App\Actions\Shop\CalculateOrderPostageAction;
+use App\Actions\Shop\CalculateOrderTotalsAction;
+use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Enums\Shop\PostageArea;
@@ -20,10 +21,13 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Testing\AssertableInertia as Assert;
 use Money\Money;
 use Spatie\TestTime\TestTime;
+use Stripe\Service\MocksStripe;
 use Tests\TestCase;
 
 class ShopCheckoutControllerTest extends TestCase
 {
+    use MocksStripe;
+
     protected ShopOrder $order;
 
     protected ShopOrderItem $item;
@@ -100,7 +104,6 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOrderItemsActonIfABasketExists(): void
     {
-        $this->markTestSkipped();
         $this->expectAction(GetOrderItemsAction::class);
 
         $this
@@ -171,7 +174,7 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itCallsTheCalculateOrderPostageAction(): void
     {
-        $this->expectAction(CalculateOrderPostageAction::class);
+        $this->expectAction(CalculateOrderTotalsAction::class);
 
         $this
             ->withCookie('basket_token', $this->order->token)
@@ -261,5 +264,28 @@ class ShopCheckoutControllerTest extends TestCase
                     )
                     ->etc()
             );
+    }
+
+    /** @test */
+    public function itCallsTheCreatePaymentIntentAction(): void
+    {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->get(route('shop.basket.checkout'));
+    }
+
+    /** @test */
+    public function itPassesTheStripePaymentToken(): void
+    {
+        $token = $this->mockCreatePaymentIntent(300);
+
+        $this->withoutExceptionHandling();
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->get(route('shop.basket.checkout'))
+            ->assertInertia(fn (Assert $page) => $page->where('payment_intent', $token)->etc());
     }
 }

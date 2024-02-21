@@ -12,7 +12,8 @@ defineProps<{ meta: MetaProps }>();
 const isShop = computed(
   (): boolean =>
     usePage().component.includes('Shop') &&
-    usePage().component !== 'Shop/Checkout'
+    usePage().component !== 'Shop/Checkout' &&
+    usePage().component !== 'Shop/OrderComplete'
 );
 </script>
 

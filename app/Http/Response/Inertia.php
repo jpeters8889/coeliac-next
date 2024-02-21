@@ -30,7 +30,7 @@ class Inertia
             BaseInertia::share('productShippingText', config('coeliac.shop.product_postage_description'));
         }
 
-        if (Request::hasCookie('basket_token')) {
+        if (Request::hasCookie('basket_token') && ! Request::routeIs('shop.basket.checkout')) {
             $this->includeBasket();
         }
     }
