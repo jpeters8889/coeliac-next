@@ -51,7 +51,7 @@ class RecipeShowTest extends TestCase
     /** @test */
     public function itCallsTheGetCommentsForItemAction(): void
     {
-        $this->expectAction(GetCommentsForItemAction::class, Recipe::class);
+        $this->expectAction(GetCommentsForItemAction::class, [Recipe::class]);
 
         $this->visitRecipe();
     }

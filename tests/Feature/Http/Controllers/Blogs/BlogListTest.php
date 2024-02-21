@@ -36,7 +36,7 @@ class BlogListTest extends TestCase
 
         $tag = BlogTag::query()->first();
 
-        $this->expectAction(GetBlogsForBlogIndexAction::class, BlogTag::class)
+        $this->expectAction(GetBlogsForBlogIndexAction::class, [BlogTag::class])
             ->get(route('blog.index.tags', ['tag' => $tag->slug]));
     }
 

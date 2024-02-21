@@ -51,7 +51,7 @@ class BlogPageTest extends TestCase
     /** @test */
     public function itCallsTheGetCommentsForItemAction(): void
     {
-        $this->expectAction(GetCommentsForItemAction::class, Blog::class);
+        $this->expectAction(GetCommentsForItemAction::class, [Blog::class]);
 
         $this->visitBlog();
     }

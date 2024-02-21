@@ -22,17 +22,17 @@ class ShopOrderFactory extends Factory
         ];
     }
 
-    public function forCustomer(ShopCustomer $customer)
+    public function forCustomer(?ShopCustomer $customer = null)
     {
         return $this->state(fn () => [
-            'customer_id' => $customer->id,
+            'customer_id' => $customer->id ?? static::factoryForModel(ShopCustomer::class),
         ]);
     }
 
-    public function toAddress(ShopShippingAddress $address)
+    public function toAddress(?ShopShippingAddress $address = null)
     {
         return $this->state(fn () => [
-            'shipping_address_id' => $address->id,
+            'shipping_address_id' => $address->id ?? static::factoryForModel(ShopShippingAddress::class),
         ]);
     }
 
@@ -45,10 +45,13 @@ class ShopOrderFactory extends Factory
 
     public function asPending()
     {
-        return $this->state(fn () => [
-            'state_id' => OrderState::PENDING,
-            'payment_intent_id' => $this->faker->uuid,
-        ]);
+        return $this
+            ->forCustomer()
+            ->toAddress()
+            ->state(fn () => [
+                'state_id' => OrderState::PENDING,
+                'payment_intent_id' => $this->faker->uuid,
+            ]);
     }
 
     public function asExpired()

@@ -444,7 +444,7 @@ class EaterySuggestEditStoreControllerTest extends TestCase
     /** @test */
     public function itCallsTheStoreSuggestedEditAction(): void
     {
-        $this->expectAction(StoreSuggestedEditAction::class, Eatery::class, 'address', 'foobar');
+        $this->expectAction(StoreSuggestedEditAction::class, [Eatery::class, 'address', 'foobar']);
 
         $this->makeRequest('address', 'foobar')->assertOk();
     }

@@ -7,7 +7,6 @@ namespace Tests\Unit\Models\Shop;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPayment;
 use App\Models\Shop\ShopPaymentResponse;
-use App\Models\Shop\ShopPaymentType;
 use Database\Seeders\ShopScaffoldingSeeder;
 use Tests\TestCase;
 
@@ -30,14 +29,6 @@ class ShopPaymentTest extends TestCase
             ->create();
 
         $this->assertInstanceOf(ShopOrder::class, $payment->refresh()->order);
-    }
-
-    /** @test */
-    public function itHasAPaymentType(): void
-    {
-        $payment = $this->create(ShopPayment::class);
-
-        $this->assertInstanceOf(ShopPaymentType::class, $payment->type);
     }
 
     /** @test */

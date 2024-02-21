@@ -112,7 +112,7 @@ class ShopAddToBasketControllerTest extends TestCase
     {
         $order = $this->create(ShopOrder::class);
 
-        $this->expectAction(ResolveBasketAction::class, $order->token);
+        $this->expectAction(ResolveBasketAction::class, [$order->token]);
         $this->withCookie('basket_token', $order->token)->makeRequest();
 
         $this->assertDatabaseCount(ShopOrder::class, 1);
@@ -131,13 +131,13 @@ class ShopAddToBasketControllerTest extends TestCase
     /** @test */
     public function itCallsTheAddProductToBasketAction(): void
     {
-        $this->expectAction(AddProductToBasketAction::class, function ($order, $product, $variant, $quantity) {
+        $this->expectAction(AddProductToBasketAction::class, [function ($order, $product, $variant, $quantity) {
             $this->assertTrue($this->product->is($product));
             $this->assertTrue($this->variant->is($variant));
             $this->assertEquals(1, $quantity);
 
             return true;
-        });
+        }]);
 
         $this->makeRequest();
     }

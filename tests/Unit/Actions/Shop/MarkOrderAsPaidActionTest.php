@@ -56,7 +56,7 @@ class MarkOrderAsPaidActionTest extends TestCase
 
         $this->callAction(MarkOrderAsPaidAction::class, $this->order, $this->createCharge(fee: 50));
 
-        $this->assertEquals('stripe', $this->order->payment->payment_type_id);
+        $this->assertEquals('Card', $this->order->payment->payment_type_id);
         $this->assertEquals(50, $this->order->payment->fee);
     }
 

@@ -38,7 +38,7 @@ class RecipeListTest extends TestCase
 
         $this->get(route('recipe.index'));
 
-        $this->expectAction(GetRecipesForIndexAction::class, function ($filters): bool {
+        $this->expectAction(GetRecipesForIndexAction::class, [function ($filters): bool {
             $this->assertArrayHasKey('features', $filters);
             $this->assertArrayHasKey('meals', $filters);
             $this->assertArrayHasKey('freeFrom', $filters);
@@ -46,7 +46,7 @@ class RecipeListTest extends TestCase
             $this->assertContains('test', $filters['meals']);
 
             return true;
-        });
+        }]);
 
         $this->get(route('recipe.index', ['meals' => 'test']));
     }
@@ -69,7 +69,7 @@ class RecipeListTest extends TestCase
      */
     public function itCallsTheGetRecipeFiltersForIndexAction(string $relationship, string $name): void
     {
-        $this->expectAction(GetRecipeFiltersForIndexAction::class, function ($class, $filters) use ($name): bool {
+        $this->expectAction(GetRecipeFiltersForIndexAction::class, [function ($class, $filters) use ($name): bool {
             $this->assertContains($class, [RecipeFeature::class, RecipeMeal::class, RecipeAllergen::class]);
             $this->assertArrayHasKey('features', $filters);
             $this->assertArrayHasKey('meals', $filters);
@@ -78,7 +78,7 @@ class RecipeListTest extends TestCase
             $this->assertContains('test', $filters[$name]);
 
             return true;
-        });
+        }]);
 
         $this->get(route('recipe.index', [$name => 'test']));
     }
