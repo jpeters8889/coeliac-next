@@ -11,7 +11,7 @@ class HandleInertiaRequests extends Middleware
 {
     public function resolveValidationErrors(Request $request)
     {
-        $errors = parent::resolveValidationErrors($request);
+        $errors = (array) parent::resolveValidationErrors($request);
 
         return (object) collect($errors)->undot()->toArray();
     }

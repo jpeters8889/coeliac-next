@@ -7,12 +7,15 @@ namespace App\Http\Middleware;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
 use Closure;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class ShopHasBasketMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse
     {
         if ( ! $request->hasCookie('basket_token')) {
             throw ValidationException::withMessages(['basket' => 'No Basket Found']);

@@ -51,7 +51,10 @@ class ShopCompleteOrderController
             DB::beginTransaction();
 
             $customer = $createUserAction->handle(PendingOrderCustomerDetails::createFromRequest($request));
-            $address = $createAddressAction->handle($customer, PendingOrderShippingAddressDetails::createFromRequest($request, $basket->postageCountry->country));
+            $address = $createAddressAction->handle(
+                $customer,
+                PendingOrderShippingAddressDetails::createFromRequest($request, $country->country),
+            );
 
             $basket->payment()->create([
                 ...$calculateOrderTotalsAction->handle($collection, $country),

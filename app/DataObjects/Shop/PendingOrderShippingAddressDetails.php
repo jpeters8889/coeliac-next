@@ -6,7 +6,7 @@ namespace App\DataObjects\Shop;
 
 use App\Http\Requests\Shop\CompleteOrderRequest;
 
-readonly class PendingOrderShippingAddressDetails
+final readonly class PendingOrderShippingAddressDetails
 {
     public function __construct(
         public string $line_1,
@@ -20,7 +20,7 @@ readonly class PendingOrderShippingAddressDetails
         //
     }
 
-    public static function createFromRequest(CompleteOrderRequest $request, string $country)
+    public static function createFromRequest(CompleteOrderRequest $request, string $country): static
     {
         return new static(
             line_1: $request->string('shipping.address_1')->title()->toString(),

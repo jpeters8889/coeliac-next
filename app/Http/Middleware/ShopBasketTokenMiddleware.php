@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class ShopBasketTokenMiddleware
 {
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse
     {
         /** @var Response | RedirectResponse | JsonResponse $response */
         $response = $next($request);

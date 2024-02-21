@@ -47,7 +47,7 @@ class ShopOrderCompleteResource extends JsonResource
                 $shipping->postcode,
                 $shipping->country,
             ]),
-            'payment' => $this->getPaymentDetails($payment->payment_type_id),
+            'payment' => $this->getPaymentDetails((string) $payment->payment_type_id),
         ];
     }
 

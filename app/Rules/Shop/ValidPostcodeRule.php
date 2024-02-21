@@ -10,6 +10,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class ValidPostcodeRule implements ValidationRule
 {
+    /** @param string $value */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if ( ! request()->hasCookie('basket_token')) {
