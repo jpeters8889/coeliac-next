@@ -8,6 +8,7 @@ use App\Models\Shop\ShopOrderReviewItem;
 use App\Models\Shop\ShopProduct;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 /** @mixin ShopProduct */
 class ShopProductResource extends JsonResource
@@ -18,7 +19,11 @@ class ShopProductResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'long_description' => $this->long_description,
+            'long_description' => Str::markdown($this->long_description, [
+                'renderer' => [
+                    'soft_break' => '<br />',
+                ],
+            ]),
             'image' => $this->main_image,
             'prices' => $this->price,
             'rating' => $this->whenLoaded('reviews', [

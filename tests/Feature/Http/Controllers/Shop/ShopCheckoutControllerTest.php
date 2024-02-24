@@ -95,6 +95,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesHasBasketFalseAsAPropIfABasketExists(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))
@@ -129,6 +131,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheBasketItemsToTheComponent(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         /** @var AnonymousResourceCollection $items */
         $items = $this->callAction(GetOrderItemsAction::class, $this->order);
 
@@ -151,6 +155,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheSubtotalToTheComponent(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         /** @var AnonymousResourceCollection $items */
         $items = $this->callAction(GetOrderItemsAction::class, $this->order);
 
@@ -184,6 +190,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itCalculatesThePostagePriceAndPassesItToTheComponent(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))
@@ -202,6 +210,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheTotalToTheComponent(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))
@@ -220,6 +230,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheShippableCountriesToTheComponent(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))
@@ -233,6 +245,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheSelectedCountryId(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))
@@ -251,6 +265,8 @@ class ShopCheckoutControllerTest extends TestCase
     /** @test */
     public function itPassesTheDeliveryTimescale(): void
     {
+        $this->expectAction(CreatePaymentIntentAction::class);
+
         $this
             ->withCookie('basket_token', $this->order->token)
             ->get(route('shop.basket.checkout'))

@@ -28,6 +28,7 @@ class ShopProductIndexResource extends JsonResource
             ]),
             'number_of_variants' => $this->variants->count(),
             'primary_variant' => $this->variants->first()?->id,
+            'primary_variant_quantity' => $this->variants->first()?->quantity,
         ];
     }
 }

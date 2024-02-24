@@ -141,31 +141,31 @@ const revertPendingOrder = async (): Promise<void> => {
 };
 
 const prepareOrder = async () => {
-  showLoader.value = true;
-  const payload = store.toForm;
+  // showLoader.value = true;
+  await nextTick(async () => {
+    const payload = store.toForm;
 
-  if (!(await submitPendingOrder(payload))) {
-    return;
-  }
+    if (!(await submitPendingOrder(payload))) {
+      return;
+    }
 
-  const stripeStore = useStripeStore();
+    const stripeStore = useStripeStore();
 
-  await stripeStore.instantiate(props.payment_intent as string);
-  const { error } = await stripeStore.stripe.confirmPayment(
-    stripePayload(stripeStore.elements, payload)
-  );
+    await stripeStore.instantiate(props.payment_intent as string);
+    const { error } = await stripeStore.stripe.confirmPayment(
+      stripePayload(stripeStore.elements, payload)
+    );
 
-  if (error.type === 'card_error' || error.type === 'validation_error') {
-    createGenericError(error.message);
-  } else {
-    createGenericError();
-  }
+    if (error.type === 'card_error' || error.type === 'validation_error') {
+      createGenericError(error.message);
+    } else {
+      createGenericError();
+    }
 
-  await revertPendingOrder();
+    await revertPendingOrder();
 
-  // clearUpCompletedOrder(); // this needs moving to confirm?
-
-  showLoader.value = false;
+    showLoader.value = false;
+  });
 };
 
 if (getFromLocalStorage('checkout-form')) {

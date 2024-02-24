@@ -3,7 +3,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ArrowRightIcon, CheckIcon } from '@heroicons/vue/24/outline';
 import PaymentWidget from '@/Components/PageSpecific/Shop/Checkout/Form/Components/PaymentWidget.vue';
-import { CheckoutBillingStep, CheckoutShippingStep } from '@/types/Shop';
+import { CheckoutBillingStep } from '@/types/Shop';
 import useShopStore from '@/stores/useShopStore';
 import { FormSelectOption } from '@/Components/Forms/Props';
 import FormSelect from '@/Components/Forms/FormSelect.vue';
@@ -15,11 +15,13 @@ const emits = defineEmits(['continue', 'toggle']);
 
 const store = useShopStore();
 
-let fields: CheckoutBillingStep = reactive({
+const shippingDetails = computed(() => store.shippingDetails);
+
+const fields = computed<CheckoutBillingStep>(() => ({
   name: store.customerName,
   country: store.selectedCountry,
-  ...store.shippingDetails,
-});
+  ...shippingDetails.value,
+}));
 
 const billingAddressSelect = ref<'same' | 'other'>('same');
 
@@ -31,30 +33,30 @@ const selectOptions: FormSelectOption[] = [
 const paymentValid = ref(false);
 
 const submit = () => {
-  store.setBillingDetails(fields);
+  store.setBillingDetails(fields.value);
 
   emits('continue');
 };
 
 const canSubmit = computed((): boolean => {
   if (billingAddressSelect.value === 'other') {
-    if (fields.name === '') {
+    if (fields.value.name === '') {
       return false;
     }
 
-    if (fields.address_1 === '') {
+    if (fields.value.address_1 === '') {
       return false;
     }
 
-    if (fields.town === '') {
+    if (fields.value.town === '') {
       return false;
     }
 
-    if (fields.postcode === '') {
+    if (fields.value.postcode === '') {
       return false;
     }
 
-    if (fields.country === '') {
+    if (fields.value.country === '') {
       return false;
     }
   }
@@ -68,7 +70,7 @@ const canSubmit = computed((): boolean => {
 
 watch(billingAddressSelect, () => {
   if (billingAddressSelect.value === 'same') {
-    fields = reactive({
+    fields.value = reactive({
       name: store.customerName,
       country: store.selectedCountry,
       ...store.shippingDetails,
@@ -77,14 +79,14 @@ watch(billingAddressSelect, () => {
     return;
   }
 
-  fields.name = '';
-  fields.address_1 = '';
-  fields.address_2 = '';
-  fields.address_3 = '';
-  fields.town = '';
-  fields.county = '';
-  fields.postcode = '';
-  fields.country = '';
+  fields.value.name = '';
+  fields.value.address_1 = '';
+  fields.value.address_2 = '';
+  fields.value.address_3 = '';
+  fields.value.town = '';
+  fields.value.county = '';
+  fields.value.postcode = '';
+  fields.value.country = '';
 });
 </script>
 

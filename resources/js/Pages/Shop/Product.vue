@@ -11,7 +11,7 @@ import Modal from '@/Components/Overlays/Modal.vue';
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
 import ProductAddBasketForm from '@/Components/PageSpecific/Shop/ProductAddBasketForm.vue';
-import useAddToBasket from '@/composables/useAddToBasket';
+import { pluralise } from '../../helpers';
 
 const props = defineProps<{
   product: ShopProductDetail;
@@ -167,7 +167,8 @@ const loadMoreReviews = () => {
                   <p
                     class="text-sm text-gray-500 group-hover:text-primary-dark xs:text-base xl:text-lg"
                   >
-                    {{ product.rating.count }} reviews
+                    {{ product.rating.count }}
+                    {{ pluralise('review', product.rating.count) }}
                   </p>
                 </div>
               </div>

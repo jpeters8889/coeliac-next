@@ -58,7 +58,7 @@ const handleSearch = async () => {
   searchResults.value = request.data;
 };
 
-watchDebounced(() => props.address, handleSearch, { debounce: 200 });
+watchDebounced(() => props.address, handleSearch, { debounce: 100 });
 </script>
 
 <template>

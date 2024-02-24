@@ -5,14 +5,28 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions\EatingOut\GetEateriesPipeline;
 
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
+use App\DataObjects\EatingOut\LatLng;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryVenueType;
+use App\Services\EatingOut\LocationSearchService;
 use Illuminate\Support\Collection;
 
 class GetEateriesInSearchAreaTest extends GetEateriesTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $london = ['lat' => 51.5, 'lng' => -0.1];
+
+        $this->mock(LocationSearchService::class)
+            ->expects('getLatLng')
+            ->zeroOrMoreTimes()
+            ->andReturn(new LatLng($london['lat'], $london['lng']));
+    }
+
     /** @test */
     public function itReturnsTheNextClosureInTheAction(): void
     {

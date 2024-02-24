@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\EatingOut;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
+use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EaterySearchTerm;
 use App\Pipelines\EatingOut\GetSearchResultsPipeline;
+use App\Services\EatingOut\LocationSearchService;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -21,6 +23,13 @@ class SearchResultsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $london = ['lat' => 51.5, 'lng' => -0.1];
+
+        $this->mock(LocationSearchService::class)
+            ->expects('getLatLng')
+            ->zeroOrMoreTimes()
+            ->andReturn(new LatLng($london['lat'], $london['lng']));
 
         $this->seed(EateryScaffoldingSeeder::class);
 

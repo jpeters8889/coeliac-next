@@ -23,6 +23,7 @@ export type ShopProductIndex = ShopBaseProduct & {
   price: string;
   number_of_variants: number;
   primary_variant: number;
+  primary_variant_quantity: number;
 };
 
 export type ShopProductDetail = ShopBaseProduct & {

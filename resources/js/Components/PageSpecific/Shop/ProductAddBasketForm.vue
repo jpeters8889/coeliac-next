@@ -166,8 +166,8 @@ const addToBasket = () => {
       </div>
 
       <div
-        v-if="!availableQuantity === 0"
-        class="italic"
+        v-if="availableQuantity === 0"
+        class="font-semibold text-red-dark"
       >
         Sorry, this product is out of stock.
       </div>

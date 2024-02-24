@@ -3,7 +3,7 @@ import { DetailedEatery, EateryReview } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
 import { computed, ComputedRef, ref } from 'vue';
 import StarRating from '@/Components/StarRating.vue';
-import { ucfirst } from '@/helpers';
+import { formatDate, ucfirst } from '@/helpers';
 import RatingsBreakdown from '@/Components/PageSpecific/Shared/RatingsBreakdown.vue';
 import FormCheckbox from '@/Components/Forms/FormCheckbox.vue';
 import Modal from '@/Components/Overlays/Modal.vue';
@@ -97,7 +97,13 @@ const howExpensive = (review: EateryReview) => {
                       class="font-bold lg:text-xl"
                       v-text="review.body ? review.name : 'Anonymous'"
                     />
-                    <span v-text="review.date_diff" />
+                    <time
+                      :datetime="review.published"
+                      :title="
+                        formatDate(review.published, 'Do MMM YYYY h:mm a')
+                      "
+                      v-text="review.date_diff"
+                    />
                   </div>
 
                   <div class="mt-1 flex items-center">

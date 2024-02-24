@@ -20,7 +20,9 @@ class EatingOutBrowseSearchController
                 'lat' => $response->lat,
                 'lng' => $response->lng,
             ]);
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dd($e);
+
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }
     }

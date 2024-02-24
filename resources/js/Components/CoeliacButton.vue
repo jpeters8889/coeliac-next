@@ -6,7 +6,7 @@ import Loader from '@/Components/Loader.vue';
 const props = withDefaults(
   defineProps<{
     label?: string;
-    theme?: 'primary' | 'faded' | 'secondary' | 'light';
+    theme?: 'primary' | 'faded' | 'secondary' | 'light' | 'negative';
     size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     bold?: boolean;
     as?: InstanceType<typeof Link> | 'button' | 'a';
@@ -95,6 +95,10 @@ const classes = computed((): string[] => {
 
   if (props.theme === 'secondary') {
     base.push('bg-secondary/80', 'hover:bg-secondary', 'text-black');
+  }
+
+  if (props.theme === 'negative') {
+    base.push('bg-red-dark/80', 'hover:bg-red-dark', 'text-white');
   }
 
   if (props.disabled) {

@@ -5,6 +5,7 @@ import StarRating from '@/Components/StarRating.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ref, watch } from 'vue';
 import RatingsBreakdown from '@/Components/PageSpecific/Shared/RatingsBreakdown.vue';
+import { formatDate } from '@/helpers';
 
 const props = defineProps<{
   productName: string;
@@ -46,7 +47,11 @@ defineEmits(['load-more']);
                   class="font-bold lg:text-xl"
                   v-text="review.name"
                 />
-                <span v-text="review.date_diff" />
+                <time
+                  :datetime="review.date"
+                  :title="formatDate(review.date, 'Do MMM YYYY h:mm a')"
+                  v-text="review.date_diff"
+                />
               </div>
 
               <div class="mt-1 flex items-center">

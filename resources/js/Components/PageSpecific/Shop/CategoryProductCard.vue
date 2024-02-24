@@ -103,9 +103,13 @@ const addToBasket = () => {
         v-if="product.number_of_variants === 1"
         as="button"
         type="button"
-        label="Add to Basket"
+        :label="
+          product.primary_variant_quantity > 0
+            ? 'Add to Basket'
+            : 'Out of stock'
+        "
         classes="text-center"
-        theme="secondary"
+        :theme="product.primary_variant_quantity > 0 ? 'secondary' : 'negative'"
         :icon="
           screenIsGreaterThanOrEqualTo('xxs') ? ShoppingBagIcon : undefined
         "
@@ -113,7 +117,10 @@ const addToBasket = () => {
         :size="screenIsGreaterThanOrEqualTo('xl') ? 'xxl' : 'lg'"
         bold
         :loading="addBasketForm.processing"
-        @click="addToBasket()"
+        :disabled="product.primary_variant_quantity === 0"
+        @click="
+          product.primary_variant_quantity > 0 ? addToBasket() : undefined
+        "
       />
     </div>
   </div>
