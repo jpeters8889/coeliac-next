@@ -30,6 +30,12 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            if (config('app.env') === 'local') {
+                Route::middleware('web')
+                    ->prefix('__dev')
+                    ->group(base_path('routes/local.php'));
+            }
         });
     }
 }
