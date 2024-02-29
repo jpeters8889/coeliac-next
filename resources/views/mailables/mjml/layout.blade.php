@@ -1,3 +1,4 @@
+@php use App\DataObjects\NotificationRelatedObject; @endphp
 <mjml>
     <mj-head>
 
@@ -82,10 +83,16 @@
                     </mj-section>
                     <mj-section padding="10px" background-color="#f0f0f0">
                         @foreach($relatedItems as $related)
+                            @php /** @var NotificationRelatedObject $related */ @endphp
                             <mj-column>
-                                <mj-image padding="0 5px 5px" width="0" src="{{ $related['image'] }}"></mj-image>
+                                <mj-image
+                                    padding="0 5px 5px"
+                                    src="{{ $related->image }}"
+                                    fluid-on-mobile="true"
+                                    href="{{ $related->link }}"
+                                />
                                 <mj-text padding="0 5px 5px">
-                                    <h3><a href="{{ $related['link'] }}">{{ $related['title'] }}</a></h3>
+                                    <h3><a href="{{ $related->link }}">{{ $related->title }}</a></h3>
                                 </mj-text>
                             </mj-column>
                         @endforeach

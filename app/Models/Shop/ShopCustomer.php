@@ -6,9 +6,12 @@ namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
 class ShopCustomer extends Model
 {
+    use Notifiable;
+
     /** @return HasMany<ShopShippingAddress> */
     public function addresses(): HasMany
     {

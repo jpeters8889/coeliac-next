@@ -6,7 +6,7 @@
     /** @var ShopOrder $order */
 @endphp
 
-@extends('mailables.layout')
+@extends('mailables.mjml.layout')
 
 @push('head')
     <mj-style>
@@ -20,10 +20,11 @@
 
 @section('main-content')
     <mj-section>
-        <mj-column >
+        <mj-column>
             <mj-text mj-class="inner">Hey {{ $order->address->name }}</mj-text>
             <mj-text mj-class="inner">
-                Thanks a bunch for your recent order at the Coeliac Sanctuary shop! Check out the details of your order below.
+                Thanks a bunch for your recent order at the Coeliac Sanctuary shop! Check out the details of your order
+                below.
             </mj-text>
             <mj-text mj-class="inner" padding-top="10px">
                 Thanks, Alison - Coeliac Sanctuary
@@ -83,19 +84,39 @@
 
     <!-- BEGIN: TOTALS -->
     <mj-section>
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5">Subtotal</mj-text></mj-column>
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5" align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->subtotal)) }}</mj-text></mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5">Subtotal</mj-text>
+        </mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5"
+                     align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->subtotal)) }}</mj-text>
+        </mj-column>
 
         @if($order->payment->discount)
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5">Discount</mj-text></mj-column>
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5" align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->discount)) }}</mj-text></mj-column>
+            <mj-column css-class="force-half-width" width="50%">
+                <mj-text line-height="1.5">Discount</mj-text>
+            </mj-column>
+            <mj-column css-class="force-half-width" width="50%">
+                <mj-text line-height="1.5"
+                         align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->discount)) }}</mj-text>
+            </mj-column>
         @endif
 
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5">Postage</mj-text></mj-column>
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5" align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->postage)) }}</mj-text></mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5">Postage</mj-text>
+        </mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5"
+                     align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->postage)) }}</mj-text>
+        </mj-column>
 
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5" padding-top="10px"><h2>Total</h2></mj-text></mj-column>
-        <mj-column css-class="force-half-width" width="50%"><mj-text line-height="1.5" align="right" padding-top="10px"><h2>{{ Helpers::formatMoney(Money::GBP($order->payment->total)) }}</h2></mj-text></mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5" padding-top="10px"><h2>Total</h2></mj-text>
+        </mj-column>
+        <mj-column css-class="force-half-width" width="50%">
+            <mj-text line-height="1.5" align="right" padding-top="10px">
+                <h2>{{ Helpers::formatMoney(Money::GBP($order->payment->total)) }}</h2></mj-text>
+        </mj-column>
     </mj-section>
     <!-- END: TOTALS -->
 

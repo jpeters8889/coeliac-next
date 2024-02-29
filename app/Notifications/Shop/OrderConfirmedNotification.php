@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Notifications\Shop;
+
+use App\Infrastructure\MjmlMessage;
+use App\Infrastructure\Notification;
+use App\Mailables\Shop\OrderConfirmedMailable;
+use App\Models\Shop\ShopCustomer;
+use App\Models\Shop\ShopOrder;
+use Illuminate\Notifications\AnonymousNotifiable;
+
+class OrderConfirmedNotification extends Notification
+{
+    public function __construct(protected ShopOrder $order)
+    {
+        //
+    }
+
+    public function toMail(ShopCustomer|AnonymousNotifiable|null $notifiable = null): MjmlMessage
+    {
+        return OrderConfirmedMailable::make($this->order, $this->key);
+    }
+}

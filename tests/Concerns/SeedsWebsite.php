@@ -16,6 +16,7 @@ use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductPrice;
 use App\Models\Shop\ShopProductVariant;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\UploadedFile;
@@ -25,6 +26,13 @@ use Tests\TestCase;
 /** @mixin TestCase */
 trait SeedsWebsite
 {
+    protected function withAdminUser(): static
+    {
+        $this->create(User::class, ['email' => 'contact@coeliacsanctuary.co.uk']);
+
+        return $this;
+    }
+
     protected function withBlogs($count = 10, ?callable $then = null): static
     {
         Storage::fake('media');

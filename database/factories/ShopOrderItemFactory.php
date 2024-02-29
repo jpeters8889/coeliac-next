@@ -32,16 +32,12 @@ class ShopOrderItemFactory extends Factory
 
     public function inProduct(ShopProduct $product): self
     {
-        return $this->state(fn () => [
-            'product_id' => $product->id,
-        ]);
+        return $this->state(fn () => ['product_id' => $product->id]);
     }
 
     public function inVariant(ShopProductVariant $variant): self
     {
-        return $this->state(fn () => [
-            'product_variant_id' => $variant->id,
-        ]);
+        return $this->state(fn () => ['product_variant_id' => $variant->id]);
     }
 
     public function add(ShopProductVariant $productVariant, int $quantity = 1): self

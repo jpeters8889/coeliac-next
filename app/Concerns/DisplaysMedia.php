@@ -15,6 +15,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string $social_image
  * @property string $square_image
  * @property string $first_image
+ *
  * @mixin HasMedia
  */
 trait DisplaysMedia
@@ -32,6 +33,7 @@ trait DisplaysMedia
 
     /**
      * @return Attribute<string, never>
+     *
      * @throws Exception
      */
     public function mainImage(): Attribute

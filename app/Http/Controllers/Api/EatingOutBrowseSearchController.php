@@ -21,8 +21,6 @@ class EatingOutBrowseSearchController
                 'lng' => $response->lng,
             ]);
         } catch (Exception $e) {
-            dd($e);
-
             return new JsonResponse(status: JsonResponse::HTTP_NOT_FOUND);
         }
     }
