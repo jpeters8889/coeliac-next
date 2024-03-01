@@ -9,6 +9,7 @@ use App\Infrastructure\Notification;
 use App\Mailables\Shop\OrderConfirmedMailable;
 use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopOrder;
+use App\Models\User;
 use Illuminate\Notifications\AnonymousNotifiable;
 
 class OrderConfirmedNotification extends Notification
@@ -18,7 +19,7 @@ class OrderConfirmedNotification extends Notification
         //
     }
 
-    public function toMail(ShopCustomer|AnonymousNotifiable|null $notifiable = null): MjmlMessage
+    public function toMail(User|ShopCustomer|AnonymousNotifiable|null $notifiable = null): MjmlMessage
     {
         return OrderConfirmedMailable::make($this->order, $this->key);
     }

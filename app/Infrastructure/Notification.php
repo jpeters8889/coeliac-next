@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure;
 
 use App\Models\Shop\ShopCustomer;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -37,5 +38,5 @@ abstract class Notification extends BaseNotification implements ShouldQueue
         return ['mail'];
     }
 
-    abstract public function toMail(ShopCustomer|AnonymousNotifiable|null $notifiable = null): MailMessage;
+    abstract public function toMail(User|ShopCustomer|AnonymousNotifiable|null $notifiable = null): MailMessage;
 }

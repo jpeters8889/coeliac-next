@@ -20,7 +20,7 @@ Route::get('/mail/shop/order-confirmed/{orderId?}', function (?int $orderId = nu
             fn (Builder $builder) => $builder->latest()->first(),
         );
 
-    $content = view('mailables.shop.order-complete', [
+    $content = view('mailables.mjml.shop.order-complete', [
         'key' => 'foo',
         'date' => now(),
         'order' => $order,

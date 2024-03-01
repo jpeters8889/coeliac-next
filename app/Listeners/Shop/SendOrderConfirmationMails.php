@@ -7,15 +7,12 @@ namespace App\Listeners\Shop;
 use App\Events\Shop\OrderPaidEvent;
 use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopOrder;
+use App\Notifications\Shop\NewOrderAlertNotification;
 use App\Notifications\Shop\OrderConfirmedNotification;
 use App\Support\Helpers;
 
 class SendOrderConfirmationMails
 {
-    public function __construct()
-    {
-    }
-
     public function handle(OrderPaidEvent $event): void
     {
         /** @var ShopOrder $order */
@@ -24,9 +21,7 @@ class SendOrderConfirmationMails
         /** @var ShopCustomer $customer */
         $customer = $order->customer;
 
-        $notification = new OrderConfirmedNotification($order);
-
-        $customer->notify($notification);
-        Helpers::adminUser()->notify($notification);
+        $customer->notify(new OrderConfirmedNotification($order));
+        Helpers::adminUser()->notify(new NewOrderAlertNotification($order));
     }
 }

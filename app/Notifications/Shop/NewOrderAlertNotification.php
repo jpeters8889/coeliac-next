@@ -2,20 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fixtures;
+namespace App\Notifications\Shop;
 
 use App\Infrastructure\MjmlMessage;
 use App\Infrastructure\Notification;
+use App\Mailables\Shop\OrderAlertMailable;
 use App\Models\Shop\ShopCustomer;
+use App\Models\Shop\ShopOrder;
 use App\Models\User;
 use Illuminate\Notifications\AnonymousNotifiable;
 
-class MockMjmlNotification extends Notification
+class NewOrderAlertNotification extends Notification
 {
+    public function __construct(protected ShopOrder $order)
+    {
+        //
+    }
+
     public function toMail(User|ShopCustomer|AnonymousNotifiable|null $notifiable = null): MjmlMessage
     {
-        return MjmlMessage::make('mailables.mjml.layout', [
-            'date' => now(),
-        ]);
+        return OrderAlertMailable::make($this->order, $this->key);
     }
 }

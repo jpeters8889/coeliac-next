@@ -10,6 +10,7 @@ use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopProduct;
+use App\Notifications\Shop\NewOrderAlertNotification;
 use App\Notifications\Shop\OrderConfirmedNotification;
 use App\Support\Helpers;
 use Database\Seeders\ShopScaffoldingSeeder;
@@ -61,12 +62,12 @@ class SendOrderConfirmationMailsTest extends TestCase
     }
 
     /** @test */
-    public function itSendsAnOrderConfirmationEmailToTheAdmin(): void
+    public function itSendsAnOrderAlertEmailToTheAdmin(): void
     {
         $event = new OrderPaidEvent($this->order);
 
         app(SendOrderConfirmationMails::class)->handle($event);
 
-        Notification::assertSentTo(Helpers::adminUser(), OrderConfirmedNotification::class);
+        Notification::assertSentTo(Helpers::adminUser(), NewOrderAlertNotification::class);
     }
 }

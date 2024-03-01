@@ -10,14 +10,15 @@ use Illuminate\Mail\SentMessage;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Channels\MailChannel as BaseMailChannel;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 use Spatie\Mjml\Mjml;
 
 class MailChannel extends BaseMailChannel
 {
     /** @param ShopCustomer | AnonymousNotifiable $notifiable */
-    public function send($notifiable, Notification $notification): SentMessage|null
+    public function send($notifiable, Notification $notification): ?SentMessage
     {
-        if( ! method_exists($notification, 'toMail')) {
+        if ( ! method_exists($notification, 'toMail')) {
             return parent::send($notifiable, $notification);
         }
 
@@ -65,7 +66,7 @@ class MailChannel extends BaseMailChannel
     protected function buildView($message)
     {
         if (property_exists($message, 'mjml')) {
-            return $this->buildMjml($message);
+            return ['html' => new HtmlString($this->buildMjml($message))];
         }
 
         return parent::buildView($message);

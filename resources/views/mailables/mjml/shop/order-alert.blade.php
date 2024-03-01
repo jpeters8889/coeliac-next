@@ -19,19 +19,6 @@
 @endsection
 
 @section('main-content')
-    <mj-section>
-        <mj-column>
-            <mj-text mj-class="inner">Hey {{ $order->address->name }}</mj-text>
-            <mj-text mj-class="inner">
-                Thanks a bunch for your recent order at the Coeliac Sanctuary shop! Check out the details of your order
-                below.
-            </mj-text>
-            <mj-text mj-class="inner" padding-top="10px">
-                Thanks, Alison - Coeliac Sanctuary
-            </mj-text>
-        </mj-column>
-    </mj-section>
-
     <mj-section mj-class="light-section">
         <mj-column>
             <mj-text align="center" padding-bottom="10px"><h2>Order Summary</h2></mj-text>
