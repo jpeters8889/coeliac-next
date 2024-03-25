@@ -25,7 +25,9 @@ use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
+use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
+use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\ProductPrice;
 use App\Nova\Resources\Shop\Products;
 use App\Nova\Resources\Shop\ProductVariant;
@@ -62,12 +64,17 @@ class ResourceRegistrar
             PlaceReports::class,
             SuggestedEdits::class,
 
-            // Shop
+            // Shop Sales
+            Baskets::class,
+            Orders::class,
+
+            // Shop Inventory
             Categories::class,
             Products::class,
             ShippingMethod::class,
             ProductPrice::class,
             ProductVariant::class,
+
         ]);
     }
 }

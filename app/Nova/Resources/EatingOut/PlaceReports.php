@@ -9,6 +9,7 @@ use App\Nova\Actions\EatingOut\CompleteReportOrRecommendation;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -48,7 +49,10 @@ class PlaceReports extends Resource
                 ->showOnPreview()
                 ->displayUsing(fn (Eateries $eatery) => $eatery->resource->load(['town' => fn (Relation $builder) => $builder->withoutGlobalScopes(), 'county', 'country'])->full_name),
 
-            Text::make('Details')->showOnPreview(),
+            Text::make('Details')
+                ->showOnPreview()
+                ->displayUsing(fn (string $details) => Str::wordWrap($details, 100, '<br />'))
+                ->asHtml(),
 
             Boolean::make('Completed')->showOnPreview(),
 

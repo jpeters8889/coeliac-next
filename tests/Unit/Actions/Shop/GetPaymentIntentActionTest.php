@@ -6,7 +6,7 @@ namespace Tests\Unit\Actions\Shop;
 
 use App\Actions\Shop\GetPaymentIntentAction;
 use Stripe\PaymentIntent;
-use Stripe\Service\MocksStripe;
+use Tests\Concerns\MocksStripe;
 use Tests\TestCase;
 
 class GetPaymentIntentActionTest extends TestCase

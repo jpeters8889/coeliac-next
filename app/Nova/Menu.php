@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Nova;
 
+use App\Enums\Shop\OrderState;
 use App\Models\Comments\Comment;
 use App\Models\EatingOut\EateryRecommendation;
 use App\Models\EatingOut\EateryReport;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EaterySuggestedEdit;
+use App\Models\Shop\ShopOrder;
 use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Eateries;
@@ -23,7 +25,9 @@ use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\Collection;
 use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
+use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
+use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\Products;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuGroup;
@@ -41,6 +45,9 @@ class Menu
         $myPlacesCount = EateryRecommendation::query()->where('email', 'contact@coeliacsanctuary.co.uk')->where('completed', false)->count();
         $recommendationsCount = EateryRecommendation::query()->where('email', '!=', 'contact@coeliacsanctuary.co.uk')->where('completed', false)->count();
         $suggestedEditsCount = EaterySuggestedEdit::query()->where('rejected', false)->where('accepted', false)->count();
+
+        $basketsCount = ShopOrder::query()->where('state_id', OrderState::BASKET)->count();
+        $ordersCount = ShopOrder::query()->where('state_id', OrderState::PAID)->count();
 
         Nova::mainMenu(fn (Request $request) => [
             MenuSection::make('Dashboards', [
@@ -75,6 +82,11 @@ class Menu
             ])->icon('map'),
 
             MenuSection::make('Shop', [
+                MenuGroup::make('Sales', [
+                    MenuItem::resource(Baskets::class)->withBadgeIf(fn () => (string) $basketsCount, 'danger', fn () => $basketsCount > 0),
+                    MenuItem::resource(Orders::class)->withBadgeIf(fn () => (string) $ordersCount, 'danger', fn () => $ordersCount > 0),
+                ]),
+
                 MenuGroup::make('Inventory', [
                     MenuItem::resource(Categories::class),
                     MenuItem::resource(Products::class),

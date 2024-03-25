@@ -27,9 +27,9 @@ class ProductSalesTrend extends Trend
             ShopOrderItem::query()
                 ->where('product_id', $request->resourceId)
                 ->whereRelation('order', fn (Builder $builder) => $builder->whereIn('state_id', [
-                    OrderState::PRINTED,
+                    OrderState::PAID,
+                    OrderState::READY,
                     OrderState::SHIPPED,
-                    OrderState::COMPLETE,
                 ])),
         )->showLatestValue()->showSumValue();
     }

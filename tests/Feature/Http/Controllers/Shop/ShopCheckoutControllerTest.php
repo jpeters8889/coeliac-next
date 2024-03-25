@@ -21,7 +21,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Testing\AssertableInertia as Assert;
 use Money\Money;
 use Spatie\TestTime\TestTime;
-use Stripe\Service\MocksStripe;
+use Tests\Concerns\MocksStripe;
 use Tests\TestCase;
 
 class ShopCheckoutControllerTest extends TestCase

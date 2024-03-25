@@ -9,7 +9,7 @@ use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPayment;
 use RuntimeException;
-use Stripe\Service\MocksStripe;
+use Tests\Concerns\MocksStripe;
 use Tests\TestCase;
 
 class MarkOrderAsPaidActionTest extends TestCase

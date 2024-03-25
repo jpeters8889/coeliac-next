@@ -53,9 +53,9 @@ class ProductVariant extends Resource
                 ->selectRaw('sum(quantity)')
                 ->whereColumn('product_variant_id', 'shop_product_variants.id')
                 ->whereRelation('order', fn (Builder $relation) => $relation->whereIn('state_id', [
-                    OrderState::PRINTED,
+                    OrderState::PAID,
+                    OrderState::READY,
                     OrderState::SHIPPED,
-                    OrderState::COMPLETE,
                 ])),
             ]);
     }

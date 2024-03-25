@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Event;
 use Inertia\Testing\AssertableInertia as Assert;
 use Stripe\Charge;
 use Stripe\PaymentIntent;
-use Stripe\Service\MocksStripe;
+use Tests\Concerns\MocksStripe;
 use Tests\TestCase;
 
 class ShopOrderCompleteControllerTest extends TestCase

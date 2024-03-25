@@ -12,15 +12,20 @@
         "ext-intl": "*",
         "algolia/algoliasearch-client-php": "^3.4.1",
         "algolia/scout-extended": "^3.0",
+        "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.8.1",
         "inertiajs/inertia-laravel": "^0.6.11",
         "intervention/image": "^2.7.2",
         "jpeters8889/address-field": "@dev",
         "jpeters8889/advanced-nova-media-library": "dev-master",
         "jpeters8889/body": "*",
+        "jpeters8889/country-icon": "@dev",
         "jpeters8889/eatery-opening-times": "@dev",
         "jpeters8889/eatery-recommendation-listener": "@dev",
+        "jpeters8889/order-dispatch-slip": "@dev",
         "jpeters8889/polymorphic-panel": "*",
+        "jpeters8889/shop-order-open-dispatch-slip": "@dev",
+        "jpeters8889/shop-order-shipping-action": "@dev",
         "kirschbaum-development/nova-inline-relationship": "^2.1.1",
         "laravel/framework": "^10.41.0",
         "laravel/nova": "^4.32.11",
@@ -93,6 +98,22 @@
         {
             "type": "path",
             "url": "./nova-components/EateryRecommendationListener"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/CountryIcon"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ShopOrderShippingAction"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ShopOrderOpenDispatchSlip"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/OrderDispatchSlip"
         }
     ],
     "autoload": {
@@ -121,7 +142,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "stan": "vendor/bin/phpstan analyse",
+        "stan": "vendor/bin/phpstan analyse --memory-limit 4048M",
         "pint": "vendor/bin/pint -vvv",
         "test": "php artisan test --parallel",
         "pre-commit": "composer run pint && composer run stan && composer run test"

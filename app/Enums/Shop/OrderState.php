@@ -9,8 +9,8 @@ enum OrderState: int
     case BASKET = 1;
     case PENDING = 2;
     case PAID = 3;
-    case SHIPPED = 4;
-    case COMPLETE = 5;
+    case READY = 4;
+    case SHIPPED = 5;
     case REFUNDED = 6;
     case CANCELLED = 7;
     case EXPIRED = 8;
@@ -21,8 +21,8 @@ enum OrderState: int
             self::BASKET => 'Basket',
             self::PENDING => 'Pending',
             self::PAID => 'Paid',
+            self::READY => 'Ready',
             self::SHIPPED => 'Shipped',
-            self::COMPLETE => 'Complete',
             self::REFUNDED => 'Refunded',
             self::CANCELLED => 'Cancelled',
             self::EXPIRED => 'Expired',

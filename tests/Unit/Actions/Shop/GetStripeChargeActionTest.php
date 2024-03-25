@@ -6,7 +6,7 @@ namespace Tests\Unit\Actions\Shop;
 
 use App\Actions\Shop\GetStripeChargeAction;
 use Stripe\Charge;
-use Stripe\Service\MocksStripe;
+use Tests\Concerns\MocksStripe;
 use Tests\TestCase;
 
 class GetStripeChargeActionTest extends TestCase

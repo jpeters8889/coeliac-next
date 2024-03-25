@@ -68,6 +68,13 @@ class ShopOrderFactory extends Factory
             ]);
     }
 
+    public function asReady(): self
+    {
+        return $this->state(fn () => [
+            'state_id' => OrderState::READY,
+        ]);
+    }
+
     public function asExpired(): self
     {
         return $this->state(fn () => [
@@ -78,7 +85,7 @@ class ShopOrderFactory extends Factory
     public function asCompleted(): self
     {
         return $this->state(fn () => [
-            'state_id' => OrderState::COMPLETE,
+            'state_id' => OrderState::SHIPPED,
             'order_key' => random_int(10000000, 99999999),
             'shipped_at' => Carbon::now(),
         ]);

@@ -24,7 +24,15 @@
         "build-eatery-locations-repeater": "cd nova-components/EateryLocationsRepeater && npm run dev",
         "build-eatery-locations-repeater-prod": "cd nova-components/EateryLocationsRepeater && npm run prod",
         "build-key-value-index-table": "cd nova-components/KeyValueIndexTable && npm run dev",
-        "build-key-value-index-table-prod": "cd nova-components/KeyValueIndexTable && npm run prod"
+        "build-key-value-index-table-prod": "cd nova-components/KeyValueIndexTable && npm run prod",
+        "build-country-icon": "cd nova-components/CountryIcon && npm run dev",
+        "build-country-icon-prod": "cd nova-components/CountryIcon && npm run prod",
+        "build-shop-order-shipping-action": "cd nova-components/ShopOrderShippingAction && npm run dev",
+        "build-shop-order-shipping-action-prod": "cd nova-components/ShopOrderShippingAction && npm run prod",
+        "build-shop-order-open-dispatch-slip": "cd nova-components/ShopOrderOpenDispatchSlip && npm run dev",
+        "build-shop-order-open-dispatch-slip-prod": "cd nova-components/ShopOrderOpenDispatchSlip && npm run prod",
+        "build-order-dispatch-slip": "cd nova-components/OrderDispatchSlip && npm run dev",
+        "build-order-dispatch-slip-prod": "cd nova-components/OrderDispatchSlip && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",

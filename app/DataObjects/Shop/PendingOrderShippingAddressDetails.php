@@ -22,13 +22,13 @@ final readonly class PendingOrderShippingAddressDetails
 
     public static function createFromRequest(CompleteOrderRequest $request, string $country): static
     {
-        return new static(
+        return new self(
             line_1: $request->string('shipping.address_1')->title()->toString(),
             line_2: $request->has('shipping.address_2') ? $request->string('shipping.address_2')->title()->toString() : null,
             line_3: $request->has('shipping.address_3') ? $request->string('shipping.address_3')->title()->toString() : null,
             town: $request->string('shipping.town')->title()->toString(),
             county: $request->string('shipping.county')->title()->toString(),
-            postcode: $request->string('shipping.postcode')->title()->toString(),
+            postcode: $request->string('shipping.postcode')->upper()->toString(),
             country: $country,
         );
     }

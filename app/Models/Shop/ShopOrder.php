@@ -17,6 +17,7 @@ class ShopOrder extends Model
 {
     protected $casts = [
         'state_id' => OrderState::class,
+        'shipped_at' => 'datetime',
     ];
 
     protected static function booted(): void
