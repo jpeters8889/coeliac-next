@@ -17,6 +17,8 @@ use Jpeters8889\ShopOrderOpenDispatchSlip\ShopOrderOpenDispatchSlip;
 use Jpeters8889\ShopOrderShippingAction\ShopOrderShippingAction;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -66,6 +68,36 @@ class Orders extends Resource
         ];
     }
 
+    public function fieldsForDetail(NovaRequest $request)
+    {
+        return [
+            Text::make('Order ID', 'order_key'),
+
+            DateTime::make('Order Date', fn (ShopOrder $order) => $order->payment->created_at),
+
+            CountryIcon::make('Country', fn (ShopOrder $order) => [
+                'name' => $order->postageCountry->country,
+                'code' => $order->postageCountry->iso_code,
+            ])->withLabel(),
+
+            ShopOrderShippingAction::make('Shipped', fn (ShopOrder $order) => [
+                'parent_id' => $order->id,
+                'state_id' => $order->state_id->value,
+                'shipped_at' => $order->shipped_at?->format('jS M y'),
+            ]),
+
+            ShopOrderOpenDispatchSlip::make('', 'id'),
+
+            HasOne::make('Customer', resource: Customer::class),
+
+            HasOne::make('Address', resource: ShippingAddress::class),
+
+            HasOne::make('Payment', resource: Payment::class),
+
+            HasMany::make('Items', resource: OrderItem::class),
+        ];
+    }
+
     public function actions(NovaRequest $request): array
     {
         return [
@@ -95,12 +127,24 @@ class Orders extends Resource
             ]);
     }
 
+    public static function detailQuery(NovaRequest $request, $query)
+    {
+        return $query
+            ->withoutGlobalScopes()
+            ->with(['postageCountry', 'payment', 'address', 'items']);
+    }
+
     public function authorizedToView(Request $request): bool
     {
         return true;
     }
 
     public static function authorizedToCreate(Request $request): bool
+    {
+        return false;
+    }
+
+    public function authorizedToUpdate(Request $request): bool
     {
         return false;
     }

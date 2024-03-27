@@ -27,10 +27,14 @@ use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
 use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
+use App\Nova\Resources\Shop\Customer;
+use App\Nova\Resources\Shop\OrderItem;
 use App\Nova\Resources\Shop\Orders;
+use App\Nova\Resources\Shop\Payment;
 use App\Nova\Resources\Shop\ProductPrice;
 use App\Nova\Resources\Shop\Products;
 use App\Nova\Resources\Shop\ProductVariant;
+use App\Nova\Resources\Shop\ShippingAddress;
 use App\Nova\Resources\Shop\ShippingMethod;
 use Laravel\Nova\Nova;
 
@@ -67,6 +71,8 @@ class ResourceRegistrar
             // Shop Sales
             Baskets::class,
             Orders::class,
+            Payment::class,
+            OrderItem::class,
 
             // Shop Inventory
             Categories::class,
@@ -75,6 +81,9 @@ class ResourceRegistrar
             ProductPrice::class,
             ProductVariant::class,
 
+            // Shop Customers
+            Customer::class,
+            ShippingAddress::class,
         ]);
     }
 }

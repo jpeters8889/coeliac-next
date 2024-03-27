@@ -13,7 +13,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['index', 'resource', 'resourceName', 'resourceId', 'field']
+  props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
+  computed: {
+    fieldValue: function fieldValue() {
+      return this.field.displayedAs || this.field.value;
+    }
+  }
 });
 
 /***/ }),
@@ -88,12 +93,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 
+var _hoisted_1 = {
+  "class": "@sm/peekable:flex-row @md/modal:flex-row @sm/peekable:py-0 @md/modal:py-0 @sm/peekable:space-y-0 @md/modal:space-y-0 -mx-6 flex flex-col space-y-2 px-6 py-2 md:flex-row md:space-y-0 md:py-0"
+};
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "@sm/peekable:w-1/4 @md/modal:w-1/4 @sm/peekable:py-3 @md/modal:py-3 md:w-1/4 md:py-3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", {
+  "class": "@sm/peekable:break-all font-normal"
+})], -1 /* HOISTED */);
+var _hoisted_3 = {
+  "class": "@sm/peekable:w-3/4 @md/modal:w-3/4 @sm/peekable:py-3 @md/peekable:break-words @lg/modal:break-words break-all md:w-3/4 md/modal:py-3 md:py-3 lg:break-words"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_PanelItem = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("PanelItem");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PanelItem, {
-    index: $props.index,
-    field: $props.field
-  }, null, 8 /* PROPS */, ["index", "field"]);
+  var _component_DefaultButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DefaultButton");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DefaultButton, {
+    size: "sm",
+    component: "a",
+    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return undefined;
+    }, ["stop"])),
+    href: "/cs-adm/order-dispatch-slip/".concat($options.fieldValue),
+    target: "_blank"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" View Dispatch Slip ")];
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["href"])])]);
 }
 
 /***/ }),

@@ -50,7 +50,7 @@ class ShopOrder extends Model
     /** @return BelongsTo<ShopShippingAddress, self> */
     public function address(): BelongsTo
     {
-        return $this->belongsTo(ShopShippingAddress::class, 'shipping_address_id')->withTrashed();
+        return $this->belongsTo(ShopShippingAddress::class, 'shipping_address_id');
     }
 
     /** @return HasOne<ShopPayment> */
