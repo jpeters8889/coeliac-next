@@ -85,6 +85,7 @@ class Menu
                 MenuGroup::make('Sales', [
                     MenuItem::resource(Baskets::class)->withBadgeIf(fn () => (string) $basketsCount, 'danger', fn () => $basketsCount > 0),
                     MenuItem::resource(Orders::class)->withBadgeIf(fn () => (string) $ordersCount, 'danger', fn () => $ordersCount > 0),
+                    MenuItem::make('Daily Stock')->path('/shop-daily-stock'),
                 ]),
 
                 MenuGroup::make('Inventory', [

@@ -12,6 +12,7 @@ use App\Nova\ResourceRegistrar;
 use Illuminate\Support\Facades\Gate;
 use Jpeters8889\AddressField\FieldServiceProvider as AddressFieldServiceProvider;
 use Jpeters8889\OrderDispatchSlip\OrderDispatchSlip as DispatchSlipTool;
+use Jpeters8889\ShopDailyStock\ShopDailyStock;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -70,6 +71,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new DispatchSlipTool(),
+            new ShopDailyStock(),
         ];
     }
 }

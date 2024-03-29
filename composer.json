@@ -43,7 +43,9 @@
         "spatie/laravel-sluggable": "^3.6.0",
         "spatie/mjml-php": "^1.1",
         "spatie/schema-org": "^3.23",
-        "stripe/stripe-php": "^13.16"
+        "stripe/stripe-php": "^13.16",
+        "jpeters8889/print-all-orders": "@dev",
+        "jpeters8889/shop-daily-stock": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.12.2",
@@ -114,6 +116,14 @@
         {
             "type": "path",
             "url": "./nova-components/OrderDispatchSlip"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/PrintAllOrders"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ShopDailyStock"
         }
     ],
     "autoload": {

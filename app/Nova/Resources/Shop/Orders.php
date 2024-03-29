@@ -10,9 +10,12 @@ use App\Models\Shop\ShopProduct;
 use App\Nova\Actions\Shop\CancelOrder;
 use App\Nova\Actions\Shop\OpenDispatchSlip;
 use App\Nova\Actions\Shop\ShipOrder;
+use App\Nova\Metrics\ShopDailySales;
+use App\Nova\Metrics\ShopIncome;
 use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Jpeters8889\CountryIcon\CountryIcon;
+use Jpeters8889\PrintAllOrders\PrintAllOrders;
 use Jpeters8889\ShopOrderOpenDispatchSlip\ShopOrderOpenDispatchSlip;
 use Jpeters8889\ShopOrderShippingAction\ShopOrderShippingAction;
 use Laravel\Nova\Fields\Currency;
@@ -111,6 +114,15 @@ class Orders extends Resource
                 ->showInline()
                 ->withoutConfirmation()
                 ->canRun(fn ($request, ShopOrder $order) => $order->state_id === OrderState::READY),
+        ];
+    }
+
+    public function cards(NovaRequest $request): array
+    {
+        return [
+            ShopDailySales::make()->refreshWhenActionsRun()->width('1/2'),
+            ShopIncome::make()->refreshWhenActionsRun()->width('1/2')->help('Including Postage'),
+            PrintAllOrders::make(),
         ];
     }
 

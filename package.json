@@ -32,7 +32,11 @@
         "build-shop-order-open-dispatch-slip": "cd nova-components/ShopOrderOpenDispatchSlip && npm run dev",
         "build-shop-order-open-dispatch-slip-prod": "cd nova-components/ShopOrderOpenDispatchSlip && npm run prod",
         "build-order-dispatch-slip": "cd nova-components/OrderDispatchSlip && npm run dev",
-        "build-order-dispatch-slip-prod": "cd nova-components/OrderDispatchSlip && npm run prod"
+        "build-order-dispatch-slip-prod": "cd nova-components/OrderDispatchSlip && npm run prod",
+        "build-print-all-orders": "cd nova-components/PrintAllOrders && npm run dev",
+        "build-print-all-orders-prod": "cd nova-components/PrintAllOrders && npm run prod",
+        "build-shop-daily-stock": "cd nova-components/ShopDailyStock && npm run dev",
+        "build-shop-daily-stock-prod": "cd nova-components/ShopDailyStock && npm run prod"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
