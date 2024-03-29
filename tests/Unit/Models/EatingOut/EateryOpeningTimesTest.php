@@ -87,7 +87,7 @@ class EateryOpeningTimesTest extends TestCase
             "{$today}_end" => '17:15',
         ]);
 
-        TestTime::setHour(17);
+        TestTime::setHour(17)->setMinute(0);
 
         $this->assertTrue($openingTime->is_open_now);
     }
