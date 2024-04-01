@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Shop;
 
+use App\Actions\Shop\VerifyDiscountCodeAction;
 use App\Enums\Shop\OrderState;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPostageCountry;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as DatabaseBuilder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use RuntimeException;
 
 class BasketPatchRequest extends FormRequest
 {
@@ -20,6 +24,18 @@ class BasketPatchRequest extends FormRequest
             'postage_country_id' => ['nullable', Rule::exists(ShopPostageCountry::class, 'id')],
             'action' => ['nullable', 'in:increase,decrease'],
             'item_id' => ['nullable', 'required_with:action', 'numeric'],
+            'discount' => ['nullable', 'bail', Rule::exists(ShopDiscountCode::class, 'code')->where(
+                fn (DatabaseBuilder $builder) => $builder
+                    ->where('start_at', '<=', now())
+                    ->where('end_at', '>=', now())
+            )],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'discount.exists' => 'Discount Code not found',
         ];
     }
 
@@ -40,6 +56,26 @@ class BasketPatchRequest extends FormRequest
 
                 if ( ! $itemInBasket) {
                     $validator->errors()->add('item_id', "This product isn't in your basket");
+                }
+            },
+
+            function (Validator $validator): void {
+                if ($this->missing('discount') || $validator->errors()->has('discount')) {
+                    return;
+                }
+
+                $discountCode = ShopDiscountCode::query()
+                    ->where('code', $this->string('discount')->toString())
+                    ->withCount('used')
+                    ->firstOrFail();
+
+                try {
+                    /** @var string $token */
+                    $token = $this->cookie('basket_token');
+
+                    app(VerifyDiscountCodeAction::class)->handle($discountCode, $token);
+                } catch (RuntimeException $exception) {
+                    $validator->errors()->add('discount', $exception->getMessage());
                 }
             },
         ];

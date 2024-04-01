@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Http\Response\Inertia;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopPostageCountry;
 use App\Resources\Shop\ShopOrderItemResource;
 use App\Support\Helpers;
+use Exception;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Inertia\Response;
@@ -25,8 +29,9 @@ class ShopCheckoutController
         ResolveBasketAction $resolveBasketAction,
         GetOrderItemsAction $getOrderItemsAction,
         CalculateOrderTotalsAction $calculateOrderTotalsAction,
+        ApplyDiscountCodeAction $applyDiscountCodeAction,
     ): Response {
-        /** @var string | null $token */
+        /** @var string $token */
         $token = $request->cookies->get('basket_token');
         $basket = $resolveBasketAction->handle($token, false);
 
@@ -45,7 +50,28 @@ class ShopCheckoutController
             /** @var Collection<int, ShopOrderItemResource> $collection */
             $collection = $items->collection;
 
-            ['subtotal' => $subtotal, 'postage' => $postage, 'total' => $total] = $calculateOrderTotalsAction->handle($collection, $country);
+            ['subtotal' => $subtotal, 'postage' => $postage] = $calculateOrderTotalsAction->handle($collection, $country);
+
+            $total = $subtotal + $postage;
+
+            $discount = null;
+
+            if ($request->session()->has('discountCode')) {
+                try {
+                    /** @var string $discountCodeSession */
+                    $discountCodeSession = $request->session()->get('discountCode');
+
+                    $discountCodeString = app(Encrypter::class)->decrypt($discountCodeSession);
+
+                    $discountCode = ShopDiscountCode::query()->where('code', $discountCodeString)->firstOrFail();
+
+                    $discount = $applyDiscountCodeAction->handle($discountCode, $token);
+
+                    $total -= ($discount ?? 0);
+                } catch (Exception) {
+                    //
+                }
+            }
 
             $props = [
                 'has_basket' => true,
@@ -62,6 +88,7 @@ class ShopCheckoutController
                     'delivery_timescale' => $basket->postageCountry?->area?->delivery_timescale,
                     'subtotal' => Helpers::formatMoney(Money::GBP($subtotal)),
                     'postage' => Helpers::formatMoney(Money::GBP($postage)),
+                    'discount' => Helpers::formatMoney(Money::GBP($discount ?? 0)),
                     'total' => Helpers::formatMoney(Money::GBP($total)),
                 ],
                 'payment_intent' => fn () => app(CreatePaymentIntentAction::class)->handle($basket, $total),

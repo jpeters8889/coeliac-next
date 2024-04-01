@@ -28,6 +28,7 @@ use App\Nova\Resources\Main\RecipeNutritionalInformation;
 use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
 use App\Nova\Resources\Shop\Customer;
+use App\Nova\Resources\Shop\DiscountCode;
 use App\Nova\Resources\Shop\OrderItem;
 use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\Payment;
@@ -84,6 +85,9 @@ class ResourceRegistrar
             // Shop Customers
             Customer::class,
             ShippingAddress::class,
+
+            // Shop Admin
+            DiscountCode::class,
         ]);
     }
 }

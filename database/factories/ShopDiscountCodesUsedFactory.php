@@ -29,6 +29,13 @@ class ShopDiscountCodesUsedFactory extends Factory
         ]);
     }
 
+    public function forDiscountCode(ShopDiscountCode $discountCode): self
+    {
+        return $this->state(fn () => [
+            'discount_id' => $discountCode->id,
+        ]);
+    }
+
     public function percentageDiscount(): self
     {
         return $this->state(fn () => [

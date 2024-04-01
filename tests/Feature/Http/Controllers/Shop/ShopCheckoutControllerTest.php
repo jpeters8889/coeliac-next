@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Feature\Http\Controllers\Shop;
 
+use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Enums\Shop\PostageArea;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPostagePrice;
@@ -17,6 +19,7 @@ use App\Models\Shop\ShopProductVariant;
 use App\Resources\Shop\ShopOrderItemResource;
 use App\Support\Helpers;
 use Database\Seeders\ShopScaffoldingSeeder;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Testing\AssertableInertia as Assert;
 use Money\Money;
@@ -225,6 +228,19 @@ class ShopCheckoutControllerTest extends TestCase
                     )
                     ->etc()
             );
+    }
+
+    /** @test */
+    public function itCallsTheApplyDiscountCodeActionIfADiscountCodeIsPresentInTheSession(): void
+    {
+        $this->expectAction(ApplyDiscountCodeAction::class);
+
+        $this->create(ShopDiscountCode::class, ['code' => 'foobar']);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->withSession(['discountCode' => app(Encrypter::class)->encrypt('foobar')])
+            ->get(route('shop.basket.checkout'));
     }
 
     /** @test */

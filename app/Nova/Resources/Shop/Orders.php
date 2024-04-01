@@ -22,6 +22,7 @@ use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasOneThrough;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -37,6 +38,8 @@ class Orders extends Resource
 
     public static $search = ['id', 'order_key', 'customer.name', 'address.line_1', 'address.town', 'address.postcode'];
 
+    public static $perPageViaRelationship = 10;
+
     public function fields(NovaRequest $request)
     {
         return [
@@ -49,6 +52,10 @@ class Orders extends Resource
             Text::make('Address', fn (ShopOrder $order) => nl2br($order->address->formatted_address))->asHtml(),
 
             Number::make('Items', fn (ShopOrder $order) => $order->items->sum('quantity')),
+
+            ...$request->query('viaResource') === 'discount-codes'
+                ? [Currency::make('Discount', fn (ShopOrder $order) => $order->payment->discount)->asMinorUnits()]
+                : [],
 
             Currency::make('Total', fn (ShopOrder $order) => $order->payment->total)->asMinorUnits(),
 
@@ -96,6 +103,8 @@ class Orders extends Resource
             HasOne::make('Address', resource: ShippingAddress::class),
 
             HasOne::make('Payment', resource: Payment::class),
+
+            HasOneThrough::make('Discount Code', resource: DiscountCode::class),
 
             HasMany::make('Items', resource: OrderItem::class),
         ];

@@ -69,7 +69,7 @@ class CalculateOrderTotalsActionTest extends TestCase
     /** @test */
     public function itReturnsAnArrayWithTheCorrectKeys(): void
     {
-        $keys = ['subtotal', 'postage', 'total'];
+        $keys = ['subtotal', 'postage'];
 
         $result = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
 
@@ -166,13 +166,5 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->expectExceptionMessage('Can not calculate postage');
 
         $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
-    }
-
-    /** @test */
-    public function itCalculatesTheTotalPrice(): void
-    {
-        ['total' => $total] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
-
-        $this->assertEquals(750, $total);
     }
 }

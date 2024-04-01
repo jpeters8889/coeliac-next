@@ -128,7 +128,7 @@ class Eateries extends Resource
                     ->displayUsingLabels()
                     ->fullWidth()
                     ->filterable()
-                    ->required()
+                    ->rules(['required'])
                     ->default(1)
                     ->options([
                         1 => 'Eatery',
@@ -146,7 +146,7 @@ class Eateries extends Resource
                         };
                     })
                     ->fullWidth()
-                    ->required(),
+                    ->rules(['required']),
 
                 Select::make('Cuisine', 'cuisine_id')
                     ->hideFromIndex()
@@ -157,14 +157,14 @@ class Eateries extends Resource
                             default => $field->hide()->setValue(29),
                         };
                     })
-                    ->required(),
+                    ->rules(['required']),
 
                 Textarea::make('Info')
                     ->alwaysShow()
                     ->dependsOn(['type_id'], function (Textarea $field, NovaRequest $request) {
                         return match ($request->type_id) {
                             2 => $field->hide()->nullable()->setValue(null),
-                            default => $field->show()->required(),
+                            default => $field->show()->rules(['required']),
                         };
                     })
                     ->fullWidth(),

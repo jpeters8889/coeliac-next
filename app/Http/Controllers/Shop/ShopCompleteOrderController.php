@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\Checkout\CreateCustomerAction;
 use App\Actions\Shop\Checkout\CreateShippingAddressAction;
@@ -13,10 +14,12 @@ use App\DataObjects\Shop\PendingOrderCustomerDetails;
 use App\DataObjects\Shop\PendingOrderShippingAddressDetails;
 use App\Enums\Shop\OrderState;
 use App\Http\Requests\Shop\CompleteOrderRequest;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPostageCountry;
 use App\Resources\Shop\ShopOrderItemResource;
 use Exception;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +35,7 @@ class ShopCompleteOrderController
         CalculateOrderTotalsAction $calculateOrderTotalsAction,
         CreateCustomerAction $createUserAction,
         CreateShippingAddressAction $createAddressAction,
+        ApplyDiscountCodeAction $applyDiscountCodeAction,
     ): Response {
         /** @var string $token */
         $token = $request->cookie('basket_token');
@@ -56,9 +60,32 @@ class ShopCompleteOrderController
                 PendingOrderShippingAddressDetails::createFromRequest($request, $country->country),
             );
 
+            $discount = null;
+            ['subtotal' => $subtotal, 'postage' => $postage] = $calculateOrderTotalsAction->handle($collection, $country);
+            $total = $subtotal + $postage;
+
+            if ($request->session()->has('discountCode')) {
+                try {
+                    /** @var string $discountCodeSession */
+                    $discountCodeSession = $request->session()->get('discountCode');
+
+                    $discountCodeString = app(Encrypter::class)->decrypt($discountCodeSession);
+
+                    $discountCode = ShopDiscountCode::query()->where('code', $discountCodeString)->firstOrFail();
+
+                    $discount = $applyDiscountCodeAction->handle($discountCode, $token);
+
+                    $total -= ($discount ?? 0);
+                } catch (Exception) {
+                    //
+                }
+            }
+
             $basket->payment()->create([
-                ...$calculateOrderTotalsAction->handle($collection, $country),
-                'discount' => 0,
+                'subtotal' => $subtotal,
+                'postage' => $postage,
+                'discount' => $discount ?? 0,
+                'total' => $total,
             ]);
 
             $basket->update([

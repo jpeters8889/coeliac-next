@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop;
 
+use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\Checkout\CreateCustomerAction;
 use App\Actions\Shop\Checkout\CreateShippingAddressAction;
 use App\Actions\Shop\ResolveBasketAction;
@@ -12,6 +13,7 @@ use App\DataObjects\Shop\PendingOrderShippingAddressDetails;
 use App\Enums\Shop\OrderState;
 use App\Enums\Shop\PostageArea;
 use App\Models\Shop\ShopCustomer;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPayment;
@@ -20,6 +22,7 @@ use App\Models\Shop\ShopPostagePrice;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductVariant;
 use App\Models\Shop\ShopShippingAddress;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Tests\RequestFactories\ShopCompleteOrderRequestFactory;
@@ -113,6 +116,16 @@ class ShopCompleteOrderControllerTest extends TestCase
     }
 
     /** @test */
+    public function itCallsTheApplyDiscountCodeActionIfADiscountCodeIsPresentInTheSession(): void
+    {
+        $this->expectAction(ApplyDiscountCodeAction::class);
+
+        $this->create(ShopDiscountCode::class, ['code' => 'foobar']);
+
+        $this->makeRequest(session: ['discountCode' => app(Encrypter::class)->encrypt('foobar')]);
+    }
+
+    /** @test */
     public function itCreatesAShopPaymentRecord(): void
     {
         $this->assertDatabaseEmpty(ShopPayment::class);
@@ -151,10 +164,11 @@ class ShopCompleteOrderControllerTest extends TestCase
         $this->assertSame(Str::length($this->basket->order_key), 8);
     }
 
-    protected function makeRequest(array $data = []): TestResponse
+    protected function makeRequest(array $data = [], array $session = []): TestResponse
     {
         return $this
             ->withCookie('basket_token', $this->basket->token)
+            ->withSession($session)
             ->post(route('shop.order.complete'), ShopCompleteOrderRequestFactory::new($data)->create());
     }
 

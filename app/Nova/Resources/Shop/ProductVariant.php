@@ -32,11 +32,11 @@ class ProductVariant extends Resource
 
             Text::make('Title')->nullable()->fullWidth()->help('Leave empty for only one variant'),
 
-            Number::make('In Stock', 'quantity')->fullWidth()->required(),
+            Number::make('In Stock', 'quantity')->fullWidth()->rules(['required']),
 
             Number::make('Total Sold')->exceptOnForms(),
 
-            Number::make('Weight')->fullWidth()->required(),
+            Number::make('Weight')->fullWidth()->rules(['required']),
 
             Boolean::make('Live')->fullWidth(),
 

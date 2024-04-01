@@ -26,12 +26,12 @@ class ShippingAddress extends Resource
         return [
             ID::make('id')->hide(),
 
-            Text::make('Line 1')->required(),
+            Text::make('Line 1')->rules(['required']),
             Text::make('Line 2')->nullable(),
             Text::make('Line 3')->nullable(),
-            Text::make('Town')->required(),
+            Text::make('Town')->rules(['required']),
             Text::make('County')->nullable(),
-            Text::make('Postcode')->required(),
+            Text::make('Postcode')->rules(['required']),
         ];
     }
 

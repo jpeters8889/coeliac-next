@@ -27,6 +27,7 @@ use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
+use App\Nova\Resources\Shop\DiscountCode;
 use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\Products;
 use Illuminate\Http\Request;
@@ -91,6 +92,10 @@ class Menu
                 MenuGroup::make('Inventory', [
                     MenuItem::resource(Categories::class),
                     MenuItem::resource(Products::class),
+                ]),
+
+                MenuGroup::make('Admin', [
+                    MenuItem::resource(DiscountCode::class),
                 ]),
             ])->icon('shopping-bag'),
         ]);

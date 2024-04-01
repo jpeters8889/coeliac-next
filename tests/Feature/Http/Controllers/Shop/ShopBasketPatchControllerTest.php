@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Feature\Http\Controllers\Shop;
 
 use App\Actions\Shop\AlterItemQuantityAction;
+use App\Actions\Shop\VerifyDiscountCodeAction;
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPostageCountry;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductVariant;
+use Illuminate\Encryption\Encrypter;
 use Tests\TestCase;
 
 class ShopBasketPatchControllerTest extends TestCase
@@ -165,5 +168,92 @@ class ShopBasketPatchControllerTest extends TestCase
                 'action' => 'increase',
                 'item_id' => $this->item->id,
             ]);
+    }
+
+    /** @test */
+    public function itErrorsIfTheDiscountCodeDoesntExist(): void
+    {
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ])
+            ->assertSessionHasErrors(['discount' => 'Discount Code not found'])
+            ->assertSessionMissing('discountCode');
+    }
+
+    /** @test */
+    public function itErrorsIfTheDiscountCodeExistsButIsntActiveYet(): void
+    {
+        $this->build(ShopDiscountCode::class)->startsTomorrow()->create(['code' => 'foobar']);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ])
+            ->assertSessionHasErrors(['discount' => 'Discount Code not found'])
+            ->assertSessionMissing('discountCode');
+    }
+
+    /** @test */
+    public function itErrorsIfTheDiscountCodeExistsButHasExpired(): void
+    {
+        $this->build(ShopDiscountCode::class)->expired()->create(['code' => 'foobar']);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ])
+            ->assertSessionHasErrors(['discount' => 'Discount Code not found'])
+            ->assertSessionMissing('discountCode');
+    }
+
+    /** @test */
+    public function itCallsTheVerifyDiscountCodeAction(): void
+    {
+        $this->build(ShopDiscountCode::class)->create(['code' => 'foobar']);
+
+        $this->expectAction(VerifyDiscountCodeAction::class);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ]);
+    }
+
+    /** @test */
+    public function itAddsTheDiscountCodeToTheSessionIfItIsValid(): void
+    {
+        $this->create(ShopDiscountCode::class, [
+            'code' => 'foobar',
+        ]);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ])
+            ->assertSessionHas('discountCode');
+    }
+
+    /** @test */
+    public function itEncryptsTheDiscountCodeInTheSession(): void
+    {
+        $this->create(ShopDiscountCode::class, [
+            'code' => 'foobar',
+        ]);
+
+        $this
+            ->withCookie('basket_token', $this->order->token)
+            ->patch(route('shop.basket.patch'), [
+                'discount' => 'foobar',
+            ]);
+
+        $discountCode = app('session.store')->get('discountCode');
+
+        $this->assertEquals('foobar', app(Encrypter::class)->decrypt($discountCode));
     }
 }

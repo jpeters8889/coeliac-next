@@ -143,13 +143,13 @@ class Products extends Resource
                     ->rows(3)
                     ->fullWidth()
                     ->alwaysShow()
-                    ->required(),
+                    ->rules(['required']),
 
                 Textarea::make('Long Description')
                     ->alwaysShow()
                     ->fullWidth()
                     ->rows(8)
-                    ->required(),
+                    ->rules(['required']),
             ]),
 
             HasMany::make('Prices', resource: ProductPrice::class),

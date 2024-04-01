@@ -15,8 +15,8 @@ use RuntimeException;
 class CalculateOrderTotalsAction
 {
     /**
-     * @param Collection<int, ShopOrderItemResource> $items
-     * @return array{subtotal: int, postage: int, total: int}
+     * @param  Collection<int, ShopOrderItemResource>  $items
+     * @return array{subtotal: int, postage: int}
      */
     public function handle(Collection $items, ShopPostageCountry $country): array
     {
@@ -47,12 +47,9 @@ class CalculateOrderTotalsAction
 
         $postage = $postagePrice->price;
 
-        $total = $subtotal + $postage;
-
         return [
             'subtotal' => $subtotal,
             'postage' => $postage,
-            'total' => $total,
         ];
     }
 }

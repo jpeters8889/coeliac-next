@@ -43,8 +43,8 @@ class MyPlaces extends Resource
             ID::make()->hide(),
 
             Panel::make('Eatery', [
-                Text::make('Name', 'place_name')->required()->showOnPreview(),
-                Text::make('Location', 'place_location')->required()->showOnPreview(),
+                Text::make('Name', 'place_name')->rules(['required'])->showOnPreview(),
+                Text::make('Location', 'place_location')->rules(['required'])->showOnPreview(),
                 URL::make('URL', 'place_web_address')->showOnPreview(),
                 Select::make('Venue Type', 'place_venue_type_id')->displayUsingLabels()->options($this->getVenueTypes(1))->showOnPreview(),
                 Textarea::make('Details', 'place_details')->alwaysShow()->showOnPreview(),

@@ -71,7 +71,7 @@ class Reviews extends Resource
 
             new Panel('Ratings', [
                 Number::make('Rating')
-                    ->required()
+                    ->rules(['required'])
                     ->min(1)
                     ->max(5)
                     ->showOnPreview(),

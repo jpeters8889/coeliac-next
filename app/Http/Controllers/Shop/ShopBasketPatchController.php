@@ -9,6 +9,7 @@ use App\Actions\Shop\ResolveBasketAction;
 use App\Http\Requests\Shop\BasketPatchRequest;
 use App\Models\Shop\ShopOrder;
 use Exception;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -38,6 +39,10 @@ class ShopBasketPatchController
                 $orderItem = $basket->items()->findOrFail($request->integer('item_id'));
 
                 app(AlterItemQuantityAction::class)->handle($orderItem, $request->string('action')->toString());
+            }
+
+            if ($request->has('discount')) {
+                $request->session()->put('discountCode', app(Encrypter::class)->encrypt($request->string('discount')->toString()));
             }
 
             DB::commit();

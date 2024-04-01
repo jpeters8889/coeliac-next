@@ -69,18 +69,18 @@ class NationwideEateries extends Resource
                     ->displayUsingLabels()
                     ->options($this->getVenueTypes(1))
                     ->fullWidth()
-                    ->required(),
+                    ->rules(['required']),
 
                 Select::make('Cuisine', 'cuisine_id')
                     ->hideFromIndex()
                     ->displayUsingLabels()
                     ->fullWidth()
                     ->options($this->getCuisines())
-                    ->required(),
+                    ->rules(['required']),
 
                 Textarea::make('Info')
                     ->alwaysShow()
-                    ->required()
+                    ->rules(['required'])
                     ->fullWidth(),
             ]),
 
