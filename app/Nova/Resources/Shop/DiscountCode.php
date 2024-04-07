@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Resources\Shop;
 
+use App\Enums\Shop\DiscountCodeType;
 use App\Models\Shop\ShopDiscountCode;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -67,7 +68,7 @@ class DiscountCode extends Resource
             Text::make('Deduction')
                 ->exceptOnForms()
                 ->displayUsing(function ($value) {
-                    if ($this->type_id === 1) {
+                    if ($this->type_id === DiscountCodeType::PERCENTAGE) {
                         return "{$value}%";
                     }
 
@@ -79,7 +80,14 @@ class DiscountCode extends Resource
                 ->rules(['required'])
                 ->max(100)
                 ->dependsOn('type_id', function (Number $field, NovaRequest $request, FormData $formData): void {
-                    $request->type_id === 1 ? $field->show() : $field->hide();
+                    $request->type_id === DiscountCodeType::PERCENTAGE->value ? $field->show() : $field->hide();
+                })
+                ->fillUsing(function (NovaRequest $request, ShopDiscountCode $discountCode) {
+                    if ($request->integer('type_id') === DiscountCodeType::MONEY->value) {
+                        return false;
+                    }
+
+                    $discountCode->deduction = $request->integer('deduction');
                 }),
 
             Currency::make('Deduction')
@@ -87,7 +95,14 @@ class DiscountCode extends Resource
                 ->rules(['required'])
                 ->asMinorUnits()
                 ->dependsOn('type_id', function (Currency $field, NovaRequest $request, FormData $formData): void {
-                    $request->type_id === 1 ? $field->hide() : $field->show();
+                    $request->type_id === DiscountCodeType::PERCENTAGE->value ? $field->hide() : $field->show();
+                })
+                ->fillUsing(function (NovaRequest $request, ShopDiscountCode $discountCode) {
+                    if ($request->integer('type_id') === DiscountCodeType::PERCENTAGE->value) {
+                        return false;
+                    }
+
+                    $discountCode->deduction = $request->float('deduction') * 100;
                 }),
 
             Currency::make('Min Spend')

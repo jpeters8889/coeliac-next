@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Shop;
 
 use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
+use App\Actions\Shop\CheckForPendingOrderAction;
 use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
@@ -27,6 +28,7 @@ class ShopCheckoutController
         Inertia $inertia,
         Request $request,
         ResolveBasketAction $resolveBasketAction,
+        CheckForPendingOrderAction $checkForPendingOrderAction,
         GetOrderItemsAction $getOrderItemsAction,
         CalculateOrderTotalsAction $calculateOrderTotalsAction,
         ApplyDiscountCodeAction $applyDiscountCodeAction,
@@ -34,6 +36,10 @@ class ShopCheckoutController
         /** @var string $token */
         $token = $request->cookies->get('basket_token');
         $basket = $resolveBasketAction->handle($token, false);
+
+        if ( ! $basket) {
+            $basket = $checkForPendingOrderAction->handle($token);
+        }
 
         $props = [
             'has_basket' => false,
@@ -68,8 +74,8 @@ class ShopCheckoutController
                     $discount = $applyDiscountCodeAction->handle($discountCode, $token);
 
                     $total -= ($discount ?? 0);
-                } catch (Exception) {
-                    //
+                } catch (Exception $exception) {
+                    $request->session()->forget('discountCode');
                 }
             }
 
@@ -88,10 +94,10 @@ class ShopCheckoutController
                     'delivery_timescale' => $basket->postageCountry?->area?->delivery_timescale,
                     'subtotal' => Helpers::formatMoney(Money::GBP($subtotal)),
                     'postage' => Helpers::formatMoney(Money::GBP($postage)),
-                    'discount' => Helpers::formatMoney(Money::GBP($discount ?? 0)),
+                    'discount' => $discount ? Helpers::formatMoney(Money::GBP($discount)) : null,
                     'total' => Helpers::formatMoney(Money::GBP($total)),
                 ],
-                'payment_intent' => fn () => app(CreatePaymentIntentAction::class)->handle($basket, $total),
+                'payment_intent' => app(CreatePaymentIntentAction::class)->handle($basket, $total),
             ];
         }
 

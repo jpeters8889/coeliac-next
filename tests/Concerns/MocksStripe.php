@@ -31,6 +31,7 @@ trait MocksStripe
 
     protected function mockCreatePaymentIntent(int $amount): string
     {
+        $id = Str::password(12);
         $token = Str::uuid()->toString();
 
         $paymentIntent = $this->partialMock(PaymentIntentService::class);
@@ -45,6 +46,7 @@ trait MocksStripe
                 return true;
             })
             ->andReturn(PaymentIntent::constructFrom([
+                'id' => $id,
                 'client_secret' => $token,
             ]))
             ->once();
@@ -56,6 +58,8 @@ trait MocksStripe
     {
         $paymentIntent = $this->partialMock(PaymentIntentService::class);
 
+        $this->getStripeClient()->paymentIntents = $paymentIntent;
+
         $paymentIntent->shouldReceive('retrieve')
             ->andReturn($this->createPaymentIntent([
                 'client_secret' => $token,
@@ -63,8 +67,21 @@ trait MocksStripe
                 ...$params,
             ]))
             ->once();
+    }
+
+    protected function mockUpdatePaymentIntent(string $id): void
+    {
+        $paymentIntent = $this->partialMock(PaymentIntentService::class);
 
         $this->getStripeClient()->paymentIntents = $paymentIntent;
+
+        $paymentIntent->shouldReceive('update')
+            ->withArgs(function ($argId) use ($id) {
+                $this->assertEquals($id, $argId);
+
+                return true;
+            })
+            ->once();
     }
 
     protected function mockRetrieveCharge(string $chargeId): void

@@ -10,6 +10,7 @@ type State = {
 };
 
 type Getters = {
+  isReady: (state: State) => boolean;
   stripe: (state: State) => Stripe;
   elements: (state: State) => StripeElements;
 };
@@ -27,6 +28,7 @@ const useStripeStore = defineStore<'stripe', State, Getters, Actions>(
       stateElements: {} as StripeElements,
     }),
     getters: {
+      isReady: (state) => state.instantiated,
       stripe: (state) => state.stateStripe,
       elements: (state) => state.stateElements,
     },

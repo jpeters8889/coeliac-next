@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { FormSelectOption } from '@/Components/Forms/Props';
 import FormSelect from '@/Components/Forms/FormSelect.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useForm } from 'laravel-precognition-vue-inertia';
 import Loader from '@/Components/Loader.vue';
 import useShopStore from '@/stores/useShopStore';
+import CheckoutDiscountCode from '@/Components/PageSpecific/Shop/Checkout/CheckoutDiscountCode.vue';
+import { XMarkIcon } from '@heroicons/vue/24/outline';
+import { router } from '@inertiajs/vue3';
+import eventBus from '@/eventBus';
 
 const props = defineProps<{
   countries: FormSelectOption[];
@@ -12,6 +16,7 @@ const props = defineProps<{
   deliveryTimescale: string;
   subtotal: string;
   postage: string;
+  discount?: string;
   total: string;
 }>();
 
@@ -41,6 +46,17 @@ const updateStore = () => {
 };
 
 updateStore();
+
+const removeDiscountCode = () => {
+  router.delete('/shop/basket/discount', {
+    preserveScroll: true,
+    onFinish: () => {
+      nextTick(() => {
+        eventBus.$emit('refresh-payment-element');
+      });
+    },
+  });
+};
 
 const isLoading = ref(false);
 
@@ -109,6 +125,27 @@ watch(
           class="flex-shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
           v-text="postage"
         />
+      </div>
+      <div
+        v-if="discount"
+        class="flex justify-between"
+      >
+        <dt
+          class="flex w-full items-center justify-between lg:text-lg xl:text-xl"
+        >
+          <span>Discount</span>
+          <XMarkIcon
+            class="mr-2 h-4 w-4 cursor-pointer"
+            @click="removeDiscountCode()"
+          />
+        </dt>
+        <dd
+          class="flex-shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
+          v-text="`-${discount}`"
+        />
+      </div>
+      <div v-if="!discount">
+        <CheckoutDiscountCode />
       </div>
       <div
         class="flex justify-between border-t border-t border-gray-200 border-secondary pt-3 text-xl font-semibold lg:text-2xl xl:text-3xl"

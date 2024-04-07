@@ -10,6 +10,7 @@ use App\Http\Controllers\Shop\ShopCompleteOrderController;
 use App\Http\Controllers\Shop\ShopIndexController;
 use App\Http\Controllers\Shop\ShopOrderCompleteController;
 use App\Http\Controllers\Shop\ShopProductController;
+use App\Http\Controllers\Shop\ShopRemoveDiscountCodeController;
 use App\Http\Controllers\Shop\ShopRemoveFromBasketController;
 use App\Http\Controllers\Shop\ShopRevertPendingOrderController;
 use App\Http\Middleware\ShopBasketTokenMiddleware;
@@ -30,6 +31,7 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
 
         Route::get('/done', ShopOrderCompleteController::class)->name('shop.basket.done');
 
+        Route::delete('/discount', ShopRemoveDiscountCodeController::class)->name('shop.basket.discount.remove');
         Route::delete('/{item}', ShopRemoveFromBasketController::class)->name('shop.basket.remove');
     });
 

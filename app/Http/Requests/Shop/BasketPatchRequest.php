@@ -10,6 +10,7 @@ use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPostageCountry;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder as DatabaseBuilder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -64,16 +65,24 @@ class BasketPatchRequest extends FormRequest
                     return;
                 }
 
-                $discountCode = ShopDiscountCode::query()
-                    ->where('code', $this->string('discount')->toString())
-                    ->withCount('used')
-                    ->firstOrFail();
+                if ($this->string('discount')->toString() === '') {
+                    $validator->errors()->add('discount', 'Please enter a discount code!');
+
+                    return;
+                }
 
                 try {
+                    $discountCode = ShopDiscountCode::query()
+                        ->where('code', $this->string('discount')->toString())
+                        ->withCount('used')
+                        ->firstOrFail();
+
                     /** @var string $token */
                     $token = $this->cookie('basket_token');
 
                     app(VerifyDiscountCodeAction::class)->handle($discountCode, $token);
+                } catch (ModelNotFoundException) {
+                    $validator->errors()->add('discount', 'Discount code not found!');
                 } catch (RuntimeException $exception) {
                     $validator->errors()->add('discount', $exception->getMessage());
                 }

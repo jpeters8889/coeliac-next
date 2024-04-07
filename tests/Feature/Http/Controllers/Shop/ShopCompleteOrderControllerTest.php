@@ -14,6 +14,7 @@ use App\Enums\Shop\OrderState;
 use App\Enums\Shop\PostageArea;
 use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopDiscountCode;
+use App\Models\Shop\ShopDiscountCodesUsed;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPayment;
@@ -123,6 +124,18 @@ class ShopCompleteOrderControllerTest extends TestCase
         $this->create(ShopDiscountCode::class, ['code' => 'foobar']);
 
         $this->makeRequest(session: ['discountCode' => app(Encrypter::class)->encrypt('foobar')]);
+    }
+
+    /** @test */
+    public function itCreatesADiscountCodeUsedRecordIfADiscountCodeIsPresent(): void
+    {
+        $this->create(ShopDiscountCode::class, ['code' => 'foobar']);
+
+        $this->assertDatabaseEmpty(ShopDiscountCodesUsed::class);
+
+        $this->makeRequest(session: ['discountCode' => app(Encrypter::class)->encrypt('foobar')]);
+
+        $this->assertDatabaseCount(ShopDiscountCodesUsed::class, 1);
     }
 
     /** @test */

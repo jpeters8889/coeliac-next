@@ -71,7 +71,7 @@ class ShopOrderCompleteControllerTest extends TestCase
         $this
             ->get(route('shop.basket.done', [
                 'payment_intent' => 'foo',
-                'payment_intent_client_secret' => $this->order->payment_intent_id,
+                'payment_intent_client_secret' => $this->order->payment_intent_secret,
             ]))
             ->assertRedirectToRoute('shop.index');
     }
@@ -88,7 +88,7 @@ class ShopOrderCompleteControllerTest extends TestCase
 
         $this->get(route('shop.basket.done', [
             'payment_intent' => 'foo',
-            'payment_intent_client_secret' => $this->order->payment_intent_id,
+            'payment_intent_client_secret' => $this->order->payment_intent_secret,
         ]));
     }
 
@@ -100,7 +100,7 @@ class ShopOrderCompleteControllerTest extends TestCase
         $this
             ->get(route('shop.basket.done', [
                 'payment_intent' => 'foo',
-                'payment_intent_client_secret' => $this->order->payment_intent_id,
+                'payment_intent_client_secret' => $this->order->payment_intent_secret,
             ]))
             ->assertRedirectToRoute('shop.basket.checkout')
             ->withCookie('basket_token', $this->order->token);
@@ -118,7 +118,7 @@ class ShopOrderCompleteControllerTest extends TestCase
 
         $this->get(route('shop.basket.done', [
             'payment_intent' => 'foo',
-            'payment_intent_client_secret' => $this->order->payment_intent_id,
+            'payment_intent_client_secret' => $this->order->payment_intent_secret,
         ]));
     }
 
@@ -132,7 +132,7 @@ class ShopOrderCompleteControllerTest extends TestCase
 
         $this->get(route('shop.basket.done', [
             'payment_intent' => 'foo',
-            'payment_intent_client_secret' => $this->order->payment_intent_id,
+            'payment_intent_client_secret' => $this->order->payment_intent_secret,
         ]));
     }
 
@@ -144,7 +144,7 @@ class ShopOrderCompleteControllerTest extends TestCase
 
         $this->get(route('shop.basket.done', [
             'payment_intent' => 'foo',
-            'payment_intent_client_secret' => $this->order->payment_intent_id,
+            'payment_intent_client_secret' => $this->order->payment_intent_secret,
         ]));
 
         Event::assertDispatched(OrderPaidEvent::class);
@@ -160,7 +160,7 @@ class ShopOrderCompleteControllerTest extends TestCase
 
         $this->get(route('shop.basket.done', [
             'payment_intent' => 'foo',
-            'payment_intent_client_secret' => $this->order->payment_intent_id,
+            'payment_intent_client_secret' => $this->order->payment_intent_secret,
         ]))->assertInertia(fn (Assert $page) => $page->component('Shop/OrderComplete'));
     }
 }

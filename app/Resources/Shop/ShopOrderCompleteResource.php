@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resources\Shop;
 
+use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPayment;
 use App\Models\Shop\ShopShippingAddress;
@@ -31,10 +32,17 @@ class ShopOrderCompleteResource extends JsonResource
         /** @var ShopShippingAddress $shipping */
         $shipping = $this->address;
 
+        /** @var ShopDiscountCode | null $discount */
+        $discount = $this->discountCode;
+
         return [
             'id' => $this->order_key,
             'products' => ShopOrderItemResource::collection($this->items),
             'subtotal' => Helpers::formatMoney(Money::GBP($payment->subtotal)),
+            'discount' => $payment->discount && $discount ? [
+                'amount' => Helpers::formatMoney(Money::GBP($payment->discount)),
+                'name' => $discount->name,
+            ] : null,
             'postage' => Helpers::formatMoney(Money::GBP($payment->postage)),
             'total' => Helpers::formatMoney(Money::GBP($payment->total)),
             'shipping' => array_filter([

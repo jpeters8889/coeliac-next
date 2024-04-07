@@ -98,7 +98,7 @@
             </mj-column>
             <mj-column css-class="force-half-width" width="50%">
                 <mj-text line-height="1.5"
-                         align="right">{{ Helpers::formatMoney(Money::GBP($order->payment->discount)) }}</mj-text>
+                         align="right">-{{ Helpers::formatMoney(Money::GBP($order->payment->discount)) }}</mj-text>
             </mj-column>
         @endif
 

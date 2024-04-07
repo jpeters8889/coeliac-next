@@ -53,6 +53,7 @@ type BasketProps = {
     delivery_timescale: string;
     subtotal: string;
     postage: string;
+    discount?: string;
     total: string;
   };
   payment_intent: string;
@@ -314,6 +315,7 @@ const sectionComponents: SectionComponent[] = [
           :selected-country="basket.selected_country"
           :delivery-timescale="basket.delivery_timescale"
           :postage="basket.postage"
+          :discount="basket.discount"
           :total="basket.total"
           :subtotal="basket.subtotal"
         />

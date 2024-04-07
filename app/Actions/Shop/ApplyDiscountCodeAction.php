@@ -22,6 +22,7 @@ class ApplyDiscountCodeAction
         }
 
         if ($discountCode->type_id === DiscountCodeType::PERCENTAGE) {
+
             $runningTotal = ShopOrderItem::query()
                 ->whereRelation('order', fn (Builder $builder) => $builder
                     ->where('state_id', OrderState::BASKET)

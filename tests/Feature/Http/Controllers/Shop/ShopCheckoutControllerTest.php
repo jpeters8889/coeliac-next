@@ -6,6 +6,7 @@ namespace Feature\Http\Controllers\Shop;
 
 use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
+use App\Actions\Shop\CheckForPendingOrderAction;
 use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
@@ -86,6 +87,18 @@ class ShopCheckoutControllerTest extends TestCase
         $this->expectAction(ResolveBasketAction::class);
 
         $this->get(route('shop.basket.checkout'));
+    }
+
+    /** @test */
+    public function itCallsTheCheckForPendingOrderActionIfThereIsAPendingOrder(): void
+    {
+        $order = $this->build(ShopOrder::class)->asPending()->create();
+
+        $this->expectAction(CheckForPendingOrderAction::class);
+
+        $this
+            ->withCookie('basket_token', $order->token)
+            ->get(route('shop.basket.checkout'));
     }
 
     /** @test */

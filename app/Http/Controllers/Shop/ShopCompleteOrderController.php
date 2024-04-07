@@ -76,6 +76,11 @@ class ShopCompleteOrderController
                     $discount = $applyDiscountCodeAction->handle($discountCode, $token);
 
                     $total -= ($discount ?? 0);
+
+                    $discountCode->used()->create([
+                        'order_id' => $basket->id,
+                        'discount_amount' => $discount,
+                    ]);
                 } catch (Exception) {
                     //
                 }

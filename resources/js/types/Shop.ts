@@ -117,6 +117,7 @@ export type OrderCompleteProps = {
   postage: string;
   total: string;
   shipping: string[];
+  discount: null | { amount: string; name: string };
   products: ShopBasketItem[];
   payment: CardPayment | PaypalPayment;
 };

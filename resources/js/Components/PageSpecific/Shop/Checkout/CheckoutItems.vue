@@ -28,7 +28,7 @@ const alterQuantity = (
     {
       preserveScroll: true,
       only: ['basket', 'has_basket', 'payment_intent'],
-      onSuccess: () => {
+      onFinish: () => {
         loadingItem.value = null;
         eventBus.$emit('refresh-payment-element');
       },

@@ -93,6 +93,20 @@ document.cookie =
           <dd v-text="order.subtotal" />
         </div>
 
+        <div
+          v-if="order.discount"
+          class="flex justify-between"
+        >
+          <dt class="font-semibold">
+            Discount<br />
+            <em
+              class="font-normal"
+              v-text="order.discount.name"
+            />
+          </dt>
+          <dd v-text="`-${order.discount.amount}`" />
+        </div>
+
         <div class="flex justify-between">
           <dt class="font-semibold">Postage</dt>
           <dd v-text="order.postage" />

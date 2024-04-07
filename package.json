@@ -60,6 +60,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@headlessui/tailwindcss": "^0.2.0",
         "@headlessui/vue": "^1.7.8",
         "@heroicons/vue": "^2.0.14",
         "@inertiajs/core": "^1.0.9",

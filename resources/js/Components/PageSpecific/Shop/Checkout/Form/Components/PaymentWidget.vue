@@ -2,6 +2,7 @@
 import eventBus from '@/eventBus';
 import { StripePaymentElementChangeEvent } from '@stripe/stripe-js/types/stripe-js/elements/payment';
 import useStripeStore from '@/stores/useStripeStore';
+import { computed, watch, watchEffect } from 'vue';
 
 const props = defineProps<{ paymentToken: string }>();
 
@@ -25,6 +26,10 @@ stripeStore.instantiate(props.paymentToken).then(() => {
   paymentElement.mount('#stripe');
 
   eventBus.$on('refresh-payment-element', () => {
+    console.log({
+      token: props.paymentToken,
+      note: 'Refreshing',
+    });
     stripeStore.elements.fetchUpdates();
   });
 

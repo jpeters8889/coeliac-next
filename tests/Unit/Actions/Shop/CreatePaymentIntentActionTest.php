@@ -25,7 +25,9 @@ class CreatePaymentIntentActionTest extends TestCase
         $this->callAction(CreatePaymentIntentAction::class, $order, 3500);
 
         $this->assertNotNull($order->payment_intent_id);
-        $this->assertEquals($mockToken, $order->payment_intent_id);
+        $this->assertNotNull($order->payment_intent_secret);
+
+        $this->assertEquals($mockToken, $order->payment_intent_secret);
     }
 
     /** @test */
@@ -37,5 +39,18 @@ class CreatePaymentIntentActionTest extends TestCase
         $returnedToken = $this->callAction(CreatePaymentIntentAction::class, $order, 3500);
 
         $this->assertEquals($mockToken, $returnedToken);
+    }
+
+    /** @test */
+    public function itUpdatesThePaymentIntentIfTheOrderHasAPaymentId(): void
+    {
+        $order = $this->create(ShopOrder::class, [
+            'payment_intent_id' => 'foo',
+            'payment_intent_secret' => 'bar',
+        ]);
+
+        $this->mockUpdatePaymentIntent('foo');
+
+        $this->callAction(CreatePaymentIntentAction::class, $order, 3500);
     }
 }

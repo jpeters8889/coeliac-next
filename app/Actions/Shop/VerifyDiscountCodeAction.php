@@ -19,7 +19,7 @@ class VerifyDiscountCodeAction
     {
         $discountCode->loadCount('used');
 
-        if ($discountCode->used_count >= $discountCode->max_claims) {
+        if ($discountCode->max_claims > 0 && $discountCode->used_count >= $discountCode->max_claims) {
             throw new RuntimeException('Discount Code has had too many claims');
         }
 

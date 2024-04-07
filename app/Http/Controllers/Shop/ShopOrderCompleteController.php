@@ -14,6 +14,7 @@ use App\Http\Response\Inertia;
 use App\Models\Shop\ShopOrder;
 use App\Resources\Shop\ShopOrderCompleteResource;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Inertia\Response;
@@ -31,7 +32,7 @@ class ShopOrderCompleteController
     ): Response|RedirectResponse {
         try {
             $pendingOrder = ShopOrder::query()
-                ->where('payment_intent_id', $request->string('payment_intent_client_secret')->toString())
+                ->where('payment_intent_secret', $request->string('payment_intent_client_secret')->toString())
                 ->where('state_id', OrderState::PENDING)
                 ->firstOrFail();
 
@@ -54,9 +55,10 @@ class ShopOrderCompleteController
 
             OrderPaidEvent::dispatch($pendingOrder);
 
-            $pendingOrder->load(['items', 'items.product', 'items.variant', 'payment', 'address']);
+            $pendingOrder->load(['items', 'items.product', 'items.variant', 'payment', 'address', 'discountCode']);
 
             Cookie::forget('basket_token');
+            $request->session()->remove('discountCode');
 
             return $inertia
                 ->title('Order Complete!')
@@ -64,8 +66,10 @@ class ShopOrderCompleteController
                 ->render('Shop/OrderComplete', [
                     'order' => new ShopOrderCompleteResource($pendingOrder, $paymentMethod),
                 ]);
-        } catch (Exception $exception) {
+        } catch (ModelNotFoundException $exception) {
             return new RedirectResponse(route('shop.index'));
+        } catch (Exception $exception) {
+            dd($exception);
         }
     }
 }
