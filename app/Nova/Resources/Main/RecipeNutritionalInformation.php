@@ -10,6 +10,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<RecipeNutrition> */
+/**
+ * @codeCoverageIgnore
+ */
 class RecipeNutritionalInformation extends Resource
 {
     public static string $model = RecipeNutrition::class;

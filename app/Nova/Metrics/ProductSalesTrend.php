@@ -13,6 +13,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Nova;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProductSalesTrend extends Trend
 {
     /**

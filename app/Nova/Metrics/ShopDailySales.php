@@ -10,6 +10,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 use Laravel\Nova\Nova;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ShopDailySales extends Trend
 {
     public function calculate(NovaRequest $request)

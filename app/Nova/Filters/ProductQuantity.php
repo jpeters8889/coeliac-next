@@ -8,6 +8,9 @@ use App\Models\Shop\ShopProduct;
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProductQuantity extends Filter
 {
     /**

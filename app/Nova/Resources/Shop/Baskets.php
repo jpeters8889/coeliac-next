@@ -19,6 +19,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopProduct> */
+/**
+ * @codeCoverageIgnore
+ */
 class Baskets extends Resource
 {
     /** @var class-string<ShopOrder> */

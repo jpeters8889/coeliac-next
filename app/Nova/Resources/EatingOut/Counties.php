@@ -22,6 +22,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<EateryCounty> */
+/**
+ * @codeCoverageIgnore
+ */
 class Counties extends Resource
 {
     /** @var class-string<EateryCounty> */

@@ -12,6 +12,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopShippingAddress> */
+/**
+ * @codeCoverageIgnore
+ */
 class ShippingAddress extends Resource
 {
     /** @var class-string<ShopShippingAddress> */

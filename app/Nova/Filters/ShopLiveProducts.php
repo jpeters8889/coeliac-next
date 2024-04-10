@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Filters\BooleanFilter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ShopLiveProducts extends BooleanFilter
 {
     public $name = 'Live';

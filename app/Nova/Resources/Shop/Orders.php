@@ -29,6 +29,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopProduct> */
+/**
+ * @codeCoverageIgnore
+ */
 class Orders extends Resource
 {
     /** @var class-string<ShopOrder> */

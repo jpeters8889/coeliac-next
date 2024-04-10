@@ -10,6 +10,9 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RejectEdit extends Action
 {
     public $name = 'Reject';

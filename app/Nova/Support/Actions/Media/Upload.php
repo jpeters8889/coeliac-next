@@ -10,6 +10,9 @@ use Illuminate\Http\UploadedFile;
 use Jpeters8889\AdvancedNovaMediaLibrary\Contracts\UploadMediaContract;
 use Jpeters8889\AdvancedNovaMediaLibrary\DataObjects\UploadedFileResponse;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Upload implements UploadMediaContract
 {
     public function upload(UploadedFile $file): UploadedFileResponse

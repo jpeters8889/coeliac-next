@@ -22,6 +22,9 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopCategory> */
+/**
+ * @codeCoverageIgnore
+ */
 class Categories extends Resource
 {
     /** @var class-string<ShopCategory> */

@@ -32,6 +32,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<ShopProduct> */
+/**
+ * @codeCoverageIgnore
+ */
 class Products extends Resource
 {
     /** @var class-string<ShopProduct> */

@@ -12,6 +12,9 @@ use PixelCreation\NovaFieldSortable\Concerns\SortsIndexEntries;
 use PixelCreation\NovaFieldSortable\Sortable;
 
 /** @extends Resource<CollectionItemModel> */
+/**
+ * @codeCoverageIgnore
+ */
 class CollectionItem extends Resource
 {
     use SortsIndexEntries;

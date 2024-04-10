@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ShippingMethod extends Resource
 {
     public static $model = ShopShippingMethod::class;

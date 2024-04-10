@@ -69,6 +69,18 @@ class ShopOrderFactory extends Factory
             ]);
     }
 
+    public function asShipped(?ShopCustomer $customer = null, ?ShopShippingAddress $address = null): self
+    {
+        return $this
+            ->forCustomer($customer)
+            ->toAddress($address)
+            ->has(self::factoryForModel(ShopPayment::class), 'payment')
+            ->state(fn () => [
+                'state_id' => OrderState::SHIPPED,
+                'order_key' => random_int(10000000, 99999999),
+            ]);
+    }
+
     public function asReady(): self
     {
         return $this->state(fn () => [

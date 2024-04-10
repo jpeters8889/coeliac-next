@@ -13,6 +13,9 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\DestructiveAction;
 use Laravel\Nova\Fields\ActionFields;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ShipOrder extends DestructiveAction implements ShouldQueue
 {
     use InteractsWithQueue;

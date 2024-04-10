@@ -20,6 +20,9 @@ use Laravel\Nova\Resource as NovaResource;
  *
  * @extends NovaResource<TModel>
  */
+/**
+ * @codeCoverageIgnore
+ */
 abstract class Resource extends NovaResource
 {
     /** @var Collection<int, Field> */

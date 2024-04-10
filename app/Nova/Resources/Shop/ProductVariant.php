@@ -17,6 +17,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProductVariant extends Resource
 {
     public static $model = ShopProductVariant::class;

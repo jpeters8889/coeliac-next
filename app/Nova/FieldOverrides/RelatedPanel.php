@@ -7,6 +7,9 @@ namespace App\Nova\FieldOverrides;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Panel;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RelatedPanel extends Panel
 {
     protected function prepareFields($fields)

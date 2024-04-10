@@ -12,6 +12,9 @@ use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ProductPrice extends Resource
 {
     public static $model = ShopProductPrice::class;

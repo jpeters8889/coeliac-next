@@ -30,9 +30,12 @@ const selectOptions: FormSelectOption[] = [
   { value: 'other', label: 'Other' },
 ];
 
+const submitting = ref(false);
+
 const paymentValid = ref(false);
 
 const submit = () => {
+  submitting.value = true;
   store.setBillingDetails(fields.value);
 
   emits('continue');
@@ -209,6 +212,7 @@ watch(billingAddressSelect, () => {
         :icon="ArrowRightIcon"
         icon-position="right"
         :disabled="!canSubmit"
+        :loading="submitting"
         @click="submit()"
       />
     </template>

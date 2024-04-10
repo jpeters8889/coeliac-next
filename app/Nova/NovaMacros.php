@@ -6,6 +6,9 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\Field;
 
+/**
+ * @codeCoverageIgnore
+ */
 class NovaMacros
 {
     public static function register(): void

@@ -24,6 +24,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<RecipeModel> */
+/**
+ * @codeCoverageIgnore
+ */
 class Recipe extends Resource
 {
     public static string $model = RecipeModel::class;

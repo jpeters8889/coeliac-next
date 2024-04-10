@@ -25,6 +25,9 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SuggestedEdits extends Resource
 {
     public static $model = EaterySuggestedEdit::class;

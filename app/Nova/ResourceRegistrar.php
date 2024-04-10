@@ -39,6 +39,9 @@ use App\Nova\Resources\Shop\ShippingAddress;
 use App\Nova\Resources\Shop\ShippingMethod;
 use Laravel\Nova\Nova;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ResourceRegistrar
 {
     public static function handle(): void

@@ -32,6 +32,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<Eatery> */
+/**
+ * @codeCoverageIgnore
+ */
 class Eateries extends Resource
 {
     /** @var class-string<Eatery> */

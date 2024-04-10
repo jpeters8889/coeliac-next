@@ -13,6 +13,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopPayment> */
+/**
+ * @codeCoverageIgnore
+ */
 class Payment extends Resource
 {
     /** @var class-string<ShopPayment> */

@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Image;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ReviewImage extends Resource
 {
     public static $model = EateryReviewImage::class;

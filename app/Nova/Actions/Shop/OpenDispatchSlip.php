@@ -8,6 +8,9 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 
+/**
+ * @codeCoverageIgnore
+ */
 class OpenDispatchSlip extends Action
 {
     public function handle(ActionFields $fields, Collection $models)

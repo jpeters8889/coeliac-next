@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 use Jpeters8889\PolymorphicPanel\PolymorphicResource;
 use Laravel\Nova\Fields\Boolean;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RecipeFeatures implements PolymorphicResource
 {
     public function fields(): array

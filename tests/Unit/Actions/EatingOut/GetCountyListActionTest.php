@@ -13,6 +13,7 @@ use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class GetCountyListActionTest extends TestCase
@@ -102,7 +103,7 @@ class GetCountyListActionTest extends TestCase
         $collection = app(GetCountyListAction::class)->handle();
 
         $collection->each(function (array $item, string $country): void {
-            $listedCounties = collect($item['list'])->map(fn ($county) => (array)$county)->pluck('name');
+            $listedCounties = collect($item['list'])->map(fn ($county) => (array) $county)->pluck('name');
 
             EateryCountry::query()
                 ->firstWhere('country', $country)
@@ -145,5 +146,32 @@ class GetCountyListActionTest extends TestCase
 
             $this->assertEquals($total, $item['eateries']);
         });
+    }
+
+    /** @test */
+    public function itCachesTheResults(): void
+    {
+        $key = 'wheretoeat_index_county_status';
+
+        $this->assertFalse(Cache::has($key));
+
+        app(GetCountyListAction::class)->handle();
+
+        $this->assertTrue(Cache::has($key));
+    }
+
+    /** @test */
+    public function itGetsTheResultsFromTheCache(): void
+    {
+        Cache::partialMock()
+            ->shouldReceive('has')
+            ->andReturnTrue()
+            ->once()
+            ->getMock()
+            ->shouldReceive('get')
+            ->andReturn(collect())
+            ->once();
+
+        app(GetCountyListAction::class)->handle();
     }
 }

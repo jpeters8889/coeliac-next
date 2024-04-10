@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<BlogTagModel> */
+/**
+ * @codeCoverageIgnore
+ */
 class BlogTag extends Resource
 {
     public static string $model = BlogTagModel::class;

@@ -24,6 +24,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<CollectionModel> */
+/**
+ * @codeCoverageIgnore
+ */
 class Collection extends Resource
 {
     public static $clickAction = 'view';

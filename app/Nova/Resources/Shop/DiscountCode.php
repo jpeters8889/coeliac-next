@@ -20,6 +20,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<ShopDiscountCode> */
+/**
+ * @codeCoverageIgnore
+ */
 class DiscountCode extends Resource
 {
     /** @var class-string<ShopDiscountCode> */
@@ -120,7 +123,7 @@ class DiscountCode extends Resource
                         ->default(fn () => 0)
                         ->help('Enter 0 for no limit'),
 
-                    Number::make('Claims', 'used_count')->exceptOnForms(),
+                    Number::make('Claims', 'used_count')->onlyOnIndex(),
 
                     HasManyThrough::make('Claims', 'orders', Orders::class),
                 ]

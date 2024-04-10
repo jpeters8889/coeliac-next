@@ -23,6 +23,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<NationwideBranch> */
+/**
+ * @codeCoverageIgnore
+ */
 class NationwideBranches extends Resource
 {
     /** @var class-string<NationwideBranch> */

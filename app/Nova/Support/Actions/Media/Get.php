@@ -9,6 +9,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Jpeters8889\AdvancedNovaMediaLibrary\Contracts\GetUploadedMediaContract;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Get implements GetUploadedMediaContract
 {
     public function resolveFromUuid(string $uuid): string

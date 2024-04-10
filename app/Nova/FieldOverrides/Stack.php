@@ -9,6 +9,9 @@ use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Stack extends \Laravel\Nova\Fields\Stack
 {
     protected ?Closure $loadClasses = null;

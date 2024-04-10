@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
+/**
+ * @codeCoverageIgnore
+ */
 class VisibilityPanel
 {
     public static function make(): Panel

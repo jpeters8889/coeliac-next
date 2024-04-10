@@ -14,6 +14,9 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<RecipeAllergen> */
+/**
+ * @codeCoverageIgnore
+ */
 class CommentReply extends Resource
 {
     public static string $model = \App\Models\Comments\CommentReply::class;

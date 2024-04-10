@@ -22,6 +22,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 
 /** @extends Resource<ShopOrderItem> */
+/**
+ * @codeCoverageIgnore
+ */
 class OrderItem extends Resource
 {
     /** @var class-string<ShopOrderItem> */

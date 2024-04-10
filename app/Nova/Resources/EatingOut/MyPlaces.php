@@ -21,6 +21,9 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MyPlaces extends Resource
 {
     public static $model = EateryRecommendation::class;

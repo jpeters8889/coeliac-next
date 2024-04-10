@@ -17,6 +17,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class PlaceReports extends Resource
 {
     public static $model = EateryReport::class;

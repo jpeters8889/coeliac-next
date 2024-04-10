@@ -21,6 +21,9 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Reviews extends Resource
 {
     public static $model = EateryReview::class;

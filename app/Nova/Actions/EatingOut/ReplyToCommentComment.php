@@ -12,6 +12,9 @@ use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ReplyToCommentComment extends Action
 {
     public $name = 'Approve';

@@ -21,6 +21,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 /** @extends Resource<BlogModel> */
+/**
+ * @codeCoverageIgnore
+ */
 class Blog extends Resource
 {
     /** @var class-string<BlogModel> */

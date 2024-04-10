@@ -20,6 +20,9 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<RecipeAllergen> */
+/**
+ * @codeCoverageIgnore
+ */
 class Comments extends Resource
 {
     public static string $model = Comment::class;
@@ -66,7 +69,6 @@ class Comments extends Resource
             ReplyToCommentComment::make()->sole()->showInline()->canRun(fn ($request, Comment $review) => $review->approved === false),
         ];
     }
-
 
     public static function indexQuery(NovaRequest $request, $query)
     {

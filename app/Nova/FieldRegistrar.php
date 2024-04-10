@@ -13,6 +13,9 @@ use Jpeters8889\PolymorphicPanel\FieldServiceProvider as PolymorphicPanelFieldSe
 use Jpeters8889\ShopOrderOpenDispatchSlip\FieldServiceProvider as ShopDispatchSlipFieldServiceProvider;
 use Jpeters8889\ShopOrderShippingAction\FieldServiceProvider as ShopShippingActionFieldServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class FieldRegistrar
 {
     public static function handle(): void

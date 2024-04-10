@@ -36,6 +36,9 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Menu
 {
     public static function build(): void

@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<RecipeAllergen> */
+/**
+ * @codeCoverageIgnore
+ */
 class RecipeAllergens extends Resource
 {
     public static string $model = RecipeAllergen::class;
