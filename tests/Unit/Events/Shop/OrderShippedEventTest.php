@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Events\Shop;
 
-use App\Events\Shop\OrderPaidEvent;
 use App\Events\Shop\OrderShippedEvent;
-use App\Listeners\Shop\SendOrderConfirmationMails;
 use App\Listeners\Shop\SendOrderShippedNotification;
 use App\Models\Shop\ShopOrder;
 use Tests\TestCase;

@@ -22,6 +22,7 @@ class EateryReviewFactory extends Factory
             'review' => $this->faker->paragraph,
             'method' => 'test',
             'approved' => false,
+            'wheretoeat_id' => static::factoryForModel(Eatery::class),
         ];
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Actions\EatingOut;
 
+use App\Events\EatingOut\EateryReviewApprovedEvent;
 use App\Models\EatingOut\EateryReview;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
@@ -34,10 +35,7 @@ class ApproveReview extends Action
 
             $review->update(['approved' => true]);
 
-            // @todo
-            //            (new AnonymousNotifiable())
-            //                ->route('mail', $review->email)
-            //                ->notify(new WhereToEatRatingApprovedNotification($rating));
+            EateryReviewApprovedEvent::dispatch($review);
         });
     }
 

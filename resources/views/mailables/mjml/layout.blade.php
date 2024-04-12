@@ -27,6 +27,7 @@
             <mj-button background-color="#DBBC25" padding="0" font-size="15px" font-weight="bold"/>
             <mj-table font-size="15px"></mj-table>
             <mj-class name="blue" background-color="#80CCFC"></mj-class>
+            <mj-class name="light-blue" background-color="#addaf9"></mj-class>
             <mj-class name="yellow" background-color="#DBBC25"></mj-class>
             <mj-class name="inner" padding="7px 0" line-height="1.2"></mj-class>
             <mj-class name="social" padding="0"></mj-class>

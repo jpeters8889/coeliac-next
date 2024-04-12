@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Mailables\Shop;
 
 use App\Infrastructure\MjmlMessage;
-use App\Mailables\Shop\OrderConfirmedMailable;
 use App\Mailables\Shop\OrderCancelledMailable;
 use App\Models\Shop\ShopOrder;
 use Tests\TestCase;

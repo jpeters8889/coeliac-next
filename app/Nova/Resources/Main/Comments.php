@@ -6,8 +6,8 @@ namespace App\Nova\Resources\Main;
 
 use App\Models\Comments\Comment;
 use App\Models\Recipes\RecipeAllergen;
-use App\Nova\Actions\EatingOut\ApproveComment;
-use App\Nova\Actions\EatingOut\ReplyToCommentComment;
+use App\Nova\Actions\ApproveComment;
+use App\Nova\Actions\ReplyToCommentComment;
 use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;

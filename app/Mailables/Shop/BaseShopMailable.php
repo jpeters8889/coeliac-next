@@ -5,24 +5,18 @@ declare(strict_types=1);
 namespace App\Mailables\Shop;
 
 use App\DataObjects\NotificationRelatedObject;
-use App\Infrastructure\MjmlMessage;
+use App\Mailables\BaseMailable;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopProduct;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
-abstract class BaseShopMailable
+abstract class BaseShopMailable extends BaseMailable
 {
     protected string $emailKey = '';
 
     final public function __construct(protected ShopOrder $order, ?string $emailKey = null)
     {
-        $this->emailKey = $emailKey ?? Str::uuid()->toString();
-    }
-
-    public static function make(ShopOrder $order, string $emailKey): MjmlMessage
-    {
-        return (new static($order, $emailKey))->toMail();
+        parent::__construct($emailKey);
     }
 
     protected function baseData(array $data = []): array
@@ -44,6 +38,4 @@ abstract class BaseShopMailable
                 )),
         ], $data);
     }
-
-    abstract public function toMail(): MjmlMessage;
 }

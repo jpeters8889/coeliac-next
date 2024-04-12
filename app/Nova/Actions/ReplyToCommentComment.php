@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Nova\Actions\EatingOut;
+namespace App\Nova\Actions;
 
 use App\Models\Comments\Comment;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
