@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Events\EatingOut\EateryReviewApprovedEvent;
 use App\Events\Shop\OrderCancelledEvent;
 use App\Events\Shop\OrderPaidEvent;
 use App\Events\Shop\OrderShippedEvent;
-use App\Listeners\EatingOut\SendEateryReviewApprovedNotification;
 use App\Listeners\Shop\SendOrderCancellationNotification;
 use App\Listeners\Shop\SendOrderConfirmationMails;
 use App\Listeners\Shop\SendOrderShippedNotification;
@@ -22,11 +20,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        // Eating Out
-        EateryReviewApprovedEvent::class => [
-            SendEateryReviewApprovedNotification::class,
-        ],
-
         // Shop
         OrderPaidEvent::class => [
             SendOrderConfirmationMails::class,

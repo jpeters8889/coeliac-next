@@ -7,7 +7,7 @@ namespace App\Nova\Resources\Main;
 use App\Models\Comments\Comment;
 use App\Models\Recipes\RecipeAllergen;
 use App\Nova\Actions\ApproveComment;
-use App\Nova\Actions\ReplyToCommentComment;
+use App\Nova\Actions\ReplyToComment;
 use App\Nova\Resource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
@@ -66,7 +66,7 @@ class Comments extends Resource
     {
         return [
             ApproveComment::make()->showInline()->canRun(fn ($request, Comment $review) => $review->approved === false),
-            ReplyToCommentComment::make()->sole()->showInline()->canRun(fn ($request, Comment $review) => $review->approved === false),
+            ReplyToComment::make()->sole()->showInline()->canRun(fn ($request, Comment $review) => $review->approved === false),
         ];
     }
 

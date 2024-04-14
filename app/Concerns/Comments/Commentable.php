@@ -8,7 +8,10 @@ use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-/** @mixin Model */
+/**
+ * @mixin Model
+ * @property string $title
+ */
 trait Commentable
 {
     /** @return MorphMany<Comment> */

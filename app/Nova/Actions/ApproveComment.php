@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Nova\Actions;
 
 use App\Models\Comments\Comment;
+use App\Notifications\CommentApprovedNotification;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -33,10 +35,9 @@ class ApproveComment extends Action
 
             $comment->update(['approved' => true]);
 
-            // @todo
-            //            (new AnonymousNotifiable())
-            //                ->route('mail', $review->email)
-            //                ->notify(new WhereToEatRatingApprovedNotification($rating));
+            (new AnonymousNotifiable())
+                ->route('mail', $comment->email)
+                ->notify(new CommentApprovedNotification($commentc));
         });
     }
 

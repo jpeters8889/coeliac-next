@@ -49,6 +49,7 @@ abstract class BaseMailable
                 'relatedItems' => Blog::query()
                     ->take(3)
                     ->inRandomOrder()
+                    ->with(['media'])
                     ->get()
                     ->map(fn (Blog $blog) => new NotificationRelatedObject(
                         title: $blog->title,
@@ -61,6 +62,7 @@ abstract class BaseMailable
                 'relatedItems' => Recipe::query()
                     ->take(3)
                     ->inRandomOrder()
+                    ->with(['media'])
                     ->get()
                     ->map(fn (Recipe $recipe) => new NotificationRelatedObject(
                         title: $recipe->title,
@@ -73,6 +75,7 @@ abstract class BaseMailable
                 'relatedItems' => ShopProduct::query()
                     ->take(3)
                     ->inRandomOrder()
+                    ->with(['media'])
                     ->get()
                     ->map(fn (ShopProduct $product) => new NotificationRelatedObject(
                         title: $product->title,

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Nova\Actions;
 
 use App\Models\Comments\Comment;
+use App\Notifications\CommentRepliedNotification;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -14,7 +16,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /**
  * @codeCoverageIgnore
  */
-class ReplyToCommentComment extends Action
+class ReplyToComment extends Action
 {
     public $name = 'Approve';
 
@@ -32,16 +34,15 @@ class ReplyToCommentComment extends Action
                 return;
             }
 
-            $comment->reply()->create([
+            $reply = $comment->reply()->create([
                 'comment_reply' => $fields->reply,
             ]);
 
             $comment->update(['approved' => true]);
 
-            // @todo
-            //            (new AnonymousNotifiable())
-            //                ->route('mail', $review->email)
-            //                ->notify(new WhereToEatRatingApprovedNotification($rating));
+            (new AnonymousNotifiable())
+                ->route('mail', $comment->email)
+                ->notify(new CommentRepliedNotification($reply));
         });
     }
 

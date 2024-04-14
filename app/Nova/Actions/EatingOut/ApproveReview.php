@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Nova\Actions\EatingOut;
 
-use App\Events\EatingOut\EateryReviewApprovedEvent;
 use App\Models\EatingOut\EateryReview;
+use App\Notifications\EatingOut\EateryReviewApprovedNotification;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
@@ -35,7 +35,9 @@ class ApproveReview extends Action
 
             $review->update(['approved' => true]);
 
-            EateryReviewApprovedEvent::dispatch($review);
+            (new AnonymousNotifiable())
+                ->route('mail', [$review->email => $review->name])
+                ->notify(new EateryReviewApprovedNotification($review));
         });
     }
 
