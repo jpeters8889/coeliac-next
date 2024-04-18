@@ -11,8 +11,6 @@ class CleanUpOldProductPricesCommand extends Command
 {
     protected $signature = 'coeliac:clean-up-product-prices';
 
-    protected $description = 'Command description';
-
     public function handle(): void
     {
         ShopProductPrice::query()

@@ -29,9 +29,12 @@ use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
 use App\Nova\Resources\Shop\Customer;
 use App\Nova\Resources\Shop\DiscountCode;
+use App\Nova\Resources\Shop\MassDiscount;
 use App\Nova\Resources\Shop\OrderItem;
 use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\Payment;
+use App\Nova\Resources\Shop\PostageArea;
+use App\Nova\Resources\Shop\PostagePrice;
 use App\Nova\Resources\Shop\ProductPrice;
 use App\Nova\Resources\Shop\Products;
 use App\Nova\Resources\Shop\ProductVariant;
@@ -91,6 +94,9 @@ class ResourceRegistrar
 
             // Shop Admin
             DiscountCode::class,
+            PostagePrice::class,
+            PostageArea::class,
+            MassDiscount::class,
         ]);
     }
 }

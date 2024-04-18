@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console;
 
+use App\Console\Commands\ApplyMassDiscountsCommand;
 use App\Console\Commands\CleanUpOldProductPricesCommand;
+use App\Console\Commands\CloseBasketsCommand;
 use App\Console\Commands\GetCountyLatLngCommand;
 use App\Console\Commands\GetTownLatLngCommand;
 use App\Console\Commands\MigrateImagesToMedia;
@@ -18,6 +20,8 @@ class Kernel extends ConsoleKernel
         GetTownLatLngCommand::class,
         MigrateImagesToMedia::class,
         CleanUpOldProductPricesCommand::class,
+        CloseBasketsCommand::class,
+        ApplyMassDiscountsCommand::class,
     ];
 
     /**
@@ -25,6 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(CloseBasketsCommand::class)->everyMinute();
+        $schedule->command(ApplyMassDiscountsCommand::class)->everyMinute();
     }
 }
