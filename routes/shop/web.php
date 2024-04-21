@@ -37,4 +37,8 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
 
     Route::get('/{category}', ShopCategoryController::class)->name('shop.category');
     Route::get('/product/{product}', ShopProductController::class)->name('shop.product');
+
+    Route::get('review-my-order/{invitation}', fn () => null)
+        ->middleware(['signed'])
+        ->name('shop.review-order');
 });

@@ -50,6 +50,20 @@ class ShopScaffoldingSeeder extends Seeder
             'iso_code' => 'uk',
         ]);
 
+        ShopPostageCountry::query()->create([
+            'id' => 2,
+            'postage_area_id' => PostageArea::EUROPE->value,
+            'country' => 'France',
+            'iso_code' => 'fr',
+        ]);
+
+        ShopPostageCountry::query()->create([
+            'id' => 3,
+            'postage_area_id' => PostageArea::AMERICA->value,
+            'country' => 'America',
+            'iso_code' => 'us',
+        ]);
+
         foreach (PaymentType::cases() as $paymentType) {
             ShopPaymentType::query()->create([
                 'id' => $paymentType->value,

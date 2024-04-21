@@ -14,7 +14,7 @@ abstract class BaseShopMailable extends BaseMailable
 {
     protected string $emailKey = '';
 
-    final public function __construct(protected ShopOrder $order, ?string $emailKey = null)
+    public function __construct(protected ShopOrder $order, ?string $emailKey = null)
     {
         parent::__construct($emailKey);
     }

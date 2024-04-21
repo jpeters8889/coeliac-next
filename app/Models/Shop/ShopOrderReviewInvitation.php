@@ -13,6 +13,11 @@ class ShopOrderReviewInvitation extends Model
 {
     use HasUuids;
 
+    protected $casts = [
+        'sent' => 'bool',
+        'sent_at' => 'datetime',
+    ];
+
     /** @return BelongsTo<ShopOrder, self> */
     public function order(): BelongsTo
     {

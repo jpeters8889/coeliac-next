@@ -69,7 +69,7 @@ class ShopOrderFactory extends Factory
             ]);
     }
 
-    public function asShipped(?ShopCustomer $customer = null, ?ShopShippingAddress $address = null): self
+    public function asShipped(?ShopCustomer $customer = null, ?ShopShippingAddress $address = null, ?Carbon $shippedAt = null): self
     {
         return $this
             ->forCustomer($customer)
@@ -78,6 +78,7 @@ class ShopOrderFactory extends Factory
             ->state(fn () => [
                 'state_id' => OrderState::SHIPPED,
                 'order_key' => random_int(10000000, 99999999),
+                'shipped_at' => $shippedAt ?? Carbon::now(),
             ]);
     }
 
