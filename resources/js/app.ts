@@ -6,6 +6,7 @@ import { createPinia } from 'pinia';
 import Coeliac from '@/Layouts/Coeliac.vue';
 import ArticleHeader from '@/Components/ArticleHeader.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
+import vClickOutside from 'v-click-outside';
 
 const appName = 'Coeliac Sanctuary';
 
@@ -39,6 +40,7 @@ createInertiaApp({
       .component('article-image', ArticleImage)
       .use(plugin)
       .use(pinia)
+      .use(vClickOutside)
       .mount(el);
   },
 });

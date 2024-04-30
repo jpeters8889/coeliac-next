@@ -3,7 +3,6 @@ import { TextareaProps, TextareaPropsDefaults } from '@/Components/Forms/Props';
 import { ref, watch } from 'vue';
 import RawTextareaField from '@/Components/Forms/RawTextareaField.vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
-import RawInputField from '@/Components/Forms/RawInputField.vue';
 
 const props = withDefaults(defineProps<TextareaProps>(), TextareaPropsDefaults);
 
@@ -22,6 +21,11 @@ watch(value, () => {
       v-if="hideLabel === false"
       :for="id"
       class="block font-semibold leading-6 text-primary-dark"
+      :class="
+        size === 'large'
+          ? 'text-base sm:text-lg xl:text-xl'
+          : 'text-base sm:text-lg'
+      "
     >
       {{ label }}
       <span

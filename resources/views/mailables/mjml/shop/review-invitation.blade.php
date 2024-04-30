@@ -26,22 +26,22 @@
                 If you have a couple of minutes, I'd love to read your feedback about my products, and to share your feedback on our website to help other potential buyers.
             </mj-text>
             <mj-text mj-class="inner">
-                This email was automatically sent {{ $delayText }} after your order was dropped in the postbox, if you haven't received your order yet, please let me know and I'll try my best to sort it out for you, hopefully its not got lost in the post somewhere!
-            </mj-text>
-            <mj-text mj-class="inner">
                 To leave a review, click the button below!
             </mj-text>
-            <mj-button href="{{ $reviewLink }}">
+            <mj-button href="{{ $reviewLink }}" padding="20px" font-size="20">
                 Leave A Review!
             </mj-button>
             <mj-text mj-class="inner">
                 If you cant see the button above copy the link below into your browser
             </mj-text>
-            <mj-text mj-class="inner">
+            <mj-text mj-class="inner" font-size="14">
                 {{ $reviewLink }}
             </mj-text>
             <mj-text mj-class="inner" padding-top="10px">
                 Thanks again, Alison - Coeliac Sanctuary
+            </mj-text>
+            <mj-text mj-class="inner">
+                <strong>This email was automatically sent {{ $delayText }} after your order was dropped in the postbox, if you haven't received your order yet, please let me know and I'll try my best to sort it out for you, hopefully its not got lost in the post somewhere!</strong>
             </mj-text>
         </mj-column>
     </mj-section>

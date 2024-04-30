@@ -31,6 +31,8 @@ use App\Nova\Resources\Shop\Customer;
 use App\Nova\Resources\Shop\DiscountCode;
 use App\Nova\Resources\Shop\MassDiscount;
 use App\Nova\Resources\Shop\OrderItem;
+use App\Nova\Resources\Shop\OrderReviewItem;
+use App\Nova\Resources\Shop\OrderReviews;
 use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\Payment;
 use App\Nova\Resources\Shop\PostageArea;
@@ -97,6 +99,8 @@ class ResourceRegistrar
             PostagePrice::class,
             PostageArea::class,
             MassDiscount::class,
+            OrderReviews::class,
+            OrderReviewItem::class,
         ]);
     }
 }

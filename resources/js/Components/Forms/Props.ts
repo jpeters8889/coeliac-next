@@ -30,6 +30,7 @@ export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
 export type InputProps = BaseFormInputProps & {
   type?: 'text' | 'number' | 'search' | 'email' | 'url' | 'phone';
   label: string;
+  helpText?: string;
   error?: string;
   hideLabel?: boolean;
   size?: 'default' | 'large';
@@ -40,6 +41,7 @@ export type InputProps = BaseFormInputProps & {
 export const InputPropDefaults: Partial<InputProps> = {
   ...BaseFormInputPropDefaults,
   type: 'text',
+  helpText: undefined,
   hideLabel: false,
   size: 'default',
   min: undefined,
@@ -52,6 +54,7 @@ export type TextareaProps = BaseFormInputProps & {
   error?: string;
   max?: number;
   hideLabel?: boolean;
+  size?: 'default' | 'large';
 };
 
 export const TextareaPropsDefaults: Partial<TextareaProps> = {
@@ -59,6 +62,7 @@ export const TextareaPropsDefaults: Partial<TextareaProps> = {
   rows: 5,
   max: undefined,
   hideLabel: false,
+  size: 'default',
 };
 
 export type CheckboxProps = BaseFormProps & {
@@ -75,6 +79,11 @@ export const CheckboxPropsDefault: Partial<CheckboxProps> = <
 export type FormSelectOption = {
   label?: string;
   value: string | number | boolean;
+};
+
+export type FormMultiSelectOption = {
+  label?: string;
+  value: string;
 };
 
 export type FormSelectProps = BaseFormProps & {
@@ -94,6 +103,17 @@ export const FormSelectPropsDefaults: Partial<FormSelectProps> = {
   hideLabel: false,
   error: undefined,
   size: 'default',
+};
+
+export type FormMultiSelectProps = FormSelectProps & {
+  modelValue: FormMultiSelectOption[];
+  options: FormMultiSelectOption[];
+  allowOther: boolean;
+};
+
+export const FormMultiSelectPropsDefaults: Partial<FormMultiSelectProps> = {
+  ...FormSelectPropsDefaults,
+  allowOther: false,
 };
 
 export type FormStepperProps = BaseFormProps & {

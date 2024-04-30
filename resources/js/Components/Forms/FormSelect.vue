@@ -27,6 +27,11 @@ watch(value, () => {
       v-if="hideLabel === false"
       :for="id"
       class="block font-semibold leading-6 text-primary-dark"
+      :class="
+        size === 'large'
+          ? 'text-base sm:text-lg xl:text-xl'
+          : 'text-base sm:text-lg'
+      "
     >
       {{ label }}
       <span

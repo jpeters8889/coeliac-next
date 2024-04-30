@@ -115,5 +115,11 @@ const isSelected = (index: number): boolean => {
         </transition>
       </template>
     </div>
+
+    <p
+      v-if="hasError"
+      class="mt-2 text-sm text-red"
+      v-text="'Please select an option'"
+    />
   </div>
 </template>

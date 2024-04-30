@@ -9,10 +9,11 @@ use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    /** @return array | object */
     public function resolveValidationErrors(Request $request)
     {
         $errors = (array) parent::resolveValidationErrors($request);
 
-        return (object) collect($errors)->undot()->toArray();
+        return (array) collect($errors)->undot()->toArray();
     }
 }

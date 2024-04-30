@@ -10,7 +10,9 @@ use App\Models\EatingOut\EateryReview;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopProduct;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Spatie\Mjml\Mjml;
 
 Route::get('/mail/shop/order-confirmed/{orderId?}', function (?int $orderId = null): string {
@@ -28,6 +30,40 @@ Route::get('/mail/shop/order-confirmed/{orderId?}', function (?int $orderId = nu
         'date' => now(),
         'order' => $order,
         'reason' => 'as confirmation to an order placed in the Coeliac Sanctuary Shop.',
+        'notifiable' => $order->customer,
+        'relatedTitle' => 'products',
+        'relatedItems' => ShopProduct::query()->take(3)->inRandomOrder()->get()->map(fn (ShopProduct $product) => new NotificationRelatedObject(
+            title: $product->title,
+            image: $product->main_image,
+            link: $product->link,
+        )),
+    ])->render();
+
+    return Mjml::new()->toHtml($content);
+});
+
+Route::get('/mail/shop/review-invitation/{orderId?}', function (?int $orderId = null): string {
+    $order = ShopOrder::query()
+        ->where('state_id', OrderState::SHIPPED)
+        ->with(['items', 'items.product.media', 'payment', 'customer', 'address', 'reviewInvitation'])
+        ->whereHas('reviewInvitation')
+        ->when(
+            $orderId,
+            fn (Builder $builder) => $builder->findOrFail($orderId),
+            fn (Builder $builder) => $builder->latest()->first(),
+        );
+
+    $content = view('mailables.mjml.shop.review-invitation', [
+        'key' => 'foo',
+        'date' => now(),
+        'order' => $order,
+        'reason' => 'mailables.mjml.shop.review-invitation',
+        'delayText' => '10 days',
+        'reviewLink' => URL::temporarySignedRoute(
+            'shop.review-order',
+            Carbon::now()->addMonths(6),
+            ['invitation' => $order->reviewInvitation, 'hash' => sha1($order->customer->email)]
+        ),
         'notifiable' => $order->customer,
         'relatedTitle' => 'products',
         'relatedItems' => ShopProduct::query()->take(3)->inRandomOrder()->get()->map(fn (ShopProduct $product) => new NotificationRelatedObject(

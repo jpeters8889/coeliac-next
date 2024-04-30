@@ -40,8 +40,8 @@ watch(
       class="block font-semibold leading-6 text-primary-dark"
       :class="
         size === 'large'
-          ? 'text-base md:text-lg xl:text-xl'
-          : 'text-base xl:text-lg'
+          ? 'text-base sm:text-lg xl:text-xl'
+          : 'text-base sm:text-lg'
       "
     >
       {{ label }}
@@ -51,6 +51,13 @@ watch(
         v-text="'*'"
       />
     </label>
+
+    <small
+      v-if="helpText"
+      class="mb-2 mt-0 block text-sm leading-none text-grey-dark"
+      v-text="helpText"
+    />
+
     <div
       class="relative rounded-md"
       :class="borders ? 'shadow-sm' : ''"

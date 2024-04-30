@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Shop\ReviewMyOrderGetController;
+use App\Http\Controllers\Shop\ReviewMyOrderStoreController;
+use App\Http\Controllers\Shop\ReviewMyOrderThanksController;
 use App\Http\Controllers\Shop\ShopAddToBasketController;
 use App\Http\Controllers\Shop\ShopBasketPatchController;
 use App\Http\Controllers\Shop\ShopCategoryController;
@@ -15,6 +18,7 @@ use App\Http\Controllers\Shop\ShopRemoveFromBasketController;
 use App\Http\Controllers\Shop\ShopRevertPendingOrderController;
 use App\Http\Middleware\ShopBasketTokenMiddleware;
 use App\Http\Middleware\ShopHasBasketMiddleware;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
@@ -38,7 +42,14 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
     Route::get('/{category}', ShopCategoryController::class)->name('shop.category');
     Route::get('/product/{product}', ShopProductController::class)->name('shop.product');
 
-    Route::get('review-my-order/{invitation}', fn () => null)
+    Route::get('review-my-order/{invitation}', ReviewMyOrderGetController::class)
         ->middleware(['signed'])
         ->name('shop.review-order');
+
+    Route::get('review-my-order/{invitation}/thanks', ReviewMyOrderThanksController::class)
+        ->name('shop.review-order.thanks');
+
+    Route::post('review-my-order/{invitation}', ReviewMyOrderStoreController::class)
+        ->middleware(HandlePrecognitiveRequests::class)
+        ->name('shop.review-order.store');
 });

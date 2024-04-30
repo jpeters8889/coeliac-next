@@ -7,6 +7,9 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property ShopProduct $product
+ */
 class ShopOrderItem extends Model
 {
     /** @return BelongsTo<ShopOrder, self> */
