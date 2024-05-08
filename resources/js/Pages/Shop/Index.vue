@@ -2,7 +2,6 @@
 import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
 import { ShopCategoryIndex } from '@/types/Shop';
-import { Link } from '@inertiajs/vue3';
 import IndexCategoryCard from '@/Components/PageSpecific/Shop/IndexCategoryCard.vue';
 
 defineProps<{

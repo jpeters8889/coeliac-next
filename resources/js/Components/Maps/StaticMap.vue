@@ -2,24 +2,16 @@
 import { ref } from 'vue';
 import Modal from '@/Components/Overlays/Modal.vue';
 import DynamicMap from '@/Components/Maps/DynamicMap.vue';
-import { MapPropDefaults, MapProps } from '@/Components/Maps/Props';
+import { StaticMapPropDefaults, StaticMapProps } from '@/Components/Maps/Props';
 
 const props = withDefaults(
-  defineProps<MapProps & { mapClasses?: string[] }>(),
-  {
-    ...MapPropDefaults,
-    mapClasses: () => [
-      'min-h-map-small',
-      'md:min-h-map',
-      'lg:min-h-map-small',
-      'xl:min-h-map',
-    ],
-  }
+  defineProps<StaticMapProps>(),
+  StaticMapPropDefaults,
 );
 
-const zoom = ref(false);
+const openModal = ref(false);
 
-const apiKey: string = import.meta.env.VITE_GOOGLE_MAPS_STATIC_KEY;
+const apiKey: string = import.meta.env.VITE_GOOGLE_MAPS_STATIC_KEY as string;
 
 const backgroundUrl = new URL('https://maps.googleapis.com/maps/api/staticmap');
 backgroundUrl.searchParams.set('center', `${props.lat},${props.lng}`);
@@ -27,7 +19,7 @@ backgroundUrl.searchParams.set('size', '600x600');
 backgroundUrl.searchParams.set('maptype', 'roadmap');
 backgroundUrl.searchParams.set(
   'markers',
-  `color:red|label:|${props.lat},${props.lng}`
+  `color:red|label:|${props.lat},${props.lng}`,
 );
 backgroundUrl.searchParams.set('key', apiKey);
 
@@ -44,16 +36,16 @@ const styles = () => ({
       :class="mapClasses"
       :style="styles()"
       class="w-full"
-      @click.stop="zoom = true"
+      @click.stop="openModal = true"
     />
   </div>
 
   <Modal
-    :open="zoom"
+    :open="openModal"
     no-padding
     size="large"
     width="w-full"
-    @close="zoom = false"
+    @close="openModal = false"
   >
     <div class="min-w-full">
       <DynamicMap

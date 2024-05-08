@@ -14,7 +14,7 @@ const store = useShopStore();
 
 const data = reactive({ ...store.userDetails });
 const errors: ComputedRef<Partial<CheckoutContactStep>> = computed(
-  () => store.getErrors.contact || {}
+  () => store.getErrors.contact || {},
 );
 
 const disableButton = computed((): boolean => {

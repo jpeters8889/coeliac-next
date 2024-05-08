@@ -9,6 +9,7 @@ import CheckoutDiscountCode from '@/Components/PageSpecific/Shop/Checkout/Checko
 import { XMarkIcon } from '@heroicons/vue/24/outline';
 import { router } from '@inertiajs/vue3';
 import eventBus from '@/eventBus';
+import { InertiaForm } from '@/types/Core';
 
 const props = defineProps<{
   countries: FormSelectOption[];
@@ -31,11 +32,11 @@ const deliveryEstimate = computed(() => {
 
 const countryForm = useForm('patch', '/shop/basket', {
   postage_country_id: props.selectedCountry,
-});
+}) as InertiaForm<{ postage_country_id: number }>;
 
 const updateStore = () => {
   const selectedOption: FormSelectOption | undefined = props.countries.find(
-    (country) => country.value === countryForm.postage_country_id
+    (country) => country.value === countryForm.postage_country_id,
   );
 
   if (!selectedOption) {
@@ -51,7 +52,7 @@ const removeDiscountCode = () => {
   router.delete('/shop/basket/discount', {
     preserveScroll: true,
     onFinish: () => {
-      nextTick(() => {
+      void nextTick(() => {
         eventBus.$emit('refresh-payment-element');
       });
     },
@@ -72,7 +73,7 @@ watch(
         updateStore();
       },
     });
-  }
+  },
 );
 </script>
 

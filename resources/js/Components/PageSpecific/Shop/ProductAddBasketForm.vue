@@ -29,8 +29,7 @@ const checkStock = () => {
 
 const availableQuantity = computed(() => selectedVariant.value?.quantity);
 
-const { addBasketForm, prepareAddBasketForm, submitAddBasketForm } =
-  useAddToBasket();
+const { prepareAddBasketForm, submitAddBasketForm } = useAddToBasket();
 
 onMounted(() => {
   if (props.product.variants.length === 1) {
@@ -46,7 +45,7 @@ watch(selectedVariant, () => {
   checkStock();
   prepareAddBasketForm(
     props.product.id,
-    (<ShopProductVariant>selectedVariant.value).id
+    (<ShopProductVariant>selectedVariant.value).id,
   );
 
   quantity.value = 1;
@@ -56,7 +55,7 @@ watch(quantity, () => {
   prepareAddBasketForm(
     props.product.id,
     (<ShopProductVariant>selectedVariant.value).id,
-    quantity.value
+    quantity.value,
   );
 });
 

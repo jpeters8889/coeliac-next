@@ -15,7 +15,7 @@ const loadingItem = ref<null | number>(null);
 
 const alterQuantity = (
   item: ShopBasketItem,
-  action: 'increase' | 'decrease'
+  action: 'increase' | 'decrease',
 ) => {
   loadingItem.value = item.id;
 
@@ -32,7 +32,7 @@ const alterQuantity = (
         loadingItem.value = null;
         eventBus.$emit('refresh-payment-element');
       },
-    }
+    },
   );
 };
 

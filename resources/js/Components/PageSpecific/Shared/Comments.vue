@@ -145,6 +145,7 @@ const submitComment = () => {
         label="Your Comment..."
         name="comment"
         required
+        borders
       />
 
       <small class="text-xs italic sm:text-sm md:text-base">

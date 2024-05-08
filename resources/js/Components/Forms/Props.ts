@@ -14,9 +14,7 @@ export type BaseFormProps = {
   disabled?: boolean;
 };
 
-export type BaseFormInputProps = BaseFormProps & {
-  modelValue: string;
-};
+export type BaseFormInputProps = BaseFormProps;
 
 export const BaseFormInputPropDefaults: Partial<BaseFormInputProps> = {
   id: undefined,
@@ -66,7 +64,6 @@ export const TextareaPropsDefaults: Partial<TextareaProps> = {
 };
 
 export type CheckboxProps = BaseFormProps & {
-  modelValue: boolean;
   label: string;
 };
 
@@ -87,7 +84,6 @@ export type FormMultiSelectOption = {
 };
 
 export type FormSelectProps = BaseFormProps & {
-  modelValue: string | number | boolean;
   label?: string;
   options: FormSelectOption[];
   placeholder?: string;
@@ -106,24 +102,22 @@ export const FormSelectPropsDefaults: Partial<FormSelectProps> = {
 };
 
 export type FormMultiSelectProps = FormSelectProps & {
-  modelValue: FormMultiSelectOption[];
   options: FormMultiSelectOption[];
   allowOther: boolean;
 };
 
 export const FormMultiSelectPropsDefaults: Partial<FormMultiSelectProps> = {
-  ...FormSelectPropsDefaults,
+  ...(FormSelectPropsDefaults as Partial<FormMultiSelectProps>),
   allowOther: false,
 };
 
 export type FormStepperProps = BaseFormProps & {
-  modelValue: string | number | boolean;
   label?: string;
   options: FormSelectOption[];
-  selectedClass?: string | string[];
-  baseClass?: string | string[];
-  iconClasses?: string | string[];
-  wrapperClasses?: string | string[];
+  selectedClass?: string;
+  baseClass?: string;
+  iconClasses?: string;
+  wrapperClasses?: string;
   icon?: FunctionalComponent;
   unselectedIcon?: FunctionalComponent | null;
   hideOptionsText?: boolean;
@@ -133,10 +127,10 @@ export type FormStepperProps = BaseFormProps & {
 export const FormStepperPropsDefaults: Partial<FormStepperProps> = {
   ...BaseFormInputPropDefaults,
   label: undefined,
-  selectedClass: ['text-secondary'],
-  baseClass: ['text-grey-off'],
-  iconClasses: ['h-8 w-8'],
-  wrapperClasses: [],
+  selectedClass: 'text-secondary',
+  baseClass: 'text-grey-off',
+  iconClasses: 'h-8 w-8',
+  wrapperClasses: '',
   icon: CheckCircleIconSolid,
   unselectedIcon: CheckCircleIconOutline,
   hideOptionsText: false,

@@ -14,7 +14,7 @@ const isShop = computed(
     usePage().component.includes('Shop') &&
     usePage().component !== 'Shop/Checkout' &&
     usePage().component !== 'Shop/OrderComplete' &&
-    usePage().component !== 'Shop/ReviewMyOrder'
+    usePage().component !== 'Shop/ReviewMyOrder',
 );
 </script>
 

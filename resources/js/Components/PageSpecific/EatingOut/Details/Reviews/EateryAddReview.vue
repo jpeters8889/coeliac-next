@@ -13,6 +13,7 @@ import FormCheckbox from '@/Components/Forms/FormCheckbox.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import UploadReviewImages from '@/Components/PageSpecific/EatingOut/Details/Reviews/UploadReviewImages.vue';
 import useUrl from '@/composables/useUrl';
+import { InertiaForm } from '@/types/Core';
 
 const props = defineProps<{
   eatery: DetailedEatery;
@@ -58,7 +59,7 @@ const form = useForm<ReviewFormPayload>('post', generateUrl('reviews'), {
   images: [],
   ...(isAdmin() ? { admin_review: false } : null),
   ...(props.eatery.county.id === 1 ? { branch_name: branchName() } : null),
-});
+}) as InertiaForm<ReviewFormPayload>;
 
 const characterLimit = 1500;
 
@@ -87,7 +88,7 @@ const howExpensiveValues = computed((): FormSelectOption[] => [
 ]);
 
 const usedCharacters: ComputedRef<number> = computed(
-  () => form.review.length || 0
+  () => form.review.length || 0,
 );
 
 const submitRating = () => {
@@ -102,7 +103,7 @@ const submitRating = () => {
 
 const imageUploadError: Ref<string | false> = ref(false);
 
-const imagesUploaded = (images: any[]): void => {
+const imagesUploaded = (images: string[]): void => {
   imageUploadError.value = false;
 
   if (!form.images) {
@@ -231,6 +232,7 @@ const imageError = (message: string): void => {
             label="Your Comment"
             v-bind="isAdmin() ? {} : { max: 1500 }"
             :error="form.errors.review"
+            borders
           />
           <span
             class="text-right text-xs"

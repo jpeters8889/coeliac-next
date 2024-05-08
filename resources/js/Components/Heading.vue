@@ -12,7 +12,7 @@ withDefaults(
     as: 'h1',
     border: true,
     backLink: undefined,
-  }
+  },
 );
 </script>
 

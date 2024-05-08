@@ -1,18 +1,55 @@
 <script lang="ts" setup>
 import { TextareaProps, TextareaPropsDefaults } from '@/Components/Forms/Props';
-import { ref, watch } from 'vue';
-import RawTextareaField from '@/Components/Forms/RawTextareaField.vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(defineProps<TextareaProps>(), TextareaPropsDefaults);
 
-const emits = defineEmits(['update:modelValue']);
+const value = defineModel<string>();
 
-const value = ref(props.modelValue);
+const classes = (): string[] => {
+  const base = [
+    'flex-1',
+    'w-full',
+    'min-w-0',
+    'appearance-none',
+    'rounded-md',
+    'px-[calc(theme(spacing.3)-1px)]',
+    'py-[calc(theme(spacing[1.5])-1px)]',
+    'text-base',
+    'leading-7',
+    'text-gray-900',
+    'placeholder-gray-400',
+    'shadow-sm',
+    'outline-none',
+    'sm:text-sm',
+    'sm:leading-6',
+    'xl:w-full',
+    'focus:ring-0',
+    'focus:outline-none transition',
+  ];
 
-watch(value, () => {
-  emits('update:modelValue', value.value);
-});
+  if (props.borders) {
+    base.push('border border-grey-off focus:border-grey-dark');
+  } else {
+    base.push('border-0');
+  }
+
+  if (props.background) {
+    base.push('bg-white');
+  } else {
+    base.push('bg-transparent');
+  }
+
+  if (props.error) {
+    base.push('!border-red', 'focus:border-red-dark');
+
+    if (!props.borders && props.background) {
+      base.push('!bg-red/90');
+    }
+  }
+
+  return base;
+};
 </script>
 
 <template>
@@ -35,18 +72,20 @@ watch(value, () => {
       />
     </label>
     <div class="relative rounded-md shadow-sm">
-      <RawTextareaField
-        :id="id"
+      <textarea
         v-model="value"
-        :autocomplete="autocomplete"
+        :class="classes()"
         :name="name"
-        :placeholder="placeholder"
         :required="required"
-        :label="label"
-        :max="max"
         :rows="rows"
-        borders
+        v-bind="{
+          ...(id ? { id } : null),
+          ...(autocomplete ? { autocomplete } : null),
+          ...(placeholder ? { placeholder } : null),
+          ...(max ? { maxLength: max } : null),
+        }"
       />
+
       <div
         v-if="error"
         class="pointer-events-none absolute inset-y-0 right-0 flex pr-3 pt-3"

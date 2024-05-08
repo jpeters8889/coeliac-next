@@ -37,7 +37,7 @@ const refreshPage = () => {
     {
       preserveState: true,
       only: ['blogs', 'tags'],
-    }
+    },
   );
 };
 

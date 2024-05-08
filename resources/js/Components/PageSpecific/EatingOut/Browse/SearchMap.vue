@@ -50,7 +50,7 @@ const getLocation = () => {
       errorMessage.value = 'Sorry, there was an error finding your location...';
       hasError.value = true;
       emits('end-loading');
-    }
+    },
   );
 };
 

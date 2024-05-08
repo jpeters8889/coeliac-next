@@ -3,22 +3,62 @@ import {
   FormSelectProps,
   FormSelectPropsDefaults,
 } from '@/Components/Forms/Props';
-import { ref, watch } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
-import RawSelectField from '@/Components/Forms/RawSelectField.vue';
 
 const props = withDefaults(
   defineProps<FormSelectProps>(),
-  FormSelectPropsDefaults
+  FormSelectPropsDefaults,
 );
 
-const emits = defineEmits(['update:modelValue']);
+const value = defineModel<string | number | boolean>();
 
-const value = ref(props.modelValue);
+const classes = (): string[] => {
+  const base = [
+    'min-w-0',
+    'appearance-none',
+    'rounded-md',
+    'leading-7',
+    'text-gray-900',
+    'placeholder-gray-400',
+    'shadow-sm',
+    'outline-none',
+    'focus:ring-0',
+    'focus:outline-none transition',
+    'w-full',
+  ];
 
-watch(value, () => {
-  emits('update:modelValue', value.value);
-});
+  if (props.size === 'large') {
+    base.push(
+      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]',
+    );
+  } else {
+    base.push(
+      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6',
+    );
+  }
+
+  if (props.borders) {
+    base.push('border border-grey-off focus:border-grey-dark');
+  } else {
+    base.push('border-0');
+  }
+
+  if (props.background) {
+    base.push('bg-white');
+  } else {
+    base.push('bg-transparent');
+  }
+
+  if (props.error) {
+    base.push('!border-red', 'focus:border-red-dark');
+
+    if (!props.borders && props.background) {
+      base.push('!bg-red/90');
+    }
+  }
+
+  return base;
+};
 </script>
 
 <template>
@@ -41,20 +81,33 @@ watch(value, () => {
       />
     </label>
     <div class="relative rounded-md shadow-sm">
-      <RawSelectField
-        :id="id"
+      <select
         v-model="value"
-        :autocomplete="autocomplete"
-        :has-error="!!error"
         :name="name"
-        :placeholder="placeholder"
-        :required="required"
-        :label="label"
-        :options="options"
+        :class="classes()"
         :disabled="disabled"
-        :size="size"
-        borders
-      />
+        :required="required"
+        v-bind="{
+          ...(id ? { id } : null),
+          ...(autocomplete ? { autocomplete } : null),
+        }"
+      >
+        <option
+          v-if="placeholder"
+          value=""
+          disabled
+          class="text-grey"
+          v-text="placeholder"
+        />
+
+        <option
+          v-for="option in options"
+          :key="option.value.toString()"
+          :value="option.value"
+          v-text="option.label"
+        />
+      </select>
+
       <div
         v-if="error"
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"

@@ -12,8 +12,7 @@
     "types": [
       "vite/client",
       "googlemaps",
-      "google.maps",
-      "stripe-v3"
+      "stripe-v3",
     ],
     "baseUrl": ".",
     "paths": {
@@ -29,7 +28,6 @@
     "./resources/js/*.ts",
     "./resources/js/**/*",
     "./*.js",
-    "node_modules/@types/stripe-v3/index.d.ts",
     "./nova-components/**/*.vue"
   ],
   "exclude": [

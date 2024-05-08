@@ -23,7 +23,7 @@ withDefaults(
     noPadding: false,
     size: 'medium',
     width: 'w-auto',
-  }
+  },
 );
 
 const closeOverlay = () => emit('close');

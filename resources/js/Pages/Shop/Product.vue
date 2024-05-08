@@ -11,7 +11,8 @@ import Modal from '@/Components/Overlays/Modal.vue';
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
 import ProductAddBasketForm from '@/Components/PageSpecific/Shop/ProductAddBasketForm.vue';
-import { pluralise } from '../../helpers';
+import { pluralise } from '@/helpers';
+import { Page } from '@inertiajs/core';
 
 const props = defineProps<{
   product: ShopProductDetail;
@@ -36,16 +37,16 @@ const additionalDetails = ref([
 
 const showReviews = ref(false);
 
-const scrollToReviews = (): void => {
+const scrollToReviews = async (): Promise<void> => {
   showReviews.value = true;
 
-  nextTick(() => {
+  await nextTick(() => {
     document.getElementById('reviews-dropdown')?.scrollIntoView();
   });
 };
 
 const allReviews: Ref<PaginatedResponse<ShopProductReview>> = ref(
-  props.reviews
+  props.reviews,
 );
 
 const loadMoreReviews = () => {
@@ -61,14 +62,14 @@ const loadMoreReviews = () => {
       preserveState: true,
       only: ['reviews'],
       replace: true,
-      onSuccess: (event: {
-        props: { reviews?: PaginatedResponse<ShopProductReview> };
-      }) => {
+      onSuccess: (
+        event: Page<{ reviews?: PaginatedResponse<ShopProductReview> }>,
+      ) => {
         // eslint-disable-next-line no-restricted-globals
         history.replaceState(
           null,
           '',
-          `${window.location.origin}${window.location.pathname}`
+          `${window.location.origin}${window.location.pathname}`,
         );
 
         if (!event.props.reviews) {
@@ -81,7 +82,7 @@ const loadMoreReviews = () => {
 
         return false;
       },
-    }
+    },
   );
 };
 </script>

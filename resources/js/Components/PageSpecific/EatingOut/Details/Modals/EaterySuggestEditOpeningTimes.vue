@@ -36,7 +36,7 @@ const hours: ComputedRef<TimePicker[]> = computed(() =>
   Array.from({ length: 24 }).map((value, hour) => ({
     value: hour,
     label: (hour < 10 ? '0' : '') + hour.toString(),
-  }))
+  })),
 );
 
 const minutes: ComputedRef<TimePicker[]> = computed(() => [

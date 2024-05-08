@@ -9,7 +9,6 @@ import Comments from '@/Components/PageSpecific/Shared/Comments.vue';
 import { PrinterIcon } from '@heroicons/vue/20/solid';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
 import RecipeNutritionTable from '@/Components/PageSpecific/Recipes/RecipeNutritionTable.vue';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Page } from '@inertiajs/core';
 
 const props = defineProps<{
@@ -36,7 +35,7 @@ const loadMoreComments = () => {
         history.pushState(
           null,
           '',
-          `${window.location.origin}${window.location.pathname}`
+          `${window.location.origin}${window.location.pathname}`,
         );
 
         if (!page.props.comments) {
@@ -49,7 +48,7 @@ const loadMoreComments = () => {
 
         return false;
       },
-    }
+    },
   );
 };
 </script>

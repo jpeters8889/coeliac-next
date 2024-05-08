@@ -16,7 +16,7 @@ const props = withDefaults(
     withMargin: false,
     altText: undefined,
     limit: 0,
-  }
+  },
 );
 
 const viewAll = ref(false);

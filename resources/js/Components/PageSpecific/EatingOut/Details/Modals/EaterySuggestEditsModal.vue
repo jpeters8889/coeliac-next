@@ -106,7 +106,7 @@ const parseFields = () => {
             (value): FormSelectOption => ({
               label: value.label,
               value: value.value,
-            })
+            }),
           ),
         },
       },
@@ -126,7 +126,7 @@ const parseFields = () => {
             (value): FormSelectOption => ({
               label: value.label,
               value: value.value,
-            })
+            }),
           ),
         },
       },
@@ -151,7 +151,7 @@ const parseFields = () => {
       isFormField: false,
       component: {
         component: EaterySuggestEditOpeningTimes,
-        change: (value: Object[]): void => {
+        change: (value: object[]): void => {
           newValue.value = value;
         },
         props: {
@@ -169,7 +169,7 @@ const parseFields = () => {
       isFormField: false,
       component: {
         component: EaterySuggestEditFeatures,
-        change: (value: Object[]): void => {
+        change: (value: object[]): void => {
           newValue.value = value;
         },
         props: {
@@ -240,14 +240,13 @@ const openField = (field: EditableEateryField): void => {
   }
 
   newValue.value = field.isFormField ? field.formField.value() : '';
-  // this.$root.$on(`${field.id}-change`, this.handleFieldUpdate);
 
   editing.value = field;
 };
 
 const isSubmitting = ref(false);
 
-const currentFieldIndex = computed((): int | null => {
+const currentFieldIndex = computed((): number | null => {
   if (!editing.value) {
     return null;
   }
@@ -268,7 +267,7 @@ const updateField = (): void => {
       value: newValue.value,
     })
     .then(() => {
-      fields.value[currentFieldIndex.value].updated = true;
+      fields.value[currentFieldIndex.value as number].updated = true;
       cancelEditingField();
     })
     .catch(() => {

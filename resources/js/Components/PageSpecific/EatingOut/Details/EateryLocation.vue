@@ -16,19 +16,19 @@ const props = defineProps<{
 const lat = computed(() =>
   props.eatery.branch
     ? props.eatery.branch.location.lat
-    : props.eatery.location.lat
+    : props.eatery.location.lat,
 );
 
 const lng = computed(() =>
   props.eatery.branch
     ? props.eatery.branch.location.lng
-    : props.eatery.location.lng
+    : props.eatery.location.lng,
 );
 
 const address = computed(() =>
   props.eatery.branch
     ? props.eatery.branch.location.address
-    : props.eatery.location.address
+    : props.eatery.location.address,
 );
 </script>
 

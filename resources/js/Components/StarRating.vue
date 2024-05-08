@@ -16,7 +16,7 @@ const props = withDefaults(
     size: 'w-6 h-6',
     color: 'text-secondary',
     showAll: false,
-  }
+  },
 );
 
 const wholeNumber = ref(0);
@@ -45,14 +45,14 @@ onMounted(() => {
   }
 });
 
-const remainingStars = computed(() => {
+const remainingStars = computed((): number[] => {
   let remaining = 5 - wholeNumber.value;
 
   if (hasHalf.value) {
     remaining -= 1;
   }
 
-  return new Array(remaining);
+  return new Array(remaining) as number[];
 });
 
 const halfStarIcon = computed(() => {

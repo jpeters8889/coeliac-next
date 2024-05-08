@@ -49,7 +49,7 @@ const refreshPage = (preserveScroll = true) => {
       only: ['recipes', 'features', 'meals', 'freeFrom', 'setFilters'],
       preserveState: true,
       preserveScroll,
-    }
+    },
   );
 };
 

@@ -1,6 +1,7 @@
 import { useForm } from 'laravel-precognition-vue-inertia';
 import eventBus from '@/eventBus';
 import { VisitOptions } from '@inertiajs/core';
+import { InertiaForm } from '@/types/Core';
 
 type AddBasketPayload = {
   product_id: number;
@@ -16,13 +17,13 @@ export default () => {
       product_id: undefined,
       variant_id: undefined,
       quantity: 1,
-    }
-  );
+    },
+  ) as InertiaForm<Partial<AddBasketPayload>>;
 
   const prepareAddBasketForm = (
     productId: number,
     variantId: number,
-    quantity: number = 1
+    quantity: number = 1,
   ) => {
     addBasketForm.product_id = productId;
     addBasketForm.variant_id = variantId;
@@ -31,7 +32,7 @@ export default () => {
 
   const submitAddBasketForm = (
     params: Partial<VisitOptions> = {},
-    callback: Function | undefined = undefined
+    callback: () => void,
   ) => {
     addBasketForm.submit({
       ...params,

@@ -1,9 +1,8 @@
-// @ts-ignore
-import emitter from 'tiny-emitter/instance';
+import mitt from 'mitt';
+
+const emitter = mitt();
 
 export default {
-  $on: (event: string, ...args: any) => emitter.on(event, ...args),
-  $once: (event: string, ...args: any) => emitter.once(event, ...args),
-  $off: (event: string, ...args: any) => emitter.off(event, ...args),
-  $emit: (event: string, ...args: any) => emitter.emit(event, ...args),
+  $on: (event: string, handler: () => void) => emitter.on(event, handler),
+  $emit: (event: string) => emitter.emit(event),
 };

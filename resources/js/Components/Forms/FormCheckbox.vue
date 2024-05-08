@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 
 const props: CheckboxProps = withDefaults(
   defineProps<CheckboxProps>(),
-  CheckboxPropsDefault
+  CheckboxPropsDefault,
 );
 
 const emits = defineEmits(['update:modelValue']);

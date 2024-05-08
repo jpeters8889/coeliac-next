@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { InputPropDefaults, InputProps } from '@/Components/Forms/Props';
-import RawInputField from '@/Components/Forms/RawInputField.vue';
-import { defineModel, watch } from 'vue';
+import { defineModel } from 'vue';
 import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
-const emits = defineEmits(['update:modelValue', 'focus', 'blur']);
+const emits = defineEmits(['focus', 'blur']);
 
-const [value, modifiers] = defineModel({
+const [value, modifiers] = defineModel<string, string | number>({
   set(v: string): string | number {
     if (modifiers.number) {
       return parseInt(v, 10);
@@ -18,18 +17,57 @@ const [value, modifiers] = defineModel({
   },
 });
 
-watch(value, () => {
-  emits('update:modelValue', value.value);
-});
+const classes = (): string[] => {
+  const base = [
+    'flex-1',
+    'w-full',
+    'min-w-0',
+    'appearance-none',
+    'rounded-md',
+    'leading-7',
+    'text-gray-900',
+    'placeholder-gray-400',
+    'outline-none',
+    'xl:w-full',
+    'focus:ring-0',
+    'focus:outline-none',
+    'transition',
+    'disabled:text-gray-300',
+    'disabled:cursor-not-allowed',
+  ];
 
-watch(
-  () => props.modelValue,
-  () => {
-    if (props.modelValue !== value.value) {
-      value.value = props.modelValue;
+  if (props.size === 'large') {
+    base.push(
+      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]',
+    );
+  } else {
+    base.push(
+      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6',
+    );
+  }
+
+  if (props.borders) {
+    base.push('border border-grey-off focus:border-grey-dark shadow-sm');
+  } else {
+    base.push('border-0');
+  }
+
+  if (props.background) {
+    base.push('bg-white');
+  } else {
+    base.push('bg-transparent');
+  }
+
+  if (props.error) {
+    base.push('!border-red', 'focus:border-red-dark');
+
+    if (!props.borders && props.background) {
+      base.push('!bg-red/90');
     }
   }
-);
+
+  return base;
+};
 </script>
 
 <template>
@@ -62,24 +100,24 @@ watch(
       class="relative rounded-md"
       :class="borders ? 'shadow-sm' : ''"
     >
-      <RawInputField
-        :id="id"
+      <input
         v-model="value"
-        :autocomplete="autocomplete"
-        :has-error="!!error"
+        :class="classes()"
         :name="name"
-        :placeholder="placeholder"
         :required="required"
-        :label="label"
         :type="type"
-        :borders="borders"
-        :size="size"
-        :min="min"
-        :max="max"
-        :disabled="disabled"
+        v-bind="{
+          ...(id ? { id } : null),
+          ...(autocomplete ? { autocomplete } : null),
+          ...(placeholder ? { placeholder } : null),
+          ...(disabled ? { disabled } : null),
+          ...(min ? { min } : null),
+          ...(max ? { max } : null),
+        }"
         @focus="emits('focus')"
         @blur="emits('blur')"
       />
+
       <div
         v-if="error"
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"

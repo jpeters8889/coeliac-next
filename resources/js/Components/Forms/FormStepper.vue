@@ -4,24 +4,18 @@ import {
   FormStepperProps,
   FormSelectOption,
 } from '@/Components/Forms/Props';
-import { computed, Ref, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = withDefaults(
   defineProps<FormStepperProps>(),
-  FormStepperPropsDefaults
+  FormStepperPropsDefaults,
 );
 
-const emits = defineEmits(['update:modelValue']);
-
-const value: Ref<string | number | boolean> = ref(props.modelValue);
+const value = defineModel<string | number | boolean>();
 
 const hoveringOn = ref<null | number>(null);
 const selectedOption = ref('');
 const currentIndex = ref<null | number>(null);
-
-watch(value, () => {
-  emits('update:modelValue', value.value);
-});
 
 const displayText = computed(() => {
   if (hoveringOn.value !== null) {
@@ -102,6 +96,7 @@ const isSelected = (index: number): boolean => {
           leave-to-class="opacity-0"
         >
           <div
+            v-if="!hideOptionsText"
             class="mt-1 flex h-6 min-w-[180px] flex-1 items-center transition xs:mt-0"
           >
             <div

@@ -13,7 +13,7 @@ const props = withDefaults(
     faded: false,
     noPadding: false,
     noFlex: false,
-  }
+  },
 );
 
 const classes = (): string[] => {

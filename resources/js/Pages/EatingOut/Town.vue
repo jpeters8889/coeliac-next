@@ -42,7 +42,7 @@ const handleFiltersChanged = ({
 
   reset();
 
-  const params: Record<string, any> & {
+  const params: Record<string, unknown> & {
     filter?: { [T in 'category' | 'venueType' | 'feature']?: string };
   } = {};
 

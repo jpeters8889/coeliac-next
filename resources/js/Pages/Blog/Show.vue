@@ -35,7 +35,7 @@ const loadMoreComments = () => {
         history.pushState(
           null,
           '',
-          `${window.location.origin}${window.location.pathname}`
+          `${window.location.origin}${window.location.pathname}`,
         );
 
         if (!event.props.comments) {
@@ -48,7 +48,7 @@ const loadMoreComments = () => {
 
         return false;
       },
-    }
+    },
   );
 };
 </script>
@@ -108,6 +108,7 @@ const loadMoreComments = () => {
     <ul class="mt-2 flex flex-row flex-wrap text-sm leading-tight">
       <li
         v-for="collection in blog.featured_in"
+        :key="collection.link"
         class="after:content-[','] last:after:content-['']"
       >
         <Link

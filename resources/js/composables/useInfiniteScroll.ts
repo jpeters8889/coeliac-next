@@ -4,16 +4,15 @@ import useIntersect from '@/composables/useIntersect';
 import { PaginatedResponse } from '@/types/GenericTypes';
 
 export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
-  // @ts-ignore
-  const value: () => PaginatedResponse<T> = () => usePage().props[propName];
+  const value: () => PaginatedResponse<T> = () =>
+    usePage().props[propName] as PaginatedResponse<T>;
 
-  // @ts-ignore
   const items: Ref<T[]> = ref(value().data);
 
   const initialUrl = usePage().url;
 
   const canLoadMoreItems: ComputedRef<boolean> = computed(
-    () => value().links.next !== null
+    () => value().links.next !== null,
   );
 
   const loadMoreItems = (): void => {
@@ -33,7 +32,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
 
           items.value = [...items.value, ...value().data];
         },
-      }
+      },
     );
   };
 

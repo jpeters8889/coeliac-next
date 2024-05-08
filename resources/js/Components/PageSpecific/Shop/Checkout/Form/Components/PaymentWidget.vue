@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import eventBus from '@/eventBus';
-import { StripePaymentElementChangeEvent } from '@stripe/stripe-js/types/stripe-js/elements/payment';
 import useStripeStore from '@/stores/useStripeStore';
-import { computed, watch, watchEffect } from 'vue';
+import { StripePaymentElementChangeEvent } from '@stripe/stripe-js';
 
 const props = defineProps<{ paymentToken: string }>();
 
@@ -26,14 +25,11 @@ stripeStore.instantiate(props.paymentToken).then(() => {
   paymentElement.mount('#stripe');
 
   eventBus.$on('refresh-payment-element', () => {
-    console.log({
-      token: props.paymentToken,
-      note: 'Refreshing',
-    });
     stripeStore.elements.fetchUpdates();
   });
 
   paymentElement.on('change', (event: StripePaymentElementChangeEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (event.complete) {
       emits('payment-ready');
       return;

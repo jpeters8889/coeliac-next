@@ -16,7 +16,7 @@ const props = defineProps<{
 const hideReviewsWithoutBody = ref(true);
 
 const reviews: ComputedRef<EateryReview[]> = computed(
-  () => props.eatery.reviews.user_reviews
+  () => props.eatery.reviews.user_reviews,
 );
 
 const filteredReviews: ComputedRef<EateryReview[]> = computed(() => {

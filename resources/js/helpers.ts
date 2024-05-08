@@ -4,7 +4,7 @@ import { Converter } from 'any-number-to-words';
 
 export const formatDate = (
   date: string,
-  format: string = 'Do MMM YYYY'
+  format: string = 'Do MMM YYYY',
 ): string => {
   dayjs.extend(advancedFormat);
 
@@ -14,7 +14,7 @@ export const formatDate = (
 export const numberToWords = (
   number: number,
   min: number = 0,
-  max: number = 10
+  max: number = 10,
 ): string => {
   if (number <= min || number >= max) {
     return number.toLocaleString();

@@ -9,7 +9,7 @@ withDefaults(
     items: HomeHoverItemType[];
     perRow?: number;
   }>(),
-  { perRow: 3 }
+  { perRow: 3 },
 );
 </script>
 

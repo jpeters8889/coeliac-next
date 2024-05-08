@@ -9,14 +9,14 @@ const props = withDefaults(
     theme?: 'primary' | 'faded' | 'secondary' | 'light' | 'negative';
     size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
     bold?: boolean;
-    as?: InstanceType<typeof Link> | 'button' | 'a';
+    as?: typeof Link | 'button' | 'a';
     type?: 'submit' | 'button';
     href?: string;
     icon?:
       | string
       | false
       | FunctionalComponent<HTMLAttributes & VNodeProps>
-      | Function;
+      | (() => void);
     iconPosition?: 'left' | 'right';
     loading?: boolean;
     classes?: string;
@@ -37,7 +37,7 @@ const props = withDefaults(
     classes: '',
     disabled: false,
     iconOnly: false,
-  }
+  },
 );
 
 const classes = computed((): string[] => {
@@ -111,6 +111,18 @@ const classes = computed((): string[] => {
 });
 
 const emits = defineEmits(['click']);
+
+const isLinkComponent = computed(() => {
+  if (props.as === 'a') {
+    return true;
+  }
+
+  if (!(props.as instanceof Object)) {
+    return false;
+  }
+
+  return props.as?.name === 'Link';
+});
 </script>
 
 <template>
@@ -119,7 +131,7 @@ const emits = defineEmits(['click']);
     :class="classes"
     v-bind="{
       ...(props.as === 'button' ? { type: props.type } : null),
-      ...(props.as === Link || props.as === 'a' ? { href: props.href } : null),
+      ...(isLinkComponent || props.as === 'a' ? { href: props.href } : null),
       ...(props.as === 'button' && props.disabled ? { disabled: true } : null),
     }"
     @click="emits('click')"

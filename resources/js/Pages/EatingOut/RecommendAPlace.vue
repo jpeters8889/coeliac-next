@@ -10,12 +10,9 @@ import FormSelect from '@/Components/Forms/FormSelect.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
+import { InertiaForm } from '@/types/Core';
 
-defineProps<{
-  venueTypes: FormSelectOption[];
-}>();
-
-const form = useForm<{
+type FormData = {
   name: string;
   email: string;
   place: {
@@ -25,7 +22,13 @@ const form = useForm<{
     venueType?: number;
     details: string;
   };
-}>('post', '/wheretoeat/recommend-a-place', {
+};
+
+defineProps<{
+  venueTypes: FormSelectOption[];
+}>();
+
+const form = useForm<FormData>('post', '/wheretoeat/recommend-a-place', {
   name: '',
   email: '',
   place: {
@@ -35,7 +38,7 @@ const form = useForm<{
     venueType: undefined,
     details: '',
   },
-});
+}) as InertiaForm<FormData>;
 
 const hasSubmitted = ref(false);
 
@@ -112,7 +115,7 @@ const submit = () => {
         <FormInput
           id="placeName"
           v-model="form.place.name"
-          :error="form.errors['place.name']"
+          :error="form.errors.place?.name"
           label="Place Name"
           name="placeName"
           required
@@ -125,14 +128,15 @@ const submit = () => {
           required
           name="placeLocation"
           :rows="5"
-          :error="form.errors['place.location']"
+          :error="form.errors.place?.location"
+          borders
         />
 
         <FormInput
           id="placeWebAddress"
           v-model="form.place.url"
           type="url"
-          :error="form.errors['place.url']"
+          :error="form.errors.place?.url"
           label="Place Website"
           name="placeUrl"
           borders
@@ -144,6 +148,7 @@ const submit = () => {
           name="placeVenueType"
           :options="venueTypes"
           label="Venue Type"
+          borders
         />
 
         <FormTextarea
@@ -152,7 +157,8 @@ const submit = () => {
           required
           name="placeDetails"
           :rows="8"
-          :error="form.errors['place.details']"
+          :error="form.errors.place?.details"
+          borders
         />
 
         <CoeliacButton

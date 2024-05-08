@@ -13,6 +13,7 @@ import { StarIcon } from '@heroicons/vue/24/solid';
 import { computed } from 'vue';
 import FormTextarea from '@/Components/Forms/FormTextarea.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
+import { InertiaForm } from '@/types/Core';
 
 const props = defineProps<{
   id: string;
@@ -63,8 +64,8 @@ const form = useForm<FormData>(
       review: '',
       rating: undefined,
     })),
-  }
-);
+  },
+) as InertiaForm<FormData>;
 
 const submitForm = () => {
   form
@@ -189,8 +190,8 @@ const submitForm = () => {
               :icon="StarIcon"
               :unselected-icon="null"
               :has-error="
-                $page.props.errors.products
-                  ? !!$page.props.errors.products[index].rating
+                form.errors.products
+                  ? !!form.errors.products[index].rating
                   : false
               "
             />
@@ -200,9 +201,9 @@ const submitForm = () => {
               label="Please let us know below what you thought about this product, and how useful it was"
               name="review"
               :error="
-                $page.props.errors.products
-                  ? $page.props.errors.products[index].review
-                  : false
+                form.errors.products
+                  ? form.errors.products[index].review
+                  : undefined
               "
             />
           </div>

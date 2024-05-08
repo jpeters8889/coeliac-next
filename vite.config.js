@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       vue: 'vue/dist/vue.esm-bundler.js',
-      'tailwind.config.js': path.resolve(__dirname, 'tailwind.config.js'),
+      'tailwind.config.js': path.resolve(__dirname, 'tailwind.config.ts'),
     },
   },
   plugins: [
@@ -25,11 +25,11 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['tailwind.config.js'],
+    include: ['tailwind.config.ts'],
   },
   build: {
     commonjsOptions: {
-      include: ['tailwind.config.js', 'node_modules/**'],
+      include: ['tailwind.config.ts', 'node_modules/**'],
     },
   },
 });

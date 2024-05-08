@@ -15,7 +15,7 @@ withDefaults(
     side: 'left' | 'right';
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   }>(),
-  { side: 'left', size: 'xs' }
+  { side: 'left', size: 'xs' },
 );
 
 const closeOverlay = () => emit('close');

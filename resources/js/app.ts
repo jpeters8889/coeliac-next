@@ -1,16 +1,17 @@
 import './bootstrap';
 import '../css/app.css';
-import { createApp, DefineComponent, h } from 'vue';
+import { Component, createApp, h, Plugin } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { createPinia } from 'pinia';
 import Coeliac from '@/Layouts/Coeliac.vue';
 import ArticleHeader from '@/Components/ArticleHeader.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
 import vClickOutside from 'v-click-outside';
+import { InertiaPage } from '@/types/Core';
 
 const appName = 'Coeliac Sanctuary';
 
-createInertiaApp({
+void createInertiaApp({
   title: (title) =>
     title
       ? `${title} - ${appName}`
@@ -21,13 +22,14 @@ createInertiaApp({
   },
 
   resolve: (name) => {
-    const pages: { [T: string]: DefineComponent } = import.meta.glob(
+    const pages: { [T: string]: InertiaPage } = import.meta.glob(
       './Pages/**/*.vue',
-      { eager: true }
+      { eager: true },
     );
-    const page: DefineComponent = pages[`./Pages/${name}.vue`];
 
-    page.default.layout = page.default.layout || Coeliac;
+    const page: InertiaPage = pages[`./Pages/${name}.vue`];
+
+    page.default.layout = page.default.layout || (Coeliac as Component);
 
     return page;
   },
@@ -36,11 +38,11 @@ createInertiaApp({
     const pinia = createPinia();
 
     createApp({ render: () => h(App, props) })
-      .component('article-header', ArticleHeader)
-      .component('article-image', ArticleImage)
+      .component('article-header', ArticleHeader as Component)
+      .component('article-image', ArticleImage as Component)
       .use(plugin)
       .use(pinia)
-      .use(vClickOutside)
+      .use(vClickOutside as Plugin)
       .mount(el);
   },
 });

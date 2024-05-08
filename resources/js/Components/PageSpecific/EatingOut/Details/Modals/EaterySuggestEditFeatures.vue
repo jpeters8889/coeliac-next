@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { Days, EditableEateryData } from '@/types/EateryTypes';
-import { computed, ComputedRef, onMounted, Ref, ref } from 'vue';
+import { EditableEateryData } from '@/types/EateryTypes';
+import { onMounted, Ref, ref } from 'vue';
 import FormCheckbox from '@/Components/Forms/FormCheckbox.vue';
-import FormSelect from '@/Components/Forms/FormSelect.vue';
 
 const props = defineProps<{
   currentFeatures: EditableEateryData['features']['values'];
@@ -24,7 +23,7 @@ const emitChange = () => {
 
 onMounted(() => {
   features.value = props.currentFeatures.map((feature) => ({
-    key: feature.id,
+    key: feature.value,
     label: feature.label,
     selected: feature.selected,
   }));

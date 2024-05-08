@@ -10,7 +10,7 @@ withDefaults(
   {
     href: undefined,
     active: false,
-  }
+  },
 );
 </script>
 

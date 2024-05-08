@@ -46,7 +46,7 @@ const classes = (): string[] => {
     <img
       :alt="title"
       :src="src"
-      class="m-0 h-auto w-full"
+      class="!m-0 h-auto w-full"
       loading="lazy"
       style="cursor: zoom-in"
       @click="zoomed = true"

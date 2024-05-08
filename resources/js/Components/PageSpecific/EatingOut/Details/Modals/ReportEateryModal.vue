@@ -6,6 +6,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { ref } from 'vue';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 import useUrl from '@/composables/useUrl';
+import { InertiaForm } from '@/types/Core';
 
 defineProps<{
   eateryName: string;
@@ -21,7 +22,7 @@ const { generateUrl } = useUrl();
 
 const form = useForm('post', generateUrl('report'), {
   details: '',
-});
+}) as InertiaForm<{ details: string }>;
 
 const close = () => {
   emits('close');

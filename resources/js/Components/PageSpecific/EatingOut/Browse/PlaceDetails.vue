@@ -20,7 +20,7 @@ const props = withDefaults(
   {
     show: false,
     branchId: undefined,
-  }
+  },
 );
 
 const emits = defineEmits(['close']);
@@ -46,7 +46,7 @@ watch(
       placeDetails.value = response.data;
       isLoading.value = false;
     });
-  }
+  },
 );
 
 const closeSidebar = () => {
@@ -195,7 +195,7 @@ const icon = computed((): string => {
                   v-text="
                     `${placeDetails.reviews.number} ${pluralise(
                       'review',
-                      placeDetails.reviews.number
+                      placeDetails.reviews.number,
                     )}`
                   "
                 />

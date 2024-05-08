@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import { EateryFilters, TownEatery } from '@/types/EateryTypes';
-import TownHeading from '@/Components/PageSpecific/EatingOut/Town/TownHeading.vue';
 import Warning from '@/Components/Warning.vue';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import EateryCard from '@/Components/PageSpecific/EatingOut/EateryCard.vue';
@@ -44,7 +43,7 @@ const handleFiltersChanged = ({
 
   reset();
 
-  const params: Record<string, any> & {
+  const params: Record<string, unknown> & {
     filter?: { [T in 'category' | 'venueType' | 'feature']?: string };
   } = {};
 

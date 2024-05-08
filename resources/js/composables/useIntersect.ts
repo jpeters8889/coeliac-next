@@ -2,8 +2,8 @@ import { onMounted, onUnmounted, Ref } from 'vue';
 
 export default (
   ref: Ref<Element>,
-  callback: Function,
-  options: Partial<IntersectionObserverInit> = {}
+  callback: () => void,
+  options: Partial<IntersectionObserverInit> = {},
 ) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {

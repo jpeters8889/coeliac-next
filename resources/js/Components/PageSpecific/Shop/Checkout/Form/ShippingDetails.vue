@@ -17,7 +17,7 @@ const store = useShopStore();
 const data = reactive({ ...store.shippingDetails });
 const { customerName } = store;
 const errors: ComputedRef<Partial<CheckoutShippingStep>> = computed(
-  () => store.getErrors.shipping || {}
+  () => store.getErrors.shipping || {},
 );
 
 const disableButton = computed((): boolean => {

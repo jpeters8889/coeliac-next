@@ -21,6 +21,8 @@ abstract class BaseShopMailable extends BaseMailable
 
     protected function baseData(array $data = []): array
     {
+        $this->order->loadMissing(['address', 'customer', 'items', 'items.product', 'items.product.media', 'payment']);
+
         return array_merge([
             'date' => Carbon::now(),
             'key' => $this->emailKey,

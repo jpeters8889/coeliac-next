@@ -9,8 +9,8 @@ import CoeliacMetas from '@/Layouts/Components/CoeliacMetas.vue';
 import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
 import Sealic from '@/Svg/Sealic.vue';
 import { Link } from '@inertiajs/vue3';
-import InputField from '@/Components/Forms/RawInputField.vue';
 import { MetaProps } from '@/types/DefaultProps';
+import FormInput from '@/Components/Forms/FormInput.vue';
 
 defineProps<{ metas: MetaProps }>();
 const mobileNavOpen = ref(false);
@@ -68,12 +68,15 @@ const mobileNavOpen = ref(false);
           <div
             class="mt-8 hidden items-center rounded-xl bg-white bg-opacity-50 pr-2 transition focus-within:bg-opacity-90 md:flex"
           >
-            <InputField
+            <FormInput
+              label=""
+              hide-label
               type="search"
               name="search"
               model-value=""
               :background="false"
               placeholder="Search..."
+              class="flex-1"
             />
 
             <MagnifyingGlassIcon class="h-6 w-6" />

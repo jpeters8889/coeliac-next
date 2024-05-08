@@ -16,7 +16,7 @@ const props = defineProps<{
 }>();
 
 const viewSidebar = ref(false);
-const filters = ref();
+const filters = ref<EateryFilters>();
 
 const emits = defineEmits(['filtersUpdated']);
 
@@ -37,8 +37,8 @@ const getFilters = () => {
           props.setFilters[key]?.forEach((category: string) => {
             const index = defaultFilters[key].indexOf(
               defaultFilters[key].find(
-                (filter) => filter.value === category
-              ) as EateryFilterItem
+                (filter) => filter.value === category,
+              ) as EateryFilterItem,
             );
 
             defaultFilters[key][index].checked = true;
@@ -88,7 +88,7 @@ onMounted(() => {
     @close="viewSidebar = false"
   >
     <TownFilterSidebarContent
-      :filters="filters"
+      :filters="filters as EateryFilters"
       @updated="$emit('filtersUpdated', $event)"
     />
   </Sidebar>

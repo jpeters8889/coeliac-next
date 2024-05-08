@@ -16,3 +16,12 @@ export const MapModalPropDefaults = {
   ...MapPropDefaults,
   title: undefined,
 };
+
+export type StaticMapProps = MapProps & {
+  mapClasses?: string;
+};
+
+export const StaticMapPropDefaults: Partial<StaticMapProps> = {
+  ...MapPropDefaults,
+  mapClasses: 'min-h-map-small md:min-h-map lg:min-h-map-small xl:min-h-map',
+};

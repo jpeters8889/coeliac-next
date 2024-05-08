@@ -2,7 +2,6 @@
 import { NationwideEatery } from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
 import { computed } from 'vue';
-import StaticMap from '@/Components/Maps/StaticMap.vue';
 import EateryIntroduction from '@/Components/PageSpecific/EatingOut/EaterySnippetComponents/EateryIntroduction.vue';
 import EateryReviews from '@/Components/PageSpecific/EatingOut/EaterySnippetComponents/EateryReviews.vue';
 import EateryInfoBlock from '@/Components/PageSpecific/EatingOut/EaterySnippetComponents/EateryInfoBlock.vue';

@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 import useScreensize from '@/composables/useScreensize';
-import { computed, ComputedRef, onMounted, Ref, ref } from 'vue';
+import {
+  Component,
+  computed,
+  ComputedRef,
+  DefineComponent,
+  onMounted,
+  Ref,
+  ref,
+} from 'vue';
 import { fromLonLat, toLonLat, transformExtent } from 'ol/proj';
 import { Coordinate } from 'ol/coordinate';
 import { Cluster, OSM } from 'ol/source';
@@ -39,7 +47,7 @@ type FilterKeys = 'category' | 'venueType' | 'feature';
 type UrlFilter = { [T in FilterKeys]?: string };
 
 defineOptions({
-  layout: CoeliacCompact,
+  layout: CoeliacCompact as DefineComponent,
 });
 
 const isLoading = ref(true);
@@ -122,9 +130,13 @@ const filtersForFilterBar: ComputedRef<
   const keys: EateryFilterKeys[] = ['categories', 'venueTypes', 'features'];
 
   keys.forEach((key) => {
-    if (processedUrl.value[key] !== undefined) {
-      rtr[key] = (<string>processedUrl.value[key]).split(',');
+    if (processedUrl.value[key] === undefined) {
+      return;
     }
+
+    const url: string = processedUrl.value[key] as string;
+
+    rtr[key] = url.split(',');
   });
 
   return rtr;
@@ -134,7 +146,7 @@ const getViewableRadius = (): number => {
   const latLng = transformExtent(
     map.value.getView().calculateExtent(map.value.getSize()),
     'EPSG:3857',
-    'EPSG:4326'
+    'EPSG:4326',
   );
 
   return getDistance([latLng[0], latLng[1]], [latLng[2], latLng[3]]) / 1609;
@@ -142,7 +154,7 @@ const getViewableRadius = (): number => {
 
 const getLatLng = (): LatLng => {
   const latLng = toLonLat(
-    map.value.getView().getCenter() as Coordinate
+    map.value.getView().getCenter() as Coordinate,
   ).reverse();
 
   return {
@@ -199,7 +211,7 @@ const markerStyle = (color: string): Style =>
 const getZoom = (): number => map.value.getView().getZoom() as number;
 
 const clusterStyle = (feature: FeatureLike) => {
-  const size = feature.get('features').length;
+  const size = (<Feature[]>feature.get('features')).length;
 
   return new Style({
     image: new CircleStyle({
@@ -234,7 +246,7 @@ const zoomLimit = (): number => {
 };
 
 const createMaMarkerLayer = (
-  markers: Feature[]
+  markers: Feature[],
 ): VectorLayer<VectorSource> | VectorLayer<Cluster> => {
   if (getZoom() < zoomLimit()) {
     return new VectorLayer({
@@ -266,7 +278,7 @@ const populateMap = (): void => {
   isLoading.value = true;
   clearMarkers();
 
-  getPlaces()
+  void getPlaces()
     .then((eateries: EateryBrowseResource[]) => {
       const markers = eateries
         .map(
@@ -275,10 +287,10 @@ const populateMap = (): void => {
               id: eatery.key,
               geometry: new Point(fromLonLat(getEateryLatLng(eatery))),
               color: eatery.color,
-            })
+            }),
         )
         .map((eatery: Feature) => {
-          eatery.setStyle(markerStyle(eatery.getProperties().color));
+          eatery.setStyle(markerStyle(eatery.getProperties().color as string));
 
           return eatery;
         });
@@ -291,15 +303,19 @@ const populateMap = (): void => {
 };
 
 const zoomIntoCluster = (pixel: Pixel) => {
-  getMarkersLayer()
+  void getMarkersLayer()
     ?.getFeatures(pixel)
     .then((clickedFeatures) => {
       if (clickedFeatures.length > 0) {
         // Get clustered Coordinates
-        const features = clickedFeatures[0].get('features');
+        const features: Feature[] = clickedFeatures[0].get(
+          'features',
+        ) as Feature[];
         if (features.length > 0) {
           const extent = boundingExtent(
-            features.map((r: Feature) => r.getGeometry())
+            features.map(
+              (r: Feature) => (<unknown>r.getGeometry()) as Coordinate,
+            ),
           );
 
           map.value
@@ -316,11 +332,16 @@ const zoomIntoCluster = (pixel: Pixel) => {
     });
 };
 
-const getValueForFilter = (filter: EateryFilterKeys): string =>
-  (<EateryFilterItem[]>mapFilters.value[filter])
+const getValueForFilter = (filter: EateryFilterKeys): string => {
+  const filters: EateryFilterItem[] = mapFilters.value[
+    filter
+  ] as EateryFilterItem[];
+
+  return filters
     .filter((item) => item.checked)
     .map((item) => item.value)
     .join(',');
+};
 
 const updateUrl = (latLng?: LatLng, zoom?: number) => {
   if (!latLng) {
@@ -364,7 +385,7 @@ const updateUrl = (latLng?: LatLng, zoom?: number) => {
 
 const handleMapClick = (event: MapBrowserEvent<MouseEvent>) => {
   try {
-    getMarkersLayer()
+    void getMarkersLayer()
       ?.getFeatures(event.pixel)
       .then((feature) => {
         if (!feature.length) {
@@ -379,7 +400,7 @@ const handleMapClick = (event: MapBrowserEvent<MouseEvent>) => {
         }
 
         const eatery: FeatureLike = feature[0];
-        const eateryId = eatery.get('id');
+        const eateryId: string = eatery.get('id') as string;
         const splitId = eateryId.split('-');
 
         showPlaceDetails.value = {
@@ -438,7 +459,7 @@ const createMap = () => {
     }
 
     map.value.getTargetElement().style.cursor = map.value.hasFeatureAtPixel(
-      map.value.getEventPixel(event.originalEvent)
+      map.value.getEventPixel(event.originalEvent),
     )
       ? 'pointer'
       : '';
@@ -479,7 +500,7 @@ const navigateTo = (latLng: LatLng): void => {
   });
 };
 
-onMounted(async () => {
+onMounted(() => {
   parseUrl();
 
   createMap();

@@ -58,17 +58,17 @@ const countyDescription = (county: EateryCountryList): string => {
     bits.push(
       `<strong>${formatNumber(county.eateries)}</strong> gluten free place${
         county.eateries !== 1 ? 's' : ''
-      } to eat`
+      } to eat`,
     );
   }
 
   if (county.branches && county.branches !== 0) {
     bits.push(
       `<strong>${formatNumber(
-        county.branches
+        county.branches,
       )}</strong> gluten free nationwide branch${
         county.branches !== 1 ? 'es' : ''
-      }`
+      }`,
     );
   }
 
@@ -76,7 +76,7 @@ const countyDescription = (county: EateryCountryList): string => {
     bits.push(
       `<strong>${formatNumber(county.attractions)}</strong> attraction${
         county.attractions !== 1 ? 's' : ''
-      } with gluten free options`
+      } with gluten free options`,
     );
   }
 
@@ -84,7 +84,7 @@ const countyDescription = (county: EateryCountryList): string => {
     bits.push(
       `<strong>${formatNumber(county.hotels)}</strong> hotel${
         county.hotels !== 1 ? 's' : ''
-      } / B&B${county.hotels !== 1 ? 's' : ''} with gluten free options`
+      } / B&B${county.hotels !== 1 ? 's' : ''} with gluten free options`,
     );
   }
 

@@ -85,8 +85,18 @@ const useShopStore = defineStore<'shop-checkout', State, Getters, Actions>(
         this.errors = { ...state };
       },
       setForm(state) {
-        Object.keys(state).forEach((key) => {
-          this.data[<Keys>key] = <any>state[<Keys>key];
+        (<Keys[]>Object.keys(state)).forEach((key: Keys) => {
+          const value:
+            | CheckoutContactStep
+            | CheckoutBillingStep
+            | CheckoutShippingStep = state[key] as
+            | CheckoutContactStep
+            | CheckoutBillingStep
+            | CheckoutShippingStep;
+
+          (<CheckoutContactStep | CheckoutBillingStep | CheckoutShippingStep>(
+            this.data[key]
+          )) = value;
         });
       },
       setUserDetails(details) {
@@ -102,7 +112,7 @@ const useShopStore = defineStore<'shop-checkout', State, Getters, Actions>(
         this.country = country;
       },
     },
-  }
+  },
 );
 
 export default useShopStore;

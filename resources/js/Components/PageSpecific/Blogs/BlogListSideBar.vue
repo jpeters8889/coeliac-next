@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
-import InputField from '@/Components/Forms/RawInputField.vue';
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { BlogTagCount } from '@/types/BlogTypes';
+import FormInput from '@/Components/Forms/FormInput.vue';
 
 const emits = defineEmits(['close']);
 
@@ -42,9 +42,11 @@ const tagsToDisplay = (): BlogTagCount[] => {
         </div>
 
         <div class="p-2">
-          <InputField
+          <FormInput
             id="blog-search"
             v-model="searchText"
+            label=""
+            hide-label
             borders
             name="search"
             placeholder="Search Tags"

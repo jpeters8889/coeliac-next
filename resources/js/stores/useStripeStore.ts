@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
-import { Stripe } from '@stripe/stripe-js/types/stripe-js';
-import { StripeElements } from '@stripe/stripe-js/types/stripe-js/elements-group';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js';
 
 type State = {
   instantiated: boolean;
@@ -38,8 +36,7 @@ const useStripeStore = defineStore<'stripe', State, Getters, Actions>(
           return;
         }
 
-        // @ts-ignore
-        const key: string = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
+        const key: string = import.meta.env.VITE_STRIPE_PUBLIC_KEY as string;
 
         this.stateStripe = (await loadStripe(key)) as Stripe;
         this.stateElements = this.stateStripe.elements({
@@ -54,7 +51,7 @@ const useStripeStore = defineStore<'stripe', State, Getters, Actions>(
         this.instantiated = true;
       },
     },
-  }
+  },
 );
 
 export default useStripeStore;

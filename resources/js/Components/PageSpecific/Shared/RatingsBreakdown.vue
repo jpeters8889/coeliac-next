@@ -13,7 +13,7 @@ withDefaults(
       count: number;
     }[];
   }>(),
-  { canAddReview: true }
+  { canAddReview: true },
 );
 
 defineEmits(['createReview']);

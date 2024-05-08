@@ -5,10 +5,10 @@ import Icon from '@/Components/Icon.vue';
 import LocationSearch from '@/Components/PageSpecific/EatingOut/LocationSearch.vue';
 
 type LinkType = {
-  title: String;
-  href: String;
-  description: String;
-  icon: String;
+  title: string;
+  href: string;
+  description: string;
+  icon: string;
 };
 
 const links: LinkType[] = [
@@ -81,7 +81,7 @@ const elemClasses = (index: number): string[] => {
       'xs:mx-auto',
       'xs:w-1/2',
       'md:col-span-2',
-      'md:w-full'
+      'md:w-full',
     );
   }
 

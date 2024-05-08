@@ -1,19 +1,19 @@
 export default () => {
-  const putInLocalStorage = (name: string, value: any): void => {
+  const putInLocalStorage = (name: string, value: unknown): void => {
     localStorage.setItem(name, JSON.stringify(value));
   };
 
   const getFromLocalStorage = <T>(
     name: string,
-    defaultValue: any = null
-  ): T => {
+    defaultValue: T | null = null,
+  ): T | null => {
     const rtr = localStorage.getItem(name);
 
     if (!rtr) {
       return defaultValue;
     }
 
-    return JSON.parse(rtr);
+    return JSON.parse(rtr) as T;
   };
 
   const removeFromLocalStorage = (key: string): void => {

@@ -2,7 +2,7 @@
 import { DocumentArrowUpIcon, MapIcon } from '@heroicons/vue/24/outline';
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps<{
+defineProps<{
   term: string;
   image: string;
 }>();

@@ -6,7 +6,15 @@ import CheckoutItems from '@/Components/PageSpecific/Shop/Checkout/CheckoutItems
 import CheckoutTotals from '@/Components/PageSpecific/Shop/Checkout/CheckoutTotals.vue';
 import { FormSelectOption } from '@/Components/Forms/Props';
 import ContactDetails from '@/Components/PageSpecific/Shop/Checkout/Form/ContactDetails.vue';
-import { computed, nextTick, reactive, Ref, ref, watch } from 'vue';
+import {
+  DefineComponent,
+  computed,
+  nextTick,
+  reactive,
+  Ref,
+  ref,
+  watch,
+} from 'vue';
 import ShippingDetails from '@/Components/PageSpecific/Shop/Checkout/Form/ShippingDetails.vue';
 import useShopStore from '@/stores/useShopStore';
 import useLocalStorage from '@/composables/useLocalStorage';
@@ -17,9 +25,9 @@ import axios, { AxiosError } from 'axios';
 import useStripeStore from '@/stores/useStripeStore';
 import { getAlpha2Code, registerLocale } from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
-import { StripeElements } from '@stripe/stripe-js/types/stripe-js/elements-group';
 import { usePage } from '@inertiajs/vue3';
 import eventBus from '@/eventBus';
+import { ConfirmPaymentData } from '@stripe/stripe-js';
 
 type SectionKeys = 'details' | 'shipping' | 'payment' | '_complete';
 type FormSection = {
@@ -31,10 +39,10 @@ type FormSection = {
 };
 
 type SectionComponent = {
-  component: string;
+  component: DefineComponent;
   key: SectionKeys;
   next: SectionKeys;
-  additionalProps: Record<string, any>;
+  additionalProps: Record<string, unknown>;
 };
 
 type NoBasketProps = {
@@ -84,7 +92,7 @@ if (usePage().props.errors) {
 const { getFromLocalStorage, putInLocalStorage } = useLocalStorage();
 
 const createGenericError = (
-  message: string = 'An unknown error has occurred, you have not been charged.'
+  message: string = 'An unknown error has occurred, you have not been charged.',
 ): void => {
   store.setErrors({
     basket: message,
@@ -97,9 +105,13 @@ const submitPendingOrder = async (payload: CheckoutForm): Promise<boolean> => {
 
     return true;
   } catch (error: unknown) {
+    console.log(error);
     if (error instanceof AxiosError) {
-      if (error.status === 422 && error.response?.data?.errors) {
-        store.setErrors(error.response.data.errors);
+      const axiosError: AxiosError<{ errors: Record<string, unknown> }> =
+        error as AxiosError<{ errors: Record<string, unknown> }>;
+
+      if (axiosError.status === 422 && axiosError.response?.data.errors) {
+        store.setErrors(axiosError.response.data.errors);
 
         return false;
       }
@@ -111,27 +123,24 @@ const submitPendingOrder = async (payload: CheckoutForm): Promise<boolean> => {
   }
 };
 
-const stripePayload = (elements: StripeElements, payload: CheckoutForm) => ({
-  elements,
-  confirmParams: {
-    return_url: useUrl().generateUrl('done'),
-    payment_method_data: {
-      billing_details: {
-        name: payload.billing.name,
-        email: payload.contact.email,
-        phone: payload.contact.phone,
-        address: {
-          line1: payload.billing.address_1,
-          line2:
-            payload.billing.address_2 +
-            (payload.billing.address_3 ? `, ${payload.billing.address_3}` : ''),
-          city: payload.billing.town,
-          state: payload.billing.county,
-          postal_code: payload.billing.postcode,
-          country:
-            getAlpha2Code(payload.billing.country, 'en') ||
-            payload.billing.country,
-        },
+const stripePayload = (payload: CheckoutForm): Partial<ConfirmPaymentData> => ({
+  return_url: useUrl().generateUrl('done'),
+  payment_method_data: {
+    billing_details: {
+      name: payload.billing.name,
+      email: payload.contact.email,
+      phone: payload.contact.phone,
+      address: {
+        line1: payload.billing.address_1,
+        line2:
+          payload.billing.address_2 +
+          (payload.billing.address_3 ? `, ${payload.billing.address_3}` : ''),
+        city: payload.billing.town,
+        state: payload.billing.county,
+        postal_code: payload.billing.postcode,
+        country:
+          getAlpha2Code(payload.billing.country, 'en') ||
+          payload.billing.country,
       },
     },
   },
@@ -153,11 +162,15 @@ const prepareOrder = async () => {
     const stripeStore = useStripeStore();
 
     await stripeStore.instantiate(props.payment_intent as string);
-    const { error } = await stripeStore.stripe.confirmPayment(
-      stripePayload(stripeStore.elements, payload)
-    );
 
-    if (error.type === 'card_error' || error.type === 'validation_error') {
+    const { error } = await stripeStore.stripe.confirmPayment({
+      elements: stripeStore.elements,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      confirmParams: stripePayload(payload),
+      redirect: 'always',
+    });
+
+    if (error?.type === 'card_error' || error?.type === 'validation_error') {
       createGenericError(error.message);
     } else {
       createGenericError();
@@ -169,12 +182,14 @@ const prepareOrder = async () => {
   });
 };
 
-if (getFromLocalStorage('checkout-form')) {
-  store.setForm(getFromLocalStorage('checkout-form'));
+let existingForm = getFromLocalStorage<Partial<CheckoutForm>>('checkout-form');
+
+if (existingForm) {
+  store.setForm(existingForm);
 }
 
 const sections: FormSection = reactive(
-  getFromLocalStorage<FormSection>('checkout-steps', {
+  getFromLocalStorage<FormSection>('checkout-steps', <FormSection>{
     details: {
       active: true,
       complete: false,
@@ -190,14 +205,17 @@ const sections: FormSection = reactive(
       complete: false,
       error: false,
     },
-  })
+  }) as FormSection,
 );
 
 const activeSection: Ref<SectionKeys> = ref(
-  getFromLocalStorage('checkout-active-section', 'details')
+  getFromLocalStorage<SectionKeys>(
+    'checkout-active-section',
+    'details',
+  ) as SectionKeys,
 );
 
-const completeSection = (section: SectionKeys, next: SectionKeys) => {
+const completeSection = async (section: SectionKeys, next: SectionKeys) => {
   putInLocalStorage('checkout-form', store.toForm);
 
   if (next === '_complete') {
@@ -207,7 +225,7 @@ const completeSection = (section: SectionKeys, next: SectionKeys) => {
       error: false,
     };
 
-    prepareOrder();
+    await prepareOrder();
 
     return;
   }
@@ -217,6 +235,7 @@ const completeSection = (section: SectionKeys, next: SectionKeys) => {
     complete: true,
     error: false,
   };
+
   sections[next] = {
     active: true,
     complete: false,
@@ -237,7 +256,7 @@ const toggleSection = (section: SectionKeys) => {
 watch(
   () => errors,
   () => {
-    store.setErrors(errors);
+    store.setErrors(errors.value);
 
     sections.details.error = !!errors.value?.contact;
     sections.shipping.error = !!errors.value?.shipping;
@@ -253,7 +272,7 @@ watch(
       sections.shipping.active = true;
       sections.payment.active = false;
     }
-  }
+  },
 );
 
 const sectionComponents: SectionComponent[] = [
@@ -311,7 +330,7 @@ const sectionComponents: SectionComponent[] = [
       >
         <CheckoutItems :items="basket.items" />
         <CheckoutTotals
-          :countries="countries"
+          :countries="countries as FormSelectOption[]"
           :selected-country="basket.selected_country"
           :delivery-timescale="basket.delivery_timescale"
           :postage="basket.postage"

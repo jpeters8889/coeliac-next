@@ -20,7 +20,7 @@ const props = withDefaults(
     background: false,
     onTop: false,
     blur: false,
-  }
+  },
 );
 
 const classes = computed((): string[] => {

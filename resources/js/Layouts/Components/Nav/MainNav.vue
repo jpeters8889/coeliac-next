@@ -5,17 +5,19 @@ import { onMounted, ref } from 'vue';
 const isSticky = ref(false);
 
 onMounted(() => {
-  new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        isSticky.value = !entry.isIntersecting;
-      });
-    },
-    {
-      threshold: 0.5,
-      rootMargin: '0px',
-    }
-  ).observe(document.getElementById('header'));
+  if (document.getElementById('header')) {
+    new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isSticky.value = !entry.isIntersecting;
+        });
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '0px',
+      },
+    ).observe(document.getElementById('header'));
+  }
 });
 </script>
 

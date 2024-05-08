@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, Ref, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
 import { XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import axios, { AxiosResponse } from 'axios';
 import Loader from '@/Components/Loader.vue';
@@ -88,14 +88,14 @@ const displayImage = (image: UploadableImage, index: number): void => {
 const processedImages = (): UploadableImage[] =>
   <UploadableImage[]>(
     images.value.filter(
-      (image: ProcessingImage | UploadableImage) => !image.processing
+      (image: ProcessingImage | UploadableImage) => !image.processing,
     )
   );
 
 const emitChange = (): void => {
   emits(
     'images-change',
-    processedImages().map((image: UploadableImage) => image.id)
+    processedImages().map((image: UploadableImage) => image.id),
   );
 };
 
@@ -155,7 +155,7 @@ const uploadImage = (): void => {
 const deleteImage = (id: string) => {
   images.value = images.value.filter(
     (image: ProcessingImage | UploadableImage) =>
-      !image.processing && image.id !== id
+      !image.processing && image.id !== id,
   );
 
   emitChange();

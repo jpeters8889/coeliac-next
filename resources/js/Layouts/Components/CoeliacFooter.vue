@@ -3,7 +3,7 @@ import FacebookIcon from '@/Icons/FacebookIcon.vue';
 import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
-import InputField from '@/Components/Forms/RawInputField.vue';
+import FormInput from '@/Components/Forms/FormInput.vue';
 
 const year = new Date().getFullYear();
 
@@ -58,14 +58,17 @@ const navigation: { links: { label: string; url: string }[] } = {
             Enter your email address below to get our newsletter sent straight
             to your inbox!
           </p>
-          <form class="mt-6 sm:flex">
-            <InputField
+          <form class="mt-6 sm:flex sm:items-center">
+            <FormInput
               id="email-address"
+              label=""
+              hide-label
               autocomplete="email"
               name="email-address"
               placeholder="Enter your email address..."
               required
               type="email"
+              class="flex-1"
             />
             <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
               <CoeliacButton

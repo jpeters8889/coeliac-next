@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { watchDebounced } from '@vueuse/core';
 import useShopStore from '@/stores/useShopStore';
 
@@ -19,7 +19,7 @@ onMounted(() => {
     null,
     {
       enableHighAccuracy: false,
-    }
+    },
   );
 });
 
@@ -48,12 +48,13 @@ const handleSearch = async () => {
     return;
   }
 
-  const request = await axios.post('/api/shop/address-search', {
-    search: props.address,
-    country: country.value,
-    lat: latlng.value.lat,
-    lng: latlng.value.lng,
-  });
+  const request: AxiosResponse<{ id: string; address: string }[]> =
+    await axios.post('/api/shop/address-search', {
+      search: props.address,
+      country: country.value,
+      lat: latlng.value.lat,
+      lng: latlng.value.lng,
+    });
 
   searchResults.value = request.data;
 };
