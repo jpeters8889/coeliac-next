@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import useScreensize from '@/composables/useScreensize';
 import {
-  Component,
   computed,
   ComputedRef,
   DefineComponent,
@@ -303,7 +302,7 @@ const populateMap = (): void => {
 };
 
 const zoomIntoCluster = (pixel: Pixel) => {
-  void getMarkersLayer()
+  getMarkersLayer()
     ?.getFeatures(pixel)
     .then((clickedFeatures) => {
       if (clickedFeatures.length > 0) {
@@ -311,10 +310,11 @@ const zoomIntoCluster = (pixel: Pixel) => {
         const features: Feature[] = clickedFeatures[0].get(
           'features',
         ) as Feature[];
+
         if (features.length > 0) {
           const extent = boundingExtent(
-            features.map(
-              (r: Feature) => (<unknown>r.getGeometry()) as Coordinate,
+            features.map((r: Feature) =>
+              (<Point>r.get('geometry')).getCoordinates(),
             ),
           );
 

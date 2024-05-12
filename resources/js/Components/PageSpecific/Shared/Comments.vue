@@ -7,6 +7,7 @@ import { useForm } from '@inertiajs/vue3';
 import FormTextarea from '@/Components/Forms/FormTextarea.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ref } from 'vue';
+import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 
 const emits = defineEmits(['load-more']);
 
@@ -141,7 +142,6 @@ const submitComment = () => {
         id="comment"
         v-model="form.comment"
         :error="form.errors.comment"
-        autocomplete="email"
         label="Your Comment..."
         name="comment"
         required
@@ -165,12 +165,15 @@ const submitComment = () => {
       </div>
     </form>
 
-    <p
-      v-else
-      class="mx-auto mt-2 text-center text-lg font-semibold lg:w-4/5"
-    >
-      Thank you for submitting your comment! Your comment will be approved
-      before appearing on the website.
-    </p>
+    <template v-else>
+      <div class="flex items-center justify-center text-center text-green">
+        <CheckCircleIcon class="h-24 w-24" />
+      </div>
+
+      <p class="md:prose-md prose mb-2 max-w-none text-center">
+        Thank you for submitting your comment! Your comment will be approved
+        before appearing on the website.
+      </p>
+    </template>
   </Card>
 </template>

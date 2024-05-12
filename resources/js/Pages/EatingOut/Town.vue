@@ -3,23 +3,27 @@ import Card from '@/Components/Card.vue';
 import { EateryFilters, TownEatery, TownPage } from '@/types/EateryTypes';
 import TownHeading from '@/Components/PageSpecific/EatingOut/Town/TownHeading.vue';
 import Warning from '@/Components/Warning.vue';
-import { PaginatedResponse } from '@/types/GenericTypes';
+import { PaginatedCollection, PaginatedResponse } from '@/types/GenericTypes';
 import EateryCard from '@/Components/PageSpecific/EatingOut/EateryCard.vue';
 import TownFilterSidebar from '@/Components/PageSpecific/EatingOut/Town/TownFilterSidebar.vue';
 import { Ref, ref } from 'vue';
-import useInfiniteScroll from '@/composables/useInfiniteScroll';
 import { router } from '@inertiajs/vue3';
 import useScreensize from '@/composables/useScreensize';
+import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
+import { RequestPayload } from '@inertiajs/core/types/types';
 
 defineProps<{
   town: TownPage;
-  eateries: PaginatedResponse<TownEatery>;
+  eateries: PaginatedCollection<TownEatery>;
   filters: EateryFilters;
 }>();
 
-const landmark: Ref<Element> = ref();
+const landmark: Ref<HTMLDivElement> = ref() as Ref<HTMLDivElement>;
 
-const { items, reset } = useInfiniteScroll<TownEatery>('eateries', landmark);
+const { items, reset } = useInfiniteScrollCollection<TownEatery>(
+  'eateries',
+  landmark,
+);
 
 const { screenIsGreaterThanOrEqualTo } = useScreensize();
 
@@ -33,16 +37,18 @@ const handleFiltersChanged = ({
   const categoryFilter = filters.categories
     .filter((filter) => filter.checked)
     .map((filter) => filter.value);
+
   const venueFilter = filters.venueTypes
     .filter((filter) => filter.checked)
     .map((filter) => filter.value);
+
   const featureFilter = filters.features
     .filter((filter) => filter.checked)
     .map((filter) => filter.value);
 
   reset();
 
-  const params: Record<string, unknown> & {
+  const params: RequestPayload & {
     filter?: { [T in 'category' | 'venueType' | 'feature']?: string };
   } = {};
 

@@ -52,7 +52,7 @@ const howExpensive = (review: EateryReview) => {
     rtr += '£';
   }
 
-  return `<strong>Price ${rtr}</strong> - ${review.expense?.label}`;
+  return `<strong class="flex-shrink-0">Price ${rtr}:</strong> <span>${review.expense?.label}</span>`;
 };
 </script>
 
@@ -127,25 +127,26 @@ const howExpensive = (review: EateryReview) => {
                 <div>
                   <ul
                     v-if="reviewHasRatings(review)"
-                    class="mt-3 grid grid-cols-1 gap-3 xs:grid-cols-3"
+                    class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:text-lg"
                   >
                     <li
                       v-if="review.expense"
-                      class="block rounded bg-primary-light bg-opacity-50 px-3 py-1 leading-none"
+                      class="rounded bg-primary-light bg-opacity-50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                       v-html="howExpensive(review)"
                     />
                     <li
                       v-if="review.food_rating"
-                      class="block rounded bg-primary-light bg-opacity-50 px-2 py-1 leading-none"
+                      class="rounded bg-primary-light bg-opacity-50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                     >
-                      <strong>Food:</strong> {{ ucfirst(review.food_rating) }}
+                      <strong>Food:</strong>
+                      <span v-text="ucfirst(review.food_rating)" />
                     </li>
                     <li
                       v-if="review.service_rating"
-                      class="block rounded bg-primary-light bg-opacity-50 px-2 py-1 leading-none"
+                      class="rounded bg-primary-light bg-opacity-50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                     >
                       <strong>Service:</strong>
-                      {{ ucfirst(review.service_rating) }}
+                      <span v-text="ucfirst(review.service_rating)" />
                     </li>
                   </ul>
                 </div>

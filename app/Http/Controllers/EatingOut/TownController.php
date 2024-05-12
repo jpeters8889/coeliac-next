@@ -41,7 +41,12 @@ class TownController
             ->render('EatingOut/Town', [
                 'town' => fn () => new TownPageResource($town),
                 'eateries' => fn () => $getEateriesPipeline->run($town, $filters),
-                'filters' => fn () => $getFiltersForTown->handle(fn (Builder $query) => $query->where('town_id', $town->id), $filters),
+                'filters' => fn () => $getFiltersForTown->handle(
+                    fn (Builder $query) => $query
+                        ->where('town_id', $town->id)
+                        ->orWhereHas('nationwideBranches', fn (Builder $query) => $query->where('town_id', $town->id)),
+                    $filters,
+                ),
             ]);
     }
 }

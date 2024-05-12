@@ -103,7 +103,7 @@ export type TownEatery = Eatery & {
   phone?: string;
   reviews: {
     number: number;
-    average: string;
+    average: StarRating;
   };
   isNationwideBranch?: boolean;
   branch?: EateryNationwideBranch;

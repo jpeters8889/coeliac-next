@@ -26,10 +26,15 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
 
     Route::prefix('/basket')->group(function (): void {
         Route::get('/', ShopCheckoutController::class)->name('shop.basket.checkout');
+
         Route::post('/', ShopCompleteOrderController::class)
             ->middleware(ShopHasBasketMiddleware::class)
             ->name('shop.order.complete');
-        Route::put('/', ShopAddToBasketController::class)->name('shop.basket.add');
+
+        Route::put('/', ShopAddToBasketController::class)
+            ->middleware(HandlePrecognitiveRequests::class)
+            ->name('shop.basket.add');
+
         Route::patch('/', ShopBasketPatchController::class)->name('shop.basket.patch');
         Route::delete('/', ShopRevertPendingOrderController::class)->name('shop.basket.revert');
 

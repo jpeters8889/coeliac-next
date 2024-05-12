@@ -4,7 +4,11 @@ import typography from '@tailwindcss/typography';
 import headlessui from '@headlessui/tailwindcss';
 
 export default {
-  content: ['./storage/framework/views/*.php', './resources/js/**/*.vue'],
+  content: [
+    './storage/framework/views/*.php',
+    './resources/js/**/*.vue',
+    './resources/js/**/*.ts',
+  ],
 
   theme: {
     fontFamily: {

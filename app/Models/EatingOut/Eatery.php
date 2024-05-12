@@ -130,6 +130,10 @@ class Eatery extends Model
 
     public function link(): string
     {
+        if ($this->county?->slug === 'nationwide') {
+            return "/wheretoeat/nationwide/{$this->slug}";
+        }
+
         return '/' . implode('/', [
             'wheretoeat',
             $this->county?->slug,

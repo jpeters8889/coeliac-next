@@ -11,7 +11,9 @@ const mapElement: Ref<HTMLDivElement> =
 const apiKey: string = import.meta.env.VITE_GOOGLE_MAPS_DYNAMIC_KEY as string;
 
 onMounted(() => {
-  loadScript(`https://maps.google.com/maps/api/js?key=${apiKey}`).then(() => {
+  loadScript(
+    `https://maps.google.com/maps/api/js?key=${apiKey}&libraries=marker&v=weekly`,
+  ).then(() => {
     const center: google.maps.LatLng = new google.maps.LatLng(
       props.lat,
       props.lng,
@@ -25,6 +27,7 @@ onMounted(() => {
       rotateControl: false,
       fullscreenControl: false,
       gestureHandling: 'greedy',
+      mapId: 'map',
     });
 
     new google.maps.marker.AdvancedMarkerElement({

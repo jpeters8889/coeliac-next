@@ -7,9 +7,9 @@ const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
 const emits = defineEmits(['focus', 'blur']);
 
-const [value, modifiers] = defineModel<string, string | number>({
-  set(v: string): string | number {
-    if (modifiers.number) {
+const [value, modifiers] = defineModel<string | number, string | number>({
+  set(v: string | number): string | number {
+    if (modifiers.number && typeof v === 'string') {
       return parseInt(v, 10);
     }
 

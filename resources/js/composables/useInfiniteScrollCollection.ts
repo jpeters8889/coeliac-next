@@ -1,18 +1,18 @@
 import { computed, ComputedRef, Ref, ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import useIntersect from '@/composables/useIntersect';
-import { PaginatedResponse } from '@/types/GenericTypes';
+import { PaginatedCollection } from '@/types/GenericTypes';
 
 export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
-  const value: () => PaginatedResponse<T> = () =>
-    usePage().props[propName] as PaginatedResponse<T>;
+  const value: () => PaginatedCollection<T> = () =>
+    usePage().props[propName] as PaginatedCollection<T>;
 
   const items: Ref<T[]> = ref(value().data) as Ref<T[]>;
 
   const initialUrl = usePage().url;
 
   const canLoadMoreItems: ComputedRef<boolean> = computed(
-    () => value().links.next !== null,
+    () => value().next_page_url !== null,
   );
 
   const loadMoreItems = (): void => {
@@ -21,7 +21,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
     }
 
     router.get(
-      <string>value().links.next,
+      <string>value().next_page_url,
       {},
       {
         preserveState: true,

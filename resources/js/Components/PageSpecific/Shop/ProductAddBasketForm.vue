@@ -29,7 +29,8 @@ const checkStock = () => {
 
 const availableQuantity = computed(() => selectedVariant.value?.quantity);
 
-const { prepareAddBasketForm, submitAddBasketForm } = useAddToBasket();
+const { addBasketForm, prepareAddBasketForm, submitAddBasketForm } =
+  useAddToBasket();
 
 onMounted(() => {
   if (props.product.variants.length === 1) {
@@ -61,7 +62,7 @@ watch(quantity, () => {
 
 const addToBasket = () => {
   submitAddBasketForm({
-    only: ['basket'],
+    only: ['basket', 'errors'],
   });
 };
 </script>
@@ -161,6 +162,7 @@ const addToBasket = () => {
               ? availableQuantity
               : undefined
           "
+          :error="addBasketForm.errors.quantity"
         />
       </div>
 

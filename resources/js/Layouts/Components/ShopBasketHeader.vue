@@ -28,7 +28,7 @@ const openBasket = () => {
         your basket
       </div>
       <div
-        class="prose prose-lg font-semibold xl:prose-xl hover:text-primary-dark"
+        class="prose prose-lg font-semibold xl:prose-xl hover:text-primary-dark cursor-pointer"
         @click="openBasket()"
       >
         View Basket

@@ -175,7 +175,7 @@ const imageError = (message: string): void => {
             :options="stars"
             :icon="StarIcon"
             :unselected-icon="null"
-            :icon-classes="['w-10 h-10']"
+            icon-classes="w-10 h-10"
             hide-options-text
           />
           <p

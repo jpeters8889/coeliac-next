@@ -32,7 +32,7 @@ export default () => {
 
   const submitAddBasketForm = (
     params: Partial<VisitOptions> = {},
-    callback: () => void,
+    callback?: () => void,
   ) => {
     addBasketForm.submit({
       ...params,
