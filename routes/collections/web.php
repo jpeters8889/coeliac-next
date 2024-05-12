@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Collections\CollectionIndexController;
-use App\Http\Controllers\Collections\CollectionShowController;
+use App\Http\Controllers\Collections\IndexController;
+use App\Http\Controllers\Collections\ShowController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', CollectionIndexController::class)->name('collection.index');
-Route::get('{collection}', CollectionShowController::class)->name('collection.show');
+Route::get('/', IndexController::class)->name('collection.index');
+Route::get('{collection}', ShowController::class)->name('collection.show');

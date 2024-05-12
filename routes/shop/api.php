@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Shop\AddressSearchController;
-use App\Http\Controllers\Shop\AddressSearchGetController;
+use App\Http\Controllers\Api\Shop\AddressSearch\ShowController;
+use App\Http\Controllers\Api\Shop\AddressSearch\StoreController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('address-search', AddressSearchController::class)->name('api.shop.address-search');
-Route::get('address-search/{id}', AddressSearchGetController::class)->name('api.shop.address-search.get');
+Route::post('address-search', StoreController::class)->name('api.shop.address-search');
+Route::get('address-search/{id}', ShowController::class)->name('api.shop.address-search.get');

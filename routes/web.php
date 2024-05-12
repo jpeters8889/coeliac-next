@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Comments\CommentsController;
+use App\Http\Controllers\Comments\GetController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +14,4 @@ Route::prefix('')->group(base_path('routes/eating-out/web.php'));
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::post('comments', CommentsController::class)->name('comments.create');
+Route::post('comments', GetController::class)->name('comments.create');

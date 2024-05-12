@@ -2,56 +2,56 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Shop\ReviewMyOrderGetController;
-use App\Http\Controllers\Shop\ReviewMyOrderStoreController;
-use App\Http\Controllers\Shop\ReviewMyOrderThanksController;
-use App\Http\Controllers\Shop\ShopAddToBasketController;
-use App\Http\Controllers\Shop\ShopBasketPatchController;
-use App\Http\Controllers\Shop\ShopCategoryController;
-use App\Http\Controllers\Shop\ShopCheckoutController;
-use App\Http\Controllers\Shop\ShopCompleteOrderController;
-use App\Http\Controllers\Shop\ShopIndexController;
-use App\Http\Controllers\Shop\ShopOrderCompleteController;
-use App\Http\Controllers\Shop\ShopProductController;
-use App\Http\Controllers\Shop\ShopRemoveDiscountCodeController;
-use App\Http\Controllers\Shop\ShopRemoveFromBasketController;
-use App\Http\Controllers\Shop\ShopRevertPendingOrderController;
+use App\Http\Controllers\Shop\Basket\DestroyController as BasketDestroyController;
+use App\Http\Controllers\Shop\Basket\Discount\DestroyController as DiscountDestroyController;
+use App\Http\Controllers\Shop\Basket\ShowController as BasketShowController;
+use App\Http\Controllers\Shop\Basket\StoreController as BasketStoreController;
+use App\Http\Controllers\Shop\Basket\UpdateController as BasketUpdateController;
+use App\Http\Controllers\Shop\Category\ShowController as CategoryShowController;
+use App\Http\Controllers\Shop\IndexController;
+use App\Http\Controllers\Shop\Order\DestroyController as OrderDestroyController;
+use App\Http\Controllers\Shop\Order\Done\ShowController as OrderDoneShowController;
+use App\Http\Controllers\Shop\Order\StoreController as OrderStoreController;
+use App\Http\Controllers\Shop\Product\ShowController as ProductShowController;
+use App\Http\Controllers\Shop\ReviewMyOrder\ShowController as ReviewMyOrderShowController;
+use App\Http\Controllers\Shop\ReviewMyOrder\StoreController as ReviewMyOrderStoreController;
+use App\Http\Controllers\Shop\ReviewMyOrder\Thanks\ShowController as ReviewMyOrderThanksShowController;
 use App\Http\Middleware\ShopBasketTokenMiddleware;
 use App\Http\Middleware\ShopHasBasketMiddleware;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
-    Route::get('/', ShopIndexController::class)->name('shop.index');
+    Route::get('/', IndexController::class)->name('shop.index');
 
     Route::prefix('/basket')->group(function (): void {
-        Route::get('/', ShopCheckoutController::class)->name('shop.basket.checkout');
+        Route::get('/', BasketShowController::class)->name('shop.basket.checkout');
 
-        Route::post('/', ShopCompleteOrderController::class)
+        Route::post('/', OrderStoreController::class)
             ->middleware(ShopHasBasketMiddleware::class)
             ->name('shop.order.complete');
 
-        Route::put('/', ShopAddToBasketController::class)
+        Route::put('/', BasketStoreController::class)
             ->middleware(HandlePrecognitiveRequests::class)
             ->name('shop.basket.add');
 
-        Route::patch('/', ShopBasketPatchController::class)->name('shop.basket.patch');
-        Route::delete('/', ShopRevertPendingOrderController::class)->name('shop.basket.revert');
+        Route::patch('/', BasketUpdateController::class)->name('shop.basket.patch');
+        Route::delete('/', OrderDestroyController::class)->name('shop.basket.revert');
 
-        Route::get('/done', ShopOrderCompleteController::class)->name('shop.basket.done');
+        Route::get('/done', OrderDoneShowController::class)->name('shop.basket.done');
 
-        Route::delete('/discount', ShopRemoveDiscountCodeController::class)->name('shop.basket.discount.remove');
-        Route::delete('/{item}', ShopRemoveFromBasketController::class)->name('shop.basket.remove');
+        Route::delete('/discount', DiscountDestroyController::class)->name('shop.basket.discount.remove');
+        Route::delete('/{item}', BasketDestroyController::class)->name('shop.basket.remove');
     });
 
-    Route::get('/{category}', ShopCategoryController::class)->name('shop.category');
-    Route::get('/product/{product}', ShopProductController::class)->name('shop.product');
+    Route::get('/{category}', CategoryShowController::class)->name('shop.category');
+    Route::get('/product/{product}', ProductShowController::class)->name('shop.product');
 
-    Route::get('review-my-order/{invitation}', ReviewMyOrderGetController::class)
+    Route::get('review-my-order/{invitation}', ReviewMyOrderShowController::class)
         ->middleware(['signed'])
         ->name('shop.review-order');
 
-    Route::get('review-my-order/{invitation}/thanks', ReviewMyOrderThanksController::class)
+    Route::get('review-my-order/{invitation}/thanks', ReviewMyOrderThanksShowController::class)
         ->name('shop.review-order.thanks');
 
     Route::post('review-my-order/{invitation}', ReviewMyOrderStoreController::class)

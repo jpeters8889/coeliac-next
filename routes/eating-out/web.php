@@ -2,46 +2,46 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\EatingOut\CountyController;
-use App\Http\Controllers\EatingOut\EateryCreateReportController;
-use App\Http\Controllers\EatingOut\EateryCreateReviewController;
-use App\Http\Controllers\EatingOut\EateryDetailsController;
-use App\Http\Controllers\EatingOut\EaterySearchResultsController;
-use App\Http\Controllers\EatingOut\EatingOutAppController;
-use App\Http\Controllers\EatingOut\EatingOutBrowseController;
-use App\Http\Controllers\EatingOut\EatingOutController;
-use App\Http\Controllers\EatingOut\EatingOutLandingController;
-use App\Http\Controllers\EatingOut\NationwideController;
-use App\Http\Controllers\EatingOut\RecommendAPlaceController;
-use App\Http\Controllers\EatingOut\RecommendAPlaceCreateController;
-use App\Http\Controllers\EatingOut\SearchCreateController;
-use App\Http\Controllers\EatingOut\TownController;
+use App\Http\Controllers\EatingOut\Browse\ShowController as BrowseShowController;
+use App\Http\Controllers\EatingOut\CoeliacSanctuaryOnTheGo\ShowController as AppShowController;
+use App\Http\Controllers\EatingOut\County\ShowController as CountyShowController;
+use App\Http\Controllers\EatingOut\County\Town\ShowController as TownShowController;
+use App\Http\Controllers\EatingOut\EateryDetails\GetController as EateryDetailsGetController;
+use App\Http\Controllers\EatingOut\IndexController;
+use App\Http\Controllers\EatingOut\LandingPage\IndexController as LandingPageIndexController;
+use App\Http\Controllers\EatingOut\Nationwide\IndexController as NationwideIndexController;
+use App\Http\Controllers\EatingOut\RecommendAPlace\CreateController as RecommendAPlaceCreateController;
+use App\Http\Controllers\EatingOut\RecommendAPlace\StoreController as RecommendAPlaceStoreController;
+use App\Http\Controllers\EatingOut\ReportEatery\StoreController as ReportEateryStoreController;
+use App\Http\Controllers\EatingOut\Review\StoreController as ReviewStoreController;
+use App\Http\Controllers\EatingOut\Search\ShowController as SearchShowController;
+use App\Http\Controllers\EatingOut\Search\StoreController as SearchStoreController;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/eating-out', EatingOutLandingController::class)->name('eating-out.landing');
+Route::get('/eating-out', LandingPageIndexController::class)->name('eating-out.landing');
 
 Route::prefix('wheretoeat')->group(function (): void {
     $prefixedEateryRoutes = function (string $namePrefix): callable {
         return function () use ($namePrefix): void {
-            Route::get('/', EateryDetailsController::class)->name($namePrefix);
+            Route::get('/', EateryDetailsGetController::class)->name($namePrefix);
 
-            Route::post('/reviews', EateryCreateReviewController::class)
+            Route::post('/reviews', ReviewStoreController::class)
                 ->middleware([HandlePrecognitiveRequests::class])
                 ->name("{$namePrefix}.reviews.create");
 
-            Route::post('/report', EateryCreateReportController::class)
+            Route::post('/report', ReportEateryStoreController::class)
                 ->middleware([HandlePrecognitiveRequests::class])
                 ->name("{$namePrefix}.report.create");
         };
     };
 
-    Route::get('/', EatingOutController::class)->name('eating-out.index');
+    Route::get('/', IndexController::class)->name('eating-out.index');
 
-    Route::post('/search', SearchCreateController::class)->name('eating-out.search.create');
-    Route::get('/search/{eaterySearchTerm}', EaterySearchResultsController::class)->name('eating-out.search.show');
+    Route::post('/search', SearchStoreController::class)->name('eating-out.search.create');
+    Route::get('/search/{eaterySearchTerm}', SearchShowController::class)->name('eating-out.search.show');
 
-    Route::get('/nationwide', NationwideController::class)->name('eating-out.nationwide');
+    Route::get('/nationwide', NationwideIndexController::class)->name('eating-out.nationwide');
     Route::prefix('/nationwide/{eatery}')->group(
         $prefixedEateryRoutes('eating-out.nationwide.show')
     );
@@ -49,16 +49,16 @@ Route::prefix('wheretoeat')->group(function (): void {
         $prefixedEateryRoutes('eating-out.nationwide.show.branch')
     );
 
-    Route::get('/recommend-a-place', RecommendAPlaceController::class)->name('eating-out.recommend.index');
-    Route::post('/recommend-a-place', RecommendAPlaceCreateController::class)->name('eating-out.recommend.create');
+    Route::get('/recommend-a-place', RecommendAPlaceCreateController::class)->name('eating-out.recommend.index');
+    Route::post('/recommend-a-place', RecommendAPlaceStoreController::class)->name('eating-out.recommend.create');
 
-    Route::get('/browse', EatingOutBrowseController::class)->name('eating-out.browse');
-    Route::get('/browse/{any}', EatingOutBrowseController::class)->where('any', '.*');
+    Route::get('/browse', BrowseShowController::class)->name('eating-out.browse');
+    Route::get('/browse/{any}', BrowseShowController::class)->where('any', '.*');
 
-    Route::get('coeliac-sanctuary-on-the-go', EatingOutAppController::class)->name('eating-out.app');
+    Route::get('coeliac-sanctuary-on-the-go', AppShowController::class)->name('eating-out.app');
 
-    Route::get('/{county}', CountyController::class)->name('eating-out.county');
-    Route::get('/{county}/{town}', TownController::class)->name('eating-out.town');
+    Route::get('/{county}', CountyShowController::class)->name('eating-out.county');
+    Route::get('/{county}/{town}', TownShowController::class)->name('eating-out.town');
 
     Route::prefix('/{county}/{town}/{eatery}')->group($prefixedEateryRoutes('eating-out.show'));
 });

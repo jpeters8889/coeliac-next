@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Recipes\RecipeIndexController;
-use App\Http\Controllers\Recipes\RecipePrintController;
-use App\Http\Controllers\Recipes\RecipeShowController;
+use App\Http\Controllers\Recipes\IndexController;
+use App\Http\Controllers\Recipes\Print\ShowController as PrintController;
+use App\Http\Controllers\Recipes\ShowController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', RecipeIndexController::class)->name('recipe.index');
+Route::get('/', IndexController::class)->name('recipe.index');
 
-Route::get('{recipe}', RecipeShowController::class)->name('recipe.show');
-Route::get('{recipe}/print', RecipePrintController::class)->name('recipe.print');
+Route::get('{recipe}', ShowController::class)->name('recipe.show');
+Route::get('{recipe}/print', PrintController::class)->name('recipe.print');
