@@ -22,6 +22,7 @@ const props = withDefaults(
     classes?: string;
     disabled?: boolean;
     iconOnly?: boolean;
+    target?: string;
   }>(),
   {
     label: undefined,
@@ -37,6 +38,7 @@ const props = withDefaults(
     classes: '',
     disabled: false,
     iconOnly: false,
+    target: undefined,
   },
 );
 
@@ -133,6 +135,9 @@ const isLinkComponent = computed(() => {
       ...(props.as === 'button' ? { type: props.type } : null),
       ...(isLinkComponent || props.as === 'a' ? { href: props.href } : null),
       ...(props.as === 'button' && props.disabled ? { disabled: true } : null),
+      ...((isLinkComponent || props.as === 'a') && props.target
+        ? { target: props.target }
+        : null),
     }"
     @click="emits('click')"
   >

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\EatingOut\Browse;
 
 use App\Http\Requests\EatingOut\Api\EatingOutBrowseRequest;
-use App\Pipelines\EatingOut\BrowseEateriesPipeline;
+use App\Pipelines\EatingOut\GetEateries\BrowseEateriesPipeline;
 
 class IndexController
 {

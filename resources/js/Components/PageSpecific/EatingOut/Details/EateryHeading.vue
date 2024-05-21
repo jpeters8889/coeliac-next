@@ -31,7 +31,7 @@ const averageRating = (): StarRatingType =>
 </script>
 
 <template>
-  <Card class="mt-2 space-y-2">
+  <Card class="space-y-2 lg:rounded-b-lg lg:p-8">
     <div class="flex items-center justify-between space-x-2">
       <h1
         class="font-coeliac text-3xl font-semibold leading-tight lg:mb-2 lg:text-5xl"

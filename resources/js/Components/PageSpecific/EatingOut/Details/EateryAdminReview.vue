@@ -58,16 +58,16 @@ const reviewBody = computed(() => {
 </script>
 
 <template>
-  <Card class="space-y-2">
-    <h3 class="text-lg font-semibold">Our Review</h3>
+  <Card class="space-y-2 lg:space-y-4 lg:rounded-lg lg:p-8">
+    <h3 class="text-lg font-semibold lg:text-2xl">Our Review</h3>
 
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-2 lg:space-y-4">
       <ul
         v-if="hasRatings"
-        class="mb-2 grid grid-cols-1 gap-1 leading-none xs:grid-cols-4 xs:gap-3"
+        class="mb-2 grid grid-cols-1 gap-1 leading-none xs:grid-cols-4 xs:gap-3 lg:text-lg"
       >
         <li
-          class="text-md flex items-center space-x-1 rounded bg-primary-light bg-opacity-50 px-3 py-2"
+          class="flex items-center space-x-1 rounded bg-primary-light bg-opacity-50 px-3 py-2"
         >
           <strong>Our Rating</strong>
           <StarRating
@@ -113,7 +113,7 @@ const reviewBody = computed(() => {
         v-if="review.images"
         class="flex flex-col rounded border border-primary bg-primary-light bg-opacity-25 p-2"
       >
-        <p class="text-md font-semibold">Our Photos</p>
+        <p class="text-md font-semibold lg:text-lg">Our Photos</p>
 
         <ReviewImageGallery
           :images="review.images"

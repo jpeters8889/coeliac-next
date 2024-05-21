@@ -57,7 +57,7 @@ const howExpensive = (review: EateryReview) => {
 </script>
 
 <template>
-  <Card>
+  <Card class="lg:rounded-lg lg:p-8">
     <div class="mx-auto md:grid md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
       <RatingsBreakdown
         :average="eatery.reviews.average"

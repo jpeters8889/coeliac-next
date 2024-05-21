@@ -8,7 +8,7 @@ use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EaterySearchTerm;
-use App\Pipelines\EatingOut\GetSearchResultsPipeline;
+use App\Pipelines\EatingOut\GetEateries\GetSearchResultsPipeline;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;

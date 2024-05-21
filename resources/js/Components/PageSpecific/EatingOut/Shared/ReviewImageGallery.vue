@@ -100,10 +100,11 @@ const handleTouchEnd = (event: TouchEvent) => {
       <div
         v-for="(image, index) in images"
         :key="image.id"
+        :class="withMargin ? 'first:-ml-1 lg:first:-ml-2' : ''"
       >
         <img
           v-if="limit === 0 || viewAll === true || index < limit"
-          class="max-h-[125px] max-w-[125px] cursor-pointer p-1 lg:max-h-[200px] lg:max-w-[200px] 2xl:max-h-[250px] 2xl:max-w-[250px]"
+          class="max-h-[125px] max-w-[125px] cursor-pointer p-1 lg:max-h-[200px] lg:max-w-[200px] 2xl:max-h-[250px] 2xl:max-w-[250px] lg:p-2"
           :src="image.thumbnail"
           :alt="altText"
           @click="openImage(index)"
@@ -116,9 +117,16 @@ const handleTouchEnd = (event: TouchEvent) => {
         class="mt-2 cursor-pointer font-semibold text-primary-dark hover:underline"
         @click="viewAll = true"
       >
-        Viewing <strong class="text-black">{{ limit }}</strong> photos out of
-        <strong class="text-black">{{ images.length }}</strong
-        >, view all user photos?
+        Viewing
+        <strong
+          class="text-black"
+          v-text="limit"
+        />
+        photos out of
+        <strong
+          class="text-black"
+          v-text="images.length"
+        />, view all user photos?
       </p>
     </template>
 

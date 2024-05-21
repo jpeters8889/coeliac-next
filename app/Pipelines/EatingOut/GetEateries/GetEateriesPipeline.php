@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Pipelines\EatingOut\GetEateries;
+
+use App\DataObjects\EatingOut\GetEateriesPipelineData;
+use App\Models\EatingOut\EateryTown;
+use App\Pipelines\EatingOut\GetEateries\Steps\CheckForMissingEateriesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\GetEateriesInTownAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\GetNationwideBranchesInTownAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\HydrateBranchesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\HydrateEateriesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\PaginateEateriesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\RelateEateriesAndBranchesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\SerialiseResultsAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\SortPendingEateriesAction;
+use App\Resources\EatingOut\EateryListResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pipeline\Pipeline;
+
+class GetEateriesPipeline
+{
+    /**
+     * @param  array{categories: string[], features: string[], venueTypes: string []}  $filters
+     * @param  class-string<JsonResource>  $jsonResource
+     * @return LengthAwarePaginator<JsonResource>
+     */
+    public function run(EateryTown $town, array $filters, string $jsonResource = EateryListResource::class): LengthAwarePaginator
+    {
+        $pipes = [
+            GetEateriesInTownAction::class,
+            GetNationwideBranchesInTownAction::class,
+            SortPendingEateriesAction::class,
+            PaginateEateriesAction::class,
+            HydrateEateriesAction::class,
+            HydrateBranchesAction::class,
+            CheckForMissingEateriesAction::class,
+            RelateEateriesAndBranchesAction::class,
+            SerialiseResultsAction::class,
+        ];
+
+        $pipelineData = new GetEateriesPipelineData(
+            town: $town,
+            filters: $filters,
+            jsonResource: $jsonResource
+        );
+
+        /** @var GetEateriesPipelineData $pipeline */
+        $pipeline = app(Pipeline::class)
+            ->send($pipelineData)
+            ->through($pipes)
+            ->thenReturn();
+
+        /** @var LengthAwarePaginator<JsonResource> $serialisedEateries */
+        $serialisedEateries = $pipeline->serialisedEateries;
+
+        return $serialisedEateries;
+    }
+}

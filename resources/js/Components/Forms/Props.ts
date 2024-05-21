@@ -65,12 +65,18 @@ export const TextareaPropsDefaults: Partial<TextareaProps> = {
 
 export type CheckboxProps = BaseFormProps & {
   label: string;
+  layout: 'left' | 'right';
+  xl?: boolean;
+  highlight?: boolean;
 };
 
 export const CheckboxPropsDefault: Partial<CheckboxProps> = <
   Partial<CheckboxProps>
 >{
   ...BaseFormInputPropDefaults,
+  layout: 'right',
+  xl: false,
+  highlight: false,
 };
 
 export type FormSelectOption = {

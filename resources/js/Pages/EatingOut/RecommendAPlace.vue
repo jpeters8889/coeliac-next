@@ -11,6 +11,10 @@ import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
 import { InertiaForm } from '@/types/Core';
+import axios, { AxiosResponse } from 'axios';
+import { watchDebounced } from '@vueuse/core';
+import Warning from '@/Components/Warning.vue';
+import FormCheckbox from '@/Components/Forms/FormCheckbox.vue';
 
 type FormData = {
   name: string;
@@ -51,6 +55,47 @@ const submit = () => {
     },
   });
 };
+
+type CheckRecommendedPlaceResult = {
+  result: string;
+  url: string;
+  label: string;
+};
+
+const confirmNewEatery = ref(false);
+
+const placeAlreadyRecommended = ref<CheckRecommendedPlaceResult | undefined>();
+
+const checkRecommendation = () => {
+  placeAlreadyRecommended.value = undefined;
+
+  axios
+    .post('/api/wheretoeat/check-recommended-place', {
+      place_name: form.place.name,
+      place_location: form.place.location,
+    })
+    .then((response: AxiosResponse<CheckRecommendedPlaceResult>) => {
+      if (response.status === 200) {
+        placeAlreadyRecommended.value = response.data;
+
+        return;
+      }
+
+      placeAlreadyRecommended.value = undefined;
+    });
+};
+
+watchDebounced(
+  () => form.place.name,
+  () => checkRecommendation(),
+  { debounce: 300 },
+);
+
+watchDebounced(
+  () => form.place.location,
+  () => checkRecommendation(),
+  { debounce: 300 },
+);
 </script>
 
 <template>
@@ -127,10 +172,40 @@ const submit = () => {
           label="Place Location / Address"
           required
           name="placeLocation"
-          :rows="5"
+          :rows="3"
           :error="form.errors.place?.location"
           borders
         />
+
+        <div class="w-full max-w-3xl mx-auto">
+          <Warning
+            v-if="placeAlreadyRecommended"
+            class="rounded-xl"
+          >
+            <div class="flex flex-col space-y-3 md:text-center">
+              <p
+                class="prose lg:prose-lg xl:prose-xl"
+                v-text="placeAlreadyRecommended.result"
+              />
+
+              <div class="text-center">
+                <CoeliacButton
+                  as="a"
+                  :href="placeAlreadyRecommended.url"
+                  :label="placeAlreadyRecommended.label"
+                  target="_blank"
+                  theme="secondary"
+                  size="xl"
+                />
+              </div>
+
+              <p class="prose lg:prose-lg xl:prose-xl font-semibold">
+                If you're this is a different place please carry on with your
+                recommendation!
+              </p>
+            </div>
+          </Warning>
+        </div>
 
         <FormInput
           id="placeWebAddress"
@@ -156,10 +231,24 @@ const submit = () => {
           label="Details"
           required
           name="placeDetails"
-          :rows="8"
+          :rows="6"
           :error="form.errors.place?.details"
           borders
         />
+
+        <div
+          v-if="placeAlreadyRecommended"
+          class="bg-primary-light bg-opacity-15 p-3 rounded-xl"
+        >
+          <FormCheckbox
+            v-model="confirmNewEatery"
+            name="sure"
+            label="I'm sure this is a new eatery to add to your guide!"
+            layout="left"
+            highlight
+            xl
+          />
+        </div>
 
         <CoeliacButton
           theme="primary"
@@ -170,6 +259,7 @@ const submit = () => {
           type="submit"
           classes="justify-center"
           :loading="form.processing"
+          :disabled="placeAlreadyRecommended && !confirmNewEatery"
         />
       </form>
     </template>

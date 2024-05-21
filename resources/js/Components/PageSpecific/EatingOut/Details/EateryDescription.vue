@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <Card class="space-y-2">
+  <Card class="space-y-2 lg:space-y-4 lg:rounded-lg lg:p-8">
     <template v-if="eatery.restaurants.length">
       <div
         v-for="restaurant in eatery.restaurants"
@@ -16,12 +16,12 @@ defineProps<{
       >
         <h4
           v-if="restaurant.name"
-          class="text-lg font-semibold md:text-xl"
+          class="text-lg font-semibold md:text-xl lg:text-2xl"
         >
           {{ restaurant.name }}
         </h4>
 
-        <p class="prose max-w-none md:prose-lg">
+        <p class="prose max-w-none md:prose-lg lg:prose-xl">
           {{ restaurant.info }}
         </p>
       </div>
@@ -29,7 +29,7 @@ defineProps<{
 
     <template v-else>
       <p
-        class="prose max-w-none sm:prose-lg"
+        class="prose max-w-none sm:prose-lg lg:prose-xl"
         v-html="eatery.info"
       />
     </template>

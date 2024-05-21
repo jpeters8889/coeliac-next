@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\EatingOut\ReviewImages;
 
 use App\Http\Requests\EatingOut\Api\ReviewImagesUploadRequest;
-use App\Pipelines\UploadTemporaryFilePipeline;
+use App\Pipelines\Shared\UploadTemporaryFile\UploadTemporaryFilePipeline;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 

@@ -33,7 +33,9 @@ const address = computed(() =>
 </script>
 
 <template>
-  <Card class="space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+  <Card
+    class="space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0 lg:space-x-4 lg:rounded-lg lg:p-6"
+  >
     <div class="h-map-small w-full max-w-[600px] sm:w-1/2 lg:w-2/3">
       <StaticMap
         :lng="lng"
@@ -41,11 +43,11 @@ const address = computed(() =>
       />
     </div>
 
-    <ul class="sm:text-md flex flex-col space-y-3 sm:w-1/2">
+    <ul class="sm:text-md flex flex-col space-y-3 sm:w-1/2 lg:space-y-4">
       <li class="flex items-center space-x-3">
-        <MapIcon class="h-4 w-4 sm:h-6 sm:w-6" />
+        <MapIcon class="h-4 w-4 sm:h-6 sm:w-6 lg:w-8 lg:h-8" />
         <span
-          class="text-sm font-semibold sm:text-base"
+          class="text-sm font-semibold sm:text-base lg:text-lg"
           v-html="address"
         />
       </li>
@@ -57,8 +59,10 @@ const address = computed(() =>
           class="flex items-center space-x-3 transition hover:text-primary-dark"
           rel="nofollow"
         >
-          <LinkIcon class="h-4 w-4 sm:h-6 sm:w-6" />
-          <span class="text-sm font-semibold sm:text-base">Visit Website</span>
+          <LinkIcon class="h-4 w-4 sm:h-6 sm:w-6 lg:w-8 lg:h-8" />
+          <span class="text-sm font-semibold sm:text-base lg:text-lg">
+            Visit Website
+          </span>
         </a>
       </li>
 
@@ -67,10 +71,11 @@ const address = computed(() =>
           :href="'tel:' + eatery.phone"
           class="flex items-center space-x-3 transition hover:text-primary-dark"
         >
-          <DevicePhoneMobileIcon class="h-4 w-4 sm:h-6 sm:w-6" />
-          <span class="text-sm font-semibold sm:text-base">{{
-            eatery.phone
-          }}</span>
+          <DevicePhoneMobileIcon class="h-4 w-4 sm:h-6 sm:w-6 lg:w-8 lg:h-8" />
+          <span
+            class="text-sm font-semibold sm:text-base lg:text-lg"
+            v-text="eatery.phone"
+          />
         </a>
       </li>
     </ul>

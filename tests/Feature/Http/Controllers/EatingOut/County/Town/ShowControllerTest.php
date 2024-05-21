@@ -8,7 +8,7 @@ use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
-use App\Pipelines\EatingOut\GetEateriesPipeline;
+use App\Pipelines\EatingOut\GetEateries\GetEateriesPipeline;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Nova\Support\Actions\Media;
 
-use App\Pipelines\UploadTemporaryFilePipeline;
+use App\Pipelines\Shared\UploadTemporaryFile\UploadTemporaryFilePipeline;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Jpeters8889\AdvancedNovaMediaLibrary\Contracts\UploadMediaContract;

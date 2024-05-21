@@ -19,7 +19,7 @@ class TemporaryFileUploadFactory extends Factory
             'path' => '/',
             'source' => 'uploads',
             'filesize' => $this->faker->numberBetween(1, 1000),
-            'mime' => $this->faker->mimeType(),
+            'mime' => 'image/jpg',
             'delete_at' => Carbon::now()->addDay(),
         ];
     }

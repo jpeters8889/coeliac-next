@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\EatingOut\Browse\IndexController as BrowseIndexController;
 use App\Http\Controllers\Api\EatingOut\Browse\Search\StoreController as BrowseSearchStoreController;
+use App\Http\Controllers\Api\EatingOut\CheckRecommendedPlace\GetController as CheckRecommendedPlaceGetController;
 use App\Http\Controllers\Api\EatingOut\Details\ShowController as DetailsShowController;
 use App\Http\Controllers\Api\EatingOut\Features\IndexController as FeatureIndexController;
 use App\Http\Controllers\Api\EatingOut\ReviewImages\StoreController as ReviewImagesStoreController;
@@ -25,5 +26,7 @@ Route::get('features', FeatureIndexController::class)->name('api.wheretoeat.feat
 Route::get('browse', BrowseIndexController::class)->name('api.wheretoeat.browse');
 
 Route::post('browse/search', BrowseSearchStoreController::class)->name('api.wheretoeat.browse.search');
+
+Route::post('check-recommended-place', CheckRecommendedPlaceGetController::class)->name('api.wheretoeat.check-recommended-place');
 
 Route::get('{eatery}', DetailsShowController::class)->name('api.wheretoeat.get');

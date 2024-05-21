@@ -8,6 +8,7 @@ use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,7 @@ use Illuminate\Support\Stringable;
  * @mixin Model
  *
  * @property string $full_location
+ * @property string $short_location
  * @property null|string $slug
  * @property null|string|float $distance
  */
@@ -105,5 +107,42 @@ trait HasEateryDetails
                 $this->country->country,
             ]);
         });
+    }
+
+    /** @return Attribute<string | null, never> */
+    public function shortLocation(): Attribute
+    {
+        return Attribute::get(function () {
+            if ( ! $this->relationLoaded('town') || ! $this->relationLoaded('county') || ! $this->town || ! $this->county) {
+                return null;
+            }
+
+            if (Str::lower($this->town->town) === 'nationwide') {
+                return "{$this->name}, Nationwide";
+            }
+
+            return implode(', ', [
+                $this->town->town,
+                $this->county->county,
+            ]);
+        });
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeNationwide(Builder $query): Builder
+    {
+        return $query->where('county_id', 1);
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeNotNationwide(Builder $query): Builder
+    {
+        return $query->where('county_id', '!=', 1);
     }
 }

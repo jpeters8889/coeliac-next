@@ -25,47 +25,49 @@ const goToReview = () => {
 </script>
 
 <template>
-  <div
-    v-if="eatery.closed_down"
-    class="bg-red px-3 py-1 text-lg font-semibold text-white"
-  >
-    This eatery was unfortunately marked as closed down on
-    {{ formatDate(eatery.last_updated) }}.
-  </div>
+  <div class="flex flex-col space-y-3 lg:space-y-4 xl:space-y-5">
+    <div
+      v-if="eatery.closed_down"
+      class="bg-red px-3 py-1 text-lg font-semibold text-white"
+    >
+      This eatery was unfortunately marked as closed down on
+      {{ formatDate(eatery.last_updated) }}.
+    </div>
 
-  <EateryHeading :eatery="eatery" />
+    <EateryHeading :eatery="eatery" />
 
-  <EateryFeedbackLinks
-    v-if="!eatery.closed_down"
-    :eatery="eatery"
-    @go-to-review="goToReview()"
-  />
+    <EateryFeedbackLinks
+      v-if="!eatery.closed_down"
+      :eatery="eatery"
+      @go-to-review="goToReview()"
+    />
 
-  <EateryDescription :eatery="eatery" />
+    <EateryDescription :eatery="eatery" />
 
-  <EateryFeatures
-    v-if="eatery.features?.length > 0"
-    :name="eatery.name"
-    :features="eatery.features"
-  />
+    <EateryFeatures
+      v-if="eatery.features?.length > 0"
+      :name="eatery.name"
+      :features="eatery.features"
+    />
 
-  <EateryLocation
-    v-if="eatery.county.id !== 1 || eatery.branch"
-    :eatery="eatery"
-  />
+    <EateryLocation
+      v-if="eatery.county.id !== 1 || eatery.branch"
+      :eatery="eatery"
+    />
 
-  <EateryAdminReview
-    v-if="eatery.reviews.admin_review"
-    :eatery-name="eatery.name"
-    :review="eatery.reviews.admin_review"
-  />
+    <EateryAdminReview
+      v-if="eatery.reviews.admin_review"
+      :eatery-name="eatery.name"
+      :review="eatery.reviews.admin_review"
+    />
 
-  <EateryVisitorPhotos
-    v-if="eatery.reviews.images?.length > 0"
-    :eatery="eatery"
-  />
+    <EateryVisitorPhotos
+      v-if="eatery.reviews.images?.length > 0"
+      :eatery="eatery"
+    />
 
-  <div ref="reviewsElem">
-    <EateryVisitorReviews :eatery="eatery" />
+    <div ref="reviewsElem">
+      <EateryVisitorReviews :eatery="eatery" />
+    </div>
   </div>
 </template>

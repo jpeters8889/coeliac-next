@@ -9,7 +9,7 @@ use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EaterySearchTerm;
-use App\Pipelines\EatingOut\GetSearchResultsPipeline;
+use App\Pipelines\EatingOut\GetEateries\GetSearchResultsPipeline;
 use App\Services\EatingOut\LocationSearchService;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;

@@ -1,23 +1,19 @@
 <script lang="ts" setup>
 import { CheckboxProps, CheckboxPropsDefault } from '@/Components/Forms/Props';
-import { ref, watch } from 'vue';
 
 const props: CheckboxProps = withDefaults(
   defineProps<CheckboxProps>(),
   CheckboxPropsDefault,
 );
 
-const emits = defineEmits(['update:modelValue']);
-
-const value = ref(props.modelValue);
-
-watch(value, () => {
-  emits('update:modelValue', value.value);
-});
+const value = defineModel<boolean>();
 </script>
 
 <template>
-  <div class="relative flex items-center py-1 xmd:py-2">
+  <div
+    class="relative flex items-center py-1 xmd:py-2"
+    :class="{ 'flex-row-reverse': layout === 'left' }"
+  >
     <div
       :class="{ 'cursor-not-allowed': disabled }"
       class="min-w-0 flex-1"
@@ -27,18 +23,24 @@ watch(value, () => {
           'text-grey': !disabled,
           'text-grey-off': disabled,
           'font-semibold': value === true,
+          'text-primary-dark font-semibold': highlight,
         }"
         :for="name"
-        class="select-none text-sm text-gray-900 xmd:text-base"
+        class="select-none text-sm xmd:text-base"
         v-text="label"
       />
     </div>
-    <div class="ml-3 flex items-center">
+
+    <div
+      class="flex items-center"
+      :class="layout === 'right' ? 'ml-3' : 'mr-3'"
+    >
       <input
         :id="name"
         v-model="value"
         :disabled="disabled"
-        class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary xmd:h-5 xmd:w-5"
+        class="rounded border-gray-300 text-primary focus:ring-primary"
+        :class="props.xl ? 'h-6 w-6' : 'h-4 w-4 xmd:h-5 xmd:w-5'"
         type="checkbox"
       />
     </div>

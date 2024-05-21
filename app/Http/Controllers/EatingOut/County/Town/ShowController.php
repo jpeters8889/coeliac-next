@@ -8,7 +8,7 @@ use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
-use App\Pipelines\EatingOut\GetEateriesPipeline;
+use App\Pipelines\EatingOut\GetEateries\GetEateriesPipeline;
 use App\Resources\EatingOut\TownPageResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

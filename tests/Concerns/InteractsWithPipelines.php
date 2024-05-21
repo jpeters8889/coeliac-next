@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Concerns;
 
-use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use Closure;
 use Tests\TestCase;
 
@@ -27,7 +26,7 @@ trait InteractsWithPipelines
         $this
             ->partialMock($action)
             ->shouldReceive('handle')
-            ->andReturnUsing(function (GetEateriesPipelineData $data, Closure $next) use ($action) {
+            ->andReturnUsing(function ($data, Closure $next) use ($action) {
                 /** @var object{handle: Closure} $action */
                 $action = new $action();
 
@@ -41,9 +40,16 @@ trait InteractsWithPipelines
     /**
      * @param  class-string  $action
      */
-    protected function expectPipelineToRun(string $pipeline): self
+    protected function expectPipelineToRun(string $pipeline, mixed $return = null): self
     {
-        $this->partialMock($pipeline)->shouldReceive('run')->once();
+        $mock = $this->partialMock($pipeline)
+            ->shouldReceive('run');
+
+        if ($return) {
+            $mock->andReturn($return);
+        }
+
+        $mock->once();
 
         return $this;
     }

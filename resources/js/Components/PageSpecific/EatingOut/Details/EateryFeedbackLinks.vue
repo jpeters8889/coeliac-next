@@ -15,42 +15,44 @@ const showReportPlaceModal = ref(false);
 </script>
 
 <template>
-  <Card class="space-y-2">
-    <h3 class="text-lg font-semibold">Help us improve {{ eatery.name }}</h3>
+  <Card class="space-y-2 lg:p-8 lg:rounded-lg lg:space-y-4">
+    <h3 class="text-lg font-semibold lg:text-xl">
+      Help us improve {{ eatery.name }}
+    </h3>
 
-    <ul class="flex flex-wrap items-center gap-2">
+    <ul class="flex flex-wrap items-center gap-2 lg:gap-4">
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75"
+        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
       >
         <a
-          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
+          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"
           @click.prevent="$emit('goToReview')"
         >
-          <StarIcon class="h-4 w-4" />
+          <StarIcon class="h-4 w-4 lg:h-6 lg:w-6" />
           <span>Review</span>
         </a>
       </li>
 
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75"
+        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
       >
         <a
-          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
+          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"
           @click.prevent="showEditModal = true"
         >
-          <PencilIcon class="h-4 w-4" />
+          <PencilIcon class="h-4 w-4 lg:h-6 lg:w-6" />
           <span>Edit</span>
         </a>
       </li>
 
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75"
+        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
       >
         <a
-          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
+          class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"
           @click.prevent="showReportPlaceModal = true"
         >
-          <FlagIcon class="h-4 w-4" />
+          <FlagIcon class="h-4 w-4 lg:h-6 lg:w-6" />
           <span>Report</span>
         </a>
       </li>

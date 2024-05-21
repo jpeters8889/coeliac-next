@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Browse;
 
 use App\Models\EatingOut\Eatery;
-use App\Pipelines\EatingOut\BrowseEateriesPipeline;
+use App\Pipelines\EatingOut\GetEateries\BrowseEateriesPipeline;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
