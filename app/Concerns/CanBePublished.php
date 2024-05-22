@@ -20,7 +20,12 @@ trait CanBePublished
         $casts = [
             'publish_at' => 'datetime',
             'draft' => 'bool',
+            'live' => 'bool',
         ];
+
+        static::saved(function (self $model) use ($casts): void {
+            $model->mergeCasts($casts);
+        });
 
         static::retrieved(function (self $model) use ($casts): void {
             $model->mergeCasts($casts);

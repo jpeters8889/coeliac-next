@@ -21,19 +21,20 @@ class VisibilityPanel
         return new Panel('Visibility', [
             Boolean::make('Draft', 'draft')->filterable()
                 ->onlyOnForms()
-                ->dependsOn('live', function (Boolean $field, NovaRequest $request, FormData $formData): void {
+                ->default(true)
+                ->dependsOn(['live'], function (Boolean $field, NovaRequest $request, FormData $formData): void {
                     /** @phpstan-ignore-next-line */
                     if ($formData->live === true) {
-                        $field->hide();
+                        $field->setValue(false);
                     }
                 })
-                ->rules(['required_without_all:live,publish_at', 'prohibited_if:live:publish_at']),
+                ->rules(['required_without_all:live,publish_at', 'prohibited_if:live,publish_at']),
 
             Boolean::make('Published', 'live')
                 ->dependsOn('draft', function (Boolean $field, NovaRequest $request, FormData $formData): void {
                     /** @phpstan-ignore-next-line */
                     if ($formData->draft === true) {
-                        $field->hide();
+                        $field->setValue(false);
                     }
                 })
                 ->filterable()
@@ -41,12 +42,11 @@ class VisibilityPanel
 
             DateTime::make('Or Publish At', 'publish_at')
                 ->onlyOnForms()
-                ->hide()
-                ->default(fn () => Carbon::now()->addHour()->startOfHour())
+                ->default(fn () => Carbon::now()->addDay())
                 ->dependsOn(['live', 'draft'], function (DateTime $field, NovaRequest $request, FormData $formData): void {
                     /** @phpstan-ignore-next-line */
-                    if ($formData->live === false && $formData->draft === false) {
-                        $field->show();
+                    if ($formData->live || $formData->draft) {
+                        $field->hide();
                     }
                 })
                 ->rules(['required_without_all:live,draft', 'prohibited_if:live,draft']),

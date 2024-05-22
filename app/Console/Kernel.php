@@ -11,6 +11,7 @@ use App\Console\Commands\GetCountyLatLngCommand;
 use App\Console\Commands\GetTownLatLngCommand;
 use App\Console\Commands\MigrateImagesToMedia;
 use App\Console\Commands\PrepareShopReviewInvitationsCommand;
+use App\Console\Commands\PublishItemsCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
         CloseBasketsCommand::class,
         ApplyMassDiscountsCommand::class,
         PrepareShopReviewInvitationsCommand::class,
+        PublishItemsCommand::class,
     ];
 
     /**
@@ -34,5 +36,6 @@ class Kernel extends ConsoleKernel
         $schedule->command(CloseBasketsCommand::class)->everyMinute();
         $schedule->command(ApplyMassDiscountsCommand::class)->everyMinute();
         $schedule->command(PrepareShopReviewInvitationsCommand::class)->everyMinute();
+        $schedule->command(PublishItemsCommand::class)->everyMinute();
     }
 }
