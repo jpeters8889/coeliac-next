@@ -36,7 +36,7 @@ const styles = () => ({
       :class="mapClasses"
       :style="styles()"
       class="w-full"
-      @click.stop="openModal = true"
+      @click.stop="props.canExpand ? (openModal = true) : undefined"
     />
   </div>
 

@@ -82,7 +82,7 @@ const linkCards = [
 
     <img
       v-if="image"
-      :alt="`Gluten Free places to eat in ${name}`"
+      :alt="`Gluten Free search results for ${term}`"
       :src="image"
       class="mt-4 w-full shadow"
       loading="lazy"

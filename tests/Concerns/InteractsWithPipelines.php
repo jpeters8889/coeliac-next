@@ -37,13 +37,9 @@ trait InteractsWithPipelines
         return $this;
     }
 
-    /**
-     * @param  class-string  $action
-     */
     protected function expectPipelineToRun(string $pipeline, mixed $return = null): self
     {
-        $mock = $this->partialMock($pipeline)
-            ->shouldReceive('run');
+        $mock = $this->partialMock($pipeline)->shouldReceive('run');
 
         if ($return) {
             $mock->andReturn($return);

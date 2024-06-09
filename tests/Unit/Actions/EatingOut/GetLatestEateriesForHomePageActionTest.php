@@ -90,7 +90,9 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
     /** @test */
     public function itAlsoReturnsNationwideBranches(): void
     {
-        $this->build(NationwideBranch::class)->count(5)->create();
+        $this->build(NationwideBranch::class)->count(5)->create([
+            'wheretoeat_id' => $this->create(Eatery::class)->id,
+        ]);
 
         $this->callAction(GetLatestEateriesForHomepageAction::class)->each(function ($item): void {
             $this->assertInstanceOf(SimpleEateryResource::class, $item);

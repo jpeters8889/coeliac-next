@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Infrastructure\MailChannel;
+use App\Search\Eateries;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Notifications\Channels\MailChannel as IlluminateMailChannel;
@@ -30,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict( ! $this->app->runningInConsole());
 
         JsonResource::withoutWrapping();
+
+        Eateries::bootSearchable();
     }
 }

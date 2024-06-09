@@ -63,7 +63,11 @@ class ShowControllerTest extends TestCase
         $this->county = $this->create(EateryCounty::class);
         $town = $this->create(EateryTown::class, ['county_id' => $this->county->id]);
 
-        $this->create(NationwideBranch::class, ['town_id' => $town->id, 'county_id' => $this->county->id]);
+        $this->create(NationwideBranch::class, [
+            'wheretoeat_id' => $this->create(Eatery::class)->id,
+            'town_id' => $town->id,
+            'county_id' => $this->county->id,
+        ]);
 
         $this->assertEmpty($town->liveEateries);
         $this->assertCount(1, $town->liveBranches);

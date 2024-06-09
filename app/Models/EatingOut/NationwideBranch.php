@@ -6,6 +6,7 @@ namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
+use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
 use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,7 +18,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
-class NationwideBranch extends Model
+/**
+ * @property Eatery $eatery
+ */
+class NationwideBranch extends Model implements IsSearchable
 {
     use HasEateryDetails;
     use Searchable;
@@ -89,7 +93,7 @@ class NationwideBranch extends Model
         return '/' . implode('/', [
             'wheretoeat',
             'nationwide',
-            $this->eatery?->slug,
+            $this->eatery->slug,
             $this->slug,
         ]);
     }
@@ -110,11 +114,16 @@ class NationwideBranch extends Model
 
     public function toSearchableArray(): array
     {
+        $this->loadMissing(['town', 'county', 'country']);
+
+        $name = $this->name !== '' ? $this->name : $this->eatery->name;
+
         return $this->transform([
-            'title' => $this->relationLoaded('town') && $this->town ? $this->name . ', ' . $this->town->town : $this->name,
-            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town  && $this->county ? $this->town->town . ', ' . $this->county->county : '',
+            'title' => $this->relationLoaded('town') && $this->town ? $name . ', ' . $this->town->town : $name,
+            'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town && $this->county ? $this->town->town . ', ' . $this->county->county : '',
             'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
             'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
+            'info' => $this->eatery->info,
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -135,5 +144,14 @@ class NationwideBranch extends Model
             get: fn () => Arr::get($this->attributes, 'distance'),
             set: fn ($distance) => $this->attributes['distance'] = $distance,
         );
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    protected function makeAllSearchableUsing(Builder $query)
+    {
+        return $query->with(['town', 'county', 'country']);
     }
 }

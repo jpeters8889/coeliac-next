@@ -69,16 +69,20 @@ class IndexControllerTest extends TestCase
      */
     public function itCallsTheGetRecipeFiltersForIndexAction(string $relationship, string $name): void
     {
-        $this->expectAction(GetRecipeFiltersForIndexAction::class, [function ($class, $filters) use ($name): bool {
-            $this->assertContains($class, [RecipeFeature::class, RecipeMeal::class, RecipeAllergen::class]);
-            $this->assertArrayHasKey('features', $filters);
-            $this->assertArrayHasKey('meals', $filters);
-            $this->assertArrayHasKey('freeFrom', $filters);
+        $this->expectAction(
+            GetRecipeFiltersForIndexAction::class,
+            [function ($class, $filters) use ($name): bool {
+                $this->assertContains($class, [RecipeFeature::class, RecipeMeal::class, RecipeAllergen::class]);
+                $this->assertArrayHasKey('features', $filters);
+                $this->assertArrayHasKey('meals', $filters);
+                $this->assertArrayHasKey('freeFrom', $filters);
 
-            $this->assertContains('test', $filters[$name]);
+                $this->assertContains('test', $filters[$name]);
 
-            return true;
-        }]);
+                return true;
+            }],
+            false,
+        );
 
         $this->get(route('recipe.index', [$name => 'test']));
     }

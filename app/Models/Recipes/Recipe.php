@@ -10,6 +10,7 @@ use App\Concerns\DisplaysDates;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
 use App\Contracts\Comments\HasComments;
+use App\Contracts\Search\IsSearchable;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\SchemaOrg\Recipe as RecipeSchema;
@@ -31,7 +33,7 @@ use Spatie\SchemaOrg\Schema;
  * @property string $servings
  * @property string $portion_size
  */
-class Recipe extends Model implements Collectable, HasComments, HasMedia
+class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSearchable
 {
     use CanBeCollected;
     use CanBePublished;
@@ -42,6 +44,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
     use Imageable;
     use InteractsWithMedia;
     use LinkableModel;
+    use Searchable;
 
     protected static function booted(): void
     {
@@ -155,9 +158,9 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
             );
     }
 
-    /** @noinspection PhpParamsInspection */
-
-    /** @return HasOne<RecipeNutrition> */
+    /**
+     * @return HasOne<RecipeNutrition>
+     */
     public function nutrition(): HasOne
     {
         return $this->hasOne(RecipeNutrition::class)->latest();
@@ -251,5 +254,28 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia
 
             return $builder;
         });
+    }
+
+    public function toSearchableArray(): array
+    {
+        return $this->transform([
+            'title' => $this->title,
+            'description' => $this->description,
+            'ingredients' => $this->ingredients,
+            'metaTags' => $this->meta_tags,
+            'updated_at' => $this->updated_at,
+            'freefrom' => $this->allergens()->get()->transform(fn ($allergen) => $allergen->allergen)->join(', '),
+            'features' => $this->features()->get()->transform(fn ($feature) => $feature->feature)->join(', '),
+        ]);
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return (bool) $this->live;
+    }
+
+    public function getScoutKey(): mixed
+    {
+        return $this->id;
     }
 }

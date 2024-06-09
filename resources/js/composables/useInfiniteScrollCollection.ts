@@ -15,8 +15,10 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
     () => value().next_page_url !== null,
   );
 
+  const pause: Ref<boolean> = ref(false);
+
   const loadMoreItems = (): void => {
-    if (!canLoadMoreItems.value) {
+    if (pause.value || !canLoadMoreItems.value) {
       return;
     }
 
@@ -44,6 +46,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
 
   return {
     items,
+    pause,
     loadMoreItems,
     reset: (): void => {
       items.value = value().data;

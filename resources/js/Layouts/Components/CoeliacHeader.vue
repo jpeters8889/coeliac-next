@@ -10,10 +10,13 @@ import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
 import Sealic from '@/Svg/Sealic.vue';
 import { Link } from '@inertiajs/vue3';
 import { MetaProps } from '@/types/DefaultProps';
-import FormInput from '@/Components/Forms/FormInput.vue';
+import MobileSearch from '@/Layouts/Components/MobileSearch.vue';
+import DesktopSearch from '@/Layouts/Components/DesktopSearch.vue';
 
 defineProps<{ metas: MetaProps }>();
+
 const mobileNavOpen = ref(false);
+const mobileSearchOpen = ref(false);
 </script>
 
 <template>
@@ -60,27 +63,13 @@ const mobileNavOpen = ref(false);
           <div class="h-14 w-14 p-2 md:hidden">
             <div
               class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
+              @click="mobileSearchOpen = true"
             >
               <MagnifyingGlassIcon class="h-6 w-6" />
             </div>
           </div>
 
-          <div
-            class="mt-8 hidden items-center rounded-xl bg-white bg-opacity-50 pr-2 transition focus-within:bg-opacity-90 md:flex"
-          >
-            <FormInput
-              label=""
-              hide-label
-              type="search"
-              name="search"
-              model-value=""
-              :background="false"
-              placeholder="Search..."
-              class="flex-1"
-            />
-
-            <MagnifyingGlassIcon class="h-6 w-6" />
-          </div>
+          <DesktopSearch />
         </div>
       </div>
 
@@ -90,10 +79,15 @@ const mobileNavOpen = ref(false);
 
       <MainNav />
     </div>
-
-    <MobileNav
-      :open="mobileNavOpen"
-      @close="mobileNavOpen = false"
-    />
   </div>
+
+  <MobileNav
+    :open="mobileNavOpen"
+    @close="mobileNavOpen = false"
+  />
+
+  <MobileSearch
+    :open="mobileSearchOpen"
+    @close="mobileSearchOpen = false"
+  />
 </template>

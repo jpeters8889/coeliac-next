@@ -14,8 +14,6 @@ class AppendDistanceToBranchesTest extends GetEateriesTestCase
         $hydratedEateries = $this->callHydrateBranchesAction();
         $eateriesWithDistance = $this->callAppendDistanceToBranchesMethod($hydratedEateries->eateries, $hydratedEateries->hydratedBranches);
 
-        $this->assertTrue(true);
-
         $eateriesWithDistance->hydratedBranches->each(function (NationwideBranch $branch): void {
             $this->assertNotNull($branch->distance);
             $this->assertIsFloat($branch->distance);

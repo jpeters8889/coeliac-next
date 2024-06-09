@@ -6,6 +6,7 @@ namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
+use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
 use App\Scopes\LiveScope;
 use App\Support\Helpers;
@@ -31,7 +32,7 @@ use Laravel\Scout\Searchable;
  * @property int | null $rating_count
  * @property string $full_name
  */
-class Eatery extends Model
+class Eatery extends Model implements IsSearchable
 {
     use HasEateryDetails;
     use Searchable;
@@ -377,11 +378,14 @@ class Eatery extends Model
 
     public function toSearchableArray(): array
     {
+        $this->loadMissing(['town', 'county', 'country']);
+
         return $this->transform([
             'title' => $this->relationLoaded('town') && $this->town ? $this->name . ', ' . $this->town->town : $this->name,
             'location' => $this->relationLoaded('town') && $this->town && $this->relationLoaded('county') && $this->county ? $this->town->town . ', ' . $this->county->county : '',
             'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
             'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
+            'info' => $this->info,
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -392,7 +396,7 @@ class Eatery extends Model
 
     public function shouldBeSearchable(): bool
     {
-        return $this->live && ! $this->closed_down;
+        return $this->county?->county !== 'Nationwide' && $this->live && ! $this->closed_down;
     }
 
     /** @return Attribute<float | null, callable(float): void> */
@@ -402,5 +406,14 @@ class Eatery extends Model
             get: fn () => Arr::get($this->attributes, 'distance'),
             set: fn ($distance) => $this->attributes['distance'] = $distance,
         );
+    }
+
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with(['town', 'county', 'country']);
     }
 }

@@ -22,6 +22,11 @@ class Helpers
         return round($miles * 1609.344);
     }
 
+    public static function metersToMiles(float $meters): float
+    {
+        return $meters / 1609.344;
+    }
+
     public static function formatMoney(Money $money): string
     {
         $numberFormatter = new NumberFormatter('en_GB', NumberFormatter::CURRENCY);

@@ -18,4 +18,6 @@ export default (
   });
 
   onUnmounted(() => observer.disconnect());
+
+  return { observer };
 };

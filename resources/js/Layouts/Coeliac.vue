@@ -19,7 +19,7 @@ const isShop = computed(
 </script>
 
 <template>
-  <body class="relative flex min-h-screen flex-col bg-gray-100">
+  <div class="relative flex min-h-screen flex-col bg-gray-100">
     <CoeliacHeader :metas="meta" />
 
     <ShopBasketHeader v-if="isShop" />
@@ -33,5 +33,5 @@ const isShop = computed(
     <CoeliacFooter />
 
     <ShopFooterCta v-if="isShop" />
-  </body>
+  </div>
 </template>

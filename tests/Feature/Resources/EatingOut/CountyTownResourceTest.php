@@ -9,21 +9,25 @@ use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use App\Resources\EatingOut\CountyTownResource;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CountyTownResourceTest extends TestCase
 {
+    protected Eatery $eatery;
+
     protected EateryTown $town;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->seed(EateryScaffoldingSeeder::class);
 
         $this->town = EateryTown::query()->withoutGlobalScopes()->first();
 
-        $this->create(Eatery::class);
+        $this->eatery = $this->create(Eatery::class);
 
         Storage::fake('media');
     }
@@ -61,11 +65,16 @@ class CountyTownResourceTest extends TestCase
     /** @test */
     public function itIncludesNationwideBranchesWithTheNumberOfLiveEateries(): void
     {
-        $this->build(Eatery::class)->count(4)->create();
+        $eateries = $this->build(Eatery::class)->count(4)->create();
         $this->build(Eatery::class)->notLive()->create();
 
-        app('db')->enableQueryLog();
-        $this->build(NationwideBranch::class)->count(5)->create();
+        $this->build(NationwideBranch::class)
+            ->count(5)
+            ->sequence(fn (Sequence $sequence) => [
+                'wheretoeat_id' => $eateries[$sequence->index]->id ?? $this->eatery->id,
+            ])
+            ->create();
+
         $this->build(NationwideBranch::class)->notLive()->create();
 
         $resource = (new CountyTownResource($this->town))->toArray(request());

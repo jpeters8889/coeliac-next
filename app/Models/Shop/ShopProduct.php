@@ -6,6 +6,8 @@ namespace App\Models\Shop;
 
 use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
+use App\Contracts\Search\IsSearchable;
+use App\Enums\Shop\OrderState;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Support\Helpers;
@@ -28,7 +30,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property float $averageRating
  * @property array{current_price: string, old_price?: string} $price
  */
-class ShopProduct extends Model implements HasMedia
+class ShopProduct extends Model implements HasMedia, IsSearchable
 {
     use DisplaysMedia;
     use HasLegacyImage;
@@ -164,6 +166,10 @@ class ShopProduct extends Model implements HasMedia
             'title' => $this->title,
             'description' => $this->description,
             'metaTags' => $this->meta_keywords,
+            'totalSales' => ShopOrderItem::query()
+                ->where('product_id', $this->id)
+                ->whereRelation('order', 'state_id', OrderState::SHIPPED)
+                ->sum('quantity'),
         ]);
     }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NavItem from '@/Layouts/Components/Nav/NavItem.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import eventBus from '@/eventBus';
 
 const isSticky = ref(false);
 
@@ -18,6 +19,10 @@ onMounted(() => {
       },
     ).observe(document.getElementById('header'));
   }
+});
+
+watch(isSticky, () => {
+  eventBus.$emit(isSticky.value ? 'sticky-nav-on' : 'sticky-nav-off');
 });
 </script>
 
