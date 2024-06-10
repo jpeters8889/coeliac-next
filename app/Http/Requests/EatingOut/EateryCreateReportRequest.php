@@ -12,6 +12,7 @@ class EateryCreateReportRequest extends FormRequest
     {
         return [
             'details' => ['required', 'string'],
+            'branch_id' => ['nullable', 'bail', 'numeric', 'exists:wheretoeat_nationwide_branches,id'],
         ];
     }
 }

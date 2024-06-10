@@ -56,7 +56,7 @@ class NationwideEateries extends Resource
 
             Boolean::make('Live'),
 
-            new Panel('Contact Details', [
+            Panel::make('Contact Details', [
                 Text::make('Phone Number', 'phone')->fullWidth()->nullable()->rules(['max:50'])->onlyOnForms(),
 
                 URL::make('Website')->fullWidth()->nullable()->rules(['max:255'])->onlyOnForms(),
@@ -64,7 +64,7 @@ class NationwideEateries extends Resource
                 URL::make('GF Menu Link')->fullWidth()->nullable()->rules(['max:255'])->onlyOnForms(),
             ]),
 
-            new Panel('Details', [
+            ...$request->viaRelationship() === false ? [Panel::make('Details', [
                 Hidden::make('Type', 'type_id')->default(1),
 
                 Select::make('Venue Type', 'venue_type_id')
@@ -85,13 +85,15 @@ class NationwideEateries extends Resource
                     ->alwaysShow()
                     ->rules(['required'])
                     ->fullWidth(),
-            ]),
+            ])] : [],
 
-            new Panel('Features', [
+            Panel::make('Features', [
                 PolymorphicPanel::make('Features', new EateryFeaturesPolymorphicPanel())->display('row'),
             ]),
 
             HasMany::make('Branches', 'nationwideBranches', NationwideBranches::class),
+
+            HasMany::make('Reports', resource: PlaceReports::class),
         ];
     }
 

@@ -14,9 +14,11 @@ use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
 use Jpeters8889\AddressField\AddressField;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -35,6 +37,11 @@ class NationwideBranches extends Resource
 
     public static $perPageViaRelationship = 25;
 
+    public function authorizedToView(Request $request)
+    {
+        return true;
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
@@ -43,12 +50,17 @@ class NationwideBranches extends Resource
             Text::make('Name', 'name')->fullWidth()->rules(['max:200'])->sortable(),
 
             Text::make('Location', 'full_location')
+                ->displayUsing(function ($bar, $branch) {
+                    $branch->loadMissing(['town', 'county', 'country']);
+
+                    return $branch->full_location;
+                })
                 ->fullWidth()
                 ->exceptOnForms(),
 
             Boolean::make('Live'),
 
-            Panel::make('Location', [
+            ...$request->viaRelationship() === false ? [Panel::make('Location', [
                 BelongsTo::make('Town', resource: Towns::class)
                     ->onlyOnForms()
                     ->fullWidth()
@@ -93,7 +105,9 @@ class NationwideBranches extends Resource
                     ->required()
                     ->latitudeField('lat')
                     ->longitudeField('lng'),
-            ]),
+            ])] : [],
+            
+            HasMany::make('Reports', resource: PlaceReports::class),
         ];
     }
 

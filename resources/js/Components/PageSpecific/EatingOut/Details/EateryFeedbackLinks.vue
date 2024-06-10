@@ -6,18 +6,26 @@ import EaterySuggestEditsModal from '@/Components/PageSpecific/EatingOut/Details
 import { ref } from 'vue';
 import ReportEateryModal from '@/Components/PageSpecific/EatingOut/Details/Modals/ReportEateryModal.vue';
 
-defineProps<{ eatery: DetailedEatery }>();
+const props = defineProps<{ eatery: DetailedEatery }>();
 
 defineEmits(['goToReview']);
 
 const showEditModal = ref(false);
 const showReportPlaceModal = ref(false);
+
+const eateryName = (): string => {
+  if (props.eatery.branch && props.eatery.branch.name) {
+    return `${props.eatery.branch.name} - ${props.eatery.name}`;
+  }
+
+  return props.eatery.name;
+};
 </script>
 
 <template>
   <Card class="space-y-2 lg:p-8 lg:rounded-lg lg:space-y-4">
     <h3 class="text-lg font-semibold lg:text-xl">
-      Help us improve {{ eatery.name }}
+      Help us improve {{ eateryName() }}
     </h3>
 
     <ul class="flex flex-wrap items-center gap-2 lg:gap-4">
@@ -60,7 +68,7 @@ const showReportPlaceModal = ref(false);
   </Card>
 
   <EaterySuggestEditsModal
-    :eatery-name="eatery.name"
+    :eatery-name="eateryName()"
     :eatery-id="eatery.id"
     :show="showEditModal"
     @close="showEditModal = false"
@@ -71,8 +79,9 @@ const showReportPlaceModal = ref(false);
   />
 
   <ReportEateryModal
-    :eatery-name="eatery.name"
+    :eatery-name="eateryName()"
     :eatery-id="eatery.id"
+    :branch-id="eatery.branch?.id"
     :show="showReportPlaceModal"
     @close="showReportPlaceModal = false"
   />

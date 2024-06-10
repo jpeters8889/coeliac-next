@@ -115,6 +115,7 @@ export type EateryLocation = LatLng & {
 };
 
 export type EateryNationwideBranch = {
+  id: number;
   name?: string;
   location: EateryLocation;
   link: string;

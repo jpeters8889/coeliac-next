@@ -9,9 +9,9 @@ import EateryVisitorReviews from '@/Components/PageSpecific/EatingOut/Details/Ea
 import EateryFeedbackLinks from '@/Components/PageSpecific/EatingOut/Details/EateryFeedbackLinks.vue';
 import { Ref, ref } from 'vue';
 import EateryFeatures from '@/Components/PageSpecific/EatingOut/Details/EateryFeatures.vue';
-import { formatDate } from '../../helpers';
+import { formatDate } from '@/helpers';
 
-defineProps<{
+const props = defineProps<{
   eatery: DetailedEatery;
 }>();
 
@@ -21,6 +21,14 @@ const goToReview = () => {
   reviewsElem.value.scrollIntoView({
     behavior: 'smooth',
   });
+};
+
+const eateryName = (): string => {
+  if (props.eatery.branch && props.eatery.branch.name) {
+    return `${props.eatery.branch.name} - ${props.eatery.name}`;
+  }
+
+  return props.eatery.name;
 };
 </script>
 
@@ -45,8 +53,8 @@ const goToReview = () => {
     <EateryDescription :eatery="eatery" />
 
     <EateryFeatures
-      v-if="eatery.features?.length > 0"
-      :name="eatery.name"
+      v-if="eatery.features && eatery.features.length > 0"
+      :name="eateryName()"
       :features="eatery.features"
     />
 
@@ -57,7 +65,7 @@ const goToReview = () => {
 
     <EateryAdminReview
       v-if="eatery.reviews.admin_review"
-      :eatery-name="eatery.name"
+      :eatery-name="eateryName()"
       :review="eatery.reviews.admin_review"
     />
 

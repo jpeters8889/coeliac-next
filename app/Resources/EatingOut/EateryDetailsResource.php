@@ -132,6 +132,7 @@ class EateryDetailsResource extends JsonResource
                 'days' => $eateryOpeningTimes->opening_times_array,
             ] : null,
             'branch' => $branch ? [
+                'id' => $branch->id,
                 'name' => $branch->name,
                 'county' => [
                     'id' => $branch->county_id,

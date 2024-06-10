@@ -234,7 +234,7 @@ const clusterStyle = (feature: FeatureLike) => {
 
 const zoomLimit = (): number => {
   if (screenIsGreaterThanOrEqualTo('2xl')) {
-    return 5;
+    return 8;
   }
 
   if (screenIsGreaterThanOrEqualTo('lg')) {
@@ -247,6 +247,7 @@ const zoomLimit = (): number => {
 const createMaMarkerLayer = (
   markers: Feature[],
 ): VectorLayer<VectorSource> | VectorLayer<Cluster> => {
+  console.log({ zoom: getZoom(), limit: zoomLimit() });
   if (getZoom() < zoomLimit()) {
     return new VectorLayer({
       properties: {

@@ -20,7 +20,11 @@ class StoreController
         Eatery $eatery,
         CreateEateryReportAction $createEateryReportAction,
     ): RedirectResponse {
-        $createEateryReportAction->handle($eatery, $request->string('details')->toString());
+        $createEateryReportAction->handle(
+            $eatery,
+            $request->string('details')->toString(),
+            $request->has('branch_id') ? $request->integer('branch_id') : null,
+        );
 
         return redirect()->back();
     }

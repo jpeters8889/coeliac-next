@@ -28,6 +28,14 @@ const iconName = computed((): string => {
 
 const averageRating = (): StarRatingType =>
   parseFloat(props.eatery.reviews.average) as StarRatingType;
+
+const eateryName = (): string => {
+  if (props.eatery.branch && props.eatery.branch.name) {
+    return `${props.eatery.branch.name} - ${props.eatery.name}`;
+  }
+
+  return props.eatery.name;
+};
 </script>
 
 <template>
@@ -35,7 +43,7 @@ const averageRating = (): StarRatingType =>
     <div class="flex items-center justify-between space-x-2">
       <h1
         class="font-coeliac text-3xl font-semibold leading-tight lg:mb-2 lg:text-5xl"
-        v-text="eatery.name"
+        v-text="eateryName()"
       />
 
       <div class="w-10 pr-2 pt-2 text-primary">

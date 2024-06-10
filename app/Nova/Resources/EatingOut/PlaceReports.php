@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -24,7 +25,7 @@ class PlaceReports extends Resource
 {
     public static $model = EateryReport::class;
 
-    public static $clickAction = 'preview';
+    public static $clickAction = 'view';
 
     public static $tableStyle = 'tight';
 
@@ -49,13 +50,30 @@ class PlaceReports extends Resource
             ID::make()->hide(),
 
             BelongsTo::make('Eatery', resource: Eateries::class)
-                ->showOnPreview()
+                ->hideFromIndex(fn ($foo, EateryReport $report) => $report->eatery->county_id === 1)
+                ->hideFromDetail(fn ($foo, EateryReport $report) => $report->eatery->county_id === 1)
                 ->displayUsing(fn (Eateries $eatery) => $eatery->resource->load(['town' => fn (Relation $builder) => $builder->withoutGlobalScopes(), 'county', 'country'])->full_name),
+
+            BelongsTo::make('Eatery', resource: NationwideEateries::class)
+                ->hideFromIndex(fn ($foo, EateryReport $report) => $report->eatery->county_id !== 1)
+                ->hideFromDetail(fn ($foo, EateryReport $report) => $report->eatery->county_id !== 1)
+                ->displayUsing(fn (NationwideEateries $eatery) => $eatery->resource->load(['town' => fn (Relation $builder) => $builder->withoutGlobalScopes(), 'county', 'country'])->full_name),
 
             Text::make('Details')
                 ->showOnPreview()
                 ->displayUsing(fn (string $details) => Str::wordWrap($details, 100, '<br />'))
                 ->asHtml(),
+
+            HasOne::make('Eatery', resource: Eateries::class)
+                ->hideFromIndex(fn ($foo, EateryReport $report) => $report->eatery->county_id === 1)
+                ->hideFromDetail(fn ($foo, EateryReport $report) => $report->eatery->county_id === 1),
+
+            HasOne::make('Eatery', 'eatery', resource: NationwideEateries::class)
+                ->hideFromIndex(fn ($foo, EateryReport $report) => $report->eatery->county_id !== 1)
+                ->hideFromDetail(fn ($foo, EateryReport $report) => $report->eatery->county_id !== 1),
+
+            HasOne::make('Branch', 'branch', resource: NationwideBranches::class)
+                ->showOnDetail(fn ($foo, EateryReport $report) => $report->branch_id !== null),
 
             Boolean::make('Completed')->showOnPreview(),
 
@@ -76,10 +94,11 @@ class PlaceReports extends Resource
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->withoutGlobalScopes()
-//            ->with([
-//                'eatery' => fn (Relation $builder) => $builder->withoutGlobalScopes(),
-//                'eatery.town' => fn (Relation $builder) => $builder->withoutGlobalScopes(),
-//            ])
-            ->reorder('completed')->orderByDesc('created_at');
+            ->with([
+                'eatery' => fn (Relation $builder) => $builder->withoutGlobalScopes()->with(['town', 'county', 'country']),
+                'branch' => fn (Relation $builder) => $builder->withoutGlobalScopes()->with(['town', 'county', 'country']),
+            ])
+            ->reorder('completed')
+            ->orderByDesc('created_at');
     }
 }

@@ -18,4 +18,10 @@ class EateryReport extends Model
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');
     }
+
+    /** @return BelongsTo<NationwideBranch, EateryReport> */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(NationwideBranch::class, 'branch_id');
+    }
 }

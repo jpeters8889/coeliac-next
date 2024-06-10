@@ -56,20 +56,7 @@ class Eateries extends Resource
 
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make('id')->hide(),
-
-            Text::make('Name', 'name')
-                ->fullWidth()
-                ->rules(['required', 'max:200'])
-                ->sortable(),
-
-            Text::make('Location', 'full_location')
-                ->fullWidth()
-                ->onlyOnIndex(),
-
-            Text::make('Reviews', 'reviews_count')->fullWidth()->onlyOnIndex()->sortable()->filterable(),
-
+        $detailsFields = [
             Panel::make('Location', [
                 BelongsTo::make('Town', resource: Towns::class)
                     ->searchable()
@@ -118,7 +105,7 @@ class Eateries extends Resource
                     ->longitudeField('lng'),
             ]),
 
-            new Panel('Contact Details', [
+            Panel::make('Contact Details', [
                 Text::make('Phone Number', 'phone')->fullWidth()->nullable()->rules(['max:50'])->hideFromIndex(),
 
                 URL::make('Website')->fullWidth()->nullable()->rules(['max:255'])->hideFromIndex(),
@@ -126,7 +113,7 @@ class Eateries extends Resource
                 URL::make('GF Menu Link')->fullWidth()->nullable()->rules(['max:255'])->hideFromIndex(),
             ]),
 
-            new Panel('Details', [
+            Panel::make('Details', [
                 Select::make('Type', 'type_id')
                     ->displayUsingLabels()
                     ->fullWidth()
@@ -181,8 +168,30 @@ class Eateries extends Resource
                         return $field;
                     }),
             ]),
+        ];
 
-            new Panel('Features', [
+        return [
+            ID::make('id')->hide(),
+
+            Text::make('Name', 'name')
+                ->fullWidth()
+                ->rules(['required', 'max:200'])
+                ->sortable(),
+
+            Text::make('Location', 'full_location')
+                ->displayUsing(function ($bar, $branch) {
+                    $branch->loadMissing(['town', 'county', 'country']);
+
+                    return $branch->full_location;
+                })
+                ->fullWidth()
+                ->exceptOnForms(),
+
+            Text::make('Reviews', 'reviews_count')->fullWidth()->onlyOnIndex()->sortable()->filterable(),
+
+            ...$request->viaRelationship() === false ? $detailsFields : [],
+
+            Panel::make('Features', [
                 PolymorphicPanel::make('Features', new EateryFeaturesPolymorphicPanel())->display('row'),
             ]),
 

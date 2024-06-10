@@ -33,6 +33,8 @@ class GetController
         }
 
         if ($request->routeIs('eating-out.nationwide.show.branch')) {
+            abort_if($nationwideBranch->eatery->isNot($eatery), Response::HTTP_NOT_FOUND);
+
             $nationwideBranch->load(['county', 'town']);
 
             $eatery->setRelation('branch', $nationwideBranch);

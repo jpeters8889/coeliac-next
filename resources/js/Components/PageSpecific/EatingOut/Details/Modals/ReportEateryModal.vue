@@ -8,9 +8,10 @@ import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 import useUrl from '@/composables/useUrl';
 import { InertiaForm } from '@/types/Core';
 
-defineProps<{
+const props = defineProps<{
   eateryName: string;
   eateryId: number;
+  branchId?: number;
   show: boolean;
 }>();
 
@@ -22,7 +23,8 @@ const { generateUrl } = useUrl();
 
 const form = useForm('post', generateUrl('report'), {
   details: '',
-}) as InertiaForm<{ details: string }>;
+  branch_id: props.branchId,
+}) as InertiaForm<{ details: string; branch_id?: number }>;
 
 const close = () => {
   emits('close');
@@ -60,9 +62,9 @@ const submitForm = () => {
         </div>
 
         <p class="md:prose-md prose mb-2 max-w-none text-center">
-          Thank you for your report about <strong>{{ eateryName }}</strong
-          >, we'll check it out, and if the eatery no longer qualifies, we'll
-          remove it from our website!
+          Thank you for your report about <strong v-text="eateryName" />, we'll
+          check it out, and if the eatery no longer qualifies, we'll remove it
+          from our website!
         </p>
 
         <div class="mt-4 flex-1 text-center">

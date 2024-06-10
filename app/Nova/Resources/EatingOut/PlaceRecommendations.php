@@ -90,7 +90,7 @@ class PlaceRecommendations extends Resource
     {
         return $query->where('email', '!=', 'contact@coeliacsanctuary.co.uk')
             ->reorder('completed')
-            ->orderBy('created_at');
+            ->orderByDesc('created_at');
     }
 
     protected function getVenueTypes($typeId = null): array

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -153,5 +154,11 @@ class NationwideBranch extends Model implements IsSearchable
     protected function makeAllSearchableUsing(Builder $query)
     {
         return $query->with(['town', 'county', 'country']);
+    }
+
+    /** @return HasMany<EateryReport> */
+    public function reports(): HasMany
+    {
+        return $this->hasMany(EateryReport::class, 'branch_id');
     }
 }
