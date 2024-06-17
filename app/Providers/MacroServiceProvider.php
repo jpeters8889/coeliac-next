@@ -13,6 +13,35 @@ class MacroServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        Arr::macro('getAsInt', function (array $array, string $key, int $default = 0): int {
+            /** @var int | null $get */
+            $get = Arr::get($array, $key, $default);
+
+            if ( ! $get) {
+                $get = $default;
+            }
+
+            return $get;
+        });
+
+        Arr::macro('getAsString', function (array $array, string $key, string $default = ''): string {
+            /** @var string | null $get */
+            $get = Arr::get($array, $key, $default);
+
+            if ( ! $get) {
+                $get = $default;
+            }
+
+            return $get;
+        });
+
+        Arr::macro('getAsNullableString', function (array $array, string $key, ?string $default = null): string | null {
+            /** @var string | null $get */
+            $get = Arr::get($array, $key, $default);
+
+            return $get;
+        });
+
         Arr::macro('average', function (?array $values) {
             if ( ! $values) {
                 return null;

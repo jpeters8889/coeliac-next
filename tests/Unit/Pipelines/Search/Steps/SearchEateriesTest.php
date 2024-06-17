@@ -11,6 +11,7 @@ use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
 use App\Pipelines\Search\Steps\SearchEateries;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Spatie\Geocoder\Facades\Geocoder;
 use Tests\TestCase;
 
 class SearchEateriesTest extends TestCase
@@ -68,6 +69,55 @@ class SearchEateriesTest extends TestCase
             $this->assertNotEmpty($data->results->eateries);
             $this->assertEquals($eatery->id, $data->results->eateries->first()->id);
         };
+
+        app(SearchEateries::class)->handle($pipelineData, $closure);
+    }
+
+    /** @test */
+    public function itPerformsAGeocodeSearchOnTheSearchTerm(): void
+    {
+        $searchParams = new SearchParameters(
+            term: 'foo',
+            eateries: true,
+        );
+
+        $pipelineData = new SearchPipelineData(
+            $searchParams,
+            new SearchResultsCollection(),
+        );
+
+        $closure = function (): void {
+            //
+        };
+
+        Geocoder::shouldReceive('getCoordinatesForAddress')
+            ->withArgs(fn ($term) => $term === 'foo')
+            ->once();
+
+        app(SearchEateries::class)->handle($pipelineData, $closure);
+    }
+
+    /** @test */
+    public function itPerformsAGeocodeSearchOnTheLocationIfPassedIn(): void
+    {
+        $searchParams = new SearchParameters(
+            term: 'foo',
+            eateries: true,
+            locationSearch: 'bar',
+        );
+
+        $pipelineData = new SearchPipelineData(
+            $searchParams,
+            new SearchResultsCollection(),
+        );
+
+        $closure = function (): void {
+            //
+        };
+
+        Geocoder::shouldReceive('getCoordinatesForAddress')
+            ->withArgs(fn ($term) => $term === 'bar')
+            ->once();
 
         app(SearchEateries::class)->handle($pipelineData, $closure);
     }

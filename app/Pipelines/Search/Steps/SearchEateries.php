@@ -29,28 +29,16 @@ class SearchEateries
                 ->take(100)
                 ->get();
 
-            $geocoder = Geocoder::getCoordinatesForAddress($searchPipelineData->parameters->term);
-
             $geoResults = collect();
 
-            if ($geocoder['accuracy'] !== 'result_not_found') {
-                /** @var Collection<int, Eatery|NationwideBranch> $geoResults */
-                $geoResults = Eateries::search()
-                    ->with([
-                        'getRankingInfo' => true,
-                        'aroundLatLng' => implode(', ', [$geocoder['lat'], $geocoder['lng']]),
-                        'aroundRadius' => Helpers::milesToMeters(5),
-                    ])
-                    ->take(100)
-                    ->get();
+            $geocoder = Geocoder::getCoordinatesForAddress($searchPipelineData->parameters->locationSearch ?: $searchPipelineData->parameters->term);
 
-                $geoResults = $geoResults->map(function (Eatery|NationwideBranch $eatery) {
-                    $eatery->setAttribute('_resDistance', Arr::get($eatery->scoutMetadata(), '_rankingInfo.geoDistance', 0));
-
-                    return $eatery;
-                });
+            if ($geocoder && Arr::get($geocoder, 'accuracy') !== 'result_not_found') {
+                $geoResults = $this->performGeoSearch(implode(', ', [$geocoder['lat'], $geocoder['lng']]));
 
                 SearchState::$hasGeoSearched = true;
+            } elseif ($searchPipelineData->parameters->userLocation) {
+                $geoResults = $this->performGeoSearch(implode(',', $searchPipelineData->parameters->userLocation));
             }
 
             $baseResults = $baseResults->map(function (Eatery|NationwideBranch $eatery) use ($geoResults) {
@@ -77,5 +65,25 @@ class SearchEateries
         }
 
         return $next($searchPipelineData);
+    }
+
+    /** @return Collection<int, Eatery|NationwideBranch>  */
+    protected function performGeoSearch(string $latLng): Collection
+    {
+        /** @var Collection<int, Eatery|NationwideBranch> $geoResults */
+        $geoResults = Eateries::search()
+            ->with([
+                'getRankingInfo' => true,
+                'aroundLatLng' => $latLng,
+                'aroundRadius' => Helpers::milesToMeters(5),
+            ])
+            ->take(100)
+            ->get();
+
+        return $geoResults->map(function (Eatery|NationwideBranch $eatery): Eatery|NationwideBranch {
+            $eatery->setAttribute('_resDistance', Arr::get($eatery->scoutMetadata(), '_rankingInfo.geoDistance', 0));
+
+            return $eatery;
+        });
     }
 }

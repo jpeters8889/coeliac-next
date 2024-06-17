@@ -106,7 +106,7 @@ class NationwideBranches extends Resource
                     ->latitudeField('lat')
                     ->longitudeField('lng'),
             ])] : [],
-            
+
             HasMany::make('Reports', resource: PlaceReports::class),
         ];
     }

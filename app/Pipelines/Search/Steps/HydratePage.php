@@ -20,7 +20,7 @@ class HydratePage
     protected array $relations = [
         Blog::class => ['media'],
         Recipe::class => ['media'],
-        Eatery::class => ['country', 'county', 'town'],
+        Eatery::class => ['country', 'county', 'town', 'restaurants'],
         NationwideBranch::class => ['eatery', 'country', 'county', 'town'],
         ShopProduct::class => ['variants', 'prices'],
     ];

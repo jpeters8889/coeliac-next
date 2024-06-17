@@ -9,13 +9,17 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
 
   const items: Ref<T[]> = ref(value().data) as Ref<T[]>;
 
-  const initialUrl = usePage().url;
+  const initialUrl = ref(usePage().url);
 
   const canLoadMoreItems: ComputedRef<boolean> = computed(
     () => value().next_page_url !== null,
   );
 
   const pause: Ref<boolean> = ref(false);
+
+  const refreshUrl = (url: string) => {
+    initialUrl.value = url;
+  };
 
   const loadMoreItems = (): void => {
     if (pause.value || !canLoadMoreItems.value) {
@@ -30,7 +34,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
         preserveScroll: true,
         replace: true,
         onSuccess: () => {
-          window.history.replaceState(null, '', initialUrl);
+          window.history.replaceState(null, '', initialUrl.value);
 
           items.value = [...items.value, ...value().data];
         },
@@ -47,6 +51,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   return {
     items,
     pause,
+    refreshUrl,
     loadMoreItems,
     reset: (): void => {
       items.value = value().data;

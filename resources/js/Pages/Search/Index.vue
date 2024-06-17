@@ -10,7 +10,7 @@ import {
   SearchResult,
 } from '@/types/Search';
 import { PaginatedResponse } from '@/types/GenericTypes';
-import { Ref, ref, watch } from 'vue';
+import { nextTick, onMounted, Ref, ref, watch } from 'vue';
 import { watchDebounced } from '@vueuse/core';
 import Loader from '@/Components/Loader.vue';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
@@ -19,20 +19,47 @@ import StaticMap from '@/Components/Maps/StaticMap.vue';
 import { pluralise } from '@/helpers';
 import eventBus from '@/eventBus';
 import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
-import { Router } from '@inertiajs/core';
 
 const props = defineProps<{
   parameters: SearchParams;
+  location: string;
   results: PaginatedResponse<SearchResult>;
   hasEatery: boolean;
+  aiAssisted: boolean;
 }>();
+
+const formParamsToSearchParams = (): URLSearchParams => {
+  return new URLSearchParams({
+    q: props.parameters.q,
+    blogs: props.parameters.blogs ? 'true' : 'false',
+    recipes: props.parameters.recipes ? 'true' : 'false',
+    eateries: props.parameters.eateries ? 'true' : 'false',
+    shop: props.parameters.shop ? 'true' : 'false',
+  });
+};
 
 const landmark: Ref<Element> = ref();
 
-const { items, pause, reset } = useInfiniteScrollCollection<SearchResult>(
-  'results',
-  landmark,
-);
+const { items, pause, reset, refreshUrl } =
+  useInfiniteScrollCollection<SearchResult>('results', landmark);
+
+onMounted(() => {
+  pause.value = true;
+
+  if (props.aiAssisted) {
+    const url = new URL(window.location.href);
+    url.search = formParamsToSearchParams().toString();
+
+    nextTick(() => {
+      history.pushState(null, '', url.toString());
+      refreshUrl(url.pathname + url.search);
+    });
+  }
+
+  nextTick(() => {
+    pause.value = false;
+  });
+});
 
 const { hasError, searchForm, submitSearch } = useSearch();
 
@@ -223,7 +250,7 @@ watchDebounced(
 
     <div
       v-else
-      class="group xmd:pt-2 xmd:!-ml-3 flex flex-col space-y-2"
+      class="group xmd:pt-2 xmd:!-ml-3 flex flex-col space-y-2 min-h-screen"
     >
       <Card
         v-if="hasEatery"
@@ -231,8 +258,8 @@ watchDebounced(
       >
         <p class="prose lg:prose-xl">
           If you're looking for places to eat in
-          <strong v-text="parameters.q" />, you can find more detailed results
-          in our
+          <strong v-text="location" />, you can find more detailed results in
+          our
           <a
             class="inline-block font-semibold cursor-pointer"
             @click.prevent="goToEaterySearch()"
@@ -277,9 +304,25 @@ watchDebounced(
             />
 
             <p
+              v-if="typeof item.description === 'string'"
               class="prose max-w-none lg:prose-xl flex-1"
               v-text="item.description"
             />
+
+            <div
+              v-for="(restaurant, index) in item.description"
+              v-else
+              :key="index"
+            >
+              <p
+                class="prose-xl max-w-none lg:prose-2xl flex-1 font-semibold"
+                v-text="restaurant.title"
+              />
+              <p
+                class="prose max-w-none lg:prose-xl flex-1"
+                v-text="restaurant.info"
+              />
+            </div>
 
             <div class="flex justify-between items-end mt-auto">
               <div
