@@ -32,14 +32,6 @@ class GetController
             $town = EateryTown::query()->firstWhere('town', 'nationwide');
         }
 
-        if ($request->routeIs('eating-out.nationwide.show.branch')) {
-            abort_if($nationwideBranch->eatery->isNot($eatery), Response::HTTP_NOT_FOUND);
-
-            $nationwideBranch->load(['county', 'town']);
-
-            $eatery->setRelation('branch', $nationwideBranch);
-        }
-
         $county->load(['country']);
         $town->setRelation('county', $county);
 
@@ -50,6 +42,18 @@ class GetController
             'adminReview', 'adminReview.images', 'reviewImages', 'reviews.images', 'restaurants', 'features', 'openingTimes',
             'reviews' => fn (HasMany $builder) => $builder->latest()->where('admin_review', false),
         ]);
+
+        if ($request->routeIs('eating-out.nationwide.show')) {
+            $eatery->load(['nationwideBranches.town', 'nationwideBranches.town.county', 'nationwideBranches.county']);
+        }
+
+        if ($request->routeIs('eating-out.nationwide.show.branch')) {
+            abort_if($nationwideBranch->eatery->isNot($eatery), Response::HTTP_NOT_FOUND);
+
+            $nationwideBranch->load(['county', 'town']);
+
+            $eatery->setRelation('branch', $nationwideBranch);
+        }
 
         return $inertia
             ->title("Gluten free at {$eatery->full_name}")

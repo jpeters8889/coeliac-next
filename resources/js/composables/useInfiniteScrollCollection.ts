@@ -2,6 +2,7 @@ import { computed, ComputedRef, Ref, ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import useIntersect from '@/composables/useIntersect';
 import { PaginatedCollection } from '@/types/GenericTypes';
+import { VisitOptions } from '@inertiajs/core';
 
 export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   const value: () => PaginatedCollection<T> = () =>
@@ -17,6 +18,8 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
 
   const pause: Ref<boolean> = ref(false);
 
+  const requestOptions: Ref<Partial<VisitOptions>> = ref({});
+
   const refreshUrl = (url: string) => {
     initialUrl.value = url;
   };
@@ -30,6 +33,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
       <string>value().next_page_url,
       {},
       {
+        ...requestOptions.value,
         preserveState: true,
         preserveScroll: true,
         replace: true,
@@ -51,6 +55,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   return {
     items,
     pause,
+    requestOptions,
     refreshUrl,
     loadMoreItems,
     reset: (): void => {

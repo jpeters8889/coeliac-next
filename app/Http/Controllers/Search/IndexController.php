@@ -31,6 +31,8 @@ class IndexController
             ->with('aiResponse')
             ->firstOrCreate(['term' => $request->string('q')->toString()]);
 
+        $search->touch();
+
         $search->history()->create([
             'lat' => $parameters->userLocation[0] ?? null,
             'lng' => $parameters->userLocation[1] ?? null,

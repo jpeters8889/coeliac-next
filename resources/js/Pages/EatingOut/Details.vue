@@ -10,6 +10,7 @@ import EateryFeedbackLinks from '@/Components/PageSpecific/EatingOut/Details/Eat
 import { Ref, ref } from 'vue';
 import EateryFeatures from '@/Components/PageSpecific/EatingOut/Details/EateryFeatures.vue';
 import { formatDate } from '@/helpers';
+import EateryBranchList from '@/Components/PageSpecific/EatingOut/Details/EateryBranchList.vue';
 
 const props = defineProps<{
   eatery: DetailedEatery;
@@ -50,7 +51,20 @@ const eateryName = (): string => {
       @go-to-review="goToReview()"
     />
 
-    <EateryDescription :eatery="eatery" />
+    <div
+      class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:space-x-4 xl:space-x-5"
+    >
+      <EateryDescription
+        class="md:flex-1"
+        :eatery="eatery"
+      />
+
+      <EateryBranchList
+        v-if="eatery.is_nationwide && eatery.nationwide_branches?.length"
+        class="md:w-1/3 md:flex-shrink-0 md:flex-grow-0 xl:w-1/4"
+        :eatery="eatery"
+      />
+    </div>
 
     <EateryFeatures
       v-if="eatery.features && eatery.features.length > 0"

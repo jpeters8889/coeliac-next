@@ -14,6 +14,7 @@ use App\Models\Shop\ShopOrder;
 use App\Nova\Dashboards\Main;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Eateries;
+use App\Nova\Resources\EatingOut\EaterySearch;
 use App\Nova\Resources\EatingOut\MyPlaces;
 use App\Nova\Resources\EatingOut\NationwideEateries;
 use App\Nova\Resources\EatingOut\PlaceRecommendations;
@@ -25,6 +26,7 @@ use App\Nova\Resources\Main\Blog;
 use App\Nova\Resources\Main\Collection;
 use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
+use App\Nova\Resources\Search\SearchResource;
 use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
 use App\Nova\Resources\Shop\DiscountCode;
@@ -86,7 +88,15 @@ class Menu
                     MenuItem::resource(MyPlaces::class)->withBadgeIf(fn () => (string) $myPlacesCount, 'danger', fn () => $myPlacesCount > 0),
                     MenuItem::resource(PlaceRecommendations::class)->withBadgeIf(fn () => (string) $recommendationsCount, 'danger', fn () => $recommendationsCount > 0),
                 ]),
+
+                MenuGroup::make('Search', [
+                    MenuItem::resource(EaterySearch::class),
+                ]),
             ])->icon('map'),
+
+            MenuSection::make('Search', [
+                MenuItem::resource(SearchResource::class),
+            ])->icon('search'),
 
             MenuSection::make('Shop', [
                 MenuGroup::make('Sales', [

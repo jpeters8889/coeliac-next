@@ -145,4 +145,14 @@ class NationwideBranches extends Resource
             ->mapWithKeys(fn (EateryCuisine $cuisine) => [$cuisine->id => $cuisine->cuisine])
             ->toArray();
     }
+
+    public static function afterCreate(NovaRequest $request, NationwideBranch $model): void
+    {
+        $model->eatery->touch();
+    }
+
+    public static function afterUpdate(NovaRequest $request, NationwideBranch $model): void
+    {
+        $model->eatery->touch();
+    }
 }

@@ -7,6 +7,8 @@ namespace App\Nova;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Countries;
 use App\Nova\Resources\EatingOut\Eateries;
+use App\Nova\Resources\EatingOut\EaterySearch;
+use App\Nova\Resources\EatingOut\EaterySearchHistory;
 use App\Nova\Resources\EatingOut\MyPlaces;
 use App\Nova\Resources\EatingOut\NationwideBranches;
 use App\Nova\Resources\EatingOut\NationwideEateries;
@@ -25,6 +27,9 @@ use App\Nova\Resources\Main\Comments;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
+use App\Nova\Resources\Search\SearchAiResponseResource;
+use App\Nova\Resources\Search\SearchHistoryResource;
+use App\Nova\Resources\Search\SearchResource;
 use App\Nova\Resources\Shop\Baskets;
 use App\Nova\Resources\Shop\Categories;
 use App\Nova\Resources\Shop\Customer;
@@ -76,6 +81,13 @@ class ResourceRegistrar
             PlaceRecommendations::class,
             PlaceReports::class,
             SuggestedEdits::class,
+            EaterySearch::class,
+            EaterySearchHistory::class,
+
+            // Search
+            SearchResource::class,
+            SearchAiResponseResource::class,
+            SearchHistoryResource::class,
 
             // Shop Sales
             Baskets::class,

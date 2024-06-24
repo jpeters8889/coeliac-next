@@ -131,29 +131,49 @@ class EateryDetailsResource extends JsonResource
                 ],
                 'days' => $eateryOpeningTimes->opening_times_array,
             ] : null,
-            'branch' => $branch ? [
-                'id' => $branch->id,
-                'name' => $branch->name,
-                'county' => [
-                    'id' => $branch->county_id,
-                    'name' => $branch->county?->county,
-                    'link' => $branch->county?->link(),
-                ],
-                'town' => [
-                    'id' => $branch->town_id,
-                    'name' => $branch->town?->town,
-                    'link' => $branch->town?->link(),
-                ],
-                'location' => [
-                    'address' => collect(explode("\n", $branch->address))
-                        ->map(fn (string $line) => trim($line))
-                        ->join(', '),
-                    'lat' => $branch->lat,
-                    'lng' => $branch->lng,
-                ],
-            ] : null,
+            'branch' => $branch ? $this->formatBranch($branch) : null,
+            'is_nationwide' => $this->county_id === 1,
+            'nationwide_branches' => $this->getBranchList(),
             'last_updated' => $this->updated_at,
             'last_updated_human' => $this->updated_at?->diffForHumans(),
         ];
+    }
+
+    protected function formatBranch(NationwideBranch $branch): array
+    {
+        return [
+            'id' => $branch->id,
+            'name' => $branch->name,
+            'county' => [
+                'id' => $branch->county_id,
+                'name' => $branch->county?->county,
+                'link' => $branch->county?->link(),
+            ],
+            'town' => [
+                'id' => $branch->town_id,
+                'name' => $branch->town?->town,
+                'link' => $branch->town?->link(),
+            ],
+            'location' => [
+                'address' => collect(explode("\n", $branch->address))
+                    ->map(fn (string $line) => trim($line))
+                    ->join(', '),
+                'lat' => $branch->lat,
+                'lng' => $branch->lng,
+            ],
+        ];
+    }
+
+    protected function getBranchList(): ?array
+    {
+        if ( ! $this->relationLoaded('nationwideBranches')) {
+            return null;
+        }
+
+        return $this->nationwideBranches
+            ->map(fn (NationwideBranch $branch) => $this->formatBranch($branch))
+            ->sortBy(['town.name', 'name'])
+            ->values()
+            ->toArray();
     }
 }

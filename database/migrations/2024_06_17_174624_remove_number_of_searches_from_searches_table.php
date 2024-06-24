@@ -10,7 +10,7 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::table('searches', function (Blueprint $table): void {
-            $table->removeColumn('number_of_searches');
+            $table->dropColumn('number_of_searches');
         });
     }
 };

@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->integer('recipes');
             $table->integer('eateries');
             $table->integer('shop');
-            $table->string('explanation');
+            $table->text('explanation');
             $table->text('location')->nullable();
             $table->timestamps();
         });

@@ -1,12 +1,23 @@
 <script lang="ts" setup>
 import { ExclamationTriangleIcon } from '@heroicons/vue/20/solid';
+
+withDefaults(defineProps<{ noIcon?: boolean; faded?: boolean }>(), {
+  noIcon: false,
+  faded: false,
+});
 </script>
 
 <template>
   <div
-    class="rounded border-2 border-red-dark bg-red-dark bg-opacity-20 p-2 shadow"
+    class="rounded border-2 bg-red-dark p-2 shadow"
+    :class="
+      faded ? 'border-red/20 bg-opacity-5' : 'border-red-dark bg-opacity-20'
+    "
   >
-    <div class="float-left pr-2 text-red-dark">
+    <div
+      v-if="!noIcon"
+      class="float-left pr-2 text-red-dark"
+    >
       <ExclamationTriangleIcon class="h-10 w-10" />
     </div>
 

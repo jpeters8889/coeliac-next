@@ -31,7 +31,7 @@ const emit = defineEmits(['close']);
     >
       <Dialog
         as="div"
-        class="relative z-40"
+        class="relative z-50"
         @close="emit('close')"
       >
         <TransitionChild

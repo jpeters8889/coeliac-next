@@ -40,7 +40,9 @@ const formParamsToSearchParams = (): URLSearchParams => {
 
 const landmark: Ref<Element> = ref();
 
-const { items, pause, reset, refreshUrl } =
+const { hasError, searchForm, latLng, submitSearch } = useSearch();
+
+const { items, pause, reset, refreshUrl, requestOptions } =
   useInfiniteScrollCollection<SearchResult>('results', landmark);
 
 onMounted(() => {
@@ -56,12 +58,18 @@ onMounted(() => {
     });
   }
 
+  if (latLng.value) {
+    requestOptions.value = {
+      headers: {
+        'x-user-location': latLng.value,
+      },
+    };
+  }
+
   nextTick(() => {
     pause.value = false;
   });
 });
-
-const { hasError, searchForm, submitSearch } = useSearch();
 
 const stickyNav = ref(false);
 
@@ -148,6 +156,22 @@ watch(
 watch(
   () => searchForm.shop,
   () => handleSearch(),
+);
+
+watch(
+  () => latLng.value,
+  () => {
+    console.log('here');
+    if (!latLng.value) {
+      return;
+    }
+
+    requestOptions.value = {
+      headers: {
+        'x-search-location': latLng.value,
+      },
+    };
+  },
 );
 
 watchDebounced(

@@ -6,7 +6,7 @@
   <svg
     fill="currentColor"
     viewBox="0 0 24 24"
-    class="h-6 w-6"
+    class="h-6 w-6 lg:h-8 lg:w-8"
     aria-hidden="true"
   >
     <path

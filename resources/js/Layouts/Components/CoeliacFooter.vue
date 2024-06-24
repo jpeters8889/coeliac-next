@@ -87,13 +87,22 @@ const navigation: { links: { label: string; url: string }[] } = {
         class="mt-4 sm:mt-8 sm:flex sm:flex-row-reverse sm:items-center sm:justify-between lg:col-span-4"
       >
         <div class="flex items-center justify-center space-x-3">
-          <a href="#">
+          <a
+            href="https://www.facebook.com/coeliacsanctuary/"
+            target="_blank"
+          >
             <FacebookIcon />
           </a>
-          <a href="#">
+          <a
+            href="https://twitter.com/coeliacsanc"
+            target="_blank"
+          >
             <TwitterIcon />
           </a>
-          <a href="#">
+          <a
+            href="https://www.instagram.com/coeliacsanctuary"
+            target="_blank"
+          >
             <InstagramIcon />
           </a>
         </div>

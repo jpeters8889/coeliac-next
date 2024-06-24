@@ -48,5 +48,13 @@ export const pluralise = (str: string, count: number): string => {
     return str;
   }
 
+  if (str.endsWith('y')) {
+    return str.replace(/y$/, 'ies');
+  }
+
+  if (str.endsWith('ch')) {
+    return `${str}es`;
+  }
+
   return `${str}s`;
 };

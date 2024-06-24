@@ -24,9 +24,9 @@ class SearchParameters
     {
         $userLocation = null;
 
-        if ($request->hasHeader('x-user-location')) {
+        if ($request->hasHeader('x-search-location')) {
             /** @var string $location */
-            $location = $request->header('x-user-location');
+            $location = $request->header('x-search-location');
 
             $userLocation = explode(',', $location);
         }

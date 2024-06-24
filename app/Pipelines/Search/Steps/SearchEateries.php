@@ -38,7 +38,11 @@ class SearchEateries
 
                 SearchState::$hasGeoSearched = true;
             } elseif ($searchPipelineData->parameters->userLocation) {
-                $geoResults = $this->performGeoSearch(implode(',', $searchPipelineData->parameters->userLocation));
+                $geoResults = $this->performGeoSearch(implode(',', $searchPipelineData->parameters->userLocation), $searchPipelineData->parameters->term);
+
+                if ($geoResults->count() > 0) {
+                    $baseResults = collect();
+                }
             }
 
             $baseResults = $baseResults->map(function (Eatery|NationwideBranch $eatery) use ($geoResults) {
@@ -68,10 +72,10 @@ class SearchEateries
     }
 
     /** @return Collection<int, Eatery|NationwideBranch>  */
-    protected function performGeoSearch(string $latLng): Collection
+    protected function performGeoSearch(string $latLng, string $term = ''): Collection
     {
         /** @var Collection<int, Eatery|NationwideBranch> $geoResults */
-        $geoResults = Eateries::search()
+        $geoResults = Eateries::search($term)
             ->with([
                 'getRankingInfo' => true,
                 'aroundLatLng' => $latLng,
