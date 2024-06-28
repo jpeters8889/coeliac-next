@@ -66,6 +66,7 @@
         "@rushstack/eslint-patch": "^1.10.2",
         "@stripe/stripe-js": "^3.4.0",
         "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/container-queries": "^0.1.1",
         "@types/stripe-v3": "^3.1.33",
         "@vue/eslint-config-typescript": "^13.0.0",
         "@vueuse/core": "^10.5.0",

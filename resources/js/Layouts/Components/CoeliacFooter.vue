@@ -4,6 +4,7 @@ import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import FormInput from '@/Components/Forms/FormInput.vue';
+import { Link } from '@inertiajs/vue3';
 
 const year = new Date().getFullYear();
 
@@ -14,9 +15,10 @@ const navigation: { links: { label: string; url: string }[] } = {
     { label: 'Eating Out', url: '/eating-out' },
     { label: 'Recipes', url: '/recipes' },
     { label: 'Contact', url: '/contact' },
-    { label: 'Terms', url: '/contact' },
-    { label: 'Privacy', url: '/contact' },
-    { label: 'Work with Us', url: '/contact' },
+    { label: 'Terms', url: '/terms-of-use' },
+    { label: 'Privacy', url: '/privacy-policy' },
+    { label: 'Cookie Policy', url: '/cookie-policy' },
+    { label: 'Work with Us', url: '/work-with-us' },
   ],
 };
 </script>
@@ -41,11 +43,12 @@ const navigation: { links: { label: string; url: string }[] } = {
             v-for="item in navigation.links"
             :key="item.label"
           >
-            <a
+            <Link
               :href="item.url"
               class="leading-6 hover:text-gray-900"
-              >{{ item.label }}</a
             >
+              {{ item.label }}
+            </Link>
           </li>
         </ul>
 

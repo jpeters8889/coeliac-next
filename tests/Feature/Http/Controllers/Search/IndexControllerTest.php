@@ -134,13 +134,15 @@ class IndexControllerTest extends TestCase
     /** @test */
     public function itReturnsTheInertiaView(): void
     {
-        $this->get(route('search.index', [
-            'q' => 'foo',
-            'blogs' => 'true',
-            'recipes' => 'false',
-            'eateries' => 'true',
-            'shop' => 'false',
-        ]))
+        $this
+            ->from(route('search.index'))
+            ->get(route('search.index', [
+                'q' => 'foo',
+                'blogs' => 'true',
+                'recipes' => 'false',
+                'eateries' => 'true',
+                'shop' => 'false',
+            ]))
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('Search/Index')

@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import headlessui from '@headlessui/tailwindcss';
+import containerQueries from '@tailwindcss/container-queries';
 
 export default {
   content: [
@@ -64,6 +65,12 @@ export default {
         },
       },
 
+      containers: {
+        xxs: '400px',
+        xs: '500px',
+        xmd: '860px',
+      },
+
       maxWidth: {
         '1/2': '50%',
         '1/3': '33%',
@@ -112,5 +119,5 @@ export default {
     },
   },
 
-  plugins: [forms, typography, headlessui],
+  plugins: [forms, typography, headlessui, containerQueries],
 } satisfies Config;
