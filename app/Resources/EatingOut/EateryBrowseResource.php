@@ -17,11 +17,14 @@ class EateryBrowseResource extends JsonResource
     {
         return [
             'key' => $this->id . ($this->branchId ? '-' . $this->branchId : null),
+            'id' => $this->id,
             'isNationwideBranch' => $this->branchId !== null,
             'location' => [
                 'lat' => $this->lat,
                 'lng' => $this->lng,
             ],
+            'lat' => $this->lat,
+            'lng' => $this->lng,
             'color' => $this->getColour(),
         ];
     }

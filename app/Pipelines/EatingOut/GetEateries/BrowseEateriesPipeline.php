@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 class BrowseEateriesPipeline
 {
     /**
-     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string[] | null}  $filters
+     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null }  $filters
      * @param  class-string<JsonResource>  $jsonResource
      * @return Collection<int, JsonResource>
      */

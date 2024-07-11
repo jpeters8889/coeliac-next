@@ -157,7 +157,7 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
       </WorkWithUsStory>
 
       <Card
-        class="xmd:row-start-2 xmd:col-span-6 xmd:col-start-3 text-center prose prose-lg xl:prose-xl"
+        class="xmd:row-start-2 xmd:col-span-4 xmd:col-start-4 text-center prose prose-lg xl:prose-xl"
       >
         <p>
           Are you listed in our

@@ -21,7 +21,9 @@ class GetNationwideBranchesInLatLngAction implements GetEateriesPipelineActionCo
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
         if ( ! $pipelineData->latLng || ! $pipelineData->latLng->radius) {
-            throw new RuntimeException('No Lat/Lng');
+            throw_if($pipelineData->throwSearchException, new RuntimeException('No Lat/Lng'));
+
+            return $next($pipelineData);
         }
 
         /** @var Builder<NationwideBranch> $idQuery */

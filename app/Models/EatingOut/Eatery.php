@@ -31,6 +31,7 @@ use Laravel\Scout\Searchable;
  * @property int | null $rating
  * @property int | null $rating_count
  * @property string $full_name
+ * @property string $typeDescription
  */
 class Eatery extends Model implements IsSearchable
 {

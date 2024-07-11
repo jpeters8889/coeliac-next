@@ -24,6 +24,17 @@ class MacroServiceProvider extends ServiceProvider
             return $get;
         });
 
+        Arr::macro('getAsFloat', function (array $array, string $key, int $default = 0): float {
+            /** @var float | null $get */
+            $get = Arr::get($array, $key, $default);
+
+            if ( ! $get) {
+                $get = $default;
+            }
+
+            return $get;
+        });
+
         Arr::macro('getAsString', function (array $array, string $key, string $default = ''): string {
             /** @var string | null $get */
             $get = Arr::get($array, $key, $default);
@@ -35,7 +46,7 @@ class MacroServiceProvider extends ServiceProvider
             return $get;
         });
 
-        Arr::macro('getAsNullableString', function (array $array, string $key, ?string $default = null): string | null {
+        Arr::macro('getAsNullableString', function (array $array, string $key, ?string $default = null): ?string {
             /** @var string | null $get */
             $get = Arr::get($array, $key, $default);
 

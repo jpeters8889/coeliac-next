@@ -21,9 +21,9 @@ class EateryCreateReviewRequest extends FormRequest
     {
         return [
             'rating' => ['required', 'numeric', 'min:1', 'max:5'],
-            'name' => ['nullable', 'required', 'string'],
-            'email' => ['nullable', 'required', 'email'],
-            'review' => ['nullable', 'required', 'string'],
+            'name' => $this->wantsJson() ? ['nullable', 'required_with:email,comment'] : ['nullable', 'required', 'string'],
+            'email' => $this->wantsJson() ? ['nullable', 'required_with:name,comment', 'email'] : ['nullable', 'required', 'email'],
+            'review' => $this->wantsJson() ? ['nullable', 'required_with:name,email'] : ['nullable', 'required', 'string'],
             'food_rating' => ['nullable', 'in:poor,good,excellent'],
             'service_rating' => ['nullable', 'in:poor,good,excellent'],
             'how_expensive' => ['nullable', 'numeric', 'min:1', 'max:5'],
@@ -35,11 +35,39 @@ class EateryCreateReviewRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation(): void
+    {
+        $map = [
+            'food' => 'food_rating',
+            'service' => 'service_rating',
+            'expense' => 'how_expensive',
+            'comment' => 'review',
+        ];
+
+        foreach ($map as $legacy => $new) {
+            if ($this->has($legacy) && $this->missing($new)) {
+                $this->merge([$new => $this->input($legacy)]);
+            }
+        }
+    }
+
     public function shouldReviewBeApproved(): bool
     {
         //        if ($this->boolean('admin_review') === true && $this->user()?->isAdmin()) {
         if ($this->boolean('admin_review')) {
             return true;
+        }
+
+        if ($this->wantsJson()) {
+            $requiredFieldsCheck = $this->string('name')->toString() === ''
+                && $this->string('email')->toString() === ''
+                && $this->string('review')->toString() === '';
+
+            if ($this->isNationwide()) {
+                return $this->string('branch_name')->toString() !== '' && $requiredFieldsCheck;
+            }
+
+            return $requiredFieldsCheck;
         }
 
         return true;

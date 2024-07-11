@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 class GetEateriesPipelineData
 {
     /**
-     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null}  $filters
+     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null }  $filters
      * @param  null | Collection<int, PendingEatery>  $eateries
      * @param  null | LengthAwarePaginator<PendingEatery>  $paginator
      * @param  null | Collection<int, Eatery>  $hydrated
@@ -35,6 +35,7 @@ class GetEateriesPipelineData
         public ?Collection $hydratedBranches = null,
         public string $jsonResource = EateryListResource::class,
         public LengthAwarePaginator|Collection|null $serialisedEateries = null,
+        public bool $throwSearchException = true,
     ) {
     }
 }

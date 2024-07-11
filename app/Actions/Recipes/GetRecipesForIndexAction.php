@@ -7,11 +7,18 @@ namespace App\Actions\Recipes;
 use App\Models\Recipes\Recipe;
 use App\Resources\Recipes\RecipeListCollection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class GetRecipesForIndexAction
 {
-    /** @param  array{features?: string[], meals?: string[], freeFrom?: string[]}  $filters */
-    public function handle(array $filters = [], int $perPage = 12): RecipeListCollection
+    /**
+     * @template T of ResourceCollection
+     *
+     * @param  array{features?: string[], meals?: string[], freeFrom?: string[]}  $filters
+     * @param  class-string<T>  $resource
+     * @return T
+     */
+    public function handle(array $filters = [], int $perPage = 12, string $resource = RecipeListCollection::class): ResourceCollection
     {
         $featureFilters = array_filter($filters['features'] ?? []);
         $mealFilters = array_filter($filters['meals'] ?? []);
@@ -32,7 +39,7 @@ class GetRecipesForIndexAction
             $query->hasFreeFrom($freeFromFilters);
         }
 
-        return new RecipeListCollection(
+        return new $resource(
             $query
                 ->latest()
                 ->paginate($perPage)

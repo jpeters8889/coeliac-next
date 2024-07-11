@@ -23,7 +23,7 @@ class ShowController
         GetSearchResultsPipeline $getSearchResultsPipeline,
         GetFiltersForEateriesAction $getFiltersForEateriesAction
     ): Response {
-        /** @var array{categories: string[] | null, venueTypes: string[] | null, features: string[] | null} $filters */
+        /** @var array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null } $filters */
         $filters = [
             'categories' => $request->has('filter.category') ? explode(',', $request->string('filter.category')->toString()) : null,
             'venueTypes' => $request->has('filter.venueType') ? explode(',', $request->string('filter.venueType')->toString()) : null,

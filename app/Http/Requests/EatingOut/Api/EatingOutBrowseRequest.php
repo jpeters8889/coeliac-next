@@ -34,13 +34,37 @@ class EatingOutBrowseRequest extends FormRequest
         );
     }
 
-    /** @return array{categories: string[] | null, features: string[] | null, venueTypes: string[] | null} */
+    /** @return array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null } */
     public function filters(): array
     {
         return [
             'categories' => $this->has('filter.category') ? explode(',', $this->string('filter.category')->toString()) : null,
-            'venueTypes' => $this->has('filter.venueType') ? explode(',', $this->string('filter.venueType')->toString()) : null,
-            'features' => $this->has('filter.feature') ? explode(',', $this->string('filter.feature')->toString()) : null,
+            'venueTypes' => $this->has('filter.venueTypes') ? explode(',', $this->string('filter.venueTypes')->toString()) : null,
+            'features' => $this->has('filter.features') ? explode(',', $this->string('filter.features')->toString()) : null,
+            'county' => null,
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('range')) {
+            $this->merge([
+                'radius' => $this->integer('range'),
+            ]);
+        }
+
+        if ($this->has('filter.venueType')) {
+            $this->merge([
+                'filter' => array_merge(
+                    $this->collect('filter')->forget('venueType')->toArray(),
+                    [
+                        'venueTypes' => EateryVenueType::query()
+                            ->where('id', $this->integer('filter.venueType'))
+                            ->first()
+                            ?->slug,
+                    ]
+                ),
+            ]);
+        }
     }
 }

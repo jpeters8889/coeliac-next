@@ -24,6 +24,21 @@ class RecommendAPlaceRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->wantsJson() && $this->missing('place')) {
+            $this->merge([
+                'place' => [
+                    'name' => $this->input('place_name'),
+                    'location' => $this->input('place_location'),
+                    'url' => $this->input('place_web_address'),
+                    'venueType' => $this->input('place_venue_type_id'),
+                    'details' => $this->input('place_details'),
+                ],
+            ]);
+        }
+    }
+
     public function attributes(): array
     {
         return [

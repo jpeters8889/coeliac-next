@@ -18,9 +18,11 @@ use App\Models\EatingOut\NationwideBranch;
 use App\Pipelines\EatingOut\GetEateries\Steps\AppendDistanceToBranches;
 use App\Pipelines\EatingOut\GetEateries\Steps\AppendDistanceToEateries;
 use App\Pipelines\EatingOut\GetEateries\Steps\CheckForMissingEateriesAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\GetEateriesFromFiltersAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\GetEateriesInLatLngRadiusAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\GetEateriesInSearchAreaAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\GetEateriesInTownAction;
+use App\Pipelines\EatingOut\GetEateries\Steps\GetNationwideBranchesFromFiltersAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\GetNationwideBranchesInLatLngAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\GetNationwideBranchesInTownAction;
 use App\Pipelines\EatingOut\GetEateries\Steps\HydrateBranchesAction;
@@ -123,6 +125,25 @@ abstract class GetEateriesTestCase extends TestCase
         return $toReturn;
     }
 
+    protected function callGetEateriesFromFiltersAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
+    {
+        $toReturn = null;
+
+        $closure = function (GetEateriesPipelineData $pipelineData) use (&$toReturn): void {
+            $toReturn = $pipelineData;
+        };
+
+        $pipelineData = new GetEateriesPipelineData(
+            town: $this->town,
+            filters: $filters,
+            eateries: $eateries,
+        );
+
+        $this->callAction(GetEateriesFromFiltersAction::class, $pipelineData, $closure);
+
+        return $toReturn;
+    }
+
     protected function callGetEateriesInSearchAreaAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
     {
         Eatery::query()->update([
@@ -186,6 +207,25 @@ abstract class GetEateriesTestCase extends TestCase
         );
 
         $this->callAction(GetNationwideBranchesInTownAction::class, $pipelineData, $closure);
+
+        return $toReturn;
+    }
+
+    protected function callGetBranchesFromFiltersAction(Collection $eateries = new Collection(), array $filters = []): ?GetEateriesPipelineData
+    {
+        $toReturn = null;
+
+        $closure = function (GetEateriesPipelineData $pipelineData) use (&$toReturn): void {
+            $toReturn = $pipelineData;
+        };
+
+        $pipelineData = new GetEateriesPipelineData(
+            town: $this->town,
+            filters: $filters,
+            eateries: $eateries,
+        );
+
+        $this->callAction(GetNationwideBranchesFromFiltersAction::class, $pipelineData, $closure);
 
         return $toReturn;
     }

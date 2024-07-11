@@ -8,12 +8,19 @@ use App\Models\Blogs\Blog;
 use App\Models\Blogs\BlogTag;
 use App\Resources\Blogs\BlogListCollection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class GetBlogsForBlogIndexAction
 {
-    public function handle(BlogTag $tag = null, int $perPage = 12): BlogListCollection
+    /**
+     * @template T of ResourceCollection
+     *
+     * @param  class-string<T>  $resource
+     * @return T
+     */
+    public function handle(?BlogTag $tag = null, int $perPage = 12, string $resource = BlogListCollection::class): ResourceCollection
     {
-        return new BlogListCollection(
+        return new $resource(
             Blog::query()
                 ->when($tag?->exists, fn (Builder $builder) => $builder->whereHas(
                     'tags',

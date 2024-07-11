@@ -20,8 +20,10 @@ class GetEateriesInSearchAreaAction implements GetEateriesPipelineActionContract
 {
     public function handle(GetEateriesPipelineData $pipelineData, Closure $next): mixed
     {
-        if ( ! $pipelineData->searchTerm) {
-            throw new RuntimeException('No Search Term');
+        if ( ! $pipelineData->searchTerm || $pipelineData->searchTerm->term === '') {
+            throw_if($pipelineData->throwSearchException, new RuntimeException('No Search Term'));
+
+            return $next($pipelineData);
         }
 
         $latLng = app(LocationSearchService::class)->getLatLng($pipelineData->searchTerm->term);
