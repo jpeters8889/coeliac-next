@@ -8,6 +8,7 @@ use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductVariant;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ShopCategoryTest extends TestCase
@@ -21,6 +22,8 @@ class ShopCategoryTest extends TestCase
     /** @test */
     public function itCanHaveMedia(): void
     {
+        Storage::fake('media');
+
         $category = $this->create(ShopCategory::class);
 
         $category->addMedia(UploadedFile::fake()->image('social.jpg'))->toMediaCollection('social');

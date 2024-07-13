@@ -146,12 +146,12 @@ class NationwideBranches extends Resource
             ->toArray();
     }
 
-    public static function afterCreate(NovaRequest $request, NationwideBranch $model): void
+    public static function afterCreate(NovaRequest $request, Model $model): void
     {
         $model->eatery->touch();
     }
 
-    public static function afterUpdate(NovaRequest $request, NationwideBranch $model): void
+    public static function afterUpdate(NovaRequest $request, Model $model): void
     {
         $model->eatery->touch();
     }

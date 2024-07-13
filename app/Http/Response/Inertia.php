@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Response;
 
+use App\Actions\GetPopupCtaAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Resources\Shop\ShopOrderItemResource;
@@ -28,6 +29,10 @@ class Inertia
 
         if (Request::routeIs('shop.product')) {
             BaseInertia::share('productShippingText', config('coeliac.shop.product_postage_description'));
+        }
+
+        if ( ! Request::routeIs('shop.*')) {
+            $this->loadCta();
         }
 
         if (Request::hasCookie('basket_token') && ! Request::routeIs('shop.basket.checkout')) {
@@ -128,5 +133,19 @@ class Inertia
 
         BaseInertia::share('basket.items', $items);
         BaseInertia::share('basket.subtotal', Helpers::formatMoney(Money::GBP($subtotal)));
+    }
+
+    protected function loadCta(): void
+    {
+        $popup = app(GetPopupCtaAction::class)->handle();
+
+        if ($popup) {
+            BaseInertia::share('popup', [
+                'id' => $popup->id,
+                'text' => $popup->text,
+                'link' => $popup->link,
+                'image' => $popup->main_image,
+            ]);
+        }
     }
 }

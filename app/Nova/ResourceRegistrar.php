@@ -24,6 +24,7 @@ use App\Nova\Resources\Main\Collection;
 use App\Nova\Resources\Main\CollectionItem;
 use App\Nova\Resources\Main\CommentReply;
 use App\Nova\Resources\Main\Comments;
+use App\Nova\Resources\Main\PopupResource;
 use App\Nova\Resources\Main\Recipe;
 use App\Nova\Resources\Main\RecipeAllergens;
 use App\Nova\Resources\Main\RecipeNutritionalInformation;
@@ -67,6 +68,7 @@ class ResourceRegistrar
             RecipeNutritionalInformation::class,
             Comments::class,
             CommentReply::class,
+            PopupResource::class,
 
             // Eating Out
             Eateries::class,

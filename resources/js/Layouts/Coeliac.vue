@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import CoeliacHeader from '@/Layouts/Components/CoeliacHeader.vue';
 import CoeliacFooter from '@/Layouts/Components/CoeliacFooter.vue';
-import { MetaProps } from '@/types/DefaultProps';
+import { MetaProps, PopupProps } from '@/types/DefaultProps';
 import { computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import ShopBasketHeader from '@/Layouts/Components/ShopBasketHeader.vue';
 import ShopFooterCta from '@/Layouts/Components/ShopFooterCta.vue';
+import PopupCta from '@/Layouts/Components/PopupCta.vue';
 
-defineProps<{ meta: MetaProps }>();
+defineProps<{ meta: MetaProps; popup?: PopupProps }>();
 
 const isShop = computed(
   (): boolean =>
@@ -33,5 +34,10 @@ const isShop = computed(
     <CoeliacFooter />
 
     <ShopFooterCta v-if="isShop" />
+
+    <PopupCta
+      v-if="popup"
+      :popup="popup"
+    />
   </div>
 </template>

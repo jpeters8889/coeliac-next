@@ -11,10 +11,13 @@ use App\Models\EatingOut\EateryRecommendation;
 use App\Models\EatingOut\EateryReport;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryVenueType;
+use App\Models\Popup;
 use App\Models\Recipes\Recipe;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CoeliacSanctuaryOnTheGoTest extends TestCase
@@ -409,9 +412,12 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
     /** @test */
     public function itCanGetTheShopCta(): void
     {
-        //        $this->create(Popup::class);
-        //
-        //        $this->get('/api/popup')->assertOk();
+        Storage::fake('media');
+
+        $popup = $this->create(Popup::class);
+        $popup->addMedia(UploadedFile::fake()->image('popup.jpg'))->toMediaCollection('primary');
+
+        $this->get('/api/popup')->assertOk();
     }
 
     /** @test */

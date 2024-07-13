@@ -15,6 +15,7 @@ use App\Models\Shop\TravelCardSearchTerm;
 use Database\Seeders\ShopScaffoldingSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ShopProductTest extends TestCase
@@ -35,6 +36,8 @@ class ShopProductTest extends TestCase
     /** @test */
     public function itCanHaveMedia(): void
     {
+        Storage::fake('media');
+
         $product = $this->create(ShopProduct::class);
 
         $product->addMedia(UploadedFile::fake()->image('social.jpg'))->toMediaCollection('social');

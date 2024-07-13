@@ -16,3 +16,10 @@ export type MetaProps = {
     [T: string]: string;
   };
 };
+
+export type PopupProps = {
+  id: number;
+  text: string;
+  link: string;
+  image: string;
+};

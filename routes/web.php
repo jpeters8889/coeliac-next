@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Comments\GetController;
 use App\Http\Controllers\CookiePolicy\IndexController as CookiePolicyIndexController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Popup\Activity\StoreController as PopupActivityStoreController;
 use App\Http\Controllers\PrivacyPolicy\IndexController as PrivacyPolicyIndexController;
 use App\Http\Controllers\TermsOfUse\IndexController as TermsOfUseIndexController;
 use App\Http\Controllers\WorkWithUs\IndexController as WorkWithUsIndexController;
@@ -25,3 +26,5 @@ Route::get('cookie-policy', CookiePolicyIndexController::class)->name('cookie-po
 Route::get('privacy-policy', PrivacyPolicyIndexController::class)->name('privacy-policy');
 Route::get('terms-of-use', TermsOfUseIndexController::class)->name('terms-of-use');
 Route::get('work-with-us', WorkWithUsIndexController::class)->name('work-with-us');
+
+Route::post('popup/{popup}', PopupActivityStoreController::class)->name('popup.activity.store');

@@ -8,6 +8,7 @@ use App\Legacy\Image;
 use App\Legacy\ImageAssociations;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
+use App\Models\Popup;
 use App\Models\Recipes\Recipe;
 use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
@@ -27,6 +28,7 @@ class MigrateImagesToMedia extends Command
         'collection' => Collection::class,
         'shop-category' => ShopCategory::class,
         'shop-product' => ShopProduct::class,
+        'popup' => Popup::class,
     ];
 
     protected array $with = [
@@ -35,6 +37,7 @@ class MigrateImagesToMedia extends Command
         'collection' => ['images'],
         'shop-category' => ['images'],
         'shop-product' => ['images'],
+        'popup' => ['images'],
     ];
 
     protected array $handlers = [
@@ -43,6 +46,7 @@ class MigrateImagesToMedia extends Command
         'collection' => 'processCollection',
         'shop-category' => 'processShopCategory',
         'shop-product' => 'processShopProduct',
+        'popup' => 'processPopup',
     ];
 
     public function handle(): void
@@ -185,6 +189,23 @@ class MigrateImagesToMedia extends Command
 
             /** @phpstan-ignore-next-line */
             $shopProduct->addMediaFromUrl($shopProduct->main_legacy_image)->toMediaCollection('primary');
+        } catch (Exception $e) {
+            //
+        }
+
+        $progress->advance();
+    }
+
+    protected function processPopup(Popup $popup, ProgressBar $progress): void
+    {
+        ImageAssociations::query()->where('imageable_type', 'Coeliac\Common\Models\Popup')
+            ->update(['imageable_type' => Popup::class]);
+
+        $popup->refresh();
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $popup->addMediaFromUrl($popup->first_legacy_image)->toMediaCollection('primary');
         } catch (Exception $e) {
             //
         }
