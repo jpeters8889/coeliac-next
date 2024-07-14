@@ -23,7 +23,7 @@ withDefaults(
   >
     <component
       :is="as"
-      class="text-center font-coeliac text-3xl font-semibold md:text-4xl lg:text-5xl"
+      class="text-center font-coeliac text-3xl font-semibold md:text-4xl lg:text-5xl !mb-0"
     >
       <slot />
     </component>

@@ -16,9 +16,9 @@ const links: { label: string; href: string }[] = [
   { label: 'Eating Out', href: '/eating-out' },
   { label: 'Recipes', href: '/recipe' },
   { label: 'Collections', href: '/collection' },
-  { label: 'Info', href: '/' },
   { label: 'About Us', href: '/' },
   { label: 'FAQ', href: '/' },
+  { label: 'Work With Us', href: '/work-with-us' },
   { label: 'Contact', href: '/' },
 ];
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, useAttrs } from 'vue';
 import Modal from '@/Components/Overlays/Modal.vue';
 
 const props = withDefaults(
@@ -36,6 +36,8 @@ const classes = (): string[] => {
   if (props.position === 'right') {
     classList.push('sm:mr-0', 'float-right');
   }
+
+  classList.push(<string>useAttrs().class);
 
   return classList;
 };

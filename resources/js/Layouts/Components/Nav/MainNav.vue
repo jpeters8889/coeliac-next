@@ -74,6 +74,18 @@ watch(isSticky, () => {
         href="/collection"
         :active="$page.url.startsWith('/collection')"
       />
+
+      <NavItem
+        label="About Us"
+        href="/about"
+        :active="$page.url.startsWith('/about')"
+      />
+
+      <NavItem
+        label="FAQ"
+        href="/faq"
+        :active="$page.url.startsWith('/faq')"
+      />
     </nav>
   </div>
 </template>

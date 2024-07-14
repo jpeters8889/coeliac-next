@@ -9,6 +9,7 @@ use App\Http\Controllers\Popup\Activity\StoreController as PopupActivityStoreCon
 use App\Http\Controllers\PrivacyPolicy\IndexController as PrivacyPolicyIndexController;
 use App\Http\Controllers\TermsOfUse\IndexController as TermsOfUseIndexController;
 use App\Http\Controllers\WorkWithUs\IndexController as WorkWithUsIndexController;
+use App\Http\Controllers\About\IndexController as AboutIndexController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('blog')->group(base_path('routes/blogs/web.php'));
@@ -19,6 +20,8 @@ Route::prefix('shop')->group(base_path('routes/shop/web.php'));
 Route::prefix('')->group(base_path('routes/eating-out/web.php'));
 
 Route::get('/', HomeController::class)->name('home');
+
+Route::get('about', AboutIndexController::class)->name('about');
 
 Route::post('comments', GetController::class)->name('comments.create');
 

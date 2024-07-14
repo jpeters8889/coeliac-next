@@ -157,7 +157,12 @@
         "stan": "vendor/bin/phpstan analyse --memory-limit 4048M",
         "pint": "vendor/bin/pint -vvv",
         "test": "php artisan test --parallel",
-        "pre-commit": "composer run pint && composer run stan && composer run test"
+        "pre-commit": [
+            "Composer\\Config::disableProcessTimeout",
+            "composer run pint",
+            "composer run stan",
+            "composer run test"
+        ]
     },
     "extra": {
         "branch-alias": {
