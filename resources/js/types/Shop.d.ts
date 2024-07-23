@@ -132,3 +132,10 @@ type PaypalPayment = {
   type: 'PayPal';
   paypalAccount?: string;
 };
+
+export type TravelCardFeedbackItem = {
+  review: string;
+  name: string;
+  product: string;
+  link: string;
+};

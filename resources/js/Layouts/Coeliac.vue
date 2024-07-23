@@ -26,7 +26,7 @@ const isShop = computed(
     <ShopBasketHeader v-if="isShop" />
 
     <section
-      class="mx-auto mb-3 flex w-full max-w-8xl flex-1 flex-col space-y-3"
+      class="mx-auto mb-3 flex w-full max-w-8xl flex-1 flex-col space-y-4"
     >
       <slot />
     </section>

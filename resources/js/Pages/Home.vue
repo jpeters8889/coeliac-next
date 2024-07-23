@@ -91,7 +91,7 @@ defineProps<{
         <p>
           <Link
             class="font-semibold transition hover:text-primary-dark"
-            href="/"
+            href="/about"
           >
             Read more about me
           </Link>

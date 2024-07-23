@@ -142,3 +142,20 @@ export const FormStepperPropsDefaults: Partial<FormStepperProps> = {
   hideOptionsText: false,
   defaultText: 'Select an option',
 };
+
+export type FormLookupProps = Omit<InputProps, 'type'> & {
+  lookupEndpoint: string;
+  postParameter?: string;
+  resultKey?: string;
+  preselectTerm?: string;
+};
+
+export const FormLookupPropDefaults: Partial<
+  FormLookupProps & { type?: string }
+> = {
+  ...InputPropDefaults,
+  type: undefined,
+  postParameter: 'term',
+  resultKey: 'data',
+  preselectTerm: undefined,
+};
