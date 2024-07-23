@@ -8,7 +8,8 @@ use App\Http\Controllers\Api\Shop\TravelCardSearch\GetController as TravelCardSe
 use App\Http\Controllers\Api\Shop\TravelCardSearch\StoreController as TravelCardSearchStoreController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('address-search', AddressSearchShowController::class)->name('api.shop.address-search');
-Route::get('address-search/{id}', AddressSearchStoreController::class)->name('api.shop.address-search.get');
+Route::post('address-search', AddressSearchStoreController::class)->name('api.shop.address-search');
+Route::get('address-search/{id}', AddressSearchShowController::class)->name('api.shop.address-search.get');
+
 Route::post('travel-card-search', TravelCardSearchStoreController::class)->name('api.shop.travel-card-search.store');
 Route::get('travel-card-search/{travelCardSearchTerm}', TravelCardSearchGetController::class)->name('api.shop.travel-card-search.get');

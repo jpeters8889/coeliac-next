@@ -50,17 +50,21 @@ class GetControllerTest extends TestCase
             'type' => 'country',
         ]);
 
-        $this->withCategoriesAndProducts(1, then: function() use ($searchTerm) {
-           $searchTerm->products()->attach(ShopProduct::all());
+        $this->withCategoriesAndProducts(1, then: function () use ($searchTerm): void {
+            $searchTerm->products()->attach(ShopProduct::all());
         });
 
         $this->getJson(route('api.shop.travel-card-search.get', $searchTerm))
-            ->assertJson(fn(AssertableJson $json) => $json
-                ->has('products', 2, fn(AssertableJson $json) => $json
-                    ->where('title', 'Product 0')
+            ->assertJson(
+                fn (AssertableJson $json) => $json
+                    ->has(
+                        'products',
+                        2,
+                        fn (AssertableJson $json) => $json
+                            ->where('title', 'Product 0')
+                            ->etc()
+                    )
                     ->etc()
-                )
-                ->etc()
             );
     }
 }

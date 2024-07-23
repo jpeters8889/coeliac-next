@@ -7,6 +7,7 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/** @property ShopProduct $product */
 class ShopFeedback extends Model
 {
     /** @return BelongsTo<ShopProduct, self> */

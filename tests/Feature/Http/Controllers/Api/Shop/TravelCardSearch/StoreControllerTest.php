@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop\TravelCardSearch;
 
-use App\Models\Shop\ShopProduct;
 use App\Models\Shop\TravelCardSearchTerm;
 use App\Models\Shop\TravelCardSearchTermHistory;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -58,18 +57,23 @@ class StoreControllerTest extends TestCase
             ->create();
 
         $this->postJson(route('api.shop.travel-card-search.store'), ['term' => 'foo'])
-            ->assertJson(fn(AssertableJson $json) => $json
-                ->has('data', 2)
-                ->has('data.0', fn(AssertableJson $json) => $json
-                    ->where('type', 'country')
-                    ->where('term', '<strong>foo</strong>bar')
-                    ->etc()
-                )
-                ->has('data.1', fn(AssertableJson $json) => $json
-                    ->where('type', 'language')
-                    ->where('term', 'bar<strong>foo</strong>')
-                    ->etc()
-                )
+            ->assertJson(
+                fn (AssertableJson $json) => $json
+                    ->has('data', 2)
+                    ->has(
+                        'data.0',
+                        fn (AssertableJson $json) => $json
+                            ->where('type', 'country')
+                            ->where('term', '<strong>foo</strong>bar')
+                            ->etc()
+                    )
+                    ->has(
+                        'data.1',
+                        fn (AssertableJson $json) => $json
+                            ->where('type', 'language')
+                            ->where('term', 'bar<strong>foo</strong>')
+                            ->etc()
+                    )
             );
     }
 }
