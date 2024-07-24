@@ -6,6 +6,7 @@ namespace App\Nova\Resources\Shop;
 
 use App\Enums\Shop\OrderState;
 use App\Models\Collections\Collection as CollectionModel;
+use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopProduct;
 use App\Nova\FieldOverrides\Stack;
@@ -20,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Jpeters8889\AdvancedNovaMediaLibrary\Fields\Images;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\HasMany;
@@ -158,6 +160,8 @@ class Products extends Resource
             HasMany::make('Prices', resource: ProductPrice::class),
 
             HasMany::make('Variants', resource: ProductVariant::class),
+
+            BelongsToMany::make('Search Terms', 'travelCardSearchTerms', resource: TravelCardSearchTerms::class),
         ];
     }
 

@@ -18,7 +18,7 @@ class IndexController
                 'product',
                 fn (Builder $query) => $query->whereHas(
                     'categories',
-                    fn (Builder $query) => $query->whereIn('slug', ['standard-coeliac-travel-cards', 'coeliac-and-other-dietary-needs-travel-cards']),
+                    fn (Builder $query) => $query->whereIn('slug', ['standard-coeliac-travel-cards', 'coeliac-cards']),
                 ),
             )
             ->inRandomOrder()

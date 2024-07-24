@@ -48,6 +48,8 @@ use App\Nova\Resources\Shop\Products;
 use App\Nova\Resources\Shop\ProductVariant;
 use App\Nova\Resources\Shop\ShippingAddress;
 use App\Nova\Resources\Shop\ShippingMethod;
+use App\Nova\Resources\Shop\TravelCardSearchHistory;
+use App\Nova\Resources\Shop\TravelCardSearchTerms;
 use Laravel\Nova\Nova;
 
 /**
@@ -115,6 +117,10 @@ class ResourceRegistrar
             MassDiscount::class,
             OrderReviews::class,
             OrderReviewItem::class,
+
+            // Shop Search
+            TravelCardSearchHistory::class,
+            TravelCardSearchTerms::class,
         ]);
     }
 }

@@ -36,6 +36,8 @@ use App\Nova\Resources\Shop\OrderReviews;
 use App\Nova\Resources\Shop\Orders;
 use App\Nova\Resources\Shop\PostagePrice;
 use App\Nova\Resources\Shop\Products;
+use App\Nova\Resources\Shop\TravelCardSearchHistory;
+use App\Nova\Resources\Shop\TravelCardSearchTerms;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
@@ -117,6 +119,11 @@ class Menu
                     MenuItem::resource(DiscountCode::class),
                     MenuItem::resource(PostagePrice::class),
                     MenuItem::resource(MassDiscount::class),
+                ]),
+
+                MenuGroup::make('Search', [
+                    MenuItem::resource(TravelCardSearchHistory::class),
+                    MenuItem::resource(TravelCardSearchTerms::class),
                 ]),
             ])->icon('shopping-bag'),
         ]);
