@@ -24,6 +24,7 @@ declare module 'v-click-outside';
 
 export type InertiaForm<T> = BaseInertiaForm<T> & {
   submit(options?: Partial<VisitOptions>): void;
+  validate(field: keyof T): void;
   errors: Partial<T>;
 };
 

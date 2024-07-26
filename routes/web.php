@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Controllers\About\IndexController as AboutIndexController;
 use App\Http\Controllers\Comments\GetController;
+use App\Http\Controllers\Contact\IndexController as ContactIndexController;
+use App\Http\Controllers\Contact\StoreController as ContactStoreController;
 use App\Http\Controllers\CookiePolicy\IndexController as CookiePolicyIndexController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Popup\Activity\StoreController as PopupActivityStoreController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\PrivacyPolicy\IndexController as PrivacyPolicyIndexCont
 use App\Http\Controllers\Shop\TravelCards\IndexController as ShopTravelCardsLandingPageIndexController;
 use App\Http\Controllers\TermsOfUse\IndexController as TermsOfUseIndexController;
 use App\Http\Controllers\WorkWithUs\IndexController as WorkWithUsIndexController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('blog')->group(base_path('routes/blogs/web.php'));
@@ -25,6 +28,11 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('about', AboutIndexController::class)->name('about');
 
 Route::post('comments', GetController::class)->name('comments.create');
+
+Route::get('contact', ContactIndexController::class)->name('contact.index');
+Route::post('contact', ContactStoreController::class)
+    ->middleware(HandlePrecognitiveRequests::class)
+    ->name('contact.store');
 
 Route::get('cookie-policy', CookiePolicyIndexController::class)->name('cookie-policy');
 Route::get('privacy-policy', PrivacyPolicyIndexController::class)->name('privacy-policy');
