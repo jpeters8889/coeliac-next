@@ -12,6 +12,7 @@ class ShopProductVariant extends Model
 {
     protected $casts = [
         'icon' => 'json',
+        'live' => 'bool',
     ];
 
     protected static function booted(): void

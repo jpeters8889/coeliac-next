@@ -6,6 +6,7 @@ namespace App\Actions\Shop;
 
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopDiscountCode;
+use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,10 +24,14 @@ class VerifyDiscountCodeAction
             throw new RuntimeException('Discount Code has had too many claims');
         }
 
+        /** @var int $runningSubtotal */
         $runningSubtotal = ShopOrderItem::query()
-            ->whereRelation('order', fn (Builder $builder) => $builder
-                ->where('state_id', OrderState::BASKET)
-                ->where('token', $basketToken))
+            ->whereRelation('order', function (Builder $builder) use ($basketToken) {
+                /** @var Builder<ShopOrder> $builder */
+                return $builder
+                    ->where('state_id', OrderState::BASKET)
+                    ->where('token', $basketToken);
+            })
             ->sum(DB::raw('product_price * quantity'));
 
         if ($runningSubtotal < $discountCode->min_spend) {

@@ -8,6 +8,7 @@ use App\Contracts\EatingOut\GetEateriesPipelineActionContract;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryReview;
 use Closure;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
@@ -28,10 +29,13 @@ class HydrateEateriesAction implements GetEateriesPipelineActionContract
         $hydratedEateries = Eatery::query()
             ->with([
                 'country', 'county', 'town', 'town.county', 'type', 'venueType', 'cuisine', 'restaurants',
-                'reviews' => fn (HasMany $builder) => $builder
-                    ->select(['id', 'wheretoeat_id', 'rating'])
-                    ->where('approved', 1)
-                    ->latest(),
+                'reviews' => function (HasMany $builder) {
+                    /** @var HasMany<EateryReview> $builder */
+                    return $builder
+                        ->select(['id', 'wheretoeat_id', 'rating'])
+                        ->where('approved', 1)
+                        ->latest();
+                },
             ])
             ->whereIn('id', $eateryIds)
             ->orderByRaw('field(id, ' . Arr::join($eateryIds, ',') . ')')

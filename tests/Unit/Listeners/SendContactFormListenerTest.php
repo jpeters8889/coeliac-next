@@ -22,6 +22,6 @@ class SendContactFormListenerTest extends TestCase
 
         app(SendContactFormListener::class)->handle($event);
 
-        Mail::assertQueued(ContactFormMail::class, fn(ContactFormMail $mail) => $mail->hasTo('contact@coeliacsanctuary.co.uk'));
-   }
+        Mail::assertQueued(ContactFormMail::class, fn (ContactFormMail $mail) => $mail->hasTo('contact@coeliacsanctuary.co.uk'));
+    }
 }

@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mail;
 
 use App\DataObjects\ContactFormData;
-use App\Infrastructure\MjmlMessage;
 use App\Mail\ContactFormMail;
-use App\Mailables\CommentApprovedMailable;
-use App\Models\Blogs\Blog;
-use App\Models\Comments\Comment;
 use Illuminate\Mail\Mailables\Address;
 use Tests\TestCase;
 
@@ -32,7 +28,7 @@ class ContactFormMailTest extends TestCase
 
         $mailable = new ContactFormMail($emailData);
 
-        $this->assertEquals(['name' => new Address('email')], $mailable->envelope()->replyTo);
+        $this->assertEquals([new Address('email', 'name')], $mailable->envelope()->replyTo);
     }
 
     /** @test */

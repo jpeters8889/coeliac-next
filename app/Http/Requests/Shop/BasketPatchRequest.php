@@ -7,6 +7,7 @@ namespace App\Http\Requests\Shop;
 use App\Actions\Shop\VerifyDiscountCodeAction;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopDiscountCode;
+use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopPostageCountry;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,9 +51,12 @@ class BasketPatchRequest extends FormRequest
 
                 $itemInBasket = ShopOrderItem::query()
                     ->where('id', $this->integer('item_id'))
-                    ->whereRelation('order', fn (Builder $builder) => $builder
-                        ->where('state_id', OrderState::BASKET)
-                        ->where('token', $this->cookie('basket_token')))
+                    ->whereRelation('order', function (Builder $builder) {
+                        /** @var Builder<ShopOrder> $builder */
+                        return $builder
+                            ->where('state_id', OrderState::BASKET)
+                            ->where('token', $this->cookie('basket_token'));
+                    })
                     ->exists();
 
                 if ( ! $itemInBasket) {

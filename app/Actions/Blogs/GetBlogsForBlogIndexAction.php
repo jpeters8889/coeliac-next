@@ -24,7 +24,10 @@ class GetBlogsForBlogIndexAction
             Blog::query()
                 ->when($tag?->exists, fn (Builder $builder) => $builder->whereHas(
                     'tags',
-                    fn (Builder $builder) => $builder->where('slug', $tag?->slug)
+                    function (Builder $builder) use ($tag) {
+                        /** @var Builder<BlogTag> $builder */
+                        return $builder->where('slug', $tag?->slug);
+                    }
                 ))
                 ->with(['media', 'tags'])
                 ->withCount(['comments'])

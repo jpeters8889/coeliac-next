@@ -8,13 +8,15 @@ use App\DataObjects\ContactFormData;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class ContactFormMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected ContactFormData $contactFormData)
     {
@@ -25,7 +27,7 @@ class ContactFormMail extends Mailable implements ShouldQueue
         return new Envelope(
             subject: "New Contact Form - {$this->contactFormData->subject}",
             replyTo: [
-                $this->contactFormData->name => $this->contactFormData->email,
+                new Address($this->contactFormData->email, $this->contactFormData->name),
             ],
         );
     }

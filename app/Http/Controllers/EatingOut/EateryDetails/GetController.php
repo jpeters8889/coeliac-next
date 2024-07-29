@@ -7,6 +7,7 @@ namespace App\Http\Controllers\EatingOut\EateryDetails;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
+use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use App\Resources\EatingOut\EateryDetailsResource;
@@ -40,7 +41,10 @@ class GetController
 
         $eatery->load([
             'adminReview', 'adminReview.images', 'reviewImages', 'reviews.images', 'restaurants', 'features', 'openingTimes',
-            'reviews' => fn (HasMany $builder) => $builder->latest()->where('admin_review', false),
+            'reviews' => function (HasMany $builder) {
+                /** @var HasMany<EateryReview> $builder */
+                return $builder->latest()->where('admin_review', false);
+            },
         ]);
 
         if ($request->routeIs('eating-out.nationwide.show')) {

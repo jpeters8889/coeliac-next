@@ -6,8 +6,10 @@ namespace App\Http\Controllers\EatingOut\County\Town;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Http\Response\Inertia;
+use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use App\Models\EatingOut\NationwideBranch;
 use App\Pipelines\EatingOut\GetEateries\GetEateriesPipeline;
 use App\Resources\EatingOut\TownPageResource;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,9 +44,15 @@ class ShowController
                 'town' => fn () => new TownPageResource($town),
                 'eateries' => fn () => $getEateriesPipeline->run($town, $filters),
                 'filters' => fn () => $getFiltersForTown->handle(
-                    fn (Builder $query) => $query
-                        ->where('town_id', $town->id)
-                        ->orWhereHas('nationwideBranches', fn (Builder $query) => $query->where('town_id', $town->id)),
+                    function (Builder $query) use ($town) {
+                        /** @var Builder<Eatery> $query */
+                        return $query
+                            ->where('town_id', $town->id)
+                            ->orWhereHas('nationwideBranches', function (Builder $query) use ($town) {
+                                /** @var Builder<NationwideBranch> $query */
+                                return $query->where('town_id', $town->id);
+                            });
+                    },
                     $filters,
                 ),
             ]);

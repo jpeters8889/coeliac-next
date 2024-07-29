@@ -6,7 +6,6 @@ namespace App\Nova\Resources\Shop;
 
 use App\Enums\Shop\OrderState;
 use App\Models\Collections\Collection as CollectionModel;
-use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopProduct;
 use App\Nova\FieldOverrides\Stack;

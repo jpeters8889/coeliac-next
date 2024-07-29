@@ -53,12 +53,12 @@ class TravelCardSearchTerms extends Resource
             DateTime::make('Most Recent Click', 'updated_at')->sortable()->exceptOnForms(),
 
             BelongsToMany::make('Products', resource: Products::class)
-                ->display(function(Products $product) {
-                /** @var ShopCategory $category */
-                $category = $product->categories()->first();
+                ->display(function (Products $product) {
+                    /** @var ShopCategory $category */
+                    $category = $product->categories()->first();
 
-                return "{$category->title} - {$product->title}";
-            }),
+                    return "{$category->title} - {$product->title}";
+                }),
         ];
     }
 
@@ -76,7 +76,7 @@ class TravelCardSearchTerms extends Resource
     public static function relatableShopProducts(NovaRequest $request, Builder $builder)
     {
         return $builder
-            ->whereHas('categories', fn(Builder $builder) => $builder->whereIn('slug', ['standard-coeliac-travel-cards', 'coeliac-cards']))
+            ->whereHas('categories', fn (Builder $builder) => $builder->whereIn('slug', ['standard-coeliac-travel-cards', 'coeliac-cards']))
             ->reorder(DB::raw('(select category_id from shop_product_categories where product_id = shop_products.id) asc, title'));
     }
 }

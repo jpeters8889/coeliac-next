@@ -8,6 +8,7 @@ use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Models\Recipes\Recipe;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class PublishItemsCommand extends Command
@@ -20,8 +21,10 @@ class PublishItemsCommand extends Command
         $models = [Blog::class, Recipe::class, Collection::class];
 
         foreach ($models as $model) {
-            $model::query()
-                ->withoutGlobalScopes()
+            /** @var Builder<Blog | Recipe | Collection> $query */
+            $query = $model::query();
+
+            $query->withoutGlobalScopes()
                 ->where('live', false)
                 ->where('draft', false)
                 ->where('publish_at', '<', now())

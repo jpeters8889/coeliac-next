@@ -175,7 +175,7 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
 
     public function shouldBeSearchable(): bool
     {
-        return $this->variants->filter(fn ($query) => $query->live)->count() > 0;
+        return $this->variants->filter(fn (ShopProductVariant $variant) => $variant->live)->count() > 0;
     }
 
     //    protected function richTextType(): string
