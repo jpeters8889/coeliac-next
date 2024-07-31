@@ -92,7 +92,9 @@ defineProps<{ metas: MetaProps }>();
     </template>
 
     <template v-if="metas.schema">
-      {{ metas.schema }}
+      <template v-for="schema in metas.schema">
+        {{ schema }}
+      </template>
     </template>
 
     <meta

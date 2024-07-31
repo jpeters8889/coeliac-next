@@ -11,6 +11,7 @@ use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Http\Response\Inertia;
 use Inertia\Response;
+use Spatie\SchemaOrg\Schema;
 
 class HomeController
 {
@@ -22,12 +23,24 @@ class HomeController
         GetLatestReviewsForHomepageAction $getLatestReviewsForHomepageAction,
         GetLatestEateriesForHomepageAction $getLatestEateriesForHomepageAction,
     ): Response {
-        return $inertia->render('Home', [
-            'blogs' => $getLatestBlogsForHomepageAction->handle(),
-            'recipes' => $getLatestRecipesForHomepageAction->handle(),
-            'collections' => $getLatestCollectionsForHomepageAction->handle(),
-            'latestReviews' => $getLatestReviewsForHomepageAction->handle(),
-            'latestEateries' => $getLatestEateriesForHomepageAction->handle(),
-        ]);
+        return $inertia
+            ->schema(
+                Schema::person()
+                    ->name('Alison Peters')
+                    ->email('contact@coeliacsanctuary.co.uk')
+                    ->sameAs([
+                        'https://www.facebook.com/coeliacsanctuary',
+                        'https://twitter.com/coeliacsanc',
+                        'https://www.instagram.com/coeliacsanctuary',
+                    ])
+                    ->toScript()
+            )
+            ->render('Home', [
+                'blogs' => $getLatestBlogsForHomepageAction->handle(),
+                'recipes' => $getLatestRecipesForHomepageAction->handle(),
+                'collections' => $getLatestCollectionsForHomepageAction->handle(),
+                'latestReviews' => $getLatestReviewsForHomepageAction->handle(),
+                'latestEateries' => $getLatestEateriesForHomepageAction->handle(),
+            ]);
     }
 }

@@ -26,6 +26,7 @@ class ShowController
             ->metaDescription($product->meta_description)
             ->metaTags(explode(',', $product->meta_keywords))
             ->metaImage($product->social_image)
+            ->schema($product->schema()->toScript())
             ->render('Shop/Product', [
                 'product' => new ShopProductResource($product),
                 'reviews' => ShopProductReviewResource::collection($reviews),

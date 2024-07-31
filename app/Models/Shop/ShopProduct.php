@@ -23,6 +23,9 @@ use Laravel\Scout\Searchable;
 use Money\Money;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\SchemaOrg\Contracts\ReviewContract;
+use Spatie\SchemaOrg\Product as ProductSchema;
+use Spatie\SchemaOrg\Schema;
 
 /**
  * @property int $currentPrice
@@ -178,91 +181,95 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
         return $this->variants->filter(fn (ShopProductVariant $variant) => $variant->live)->count() > 0;
     }
 
-    //    protected function richTextType(): string
-    //    {
-    //        return 'Product';
-    //    }
-    //
-    //    protected function toRichText(): array
-    //    {
-    //        $core = [
-    //            'sku' => $this->id,
-    //            'name' => $this->title,
-    //            'brand' => [
-    //                '@type' => 'Organization',
-    //                'name' => 'Coeliac Sanctuary',
-    //                'logo' => [
-    //                    '@type' => 'ImageObject',
-    //                    'url' => 'https://www.coeliacsanctuary.co.uk/assets/svg/logo.svg',
-    //                ],
-    //            ],
-    //            'description' => $this->description,
-    //            'image' => [$this->first_image],
-    //            'offers' => [
-    //                '@type' => 'Offer',
-    //                'price' => $this->currentPrice / 100,
-    //                'availability' => $this->isInStock() ? 'InStock' : 'OutOfStock',
-    //                'priceCurrency' => 'GBP',
-    //                'url' => $this->absolute_link,
-    //                'shippingDetails' => [
-    //                    '@type' => 'OfferShippingDetails',
-    //                    'shippingDestination' => [
-    //                        '@type' => 'DefinedRegion',
-    //                        'addressCountry' => 'UK',
-    //                    ],
-    //                    'deliveryTime' => [
-    //                        '@type' => 'ShippingDeliveryTime',
-    //                        'businessDays' => [
-    //                            '@type' => 'OpeningHoursSpecification',
-    //                            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    //                        ],
-    //                        'cutOffTime' => '12:00',
-    //                        'handlingTime' => [
-    //                            '@type' => 'QuantitativeValue',
-    //                            'minValue' => 0,
-    //                            'maxValue' => 1,
-    //                        ],
-    //                        'transitTime' => [
-    //                            '@type' => 'QuantitativeValue',
-    //                            'minValue' => 1,
-    //                            'maxValue' => 3,
-    //                        ],
-    //                    ],
-    //                    'shippingRate' => [
-    //                        '@type' => 'MonetaryAmount',
-    //                        'currency' => 'GBP',
-    //                        'value' => $this->baseShippingRate() / 100,
-    //                    ],
-    //                ],
-    //            ],
-    //        ];
-    //
-    //        if ($this->reviews()->count() > 0) {
-    //            $core = array_merge($core, [
-    //                'review' => $this->reviews()
-    //                    ->latest()
-    //                    ->with(['parent'])
-    //                    ->get()
-    //                    ->map(fn (ShopOrderReviewItem $review) => [
-    //                        '@type' => 'Review',
-    //                        'reviewRating' => [
-    //                            '@type' => 'Rating',
-    //                            'ratingValue' => $review->rating,
-    //                            'bestRating' => '5',
-    //                        ],
-    //                        'author' => [
-    //                            '@type' => 'Person',
-    //                            'name' => $review->parent->name,
-    //                        ],
-    //                    ]),
-    //                'aggregateRating' => [
-    //                    '@type' => 'AggregateRating',
-    //                    'ratingValue' => $this->reviews()->average('rating'),
-    //                    'reviewCount' => $this->reviews()->count(),
-    //                ],
-    //            ]);
-    //        }
-    //
-    //        return $core;
-    //    }
+    protected function isInStock(): bool
+    {
+        return $this
+            ->variants()
+            ->pluck('quantity')
+            ->filter(fn ($quantity) => $quantity > 0)
+            ->count() > 0;
+    }
+
+    protected function baseShippingRate(): int
+    {
+        return $this
+            ->shippingMethod()
+            ->first()
+            ?->prices()
+            ->where('postage_country_area_id', 1)
+            ->where('max_weight', '>', $this->variants[0]?->weight)
+            ->orderBy('price')
+            ->firstOrFail()
+            ->price ?? 0;
+    }
+
+    public function schema(): ProductSchema
+    {
+        return Schema::product()
+            ->sku((string) $this->id)
+            ->name($this->title)
+            ->brand(
+                Schema::organization()
+                    ->name('Coeliac Sanctuary')
+                    ->logo(asset('/images/logo.svg'))
+            )
+            ->description($this->description)
+            ->image($this->main_image)
+            ->offers(
+                Schema::offer()
+                    ->price($this->currentPrice / 100)
+                    ->availability($this->isInStock() ? Schema::itemAvailability()::InStock : Schema::itemAvailability()::OutOfStock)
+                    ->priceCurrency('GBP')
+                    ->url($this->absolute_link)
+                    ->shippingDetails(
+                        Schema::offerShippingDetails()
+                            ->shippingDestination(Schema::definedRegion()->addressCountry('UK'))
+                            ->deliveryTime(
+                                Schema::shippingDeliveryTime()
+                                    ->businessDays(
+                                        Schema::openingHoursSpecification()
+                                            ->dayOfWeek([
+                                                Schema::dayOfWeek()::Monday,
+                                                Schema::dayOfWeek()::Tuesday,
+                                                Schema::dayOfWeek()::Wednesday,
+                                                Schema::dayOfWeek()::Thursday,
+                                                Schema::dayOfWeek()::Friday,
+                                            ])
+                                    )
+                                    ->cutoffTime(Carbon::createFromTime(14))
+                                    ->handlingTime(Schema::quantitativeValue()->minValue(0)->maxValue(1))
+                                    ->transitTime(Schema::quantitativeValue()->minValue(1)->maxValue(3))
+                            )
+                            ->shippingRate(
+                                Schema::monetaryAmount()
+                                    ->currency('GBP')
+                                    ->value($this->baseShippingRate() / 100)
+                            )
+                    )
+            )
+            ->if(
+                $this->reviews()->count() > 0,
+                function (ProductSchema $schema) {
+                    /** @var array{ReviewContract} $reviews */
+                    $reviews = $this->reviews()
+                        ->latest()
+                        ->with(['parent'])
+                        ->get()
+                        ->map(
+                            fn(ShopOrderReviewItem $review) => Schema::review()
+                                ->reviewRating(Schema::rating()->ratingValue($review->rating)->bestRating(5))
+                                ->author(Schema::person()->name($review->parent?->name ?? ''))
+                        )
+                        ->toArray();
+
+                    return $schema
+                        ->reviews($reviews)
+                        ->aggregateRating(
+                            Schema::aggregateRating()
+                                ->ratingValue((float)$this->reviews()->average('rating'))
+                                ->reviewCount($this->reviews()->count())
+                        );
+                }
+            );
+    }
 }

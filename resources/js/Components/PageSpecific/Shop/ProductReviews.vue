@@ -79,6 +79,7 @@ defineEmits(['load-more']);
             size="xl"
             theme="light"
             :loading="loading"
+            as="a"
             @click="
               loading = true;
               $emit('load-more');

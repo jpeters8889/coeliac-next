@@ -10,15 +10,19 @@ use App\Actions\Shop\ResolveBasketAction;
 use App\Resources\Shop\ShopOrderItemResource;
 use App\Support\Helpers;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia as BaseInertia;
 use Inertia\LazyProp;
 use Inertia\Response;
 use Money\Money;
+use Spatie\SchemaOrg\Schema;
 
 class Inertia
 {
+    protected bool $hasSchema = false;
+
     public function __construct()
     {
         BaseInertia::share('meta.baseUrl', config('app.url'));
@@ -75,8 +79,14 @@ class Inertia
         return $this;
     }
 
-    public function schema(string $schema): self
+    public function schema(string|array $schema): self
     {
+        $this->hasSchema = true;
+
+        $schema = Arr::wrap($schema);
+
+        $schema = Arr::prepend($schema, $this->baseSchema());
+
         BaseInertia::share('meta.schema', $schema);
 
         return $this;
@@ -99,6 +109,10 @@ class Inertia
     /** @param array<string, mixed> | Arrayable<string, mixed> $props */
     public function render(string $component, array|Arrayable $props = []): Response
     {
+        if ( ! $this->hasSchema) {
+            $this->schema([]);
+        }
+
         return BaseInertia::render($component, $props);
     }
 
@@ -147,5 +161,20 @@ class Inertia
                 'image' => $popup->main_image,
             ]);
         }
+    }
+
+    protected function baseSchema(): string
+    {
+        /** @var string $url */
+        $url = config('app.url');
+
+        /** @var string $name */
+        $name = config('metas.title');
+
+        return Schema::webSite()
+            ->url($url)
+            ->name($name)
+            ->author(Schema::person()->name('Alison Peters'))
+            ->toScript();
     }
 }
