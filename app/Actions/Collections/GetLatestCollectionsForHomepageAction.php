@@ -16,7 +16,8 @@ class GetLatestCollectionsForHomepageAction
         /** @var string $key */
         $key = config('coeliac.cache.collections.home');
 
-        return Cache::rememberForever(
+        /** @var AnonymousResourceCollection $collections */
+        $collections = Cache::rememberForever(
             $key,
             fn () => CollectionSimpleCardViewResource::collection(Collection::query()
                 ->where('display_on_homepage', true)
@@ -24,5 +25,7 @@ class GetLatestCollectionsForHomepageAction
                 ->with(['media'])
                 ->get())
         );
+
+        return $collections;
     }
 }

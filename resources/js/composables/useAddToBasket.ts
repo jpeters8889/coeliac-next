@@ -2,6 +2,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import eventBus from '@/eventBus';
 import { VisitOptions } from '@inertiajs/core';
 import { InertiaForm } from '@/types/Core';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 type AddBasketPayload = {
   product_id: number;
@@ -39,6 +40,16 @@ export default () => {
       preserveScroll: true,
       onSuccess: () => {
         eventBus.$emit('product-added-to-basket');
+
+        useGoogleEvents().googleEvent('event', 'add_to_cart', {
+          items: [
+            {
+              productId: addBasketForm.product_id,
+              variantId: addBasketForm.variant_id,
+              quantity: addBasketForm.quantity,
+            },
+          ],
+        });
 
         if (callback) {
           callback();

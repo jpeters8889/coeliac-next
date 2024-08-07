@@ -9,6 +9,7 @@ import {
 import { Ref, ref, watch } from 'vue';
 import Icon from '@/Components/Icon.vue';
 import { SelectBoxItem } from '@/types/Types';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 export type RecipeFilterOption = SelectBoxItem & { recipeCount: number };
 
@@ -44,6 +45,17 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
 
   return base;
 };
+
+const openBox = (open: boolean) => {
+  if (!open) {
+    return;
+  }
+
+  useGoogleEvents().googleEvent('event', 'modules', {
+    event_category: 'opened-recipe-filter',
+    event_label: `opened-recipe-filter-for-${props.label}`,
+  });
+};
 </script>
 
 <template>
@@ -56,18 +68,20 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
       <ListboxButton
         :class="open ? 'rounded-t-lg' : 'rounded-lg bg-opacity-70'"
         class="flex w-full items-center justify-between bg-secondary p-2 text-lg font-semibold transition hover:bg-opacity-100"
+        @click="openBox(!open)"
       >
         <div class="flex items-center">
           <ArrowDownCircleIcon
             :class="{ 'rotate-180': open }"
             class="transition-duration-500 mr-2 h-8 w-8 transition"
           />
-          <span>{{ label }}</span>
+          <span v-text="label" />
         </div>
         <div v-if="selectedOptions.length">
-          <span class="font-normal text-grey-dark"
-            >({{ selectedOptions.length }}/{{ options.length }})</span
-          >
+          <span
+            class="font-normal text-grey-dark"
+            v-text="selectedOptions.length + '/' + options.length"
+          />
         </div>
       </ListboxButton>
 
@@ -96,9 +110,10 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
           >
             <div class="flex space-x-2">
               <Icon :name="option.value.toString()" />
-              <span>{{ option.label }}</span>
+              <span v-text="option.label" />
             </div>
-            <span>({{ option.recipeCount }} recipes)</span>
+
+            <span v-text="`(${option.recipeCount} recipes`" />
           </ListboxOption>
         </ListboxOptions>
       </transition>

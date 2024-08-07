@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
 import { Link } from '@inertiajs/vue3';
+import { watch } from 'vue';
+import UseGoogleEvents from '@/composables/useGoogleEvents';
 
 const emit = defineEmits(['close']);
 
-defineProps<{ open: boolean }>();
+const props = defineProps<{ open: boolean }>();
 
 const close = () => emit('close');
 
@@ -20,6 +22,19 @@ const links: { label: string; href: string }[] = [
   { label: 'Work With Us', href: '/work-with-us' },
   { label: 'Contact', href: '/' },
 ];
+
+watch(
+  () => props.open,
+  () => {
+    if (!props.open) {
+      return;
+    }
+
+    UseGoogleEvents().googleEvent('event', 'mobile-nav', {
+      event_category: 'opened-mobile-nav',
+    });
+  },
+);
 </script>
 
 <template>

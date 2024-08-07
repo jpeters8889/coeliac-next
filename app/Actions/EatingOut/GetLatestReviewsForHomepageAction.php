@@ -16,7 +16,8 @@ class GetLatestReviewsForHomepageAction
         /** @var string $key */
         $key = config('coeliac.cache.eating-out.reviews.home');
 
-        return Cache::rememberForever(
+        /** @var AnonymousResourceCollection $reviews */
+        $reviews = Cache::rememberForever(
             $key,
             fn () => SimpleReviewResource::collection(EateryReview::query()
                 ->with(['eatery', 'eatery.town', 'eatery.county', 'eatery.country', 'eatery.town.county'])
@@ -24,5 +25,7 @@ class GetLatestReviewsForHomepageAction
                 ->latest()
                 ->get())
         );
+
+        return $reviews;
     }
 }

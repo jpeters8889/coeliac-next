@@ -14,6 +14,7 @@ import {
   Ref,
   ref,
   watch,
+  onMounted,
 } from 'vue';
 import ShippingDetails from '@/Components/PageSpecific/Shop/Checkout/Form/ShippingDetails.vue';
 import useShopStore from '@/stores/useShopStore';
@@ -28,6 +29,7 @@ import en from 'i18n-iso-countries/langs/en.json';
 import { usePage } from '@inertiajs/vue3';
 import eventBus from '@/eventBus';
 import { ConfirmPaymentData } from '@stripe/stripe-js';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 type SectionKeys = 'details' | 'shipping' | 'payment' | '_complete';
 type FormSection = {
@@ -101,6 +103,10 @@ const createGenericError = (
 
 const submitPendingOrder = async (payload: CheckoutForm): Promise<boolean> => {
   try {
+    useGoogleEvents().googleEvent('event', 'checkout_progress', {
+      event_label: `submit-pending-order`,
+    });
+
     await axios.post('/shop/basket', payload);
 
     return true;
@@ -218,6 +224,11 @@ const activeSection: Ref<SectionKeys> = ref(
 const completeSection = async (section: SectionKeys, next: SectionKeys) => {
   putInLocalStorage('checkout-form', store.toForm);
 
+  useGoogleEvents().googleEvent('event', 'complete-checkout-section', {
+    checkout_step: section,
+    next_step: next,
+  });
+
   if (next === '_complete') {
     sections.payment = {
       active: true,
@@ -299,6 +310,18 @@ const sectionComponents: SectionComponent[] = [
     },
   },
 ];
+
+onMounted(() => {
+  useGoogleEvents().googleEvent('event', 'begin_checkout', {
+    items: props.basket?.items.map((item: ShopBasketItem) => ({
+      id: item.id,
+      name: item.title,
+      variant: item.variant ?? '',
+      quantity: item.quantity,
+      price: item.line_price,
+    })),
+  });
+});
 </script>
 
 <template>

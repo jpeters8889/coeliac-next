@@ -1,7 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import { Component, createApp, h, Plugin } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp, router } from '@inertiajs/vue3';
 import { createPinia } from 'pinia';
 import Coeliac from '@/Layouts/Coeliac.vue';
 import ArticleHeader from '@/Components/ArticleHeader.vue';
@@ -11,11 +11,14 @@ import { InertiaPage } from '@/types/Core';
 
 const appName = 'Coeliac Sanctuary';
 
+const getTitle = (title: string | undefined): string => {
+  return title && title !== '' && title !== appName
+    ? `${title} - ${appName}`
+    : 'Coeliac Sanctuary - Coeliac Blog, Gluten Free Places to Eat, Reviews, and more!';
+};
+
 void createInertiaApp({
-  title: (title) =>
-    title
-      ? `${title} - ${appName}`
-      : 'Coeliac Sanctuary - Coeliac Blog, Gluten Free Places to Eat, Reviews, and more!',
+  title: getTitle,
 
   progress: {
     color: '#4B5563',
@@ -45,4 +48,11 @@ void createInertiaApp({
       .use(vClickOutside as Plugin)
       .mount(el);
   },
+});
+
+router.on('navigate', (event) => {
+  window.gtag('event', 'page_view', {
+    page_location: event.detail.page.url,
+    page_title: getTitle(event.detail.page.props?.meta?.title),
+  });
 });

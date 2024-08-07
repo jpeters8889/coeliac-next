@@ -12,6 +12,7 @@
         "ext-intl": "*",
         "algolia/algoliasearch-client-php": "^3.4.1",
         "algolia/scout-extended": "^3.1",
+        "coroowicaksono/chart-js-integration": "^0.4.3",
         "dompdf/dompdf": "^2.0.8",
         "guzzlehttp/guzzle": "^7.9.2",
         "inertiajs/inertia-laravel": "^1.3.0",
@@ -47,7 +48,9 @@
         "spatie/laravel-sluggable": "^3.6.0",
         "spatie/mjml-php": "^1.2",
         "spatie/schema-org": "^3.23",
-        "stripe/stripe-php": "^13.18"
+        "stripe/stripe-php": "^13.18",
+        "jpeters8889/custom-styles": "@dev",
+        "jpeters8889/apex-charts": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13.5",
@@ -126,6 +129,18 @@
         {
             "type": "path",
             "url": "./nova-components/ShopDailyStock"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/CustomStyles"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/CustomStyles"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/ApexCharts"
         }
     ],
     "autoload": {

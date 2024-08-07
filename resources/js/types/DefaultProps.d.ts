@@ -6,6 +6,7 @@ export type DefaultProps = {
 
 export type MetaProps = {
   baseUrl: string;
+  currentUrl: string;
   title: string;
   description: string;
   tags: string[];

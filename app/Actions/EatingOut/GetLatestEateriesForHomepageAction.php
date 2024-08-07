@@ -17,7 +17,8 @@ class GetLatestEateriesForHomepageAction
         /** @var string $key */
         $key = config('coeliac.cache.eating-out.home');
 
-        return Cache::rememberForever(
+        /** @var AnonymousResourceCollection $eateries */
+        $eateries = Cache::rememberForever(
             $key,
             function () {
                 $eateries = Eatery::query()
@@ -39,5 +40,7 @@ class GetLatestEateriesForHomepageAction
                 return SimpleEateryResource::collection($combined);
             }
         );
+
+        return $eateries;
     }
 }

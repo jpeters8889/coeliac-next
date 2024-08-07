@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { BlogTagCount } from '@/types/BlogTypes';
 import FormInput from '@/Components/Forms/FormInput.vue';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 const emits = defineEmits(['close']);
 
@@ -27,6 +28,20 @@ const tagsToDisplay = (): BlogTagCount[] => {
 
   return tags.slice(0, 15);
 };
+
+watch(
+  () => props.open,
+  () => {
+    if (!props.open) {
+      return;
+    }
+
+    useGoogleEvents().googleEvent('event', 'modules', {
+      event_category: 'opened-filter-bar',
+      event_label: `opened-blog-tags-filter`,
+    });
+  },
+);
 </script>
 
 <template>

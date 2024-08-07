@@ -1,0 +1,4 @@
+/* Nova Asset CSS */
+#nova canvas#line-chart, #nova canvas#bar-chart {
+    height: 70vh !important;
+}

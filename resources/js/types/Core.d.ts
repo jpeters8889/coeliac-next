@@ -11,6 +11,7 @@ export {};
 declare global {
   interface Window {
     axios: Axios;
+    gtag: (key: string, event: string, attributes: object = {}) => void;
   }
 }
 

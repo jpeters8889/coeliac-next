@@ -256,7 +256,7 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
                         ->with(['parent'])
                         ->get()
                         ->map(
-                            fn(ShopOrderReviewItem $review) => Schema::review()
+                            fn (ShopOrderReviewItem $review) => Schema::review()
                                 ->reviewRating(Schema::rating()->ratingValue($review->rating)->bestRating(5))
                                 ->author(Schema::person()->name($review->parent?->name ?? ''))
                         )

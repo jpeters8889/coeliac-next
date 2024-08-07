@@ -2,6 +2,7 @@
 import { onMounted, Ref, ref } from 'vue';
 import { loadScript } from '@/helpers';
 import { MapModalPropDefaults, MapModalProps } from '@/Components/Maps/Props';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 const props = withDefaults(defineProps<MapModalProps>(), MapModalPropDefaults);
 
@@ -11,6 +12,11 @@ const mapElement: Ref<HTMLDivElement> =
 const apiKey: string = import.meta.env.VITE_GOOGLE_MAPS_DYNAMIC_KEY as string;
 
 onMounted(() => {
+  useGoogleEvents().googleEvent('event', 'dynamic-map', {
+    event_category: 'dynamic-map',
+    event_label: `dynamic-map-viewed-${props.lat},${props.lng}`,
+  });
+
   loadScript(
     `https://maps.google.com/maps/api/js?key=${apiKey}&libraries=marker&v=weekly`,
   ).then(() => {

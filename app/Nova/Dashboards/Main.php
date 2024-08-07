@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Nova\Dashboards;
 
-use Laravel\Nova\Cards\Help;
+use App\Nova\Metrics\Comments;
+use App\Nova\Metrics\PlaceRequests;
+use App\Nova\Metrics\Ratings;
+use Jpeters8889\ApexCharts\ApexChart;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
 /**
@@ -20,7 +23,13 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            new Help(),
+            Comments::make(),
+            Ratings::make(),
+            PlaceRequests::make(),
+            //            EmailsSent::make(),
+            ApexChart::make(\App\Nova\Chartables\EmailsSent::class)->fullWidth(),
+            ApexChart::make(\App\Nova\Chartables\EateryRatings::class)->fullWidth(),
+            //            EateryRatings::make(),
         ];
     }
 }

@@ -30,6 +30,7 @@ class Inertia
         BaseInertia::share('meta.description', config('metas.description'));
         BaseInertia::share('meta.tags', config('metas.tags'));
         BaseInertia::share('meta.image', config('metas.image'));
+        BaseInertia::share('meta.currentUrl', request()->url());
 
         if (Request::routeIs('shop.product')) {
             BaseInertia::share('productShippingText', config('coeliac.shop.product_postage_description'));

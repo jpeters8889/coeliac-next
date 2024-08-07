@@ -12,6 +12,7 @@ use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EaterySuggestedEdit;
 use App\Models\Shop\ShopOrder;
 use App\Nova\Dashboards\Main;
+use App\Nova\Dashboards\Shop;
 use App\Nova\Resources\EatingOut\Counties;
 use App\Nova\Resources\EatingOut\Eateries;
 use App\Nova\Resources\EatingOut\EaterySearch;
@@ -64,6 +65,7 @@ class Menu
         Nova::mainMenu(fn (Request $request) => [
             MenuSection::make('Dashboards', [
                 MenuItem::dashboard(Main::class),
+                MenuItem::dashboard(Shop::class),
             ])->icon('chart-bar'),
 
             MenuSection::make('Main Site', [

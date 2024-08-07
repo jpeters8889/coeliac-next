@@ -16,7 +16,8 @@ class GetLatestRecipesForHomepageAction
         /** @var string $key */
         $key = config('coeliac.cache.recipes.home');
 
-        return Cache::rememberForever(
+        /** @var AnonymousResourceCollection $recipes */
+        $recipes = Cache::rememberForever(
             $key,
             fn () => RecipeSimpleCardViewResource::collection(Recipe::query()
                 ->take(8)
@@ -24,5 +25,7 @@ class GetLatestRecipesForHomepageAction
                 ->with(['media'])
                 ->get())
         );
+
+        return $recipes;
     }
 }

@@ -16,7 +16,8 @@ class GetLatestBlogsForHomepageAction
         /** @var string $key */
         $key = config('coeliac.cache.blogs.home');
 
-        return Cache::rememberForever(
+        /** @var AnonymousResourceCollection $blogs */
+        $blogs = Cache::rememberForever(
             $key,
             fn () => BlogSimpleCardViewResource::collection(Blog::query()
                 ->take(6)
@@ -24,5 +25,7 @@ class GetLatestBlogsForHomepageAction
                 ->with(['media'])
                 ->get())
         );
+
+        return $blogs;
     }
 }

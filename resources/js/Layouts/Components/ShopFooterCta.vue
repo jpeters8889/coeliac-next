@@ -9,12 +9,17 @@ import { usePage } from '@inertiajs/vue3';
 import BasketSidebar from '@/Components/PageSpecific/Shop/BasketSidebar.vue';
 import { ShoppingCartIcon, NoSymbolIcon } from '@heroicons/vue/24/outline';
 import { pluralise } from '../../helpers';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 const viewSideBar = ref(false);
 const isVisible = ref(false);
 
 const openSidebar = () => {
   viewSideBar.value = true;
+
+  useGoogleEvents().googleEvent('event', 'checkout_progress', {
+    event_category: 'opened-basket-sidebar',
+  });
 };
 
 EventBus.$on('product-added-to-basket', openSidebar);

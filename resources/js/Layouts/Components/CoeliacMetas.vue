@@ -18,7 +18,10 @@ defineProps<{ metas: MetaProps }>();
       :content="metas.tags.join(', ')"
     />
 
-    <!--        <link rel="canonical" href="{{ $page->url }}"/>-->
+    <link
+      rel="canonical"
+      :href="metas.currentUrl"
+    />
 
     <meta
       property="og:type"
@@ -50,7 +53,7 @@ defineProps<{ metas: MetaProps }>();
     />
     <meta
       property="og:url"
-      content=""
+      :content="metas.currentUrl"
     />
 
     <meta

@@ -4,6 +4,7 @@ import { Link, router } from '@inertiajs/vue3';
 import { ShopBasketItem } from '@/types/Shop';
 import { ref } from 'vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 defineProps<{ items: ShopBasketItem[]; subtotal: string }>();
 
@@ -16,6 +17,11 @@ const removeItem = (item: ShopBasketItem) => {
 
   router.delete(`/shop/basket/${item.id}`, {
     preserveScroll: true,
+    onSuccess: () => {
+      useGoogleEvents().googleEvent('event', 'remove-item-from-cart', {
+        itemId: item.id,
+      });
+    },
   });
 };
 </script>

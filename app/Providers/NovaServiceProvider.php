@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Nova\Dashboards\Main;
+use App\Nova\Dashboards\Shop;
 use App\Nova\FieldRegistrar;
 use App\Nova\Menu;
 use App\Nova\NovaMacros;
@@ -23,6 +24,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
+
         Nova::booted(function (): void {
             Menu::build();
         });
@@ -63,7 +65,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
-            new Main(),
+            Main::make(),
+            Shop::make(),
         ];
     }
 

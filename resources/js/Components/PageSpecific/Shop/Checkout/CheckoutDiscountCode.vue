@@ -7,6 +7,7 @@ import { useForm } from 'laravel-precognition-vue-inertia';
 import { nextTick } from 'vue';
 import eventBus from '@/eventBus';
 import { InertiaForm } from '@/types/Core';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 const form = useForm('patch', '/shop/basket', {
   discount: '',
@@ -18,9 +19,20 @@ const applyDiscountCode = () => {
     preserveScroll: true,
     onFinish: () => {
       nextTick(() => {
+        useGoogleEvents().googleEvent('event', 'checkout_progress', {
+          event_category: 'applied-discount',
+          event_label: `applied-discount-${form.discount}`,
+        });
+
         eventBus.$emit('refresh-payment-element');
       });
     },
+  });
+};
+
+const logExpandDiscountCode = () => {
+  useGoogleEvents().googleEvent('event', 'checkout_progress', {
+    event_label: `opened-discount-dropdown`,
   });
 };
 </script>
@@ -32,6 +44,7 @@ const applyDiscountCode = () => {
   >
     <DisclosureButton
       class="flex w-full items-center justify-between text-left ui-open:mb-2"
+      @click="logExpandDiscountCode()"
     >
       <span>Got a discount code?</span>
       <ChevronDownIcon class="h-6 w-6 ui-open:hidden" />

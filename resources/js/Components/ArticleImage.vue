@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { ref, useAttrs } from 'vue';
+import { ref, useAttrs, watch } from 'vue';
 import Modal from '@/Components/Overlays/Modal.vue';
+import useGoogleEvents from '@/composables/useGoogleEvents';
 
 const props = withDefaults(
   defineProps<{
@@ -41,6 +42,17 @@ const classes = (): string[] => {
 
   return classList;
 };
+
+watch(zoomed, () => {
+  if (!zoomed.value) {
+    return;
+  }
+
+  useGoogleEvents().googleEvent('event', 'article', {
+    event_category: 'viewed-image',
+    event_label: `viewed-${props.src}`,
+  });
+});
 </script>
 
 <template>
