@@ -3,6 +3,7 @@ import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
 import { CollectionPage } from '@/types/CollectionTypes';
 import CollectionItemCard from '@/Components/PageSpecific/Collections/CollectionItemCard.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 defineProps<{ collection: CollectionPage }>();
 </script>
@@ -42,6 +43,8 @@ defineProps<{ collection: CollectionPage }>();
       class="prose prose-lg max-w-none md:prose-xl"
       v-html="collection.body"
     />
+
+    <GoogleAd code="7206823714" />
   </Card>
 
   <CollectionItemCard

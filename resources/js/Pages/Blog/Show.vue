@@ -8,6 +8,7 @@ import { BlogPage } from '@/types/BlogTypes';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { Comment } from '@/types/Types';
 import RenderedString from '@/Components/RenderedString.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 const props = defineProps<{
   blog: BlogPage;
@@ -125,6 +126,8 @@ const loadMoreComments = () => {
     <div class="prose prose-lg max-w-none md:prose-xl">
       <RenderedString>{{ blog.body }}</RenderedString>
     </div>
+
+    <GoogleAd code="6662103082" />
   </Card>
 
   <Card

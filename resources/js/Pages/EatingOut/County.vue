@@ -7,6 +7,7 @@ import {
 import CountyHeading from '@/Components/PageSpecific/EatingOut/County/CountyHeading.vue';
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import CountyTown from '@/Components/PageSpecific/EatingOut/County/CountyTown.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 defineProps<{
   county: CountyPage;
@@ -84,6 +85,8 @@ defineProps<{
       options in <span class="font-semibold">{{ county.name }}s</span> diverse
       culinary scene.
     </p>
+
+    <GoogleAd code="5284484376" />
 
     <div class="group grid gap-3 md:grid-cols-3">
       <CountyTown

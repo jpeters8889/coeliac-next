@@ -5,6 +5,7 @@ import InstagramIcon from '@/Icons/InstagramIcon.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import FormInput from '@/Components/Forms/FormInput.vue';
 import { Link } from '@inertiajs/vue3';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 const year = new Date().getFullYear();
 
@@ -26,6 +27,10 @@ const navigation: { links: { label: string; url: string }[] } = {
 <template>
   <footer class="bg-primary">
     <div class="mx-auto max-w-8xl p-4 lg:grid lg:grid-cols-4 lg:gap-x-4">
+      <div class="lg:col-span-4">
+        <GoogleAd code="3102132022" />
+      </div>
+
       <!-- Tagline -->
       <div class="mb-4">
         <h2 class="mb-2 text-xl font-semibold">Coeliac Sanctuary</h2>

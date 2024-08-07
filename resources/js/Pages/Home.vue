@@ -12,6 +12,7 @@ import {
 } from '@/types/EateryTypes';
 import HomeLatestEateries from '@/Components/PageSpecific/Home/HomeLatestEateries.vue';
 import HomeLatestReviews from '@/Components/PageSpecific/Home/HomeLatestReviews.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 defineProps<{
   blogs: HomeHoverItem[];
@@ -60,6 +61,8 @@ defineProps<{
         :items="blogs"
         title="Latest Blogs"
       />
+
+      <GoogleAd code="9266309021" />
 
       <HomeHoverGroup
         :items="recipes"

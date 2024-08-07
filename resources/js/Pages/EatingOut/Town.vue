@@ -11,6 +11,7 @@ import { router } from '@inertiajs/vue3';
 import useScreensize from '@/composables/useScreensize';
 import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
 import { RequestPayload } from '@inertiajs/core/types/types';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 defineProps<{
   town: TownPage;
@@ -123,6 +124,8 @@ const reloadEateries = () => {
       </p>
     </Warning>
   </Card>
+
+  <GoogleAd code="5284484376" />
 
   <div class="relative md:flex xmd:space-x-2">
     <TownFilterSidebar

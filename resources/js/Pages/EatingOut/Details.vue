@@ -11,6 +11,7 @@ import { Ref, ref } from 'vue';
 import EateryFeatures from '@/Components/PageSpecific/EatingOut/Details/EateryFeatures.vue';
 import { formatDate } from '@/helpers';
 import EateryBranchList from '@/Components/PageSpecific/EatingOut/Details/EateryBranchList.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 const props = defineProps<{
   eatery: DetailedEatery;
@@ -76,6 +77,8 @@ const eateryName = (): string => {
       v-if="eatery.county.id !== 1 || eatery.branch"
       :eatery="eatery"
     />
+
+    <GoogleAd code="5284484376" />
 
     <EateryAdminReview
       v-if="eatery.reviews.admin_review"

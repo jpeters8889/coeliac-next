@@ -6,6 +6,7 @@ import {
 } from '@/types/EateryTypes';
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import NationwideEateryCard from '@/Components/PageSpecific/EatingOut/NationwideEateryCard.vue';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 defineProps<{
   county: NationwidePage;
@@ -77,6 +78,8 @@ defineProps<{
       </div>
     </Card>
   </template>
+
+  <GoogleAd code="5284484376" />
 
   <Card class="mt-3 flex flex-col space-y-4">
     <h2 class="text-2xl font-semibold md:text-3xl">

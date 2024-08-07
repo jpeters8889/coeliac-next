@@ -10,6 +10,7 @@ import { PrinterIcon } from '@heroicons/vue/20/solid';
 import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareImage.vue';
 import RecipeNutritionTable from '@/Components/PageSpecific/Recipes/RecipeNutritionTable.vue';
 import { Page } from '@inertiajs/core';
+import GoogleAd from '@/Components/GoogleAd.vue';
 
 const props = defineProps<{
   recipe: RecipePage;
@@ -184,6 +185,8 @@ const loadMoreComments = () => {
       </li>
     </ul>
   </Card>
+
+  <GoogleAd code="2137793897" />
 
   <Card class="space-y-3">
     <h3 class="text-xl font-semibold text-primary-dark">Method</h3>
