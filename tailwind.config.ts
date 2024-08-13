@@ -9,6 +9,7 @@ export default {
     './storage/framework/views/*.php',
     './resources/js/**/*.vue',
     './resources/js/**/*.ts',
+    './resources/views/**/*.ts',
   ],
 
   theme: {

@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace App\Models\EatingOut;
 
 use App\Concerns\DisplaysMedia;
+use App\Concerns\HasOpenGraphImage;
+use App\Contracts\HasOpenGraphImageContract;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class EateryTown extends Model implements HasMedia
+class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
 {
     use DisplaysMedia;
+    use HasOpenGraphImage;
     use InteractsWithMedia;
 
     protected $table = 'wheretoeat_towns';
@@ -104,6 +108,12 @@ class EateryTown extends Model implements HasMedia
     public function county(): BelongsTo
     {
         return $this->belongsTo(EateryCounty::class, 'county_id');
+    }
+
+    /** @return HasManyThrough<EateryReview> */
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(EateryReview::class, Eatery::class, 'town_id', 'wheretoeat_id');
     }
 
     public function link(): string

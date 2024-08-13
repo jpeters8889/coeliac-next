@@ -6,9 +6,12 @@ namespace Tests\Feature\Http\Controllers\EatingOut\Nationwide;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -30,11 +33,8 @@ class IndexControllerTest extends TestCase
             ->create([
                 'county_id' => $this->county->id,
             ]);
-    }
 
-    protected function visitPage(): TestResponse
-    {
-        return $this->get(route('eating-out.nationwide'));
+        Bus::fake(CreateOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -60,6 +60,14 @@ class IndexControllerTest extends TestCase
     }
 
     /** @test */
+    public function itCallsTheGetOpenGraphImageAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this->visitPage();
+    }
+
+    /** @test */
     public function itRendersTheInertiaPage(): void
     {
         $this->visitPage()
@@ -70,5 +78,10 @@ class IndexControllerTest extends TestCase
                     ->where('county.name', $this->county->county)
                     ->etc()
             );
+    }
+
+    protected function visitPage(): TestResponse
+    {
+        return $this->get(route('eating-out.nationwide'));
     }
 }

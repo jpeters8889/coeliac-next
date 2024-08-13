@@ -6,6 +6,8 @@ namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
+use App\Concerns\HasOpenGraphImage;
+use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
 use App\Support\Helpers;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -22,9 +25,10 @@ use Laravel\Scout\Searchable;
 /**
  * @property Eatery $eatery
  */
-class NationwideBranch extends Model implements IsSearchable
+class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSearchable
 {
     use HasEateryDetails;
+    use HasOpenGraphImage;
     use Searchable;
 
     protected $table = 'wheretoeat_nationwide_branches';
@@ -124,7 +128,7 @@ class NationwideBranch extends Model implements IsSearchable
             'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town && $this->county ? $this->town->town . ', ' . $this->county->county : '',
             'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
             'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
-            'info' => $this->eatery->info,
+            'info' => $this->eatery ? $this->eatery->info : '', /** @phpstan-ignore-line */
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -160,5 +164,35 @@ class NationwideBranch extends Model implements IsSearchable
     public function reports(): HasMany
     {
         return $this->hasMany(EateryReport::class, 'branch_id');
+    }
+
+    /** @return HasManyThrough<EateryReview> */
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(EateryReview::class, Eatery::class, 'id', 'wheretoeat_id', 'id', 'id');
+    }
+
+    /** @return HasManyThrough<EateryReviewImage> */
+    public function reviewImages(): HasManyThrough
+    {
+        return $this->hasManyThrough(EateryReviewImage::class, Eatery::class, 'id', 'wheretoeat_id', 'id', 'id');
+    }
+
+    /** @return Attribute<string, never> */
+    public function fullName(): Attribute
+    {
+        return Attribute::get(function () {
+            if ($this->name) {
+                return "{$this->name} ({$this->eatery->name}) - {$this->full_location}";
+            }
+
+            return "{$this->eatery->name} - {$this->full_location}";
+        });
+    }
+
+    /** @return Attribute<string | null, never> */
+    public function averageRating(): Attribute
+    {
+        return Attribute::get(fn () => $this->eatery->average_rating);
     }
 }

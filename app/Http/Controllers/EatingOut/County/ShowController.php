@@ -6,6 +6,7 @@ namespace App\Http\Controllers\EatingOut\County;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Resources\EatingOut\CountyPageResource;
@@ -17,12 +18,14 @@ class ShowController
         EateryCounty $county,
         Inertia $inertia,
         GetMostRatedPlacesInCountyAction $getMostRatedPlacesInCounty,
-        GetTopRatedPlacesInCountyAction $getTopRatedPlacesInCounty
+        GetTopRatedPlacesInCountyAction $getTopRatedPlacesInCounty,
+        GetOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         return $inertia
             ->title("Gluten Free Places to Eat in {$county->county}")
             ->metaDescription("Eateries who can cater to Coeliac and Gluten Free diets in {$county->county} | Gluten free places to eat in {$county->county}")
             ->metaTags($county->keywords())
+            ->metaImage($getOpenGraphImageAction->handle($county))
             ->render('EatingOut/County', [
                 'county' => new CountyPageResource($county),
                 'topRated' => fn () => $getTopRatedPlacesInCounty->handle($county),

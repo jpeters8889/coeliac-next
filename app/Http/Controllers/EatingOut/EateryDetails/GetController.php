@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut\EateryDetails;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -24,6 +25,7 @@ class GetController
         NationwideBranch $nationwideBranch,
         Request $request,
         Inertia $inertia,
+        GetOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         if ($request->routeIs('eating-out.nationwide.show', 'eating-out.nationwide.show.branch')) {
             /** @var EateryCounty $county */
@@ -63,6 +65,7 @@ class GetController
             ->title("Gluten free at {$eatery->full_name}")
             ->metaDescription("Eat gluten free at {$eatery->full_name}")
             ->metaTags($eatery->keywords())
+            ->metaImage($getOpenGraphImageAction->handle($nationwideBranch))
             ->render('EatingOut/Details', [
                 'eatery' => fn () => new EateryDetailsResource($eatery),
             ])

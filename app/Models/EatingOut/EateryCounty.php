@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models\EatingOut;
 
 use App\Concerns\DisplaysMedia;
+use App\Concerns\HasOpenGraphImage;
+use App\Contracts\HasOpenGraphImageContract;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,9 +17,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class EateryCounty extends Model implements HasMedia
+class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
 {
     use DisplaysMedia;
+    use HasOpenGraphImage;
     use InteractsWithMedia;
 
     protected $table = 'wheretoeat_counties';
@@ -41,8 +44,15 @@ class EateryCounty extends Model implements HasMedia
     public function activeTowns(): HasMany
     {
         return $this->hasMany(EateryTown::class, 'county_id')
-            ->whereHas('liveEateries')
-            ->orWhereHas('liveBranches')
+            /**
+             * @param  HasMany<EateryTown>  $builder
+             * @return HasMany<EateryTown>
+             */
+            ->where(function (Builder $builder) {
+                return $builder
+                    ->whereHas('liveEateries')
+                    ->orWhereHas('liveBranches');
+            })
             ->orderBy('town');
     }
 
@@ -50,6 +60,12 @@ class EateryCounty extends Model implements HasMedia
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'county_id');
+    }
+
+    /** @return HasMany<NationwideBranch> */
+    public function nationwideBranches(): HasMany
+    {
+        return $this->hasMany(NationwideBranch::class, 'county_id');
     }
 
     /** @return HasManyThrough<EateryReview> */

@@ -6,6 +6,8 @@ namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
 use App\Concerns\EatingOut\HasEateryDetails;
+use App\Concerns\HasOpenGraphImage;
+use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
 use App\Scopes\LiveScope;
@@ -33,9 +35,10 @@ use Laravel\Scout\Searchable;
  * @property string $full_name
  * @property string $typeDescription
  */
-class Eatery extends Model implements IsSearchable
+class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
 {
     use HasEateryDetails;
+    use HasOpenGraphImage;
     use Searchable;
 
     protected $casts = [

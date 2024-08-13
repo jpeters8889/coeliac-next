@@ -24,6 +24,7 @@ return [
     'google' => [
         'maps' => [
             'admin' => env('GOOGLE_MAP_ADMIN'),
+            'static' => env('VITE_GOOGLE_MAPS_STATIC_KEY'),
         ],
     ],
 

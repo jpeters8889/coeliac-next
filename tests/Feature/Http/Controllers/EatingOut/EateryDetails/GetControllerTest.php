@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\EateryDetails;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -37,6 +40,8 @@ class GetControllerTest extends TestCase
         $this->nationwideBranch = $this->create(NationwideBranch::class, [
             'wheretoeat_id' => $this->eatery->id,
         ]);
+
+        Bus::fake(CreateOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -53,15 +58,18 @@ class GetControllerTest extends TestCase
         $this->get(route('eating-out.show', ['county' => $this->county, 'town' => $this->town, 'eatery' => $eatery->slug]))->assertNotFound();
     }
 
-    protected function visitEatery(): TestResponse
-    {
-        return $this->get(route('eating-out.show', ['county' => $this->county, 'town' => $this->town, 'eatery' => $this->eatery->slug]));
-    }
-
     /** @test */
     public function itReturnsOkForALiveEatery(): void
     {
         $this->visitEatery()->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageActionWhenVistingAnEatery(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this->visitEatery();
     }
 
     /** @test */
@@ -93,11 +101,6 @@ class GetControllerTest extends TestCase
         return $this;
     }
 
-    protected function visitNationwideEatery(): TestResponse
-    {
-        return $this->get(route('eating-out.nationwide.show', ['eatery' => $this->eatery->slug]));
-    }
-
     /** @test */
     public function itReturnsOkForALiveNationwideEatery(): void
     {
@@ -105,6 +108,16 @@ class GetControllerTest extends TestCase
             ->convertToNationwideEatery()
             ->visitNationwideEatery()
             ->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageActionForANationwideEatery(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this
+            ->convertToNationwideEatery()
+            ->visitNationwideEatery();
     }
 
     /** @test */
@@ -122,14 +135,6 @@ class GetControllerTest extends TestCase
             );
     }
 
-    protected function visitBranch(): TestResponse
-    {
-        return $this->get(route('eating-out.nationwide.show.branch', [
-            'eatery' => $this->eatery->slug,
-            'nationwideBranch' => $this->nationwideBranch->slug,
-        ]));
-    }
-
     /** @test */
     public function itReturnsOkForALiveBranch(): void
     {
@@ -137,6 +142,16 @@ class GetControllerTest extends TestCase
             ->convertToNationwideEatery()
             ->visitBranch()
             ->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageActionForANationwideBranch(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this
+            ->convertToNationwideEatery()
+            ->visitBranch();
     }
 
     /** @test */
@@ -152,5 +167,23 @@ class GetControllerTest extends TestCase
                     ->where('eatery.name', $this->eatery->name)
                     ->etc()
             );
+    }
+
+    protected function visitEatery(): TestResponse
+    {
+        return $this->get(route('eating-out.show', ['county' => $this->county, 'town' => $this->town, 'eatery' => $this->eatery->slug]));
+    }
+
+    protected function visitBranch(): TestResponse
+    {
+        return $this->get(route('eating-out.nationwide.show.branch', [
+            'eatery' => $this->eatery->slug,
+            'nationwideBranch' => $this->nationwideBranch->slug,
+        ]));
+    }
+
+    protected function visitNationwideEatery(): TestResponse
+    {
+        return $this->get(route('eating-out.nationwide.show', ['eatery' => $this->eatery->slug]));
     }
 }

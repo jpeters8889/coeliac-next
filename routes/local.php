@@ -2,17 +2,27 @@
 
 declare(strict_types=1);
 
+use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GenerateTownOpenGraphImageAction;
 use App\DataObjects\NotificationRelatedObject;
 use App\Enums\Shop\OrderState;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentReply;
+use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryReview;
+use App\Models\EatingOut\EateryTown;
+use App\Models\EatingOut\NationwideBranch;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopProduct;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\View\View;
 use Spatie\Mjml\Mjml;
 
 Route::get('/mail/shop/order-confirmed/{orderId?}', function (?int $orderId = null): string {
@@ -156,4 +166,41 @@ Route::get('/mail/comment-reply/{id?}', function (?int $id = null): string {
     ])->render();
 
     return Mjml::new()->toHtml($content);
+});
+
+Route::get('/og/eating-out/town/{slug?}', function (GenerateTownOpenGraphImageAction $generateTownOpenGraphImageAction, ?string $slug = null): View {
+    $town = EateryTown::query()
+        ->where('slug', $slug ?: 'crewe')
+        ->with(['media', 'county', 'county.media', 'county.country'])
+        ->firstOrFail();
+
+    return $generateTownOpenGraphImageAction->handle($town);
+});
+
+Route::get('/og/eating-out/county/{slug?}', function (GenerateCountyOpenGraphImageAction $generateCountyOpenGraphImageAction, ?string $slug = null): View {
+    $county = EateryCounty::query()
+        ->where('slug', $slug ?: 'cheshire')
+        ->with(['media', 'country'])
+        ->firstOrFail();
+
+    return $generateCountyOpenGraphImageAction->handle($county);
+});
+
+Route::get('/og/eating-out/eatery/{id?}', function (GenerateEateryOpenGraphImageAction $generateEateryOpenGraphImageAction, ?int $id = null): View {
+    $eatery = Eatery::query()
+        ->where('id', $id ?: 2645)
+        ->with(['town', 'county', 'country', 'reviews', 'reviewImages' => fn (Relation $builder) => $builder->latest()])
+        ->withCount(['nationwideBranches'])
+        ->firstOrFail();
+
+    return $generateEateryOpenGraphImageAction->handle($eatery);
+});
+
+Route::get('/og/eating-out/branch/{id?}', function (?string $id, GenerateNationwideBranchOpenGraphImageAction $generateNationwideBranchOpenGraphImageAction): View {
+    $branch = NationwideBranch::query()
+        ->when($id, fn (Builder $builder) => $builder->where('id', $id), fn (Builder $builder) => $builder->inRandomOrder())
+        ->with(['town', 'county', 'country', 'reviews'])
+        ->firstOrFail();
+
+    return $generateNationwideBranchOpenGraphImageAction->handle($branch);
 });

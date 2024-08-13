@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\EatingOut\County\Town;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Pipelines\EatingOut\GetEateries\GetEateriesPipeline;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -30,6 +33,8 @@ class ShowControllerTest extends TestCase
         $this->town = EateryTown::query()->withoutGlobalScopes()->first();
 
         $this->create(Eatery::class);
+
+        Bus::fake(CreateOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -50,11 +55,6 @@ class ShowControllerTest extends TestCase
         $town = $this->create(EateryTown::class);
 
         $this->get(route('eating-out.town', ['county' => $this->county, 'town' => $town]))->assertNotFound();
-    }
-
-    protected function visitTown(): TestResponse
-    {
-        return $this->get(route('eating-out.town', ['county' => $this->county, 'town' => $this->town]));
     }
 
     /** @test */
@@ -80,6 +80,14 @@ class ShowControllerTest extends TestCase
     }
 
     /** @test */
+    public function itCallsTheGetOpenGraphImageAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this->visitTown();
+    }
+
+    /** @test */
     public function itRendersTheInertiaPage(): void
     {
         $this->visitTown()
@@ -90,5 +98,10 @@ class ShowControllerTest extends TestCase
                     ->where('town.name', $this->town->town)
                     ->etc()
             );
+    }
+
+    protected function visitTown(): TestResponse
+    {
+        return $this->get(route('eating-out.town', ['county' => $this->county, 'town' => $this->town]));
     }
 }

@@ -6,11 +6,14 @@ namespace Tests\Feature\Http\Controllers\EatingOut\County;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use Database\Seeders\EateryScaffoldingSeeder;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -30,6 +33,8 @@ class ShowControllerTest extends TestCase
             ->create([
                 'county_id' => $this->county->id,
             ]);
+
+        Bus::fake(CreateOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -44,11 +49,6 @@ class ShowControllerTest extends TestCase
         $county = $this->create(EateryCounty::class);
 
         $this->get(route('eating-out.county', ['county' => $county]))->assertNotFound();
-    }
-
-    protected function visitCounty(): TestResponse
-    {
-        return $this->get(route('eating-out.county', ['county' => $this->county]));
     }
 
     /** @test */
@@ -92,6 +92,14 @@ class ShowControllerTest extends TestCase
     }
 
     /** @test */
+    public function itCallsTheGetOpenGraphImageAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageAction::class);
+
+        $this->visitCounty();
+    }
+
+    /** @test */
     public function itRendersTheInertiaPage(): void
     {
         $this->visitCounty()
@@ -102,5 +110,10 @@ class ShowControllerTest extends TestCase
                     ->where('county.name', $this->county->county)
                     ->etc()
             );
+    }
+
+    protected function visitCounty(): TestResponse
+    {
+        return $this->get(route('eating-out.county', ['county' => $this->county]));
     }
 }

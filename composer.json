@@ -19,8 +19,10 @@
         "intervention/image": "^2.7.2",
         "jpeters8889/address-field": "@dev",
         "jpeters8889/advanced-nova-media-library": "dev-master",
+        "jpeters8889/apex-charts": "@dev",
         "jpeters8889/body": "*",
         "jpeters8889/country-icon": "@dev",
+        "jpeters8889/custom-styles": "@dev",
         "jpeters8889/eatery-opening-times": "@dev",
         "jpeters8889/eatery-recommendation-listener": "@dev",
         "jpeters8889/order-dispatch-slip": "@dev",
@@ -41,6 +43,7 @@
         "nesbot/carbon": "^3.7.0",
         "openai-php/laravel": "^0.10.1",
         "pixelcreation/nova-field-sortable": "^3.2",
+        "spatie/browsershot": "^4.1",
         "spatie/eloquent-sortable": "^4.4.0",
         "spatie/geocoder": "^3.16",
         "spatie/laravel-collection-macros": "^7.14.1",
@@ -48,9 +51,7 @@
         "spatie/laravel-sluggable": "^3.6.0",
         "spatie/mjml-php": "^1.2",
         "spatie/schema-org": "^3.23",
-        "stripe/stripe-php": "^13.18",
-        "jpeters8889/custom-styles": "@dev",
-        "jpeters8889/apex-charts": "@dev"
+        "stripe/stripe-php": "^13.18"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13.5",
