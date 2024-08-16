@@ -7,6 +7,7 @@ namespace App\Models\EatingOut;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
+use App\Jobs\CreateOpenGraphImageJob;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -44,6 +45,15 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
             }
 
             return $town;
+        });
+
+        static::saved(function (self $town): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            CreateOpenGraphImageJob::dispatch($town);
+            CreateOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
         });
     }
 

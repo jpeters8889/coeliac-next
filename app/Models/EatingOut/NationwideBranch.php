@@ -10,6 +10,7 @@ use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Support\Helpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -49,6 +50,20 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
             }
 
             return $eatery;
+        });
+
+        static::saved(function (self $branch): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            $eatery = $branch->eatery()->withoutGlobalScopes()->firstOrFail();
+            $town = $branch->town()->withoutGlobalScopes()->firstOrFail();
+
+            CreateOpenGraphImageJob::dispatch($branch);
+            CreateOpenGraphImageJob::dispatch($eatery);
+            CreateOpenGraphImageJob::dispatch($town);
+            CreateOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
         });
     }
 

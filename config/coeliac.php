@@ -38,4 +38,6 @@ return [
             </ul>
             TEXT,
     ],
+
+    'generate_og_images' => (bool) env('GENERATE_OG_IMAGES', true),
 ];

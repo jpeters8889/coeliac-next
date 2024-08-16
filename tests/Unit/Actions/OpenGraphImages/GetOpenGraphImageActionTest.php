@@ -18,6 +18,13 @@ use Tests\TestCase;
 
 class GetOpenGraphImageActionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('coeliac.generate_og_images', true);
+    }
+
     /**
      * @test
      *
@@ -29,7 +36,7 @@ class GetOpenGraphImageActionTest extends TestCase
         Storage::fake('media');
 
         /** @var HasOpenGraphImageContract $model */
-        $model = $this->create($modelClass);
+        $model = $this->build($modelClass)->createQuietly();
 
         $openGraphImage = $model->openGraphImage()->create();
 
@@ -51,7 +58,7 @@ class GetOpenGraphImageActionTest extends TestCase
         Storage::fake('media');
 
         /** @var HasOpenGraphImageContract $model */
-        $model = $this->create($modelClass);
+        $model = $this->build($modelClass)->createQuietly();
 
         $this->assertNull($model->openGraphImage);
 

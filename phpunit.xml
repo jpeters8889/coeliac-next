@@ -26,6 +26,7 @@
         <env name="SCOUT_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="GENERATE_OG_IMAGES" value="false"/>
     </php>
     <source>
         <include>

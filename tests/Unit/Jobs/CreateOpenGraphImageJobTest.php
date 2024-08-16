@@ -32,6 +32,8 @@ class CreateOpenGraphImageJobTest extends TestCase
         Storage::fake('media');
 
         $this->browserShotMock = $this->partialMock(Browsershot::class);
+
+        config()->set('coeliac.generate_og_images', true);
     }
 
     /**
@@ -43,7 +45,7 @@ class CreateOpenGraphImageJobTest extends TestCase
     {
         $this->browserShotMock->shouldReceive('setHtml')->andThrow(new Exception());
 
-        $model = $this->create($classString);
+        $model = $this->build($classString)->createQuietly($classString === NationwideBranch::class ? ['wheretoeat_id' => $this->build(Eatery::class)->createQuietly()->id] : []);
 
         $this->expectAction($expectedAction, return: view('app', ['page' => []]));
 
@@ -67,7 +69,7 @@ class CreateOpenGraphImageJobTest extends TestCase
             ->shouldReceive('windowSize')->with(1200, 630)->andReturnSelf()->once()->getMock()
             ->shouldReceive('base64Screenshot')->andReturn('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGK567aCAQZOXAuEs/cf3QZnO3xaDGczMZAIaK+BJVjTFs5RLAyBs1UuS8DZaj8m0tFJJGtgzORshHMELtfA2TMC58LZ7i3MdHQS6fHw6VkPnKMWcRHOlq/JgbOPFO+ko5NI1gAIAAD//3qSF5xOx6hcAAAAAElFTkSuQmCC')->once();
 
-        $model = $this->create($classString, $classString === NationwideBranch::class ? ['wheretoeat_id' => $this->create(Eatery::class)->id] : []);
+        $model = $this->build($classString)->createQuietly($classString === NationwideBranch::class ? ['wheretoeat_id' => $this->build(Eatery::class)->createQuietly()->id] : []);
 
         if ($useMedia) {
             $model->addMedia(UploadedFile::fake()->image('image.jpg'))->toMediaCollection('primary');
@@ -91,7 +93,7 @@ class CreateOpenGraphImageJobTest extends TestCase
             ->andReturn('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGK567aCAQZOXAuEs/cf3QZnO3xaDGczMZAIaK+BJVjTFs5RLAyBs1UuS8DZaj8m0tFJJGtgzORshHMELtfA2TMC58LZ7i3MdHQS6fHw6VkPnKMWcRHOlq/JgbOPFO+ko5NI1gAIAAD//3qSF5xOx6hcAAAAAElFTkSuQmCC')
             ->once();
 
-        $model = $this->create($classString, $classString === NationwideBranch::class ? ['wheretoeat_id' => $this->create(Eatery::class)->id] : []);
+        $model = $this->build($classString)->createQuietly($classString === NationwideBranch::class ? ['wheretoeat_id' => $this->build(Eatery::class)->createQuietly()->id] : []);
 
         if ($useMedia) {
             $model->addMedia(UploadedFile::fake()->image('image.jpg'))->toMediaCollection('primary');

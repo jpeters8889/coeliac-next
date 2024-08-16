@@ -10,6 +10,7 @@ use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Scopes\LiveScope;
 use App\Support\Helpers;
 use Closure;
@@ -67,6 +68,18 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
             }
 
             return $eatery;
+        });
+
+        static::saved(function (self $eatery): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            $town = $eatery->town()->withoutGlobalScopes()->firstOrFail();
+
+            CreateOpenGraphImageJob::dispatch($eatery);
+            CreateOpenGraphImageJob::dispatch($town);
+            CreateOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
         });
     }
 

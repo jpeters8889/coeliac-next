@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace Tests\Unit\Models\EatingOut;
 
 use App\DataObjects\EatingOut\LatLng;
+use App\Jobs\CreateOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryCuisine;
 use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryOpeningTimes;
+use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\EateryVenueType;
 use App\Support\Helpers;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Str;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Tests\TestCase;
 
-class EateryModelTest extends TestCase
+class EateryTest extends TestCase
 {
     protected Eatery $eatery;
 
@@ -42,6 +46,36 @@ class EateryModelTest extends TestCase
     {
         $this->assertNotNull($this->eatery->slug);
         $this->assertEquals(Str::slug($this->eatery->name), $this->eatery->slug);
+    }
+
+    /** @test */
+    public function itDispatchesTheCreateOpenGraphImageJobWhenSavedForEateryAndTownAndCounty(): void
+    {
+        config()->set('coeliac.generate_og_images', true);
+        Bus::fake();
+
+        $county = $this->build(EateryCounty::class)->createQuietly();
+        $town = $this->build(EateryTown::class)->createQuietly([
+            'county_id' => $county->id,
+        ]);
+
+        $eatery = $this->create(Eatery::class, [
+            'town_id' => $town->id,
+            'county_id' => $county->id,
+        ]);
+
+        $dispatchedModels = [];
+
+        Bus::assertDispatched(CreateOpenGraphImageJob::class, function (CreateOpenGraphImageJob $job) use (&$dispatchedModels) {
+            $dispatchedModels[] = $job->model;
+
+            return true;
+        });
+
+        $this->assertCount(3, $dispatchedModels);
+        $this->assertTrue($eatery->is($dispatchedModels[0]));
+        $this->assertTrue($town->is($dispatchedModels[1]));
+        $this->assertTrue($county->is($dispatchedModels[2]));
     }
 
     /** @test */

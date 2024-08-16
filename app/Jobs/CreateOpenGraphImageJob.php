@@ -30,13 +30,17 @@ class CreateOpenGraphImageJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected HasOpenGraphImageContract $model)
+    public function __construct(public HasOpenGraphImageContract $model)
     {
         //
     }
 
     public function handle(): void
     {
+        if (config('coeliac.generate_og_images') === false) {
+            return;
+        }
+
         /** @var OpenGraphActionContract $action */
         $action = match ($this->model::class) {
             EateryCounty::class => app(GenerateCountyOpenGraphImageAction::class),
