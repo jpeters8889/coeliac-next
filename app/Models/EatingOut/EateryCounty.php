@@ -7,7 +7,7 @@ namespace App\Models\EatingOut;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -30,7 +30,7 @@ class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
     {
         static::addGlobalScope('hasPlaces', fn (Builder $builder) => $builder->whereHas('activeTowns'));
 
-        static::saved(fn (self $county) => CreateOpenGraphImageJob::dispatch($county));
+        static::saved(fn (self $county) => CreateEatingOutOpenGraphImageJob::dispatch($county));
     }
 
     public function getRouteKeyName()

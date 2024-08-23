@@ -7,6 +7,7 @@ namespace Tests\Feature\Http\Controllers\EatingOut;
 use App\Actions\EatingOut\GetCountyListAction;
 use App\Actions\EatingOut\GetMostRatedPlacesAction;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Models\EatingOut\EateryCounty;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
@@ -54,6 +55,14 @@ class IndexControllerTest extends TestCase
     public function itCallsTheMostRatedPlacesAction(): void
     {
         $this->expectAction(GetMostRatedPlacesAction::class);
+
+        $this->visitPage();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery']);
 
         $this->visitPage();
     }

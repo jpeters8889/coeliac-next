@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Recipes;
 
+use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateRecipeIndexPageOpenGraphImageJob;
 use App\Models\Recipes\Recipe;
 use App\Models\Recipes\RecipeAllergen;
 use App\Models\Recipes\RecipeFeature;
 use App\Models\Recipes\RecipeMeal;
 use App\Models\Recipes\RecipeNutrition;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Bus;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\CommentableTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
@@ -45,6 +48,19 @@ class RecipeModelTest extends TestCase
         $this->setUpCanBePublishedModelTest(fn (array $params = []) => $this->create(Recipe::class, $params));
 
         $this->item->addMedia(UploadedFile::fake()->image('square.jpg'))->toMediaCollection('square');
+    }
+
+    /** @test */
+    public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
+    {
+        config()->set('coeliac.generate_og_images', true);
+
+        Bus::fake();
+
+        $this->create(Recipe::class);
+
+        Bus::assertDispatched(CreateRecipeIndexPageOpenGraphImageJob::class);
+        Bus::assertDispatched(CreateHomePageOpenGraphImageJob::class);
     }
 
     /** @test */

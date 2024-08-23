@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Recipes;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
 use App\Actions\Recipes\GetRecipesForIndexAction;
 use App\Http\Response\Inertia;
@@ -21,7 +22,8 @@ class IndexController
         Inertia $inertia,
         Request $request,
         GetRecipesForIndexAction $getRecipesForIndexAction,
-        GetRecipeFiltersForIndexAction $getRecipeFiltersForIndexAction
+        GetRecipeFiltersForIndexAction $getRecipeFiltersForIndexAction,
+        GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction,
     ): Response {
         /** @var array{filters: string[], meals: string[], freeFrom: string[]} $filters */
         $filters = [
@@ -34,6 +36,7 @@ class IndexController
             ->title('Gluten Free Recipes')
             ->metaDescription('Coeliac Sanctuary gluten free recipe list, all of our fabulous gluten free recipes which I have been tried and tested! ')
             ->metaTags(['coeliac sanctuary recipes', 'recipe index', 'recipe list', 'gluten free recipes', 'recipes', 'coeliac recipes'])
+            ->metaImage($getOpenGraphImageForRouteAction->handle('recipe'))
             ->render('Recipe/Index', [
                 'recipes' => fn () => $getRecipesForIndexAction->handle($filters),
                 'features' => fn () => $getRecipeFiltersForIndexAction->handle(RecipeFeature::class, $filters),

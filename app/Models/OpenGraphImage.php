@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @property string|null $image_url
+ */
 class OpenGraphImage extends Model implements HasMedia
 {
     use InteractsWithMedia;

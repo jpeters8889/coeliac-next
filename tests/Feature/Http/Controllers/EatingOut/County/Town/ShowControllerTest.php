@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\EatingOut\County\Town;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -34,7 +34,7 @@ class ShowControllerTest extends TestCase
 
         $this->create(Eatery::class);
 
-        Bus::fake(CreateOpenGraphImageJob::class);
+        Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -82,7 +82,7 @@ class ShowControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageAction(): void
     {
-        $this->expectAction(GetOpenGraphImageAction::class);
+        $this->expectAction(GetEatingOutOpenGraphImageAction::class);
 
         $this->visitTown();
     }

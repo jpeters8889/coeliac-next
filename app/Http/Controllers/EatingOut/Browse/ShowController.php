@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut\Browse;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Http\Response\Inertia;
 use Inertia\Response;
 
 class ShowController
 {
-    public function __invoke(Inertia $inertia): Response
+    public function __invoke(Inertia $inertia, GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction): Response
     {
         return $inertia
             ->title('Gluten Free Places to Eat Map')
@@ -20,6 +21,7 @@ class ShowController
                 'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
                 'gluten free eating out uk', 'uk places to eat', 'gluten free attractions', 'gluten free hotels',
             ])
+            ->metaImage($getOpenGraphImageForRouteAction->handle('eatery-map'))
             ->render('EatingOut/Browse');
     }
 }

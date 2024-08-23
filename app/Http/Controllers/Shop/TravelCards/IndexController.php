@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Shop\TravelCards;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Http\Response\Inertia;
 use App\Models\Shop\ShopFeedback;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Inertia\Response;
 
 class IndexController
 {
-    public function __invoke(Inertia $inertia): Response
+    public function __invoke(Inertia $inertia, GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction): Response
     {
         $feedback = ShopFeedback::query()
             ->whereHas(
@@ -39,6 +40,7 @@ class IndexController
                 'coeliac travel card', 'coeliac translation card', 'gluten free travel card', 'gluten free translation card',
                 'allergy card', 'allergy translation card', 'allergy travel card', 'allergen travel card', 'allergen translation card',
             ])
+            ->metaImage($getOpenGraphImageForRouteAction->handle('shop'))
             ->render('Shop/TravelCards', [
                 'feedback' => $feedback,
             ]);

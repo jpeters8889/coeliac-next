@@ -11,6 +11,8 @@ use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
 use App\Contracts\Comments\HasComments;
 use App\Contracts\Search\IsSearchable;
+use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateRecipeIndexPageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
@@ -49,6 +51,15 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());
+
+        static::saved(function (): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            CreateRecipeIndexPageOpenGraphImageJob::dispatch();
+            CreateHomePageOpenGraphImageJob::dispatch();
+        });
     }
 
     public function getRouteKeyName()

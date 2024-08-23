@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Shop;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Http\Response\Inertia;
 use App\Models\Shop\ShopCategory;
 use App\Resources\Shop\ShopCategoryIndexResource;
@@ -11,7 +12,7 @@ use Inertia\Response;
 
 class IndexController
 {
-    public function __invoke(Inertia $inertia): Response
+    public function __invoke(Inertia $inertia, GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction): Response
     {
         $categories = ShopCategory::query()
             ->with(['media'])
@@ -26,6 +27,7 @@ class IndexController
                 'travelling abroad', 'gluten free abroad', 'coeliac travel', 'gluten free travel', 'coeliac wristbands',
                 'gluten free stickers', 'gluten free wristbands', 'gluten free waterproof stickers', 'coeliac shop',
             ])
+            ->metaImage($getOpenGraphImageForRouteAction->handle('shop'))
             ->render('Shop/Index', [
                 'categories' => ShopCategoryIndexResource::collection($categories),
             ]);

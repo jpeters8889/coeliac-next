@@ -6,7 +6,7 @@ namespace App\Http\Controllers\EatingOut\Nationwide;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Resources\EatingOut\NationwidePageResource;
@@ -18,7 +18,7 @@ class IndexController
         Inertia $inertia,
         GetMostRatedPlacesInCountyAction $getMostRatedPlacesInCounty,
         GetTopRatedPlacesInCountyAction $getTopRatedPlacesInCounty,
-        GetOpenGraphImageAction $getOpenGraphImageAction,
+        GetEatingOutOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         /** @var EateryCounty $county */
         $county = EateryCounty::query()->firstWhere('slug', 'nationwide');

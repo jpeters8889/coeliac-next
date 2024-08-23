@@ -2,6 +2,8 @@
 import Card from '@/Components/Card.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
 import Heading from '@/Components/Heading.vue';
+
+defineProps<{ image: string }>();
 </script>
 
 <template>
@@ -14,7 +16,7 @@ import Heading from '@/Components/Heading.vue';
 
     <img
       class="mb-4 mx-auto"
-      src="/images/share-images/wheretoeat-app.jpg"
+      :src="image"
       alt="Coeliac Sanctuary - On the Go"
     />
 

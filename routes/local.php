@@ -7,7 +7,9 @@ use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateTownOpenGraphImageAction;
 use App\DataObjects\NotificationRelatedObject;
+use App\Enums\EatingOut\EateryType;
 use App\Enums\Shop\OrderState;
+use App\Models\Blogs\Blog;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentReply;
 use App\Models\EatingOut\Eatery;
@@ -15,6 +17,7 @@ use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
+use App\Models\Recipes\Recipe;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopProduct;
 use Illuminate\Database\Eloquent\Builder;
@@ -196,11 +199,123 @@ Route::get('/og/eating-out/eatery/{id?}', function (GenerateEateryOpenGraphImage
     return $generateEateryOpenGraphImageAction->handle($eatery);
 });
 
-Route::get('/og/eating-out/branch/{id?}', function (?string $id, GenerateNationwideBranchOpenGraphImageAction $generateNationwideBranchOpenGraphImageAction): View {
+Route::get('/og/eating-out/branch/{id?}', function (GenerateNationwideBranchOpenGraphImageAction $generateNationwideBranchOpenGraphImageAction, ?string $id): View {
     $branch = NationwideBranch::query()
         ->when($id, fn (Builder $builder) => $builder->where('id', $id), fn (Builder $builder) => $builder->inRandomOrder())
         ->with(['town', 'county', 'country', 'reviews'])
         ->firstOrFail();
 
     return $generateNationwideBranchOpenGraphImageAction->handle($branch);
+});
+
+Route::get('og/generic/home', function () {
+    $blogs = Blog::query()->with(['media'])->latest()->take(4)->get();
+    $recipes = Recipe::query()->with(['media'])->latest()->take(4)->get();
+
+    $items = $blogs->concat($recipes)->sortByDesc('updated_at')->take(4);
+
+    return view('og-images.home', [
+        'items' => $items,
+    ]);
+});
+
+Route::get('og/generic/shop', function () {
+    $spanishCard = ShopProduct::query()
+        ->with(['media'])
+        ->where('title', 'like', 'spanish and italian%')
+        ->firstOrFail();
+
+    $stickers = ShopProduct::query()
+        ->with(['media'])
+        ->where('title', 'like', '%stickers%')
+        ->firstOrFail();
+
+    $otherAllergyCard = ShopProduct::query()
+        ->with(['media'])
+        ->where('title', 'like', '%coeliac+%')
+        ->firstOrFail();
+
+    return view('og-images.shop', [
+        'spanishCard' => $spanishCard,
+        'stickers' => $stickers,
+        'otherAllergyCard' => $otherAllergyCard,
+    ]);
+});
+
+Route::get('og/generic/wte', function () {
+    $eateries = Eatery::query()
+        ->where('type_id', EateryType::EATERY)
+        ->count();
+
+    $attractions = Eatery::query()
+        ->where('type_id', EateryType::ATTRACTION)
+        ->count();
+
+    $hotels = Eatery::query()
+        ->where('type_id', EateryType::HOTEL)
+        ->count();
+
+    $branches = NationwideBranch::query()->count();
+
+    $reviews = EateryReview::query()->count();
+
+    return view('og-images.eatery', [
+        'eateries' => $eateries + $branches,
+        'attractions' => $attractions,
+        'hotels' => $hotels,
+        'branches' => $branches,
+        'reviews' => $reviews,
+    ]);
+});
+
+Route::get('og/generic/wte-app', function () {
+    $eateries = Eatery::query()
+        ->where('type_id', EateryType::EATERY)
+        ->count();
+
+    $attractions = Eatery::query()
+        ->where('type_id', EateryType::ATTRACTION)
+        ->count();
+
+    $hotels = Eatery::query()
+        ->where('type_id', EateryType::HOTEL)
+        ->count();
+
+    $branches = NationwideBranch::query()->count();
+
+    $reviews = EateryReview::query()->count();
+
+    return view('og-images.eatery-app', [
+        'eateries' => $eateries + $branches,
+        'attractions' => $attractions,
+        'hotels' => $hotels,
+        'branches' => $branches,
+        'reviews' => $reviews,
+    ]);
+});
+
+Route::get('og/generic/wte-map', function () {
+    $eateries = Eatery::query()
+        ->where('type_id', EateryType::EATERY)
+        ->count();
+
+    $attractions = Eatery::query()
+        ->where('type_id', EateryType::ATTRACTION)
+        ->count();
+
+    $hotels = Eatery::query()
+        ->where('type_id', EateryType::HOTEL)
+        ->count();
+
+    $branches = NationwideBranch::query()->count();
+
+    $reviews = EateryReview::query()->count();
+
+    return view('og-images.eatery-map', [
+        'eateries' => $eateries + $branches,
+        'attractions' => $attractions,
+        'hotels' => $hotels,
+        'branches' => $branches,
+        'reviews' => $reviews,
+    ]);
 });

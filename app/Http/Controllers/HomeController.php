@@ -8,6 +8,7 @@ use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
 use App\Actions\EatingOut\GetLatestEateriesForHomepageAction;
 use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Http\Response\Inertia;
 use Inertia\Response;
@@ -22,6 +23,7 @@ class HomeController
         GetLatestCollectionsForHomepageAction $getLatestCollectionsForHomepageAction,
         GetLatestReviewsForHomepageAction $getLatestReviewsForHomepageAction,
         GetLatestEateriesForHomepageAction $getLatestEateriesForHomepageAction,
+        GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction,
     ): Response {
         return $inertia
             ->schema(
@@ -35,6 +37,7 @@ class HomeController
                     ])
                     ->toScript()
             )
+            ->metaImage($getOpenGraphImageForRouteAction->handle())
             ->render('Home', [
                 'blogs' => $getLatestBlogsForHomepageAction->handle(),
                 'recipes' => $getLatestRecipesForHomepageAction->handle(),

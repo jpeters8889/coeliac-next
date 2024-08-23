@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryCuisine;
@@ -67,7 +70,7 @@ class NationwideBranchTest extends TestCase
 
         $dispatchedModels = [];
 
-        Bus::assertDispatched(CreateOpenGraphImageJob::class, function (CreateOpenGraphImageJob $job) use (&$dispatchedModels) {
+        Bus::assertDispatched(CreateEatingOutOpenGraphImageJob::class, function (CreateEatingOutOpenGraphImageJob $job) use (&$dispatchedModels) {
             $dispatchedModels[] = $job->model;
 
             return true;
@@ -78,6 +81,20 @@ class NationwideBranchTest extends TestCase
         $this->assertTrue($eatery->is($dispatchedModels[1]));
         $this->assertTrue($town->is($dispatchedModels[2]));
         $this->assertTrue($county->is($dispatchedModels[3]));
+    }
+
+    /** @test */
+    public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
+    {
+        config()->set('coeliac.generate_og_images', true);
+
+        Bus::fake();
+
+        $this->create(Eatery::class);
+
+        Bus::assertDispatched(CreateEateryAppPageOpenGraphImageJob::class);
+        Bus::assertDispatched(CreateEateryMapPageOpenGraphImageJob::class);
+        Bus::assertDispatched(CreateEateryIndexPageOpenGraphImageJob::class);
     }
 
     /** @test */

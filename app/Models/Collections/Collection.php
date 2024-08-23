@@ -8,6 +8,7 @@ use App\Concerns\CanBePublished;
 use App\Concerns\DisplaysDates;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
+use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
@@ -40,6 +41,14 @@ class Collection extends Model implements HasMedia
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());
+
+        static::saved(function (): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            CreateCollectionIndexPageOpenGraphImageJob::dispatch();
+        });
     }
 
     public function getRouteKeyName()

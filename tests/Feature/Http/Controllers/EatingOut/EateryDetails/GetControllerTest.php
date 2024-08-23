@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\EateryDetails;
 
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -41,7 +41,7 @@ class GetControllerTest extends TestCase
             'wheretoeat_id' => $this->eatery->id,
         ]);
 
-        Bus::fake(CreateOpenGraphImageJob::class);
+        Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -67,7 +67,7 @@ class GetControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageActionWhenVistingAnEatery(): void
     {
-        $this->expectAction(GetOpenGraphImageAction::class);
+        $this->expectAction(GetEatingOutOpenGraphImageAction::class);
 
         $this->visitEatery();
     }
@@ -113,7 +113,7 @@ class GetControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageActionForANationwideEatery(): void
     {
-        $this->expectAction(GetOpenGraphImageAction::class);
+        $this->expectAction(GetEatingOutOpenGraphImageAction::class);
 
         $this
             ->convertToNationwideEatery()
@@ -147,7 +147,7 @@ class GetControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageActionForANationwideBranch(): void
     {
-        $this->expectAction(GetOpenGraphImageAction::class);
+        $this->expectAction(GetEatingOutOpenGraphImageAction::class);
 
         $this
             ->convertToNationwideEatery()

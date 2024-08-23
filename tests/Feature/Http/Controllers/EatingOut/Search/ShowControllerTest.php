@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\EatingOut\Search;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -69,6 +70,14 @@ class ShowControllerTest extends TestCase
     public function itCallsTheGetFiltersAction(): void
     {
         $this->expectAction(GetFiltersForEateriesAction::class);
+
+        $this->visitSearchResults();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery']);
 
         $this->visitSearchResults();
     }

@@ -11,6 +11,8 @@ use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
 use App\Contracts\Comments\HasComments;
 use App\Contracts\Search\IsSearchable;
+use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
@@ -40,6 +42,15 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
     protected static function booted(): void
     {
         static::addGlobalScope(new LiveScope());
+
+        static::saved(function (): void {
+            if (config('coeliac.generate_og_images') === false) {
+                return;
+            }
+
+            CreateBlogIndexPageOpenGraphImageJob::dispatch();
+            CreateHomePageOpenGraphImageJob::dispatch();
+        });
     }
 
     public function getRouteKeyName()

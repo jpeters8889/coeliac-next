@@ -6,7 +6,7 @@ namespace App\Http\Controllers\EatingOut\County;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCounty;
 use App\Resources\EatingOut\CountyPageResource;
@@ -19,7 +19,7 @@ class ShowController
         Inertia $inertia,
         GetMostRatedPlacesInCountyAction $getMostRatedPlacesInCounty,
         GetTopRatedPlacesInCountyAction $getTopRatedPlacesInCounty,
-        GetOpenGraphImageAction $getOpenGraphImageAction,
+        GetEatingOutOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         return $inertia
             ->title("Gluten Free Places to Eat in {$county->county}")

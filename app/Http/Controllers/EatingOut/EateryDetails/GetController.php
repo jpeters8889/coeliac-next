@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\EatingOut\EateryDetails;
 
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -25,7 +25,7 @@ class GetController
         NationwideBranch $nationwideBranch,
         Request $request,
         Inertia $inertia,
-        GetOpenGraphImageAction $getOpenGraphImageAction,
+        GetEatingOutOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         if ($request->routeIs('eating-out.nationwide.show', 'eating-out.nationwide.show.branch')) {
             /** @var EateryCounty $county */

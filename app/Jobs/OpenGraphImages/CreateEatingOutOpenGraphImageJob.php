@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\OpenGraphImages;
 
 use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
@@ -15,27 +15,29 @@ use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use App\Models\OpenGraphImage;
+use App\Services\RenderOpenGraphImage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use RuntimeException;
-use Spatie\Browsershot\Browsershot;
 
-class CreateOpenGraphImageJob implements ShouldQueue
+class CreateEatingOutOpenGraphImageJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
 
+    public int $tries = 2;
+
     public function __construct(public HasOpenGraphImageContract $model)
     {
         //
     }
 
-    public function handle(): void
+    public function handle(RenderOpenGraphImage $renderOpenGraphImage): void
     {
         if (config('coeliac.generate_og_images') === false) {
             return;
@@ -50,19 +52,7 @@ class CreateOpenGraphImageJob implements ShouldQueue
             default => throw new RuntimeException('Unknown class'),
         };
 
-        /** @var string $nodeBinary */
-        $nodeBinary = config('browsershot.node_path');
-
-        /** @var string $npmBinary */
-        $npmBinary = config('browsershot.npm_path');
-
-        $base64Image = app(Browsershot::class)
-            ->setHtml($action->handle($this->model)->render())
-            ->setIncludePath('$PATH')
-            ->setNodeBinary($nodeBinary)
-            ->setNpmBinary($npmBinary)
-            ->windowSize(1200, 630)
-            ->base64Screenshot();
+        $base64Image = $renderOpenGraphImage->handle($action->handle($this->model)->render());
 
         /** @var OpenGraphImage $openGraphModel */
         $openGraphModel = $this->model->openGraphImage()->firstOrCreate();

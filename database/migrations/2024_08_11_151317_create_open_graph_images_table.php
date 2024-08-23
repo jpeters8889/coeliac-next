@@ -11,7 +11,8 @@ return new class () extends Migration {
     {
         Schema::create('open_graph_images', function (Blueprint $table): void {
             $table->id();
-            $table->morphs('model');
+            $table->nullableMorphs('model');
+            $table->string('route')->nullable()->index();
             $table->timestamps();
         });
     }

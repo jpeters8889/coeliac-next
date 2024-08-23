@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Models\Shop\ShopCategory;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -24,6 +25,14 @@ class IndexControllerTest extends TestCase
     public function itLoadsTheShopIndexPage(): void
     {
         $this->get(route('shop.index'))->assertOk();
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['shop']);
+
+        $this->get(route('shop.index'));
     }
 
     /** @test */

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\OpenGraphImages;
 
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Contracts\HasOpenGraphImageContract;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
-class GetOpenGraphImageActionTest extends TestCase
+class GetEatingOutOpenGraphImageActionTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -42,7 +42,7 @@ class GetOpenGraphImageActionTest extends TestCase
 
         $openGraphImage->addMedia(UploadedFile::fake()->image('og-image.jpg'))->toMediaCollection();
 
-        app(GetOpenGraphImageAction::class)->handle($model);
+        app(GetEatingOutOpenGraphImageAction::class)->handle($model);
 
         Bus::assertNothingDispatched();
     }
@@ -62,9 +62,9 @@ class GetOpenGraphImageActionTest extends TestCase
 
         $this->assertNull($model->openGraphImage);
 
-        app(GetOpenGraphImageAction::class)->handle($model);
+        app(GetEatingOutOpenGraphImageAction::class)->handle($model);
 
-        Bus::assertDispatched(CreateOpenGraphImageJob::class);
+        Bus::assertDispatched(CreateEatingOutOpenGraphImageJob::class);
     }
 
     public static function openGraphModelsDataProvider(): array

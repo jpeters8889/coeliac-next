@@ -7,7 +7,7 @@ namespace App\Models\EatingOut;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -52,8 +52,8 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
                 return;
             }
 
-            CreateOpenGraphImageJob::dispatch($town);
-            CreateOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
+            CreateEatingOutOpenGraphImageJob::dispatch($town);
+            CreateEatingOutOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
         });
     }
 

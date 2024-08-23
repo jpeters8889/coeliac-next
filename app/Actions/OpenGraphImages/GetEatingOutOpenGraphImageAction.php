@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Actions\OpenGraphImages;
 
 use App\Contracts\HasOpenGraphImageContract;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 
-class GetOpenGraphImageAction
+class GetEatingOutOpenGraphImageAction
 {
     public function handle(HasOpenGraphImageContract $model): string
     {
@@ -20,7 +20,7 @@ class GetOpenGraphImageAction
             return $model->openGraphImage->image_url;
         }
 
-        CreateOpenGraphImageJob::dispatch($model);
+        CreateEatingOutOpenGraphImageJob::dispatch($model);
 
         return '';
     }

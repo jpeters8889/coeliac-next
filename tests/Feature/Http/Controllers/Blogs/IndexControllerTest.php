@@ -6,6 +6,7 @@ namespace Tests\Feature\Http\Controllers\Blogs;
 
 use App\Actions\Blogs\GetBlogsForBlogIndexAction;
 use App\Actions\Blogs\GetBlogTagsAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Models\Blogs\Blog;
 use App\Models\Blogs\BlogTag;
 use Illuminate\Support\Facades\Storage;
@@ -47,6 +48,14 @@ class IndexControllerTest extends TestCase
 
         $this->expectAction(GetBlogsForBlogIndexAction::class, [BlogTag::class])
             ->get(route('blog.index.tags', ['tag' => $tag->slug]));
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['blog']);
+
+        $this->get(route('blog.index'));
     }
 
     /** @test */

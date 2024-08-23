@@ -8,6 +8,7 @@ use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
 use App\Actions\EatingOut\GetLatestEateriesForHomepageAction;
 use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
@@ -59,6 +60,14 @@ class HomepageTest extends TestCase
     public function itCallsTheGetLatestEateriesForHomepageAction(): void
     {
         $this->expectAction(GetLatestEateriesForHomepageAction::class);
+
+        $this->get(route('home'));
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class);
 
         $this->get(route('home'));
     }

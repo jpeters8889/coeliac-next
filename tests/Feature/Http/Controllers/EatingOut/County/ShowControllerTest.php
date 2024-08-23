@@ -6,8 +6,8 @@ namespace Tests\Feature\Http\Controllers\EatingOut\County;
 
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -34,7 +34,7 @@ class ShowControllerTest extends TestCase
                 'county_id' => $this->county->id,
             ]);
 
-        Bus::fake(CreateOpenGraphImageJob::class);
+        Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
     /** @test */
@@ -94,7 +94,7 @@ class ShowControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageAction(): void
     {
-        $this->expectAction(GetOpenGraphImageAction::class);
+        $this->expectAction(GetEatingOutOpenGraphImageAction::class);
 
         $this->visitCounty();
     }

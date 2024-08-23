@@ -10,7 +10,10 @@ use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\EatingOut\LatLng;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Scopes\LiveScope;
 use App\Support\Helpers;
 use Closure;
@@ -77,9 +80,12 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
 
             $town = $eatery->town()->withoutGlobalScopes()->firstOrFail();
 
-            CreateOpenGraphImageJob::dispatch($eatery);
-            CreateOpenGraphImageJob::dispatch($town);
-            CreateOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
+            CreateEatingOutOpenGraphImageJob::dispatch($eatery);
+            CreateEatingOutOpenGraphImageJob::dispatch($town);
+            CreateEatingOutOpenGraphImageJob::dispatch($town->county()->withoutGlobalScopes()->firstOrFail());
+            CreateEateryAppPageOpenGraphImageJob::dispatch();
+            CreateEateryMapPageOpenGraphImageJob::dispatch();
+            CreateEateryIndexPageOpenGraphImageJob::dispatch();
         });
     }
 

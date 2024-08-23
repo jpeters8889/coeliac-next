@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Collections;
 
+use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Scopes\LiveScope;
+use Illuminate\Support\Facades\Bus;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
 use Tests\Concerns\LinkableModelTestTrait;
@@ -39,6 +41,18 @@ class CollectionModelTest extends TestCase
     public function itHasTheLiveScopeApplied(): void
     {
         $this->assertTrue(Collection::hasGlobalScope(LiveScope::class));
+    }
+
+    /** @test */
+    public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
+    {
+        config()->set('coeliac.generate_og_images', true);
+
+        Bus::fake();
+
+        $this->create(Collection::class);
+
+        Bus::assertDispatched(CreateCollectionIndexPageOpenGraphImageJob::class);
     }
 
     /** @test */

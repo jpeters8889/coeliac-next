@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Blogs;
 
+use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
 use App\Scopes\LiveScope;
+use Illuminate\Support\Facades\Bus;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\CommentableTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
@@ -36,6 +39,19 @@ class BlogModelTest extends TestCase
         $this->setUpCommentsTest(fn (array $params = []) => $this->create(Blog::class, $params));
 
         $this->setUpCanBePublishedModelTest(fn (array $params = []) => $this->create(Blog::class, $params));
+    }
+
+    /** @test */
+    public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
+    {
+        config()->set('coeliac.generate_og_images', true);
+
+        Bus::fake();
+
+        $this->create(Blog::class);
+
+        Bus::assertDispatched(CreateBlogIndexPageOpenGraphImageJob::class);
+        Bus::assertDispatched(CreateHomePageOpenGraphImageJob::class);
     }
 
     /** @test */

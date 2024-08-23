@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use Illuminate\Support\Facades\Bus;
@@ -25,7 +25,7 @@ class EateryTownTest extends TestCase
 
         $dispatchedModels = [];
 
-        Bus::assertDispatched(CreateOpenGraphImageJob::class, function (CreateOpenGraphImageJob $job) use (&$dispatchedModels) {
+        Bus::assertDispatched(CreateEatingOutOpenGraphImageJob::class, function (CreateEatingOutOpenGraphImageJob $job) use (&$dispatchedModels) {
             $dispatchedModels[] = $job->model;
 
             return true;

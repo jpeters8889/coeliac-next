@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\EatingOut\Search;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EaterySearchTerm;
@@ -21,7 +22,8 @@ class ShowController
         EaterySearchTerm $eaterySearchTerm,
         Inertia $inertia,
         GetSearchResultsPipeline $getSearchResultsPipeline,
-        GetFiltersForEateriesAction $getFiltersForEateriesAction
+        GetFiltersForEateriesAction $getFiltersForEateriesAction,
+        GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction,
     ): Response {
         /** @var array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null } $filters */
         $filters = [
@@ -34,6 +36,7 @@ class ShowController
 
         return $inertia
             ->title("{$eaterySearchTerm->term} - Search Results")
+            ->metaImage($getOpenGraphImageForRouteAction->handle('eatery'))
             ->doNotTrack()
             ->render('EatingOut/SearchResults', [
                 'term' => fn () => $eaterySearchTerm->term,

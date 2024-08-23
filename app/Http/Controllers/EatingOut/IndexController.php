@@ -7,6 +7,7 @@ namespace App\Http\Controllers\EatingOut;
 use App\Actions\EatingOut\GetCountyListAction;
 use App\Actions\EatingOut\GetMostRatedPlacesAction;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Http\Response\Inertia;
 use Inertia\Response;
 
@@ -17,6 +18,7 @@ class IndexController
         GetCountyListAction $getCountyListAction,
         GetTopRatedPlacesAction $getTopRatedPlacesAction,
         GetMostRatedPlacesAction $getMostRatedPlacesAction,
+        GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction,
     ): Response {
         return $inertia
             ->title('Gluten Free Places to Eat Guide')
@@ -27,6 +29,7 @@ class IndexController
                 'gluten free venues', 'gluten free dining', 'gluten free directory', 'gf food',
                 'gluten free eating out uk', 'uk places to eat', 'gluten free attractions', 'gluten free hotels',
             ])
+            ->metaImage($getOpenGraphImageForRouteAction->handle('eatery'))
             ->render('EatingOut/Index', [
                 'countries' => fn () => $getCountyListAction->handle(),
                 'topRated' => fn () => $getTopRatedPlacesAction->handle(),

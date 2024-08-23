@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\EatingOut\County\Town;
 
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
-use App\Actions\OpenGraphImages\GetOpenGraphImageAction;
+use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Http\Response\Inertia;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -26,7 +26,7 @@ class ShowController
         Inertia $inertia,
         GetFiltersForEateriesAction $getFiltersForTown,
         GetEateriesPipeline $getEateriesPipeline,
-        GetOpenGraphImageAction $getOpenGraphImageAction,
+        GetEatingOutOpenGraphImageAction $getOpenGraphImageAction,
     ): Response {
         /** @var array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null }  $filters */
         $filters = [

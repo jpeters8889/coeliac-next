@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controllers\Collections;
 
 use App\Actions\Collections\GetCollectionsForIndexAction;
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -30,6 +31,14 @@ class IndexControllerTest extends TestCase
     public function itCallsTheGetCollectionsForIndexAction(): void
     {
         $this->expectAction(GetCollectionsForIndexAction::class);
+
+        $this->get(route('collection.index'));
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['collection']);
 
         $this->get(route('collection.index'));
     }

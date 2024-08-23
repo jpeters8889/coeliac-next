@@ -2,36 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Jobs;
+namespace Tests\Unit\Jobs\OpenGraphImages;
 
 use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateTownOpenGraphImageAction;
-use App\Jobs\CreateOpenGraphImageJob;
+use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
 use App\Models\OpenGraphImage;
-use Exception;
+use App\Services\RenderOpenGraphImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Mockery\MockInterface;
-use Spatie\Browsershot\Browsershot;
 use Tests\TestCase;
 
-class CreateOpenGraphImageJobTest extends TestCase
+class CreateEatingOutOpenGraphImageJobTest extends TestCase
 {
-    protected MockInterface $browserShotMock;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         Storage::fake('media');
-
-        $this->browserShotMock = $this->partialMock(Browsershot::class);
 
         config()->set('coeliac.generate_og_images', true);
     }
@@ -41,41 +35,18 @@ class CreateOpenGraphImageJobTest extends TestCase
      *
      * @dataProvider openGraphModelsDataProvider
      */
-    public function itCallsTheCorrectAction($classString, $expectedAction): void
+    public function itCallsTheRenderOpenGraphImageService($classString, $expectedAction): void
     {
-        $this->browserShotMock->shouldReceive('setHtml')->andThrow(new Exception());
+        $this->mock(RenderOpenGraphImage::class)
+            ->shouldReceive('handle')
+            ->andReturn('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGK567aCAQZOXAuEs/cf3QZnO3xaDGczMZAIaK+BJVjTFs5RLAyBs1UuS8DZaj8m0tFJJGtgzORshHMELtfA2TMC58LZ7i3MdHQS6fHw6VkPnKMWcRHOlq/JgbOPFO+ko5NI1gAIAAD//3qSF5xOx6hcAAAAAElFTkSuQmCC')
+            ->once();
 
         $model = $this->build($classString)->createQuietly($classString === NationwideBranch::class ? ['wheretoeat_id' => $this->build(Eatery::class)->createQuietly()->id] : []);
 
         $this->expectAction($expectedAction, return: view('app', ['page' => []]));
 
-        $this->expectException(Exception::class);
-
-        (new CreateOpenGraphImageJob($model))->handle();
-    }
-
-    /**
-     * @test
-     *
-     * @dataProvider openGraphModelsDataProvider
-     */
-    public function itUsesBrowsershot($classString, $action, $useMedia): void
-    {
-        $this->browserShotMock
-            ->shouldReceive('setHtml')->once()->andReturnSelf()->getMock()
-            ->shouldReceive('setIncludePath')->with('$PATH')->once()->andReturnSelf()->getMock()
-            ->shouldReceive('setNodeBinary')->with(config('browsershot.node_path'))->once()->andReturnSelf()->getMock()
-            ->shouldReceive('setNpmBinary')->with(config('browsershot.npm_path'))->once()->andReturnSelf()->getMock()
-            ->shouldReceive('windowSize')->with(1200, 630)->andReturnSelf()->once()->getMock()
-            ->shouldReceive('base64Screenshot')->andReturn('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGK567aCAQZOXAuEs/cf3QZnO3xaDGczMZAIaK+BJVjTFs5RLAyBs1UuS8DZaj8m0tFJJGtgzORshHMELtfA2TMC58LZ7i3MdHQS6fHw6VkPnKMWcRHOlq/JgbOPFO+ko5NI1gAIAAD//3qSF5xOx6hcAAAAAElFTkSuQmCC')->once();
-
-        $model = $this->build($classString)->createQuietly($classString === NationwideBranch::class ? ['wheretoeat_id' => $this->build(Eatery::class)->createQuietly()->id] : []);
-
-        if ($useMedia) {
-            $model->addMedia(UploadedFile::fake()->image('image.jpg'))->toMediaCollection('primary');
-        }
-
-        (new CreateOpenGraphImageJob($model))->handle();
+        (new CreateEatingOutOpenGraphImageJob($model))->handle(app(RenderOpenGraphImage::class));
     }
 
     /**
@@ -88,8 +59,8 @@ class CreateOpenGraphImageJobTest extends TestCase
         $this->assertDatabaseEmpty(OpenGraphImage::class);
         $this->assertEmpty(Storage::disk('media')->allFiles());
 
-        $this->browserShotMock
-            ->shouldReceive('base64Screenshot')
+        $this->mock(RenderOpenGraphImage::class)
+            ->shouldReceive('handle')
             ->andReturn('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAb0lEQVR4nGK567aCAQZOXAuEs/cf3QZnO3xaDGczMZAIaK+BJVjTFs5RLAyBs1UuS8DZaj8m0tFJJGtgzORshHMELtfA2TMC58LZ7i3MdHQS6fHw6VkPnKMWcRHOlq/JgbOPFO+ko5NI1gAIAAD//3qSF5xOx6hcAAAAAElFTkSuQmCC')
             ->once();
 
@@ -99,7 +70,7 @@ class CreateOpenGraphImageJobTest extends TestCase
             $model->addMedia(UploadedFile::fake()->image('image.jpg'))->toMediaCollection('primary');
         }
 
-        (new CreateOpenGraphImageJob($model))->handle();
+        (new CreateEatingOutOpenGraphImageJob($model))->handle(app(RenderOpenGraphImage::class));
 
         $this->assertDatabaseCount(OpenGraphImage::class, 1);
         $this->assertNotNull($model->refresh()->openGraphImage);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Recipes;
 
+use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
 use App\Actions\Recipes\GetRecipesForIndexAction;
 use App\Contracts\Recipes\FilterableRecipeRelation;
@@ -49,6 +50,14 @@ class IndexControllerTest extends TestCase
         }]);
 
         $this->get(route('recipe.index', ['meals' => 'test']));
+    }
+
+    /** @test */
+    public function itCallsTheGetOpenGraphImageForRouteAction(): void
+    {
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['recipe']);
+
+        $this->get(route('recipe.index'));
     }
 
     public static function filterableImplementations(): array
