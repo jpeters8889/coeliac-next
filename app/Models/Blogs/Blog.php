@@ -18,6 +18,7 @@ use App\Legacy\Imageable;
 use App\Scopes\LiveScope;
 use App\Support\Collections\CanBeCollected;
 use App\Support\Collections\Collectable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\Request;
@@ -59,15 +60,15 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
         return 'slug';
     }
 
+    /** @param Builder<self> $query */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         $query = $query->where('draft', false);
 
         if (app(Request::class)->wantsJson()) {
-            return $query->where('id', $value); /** @phpstan-ignore-line */
+            return $query->where('id', $value);
         }
 
-        /** @phpstan-ignore-next-line  */
         return $query->where('slug', $value);
     }
 

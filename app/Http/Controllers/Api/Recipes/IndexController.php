@@ -12,6 +12,8 @@ class IndexController
 {
     public function __invoke(Request $request, GetRecipesForIndexAction $getRecipesForIndexAction): RecipeApiCollection
     {
-        return $getRecipesForIndexAction->handle(resource: RecipeApiCollection::class, search: $request->get('search'));
+        $search = $request->has('search') ? $request->string('search')->toString() : null;
+
+        return $getRecipesForIndexAction->handle(resource: RecipeApiCollection::class, search: $search);
     }
 }

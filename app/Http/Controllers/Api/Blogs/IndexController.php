@@ -12,6 +12,8 @@ class IndexController
 {
     public function __invoke(Request $request, GetBlogsForBlogIndexAction $getBlogsForBlogIndexAction): BlogApiCollection
     {
-        return $getBlogsForBlogIndexAction->handle(resource: BlogApiCollection::class, search: $request->get('search'));
+        $search = $request->has('search') ? $request->string('search')->toString() : null;
+
+        return $getBlogsForBlogIndexAction->handle(resource: BlogApiCollection::class, search: $search);
     }
 }

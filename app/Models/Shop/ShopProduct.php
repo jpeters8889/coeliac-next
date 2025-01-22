@@ -33,6 +33,7 @@ use Spatie\SchemaOrg\Schema;
  * @property null | int $oldPrice
  * @property float $averageRating
  * @property array{current_price: string, old_price?: string} $price
+ * @property Carbon $created_at
  */
 class ShopProduct extends Model implements HasMedia, IsSearchable
 {

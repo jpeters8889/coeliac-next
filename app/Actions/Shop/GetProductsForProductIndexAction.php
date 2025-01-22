@@ -15,6 +15,7 @@ class GetProductsForProductIndexAction
      * @template T of ResourceCollection
      *
      * @param  class-string<T>  $resource
+     * @return T
      */
     public function handle(int $perPage = 12, string $resource = ShopProductApiCollection::class, ?string $search = null): ResourceCollection
     {

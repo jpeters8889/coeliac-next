@@ -68,15 +68,15 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
         return 'slug';
     }
 
+    /** @param Builder<self> $query */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         $query = $query->where('draft', false);
 
         if (app(Request::class)->wantsJson()) {
-            return $query->where('id', $value); /** @phpstan-ignore-line */
+            return $query->where('id', $value);
         }
 
-        /** @phpstan-ignore-next-line  */
         return $query->where('slug', $value);
     }
 
