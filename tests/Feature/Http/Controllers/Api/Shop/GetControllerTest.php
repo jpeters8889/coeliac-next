@@ -18,7 +18,7 @@ class GetControllerTest extends TestCase
     /** @test */
     public function itReturnsTheProduct(): void
     {
-        $this->withCategoriesAndProducts(1,1);
+        $this->withCategoriesAndProducts(1, 1);
 
         $product = ShopProduct::query()->first();
 

@@ -8,7 +8,6 @@ use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use Database\Seeders\EateryScaffoldingSeeder;
-use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowControllerTest extends TestCase

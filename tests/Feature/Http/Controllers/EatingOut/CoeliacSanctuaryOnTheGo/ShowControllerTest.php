@@ -22,7 +22,7 @@ class ShowControllerTest extends TestCase
     /** @test */
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
-        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery-app'], false, then: fn($mock) => $mock->twice());
+        $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery-app'], false, then: fn ($mock) => $mock->twice());
 
         $this->get(route('eating-out.app'));
     }

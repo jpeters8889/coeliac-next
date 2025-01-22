@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs\OpenGraphImages;
 
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
-use App\Models\Media;
 use App\Models\OpenGraphImage;
 use App\Services\RenderOpenGraphImage;
 use Illuminate\Support\Facades\Storage;

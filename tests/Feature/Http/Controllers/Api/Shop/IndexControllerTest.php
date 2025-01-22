@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop;
 
-use App\Actions\Blogs\GetBlogsForBlogIndexAction;
 use App\Actions\Shop\GetProductsForProductIndexAction;
-use App\Resources\Blogs\BlogApiCollection;
 use App\Resources\Shop\ShopProductApiCollection;
 use Tests\TestCase;
 
