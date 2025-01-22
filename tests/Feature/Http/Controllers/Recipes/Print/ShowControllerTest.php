@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Recipes\Print;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Recipes\Recipe;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -21,7 +22,7 @@ class ShowControllerTest extends TestCase
         $this->recipe = Recipe::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForARecipeDoesntExist(): void
     {
         $this->get(route('recipe.print', ['recipe' => 'foobar']))->assertNotFound();
@@ -32,7 +33,7 @@ class ShowControllerTest extends TestCase
         return $this->get(route('recipe.print', ['recipe' => $this->recipe]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForARecipeThatIsntLive(): void
     {
         $this->recipe->update(['live' => false]);
@@ -40,7 +41,7 @@ class ShowControllerTest extends TestCase
         $this->visitRecipe()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Popup;
 use App\Scopes\LiveScope;
 use Tests\Concerns\DisplaysMediaTestTrait;
@@ -20,7 +21,7 @@ class PopupTest extends TestCase
         $this->setUpDisplaysMediaTest(fn () => $this->create(Popup::class));
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheLiveScopeApplied(): void
     {
         $this->assertTrue(Popup::hasGlobalScope(LiveScope::class));

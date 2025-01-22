@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\CloseBasketAction;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
@@ -14,7 +15,7 @@ use Tests\TestCase;
 
 class CloseBasketActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itThrowsAnExceptionIfTheOrderIsntInBasketState(): void
     {
         $order = $this->build(ShopOrder::class)->asExpired()->create();
@@ -24,7 +25,7 @@ class CloseBasketActionTest extends TestCase
         $this->callAction(CloseBasketAction::class, $order);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheBasketToExpired(): void
     {
         $order = $this->build(ShopOrder::class)->asBasket()->create();
@@ -36,7 +37,7 @@ class CloseBasketActionTest extends TestCase
         $this->assertEquals(OrderState::EXPIRED, $order->fresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itPutsTheOrderItemsBackIntoStock(): void
     {
         $this->withCategoriesAndProducts(1, 1);

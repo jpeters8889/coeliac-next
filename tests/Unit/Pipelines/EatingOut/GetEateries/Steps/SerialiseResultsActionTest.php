@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class SerialiseResultsActionTest extends GetEateriesTestCase
@@ -12,7 +13,7 @@ class SerialiseResultsActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 1;
 
-    /** @test */
+    #[Test]
     public function itCreatesAPaginatorInstanceForSerialisedEateries(): void
     {
         $pipelineData = $this->callSerialiseResultsAction();
@@ -20,7 +21,7 @@ class SerialiseResultsActionTest extends GetEateriesTestCase
         $this->assertInstanceOf(LengthAwarePaginator::class, $pipelineData->serialisedEateries);
     }
 
-    /** @test */
+    #[Test]
     public function eachItemInThePaginatorIsTheResource(): void
     {
         $pipelineData = $this->callSerialiseResultsAction();

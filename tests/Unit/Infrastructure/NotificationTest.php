@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\MockMjmlNotification;
 use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCanHaveADateSet(): void
     {
         $date = now()->addDay();
@@ -20,7 +21,7 @@ class NotificationTest extends TestCase
         $this->assertEquals($date, invade($notification)->date);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveAKeySet(): void
     {
         $key = 'foo';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Support\EatingOut\SuggestEdits\Fields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Support\EatingOut\SuggestEdits\Fields\GfMenuLinkField;
 use Database\Seeders\EateryScaffoldingSeeder;
@@ -22,7 +23,7 @@ class GfMenuLinkFieldTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDatabaseValue(): void
     {
         $field = app(GfMenuLinkField::class);
@@ -30,7 +31,7 @@ class GfMenuLinkFieldTest extends TestCase
         $this->assertEquals($this->eatery->gf_menu_link, $field->getCurrentValue($this->eatery));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsThePreparedValue(): void
     {
         $field = GfMenuLinkField::make('Foo');
@@ -38,7 +39,7 @@ class GfMenuLinkFieldTest extends TestCase
         $this->assertEquals('Foo', $field->prepare());
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheValueForDisplay(): void
     {
         $field = GfMenuLinkField::make('Foo');

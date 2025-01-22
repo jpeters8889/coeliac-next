@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mailables;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Mailables\CommentApprovedMailable;
 use App\Models\Blogs\Blog;
@@ -19,7 +20,7 @@ class CommentApprovedMailableTest extends TestCase
         $this->withBlogs(5);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnMjmlMessageInstance(): void
     {
         $this->assertInstanceOf(
@@ -28,7 +29,7 @@ class CommentApprovedMailableTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         /** @var Comment $comment */
@@ -39,7 +40,7 @@ class CommentApprovedMailableTest extends TestCase
         $this->assertEquals("Your comment on {$comment->commentable->title} on Coeliac Sanctuary has been approved!", $mailable->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $mailable = CommentApprovedMailable::make($this->build(Comment::class)->on(Blog::query()->first())->create(), 'foo');
@@ -47,7 +48,7 @@ class CommentApprovedMailableTest extends TestCase
         $this->assertEquals('mailables.mjml.comment-approved', $mailable->mjml);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         /** @var Comment $comment */

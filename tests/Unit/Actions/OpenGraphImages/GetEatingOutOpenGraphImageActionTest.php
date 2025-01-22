@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Contracts\HasOpenGraphImageContract;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
@@ -25,11 +27,8 @@ class GetEatingOutOpenGraphImageActionTest extends TestCase
         config()->set('coeliac.generate_og_images', true);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider openGraphModelsDataProvider
-     */
+    #[Test]
+    #[DataProvider('openGraphModelsDataProvider')]
     public function itReturnsFromTheModelIfItExists(string $modelClass): void
     {
         Bus::fake();
@@ -47,11 +46,8 @@ class GetEatingOutOpenGraphImageActionTest extends TestCase
         Bus::assertNothingDispatched();
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider openGraphModelsDataProvider
-     */
+    #[Test]
+    #[DataProvider('openGraphModelsDataProvider')]
     public function itDispatchesTheJobIfAnOpenGraphImageDoesntExist(string $modelClass): void
     {
         Bus::fake();

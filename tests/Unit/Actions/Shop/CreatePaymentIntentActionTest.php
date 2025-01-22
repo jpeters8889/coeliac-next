@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\CreatePaymentIntentAction;
 use App\Models\Shop\ShopOrder;
 use Tests\Concerns\MocksStripe;
@@ -13,7 +14,7 @@ class CreatePaymentIntentActionTest extends TestCase
 {
     use MocksStripe;
 
-    /** @test */
+    #[Test]
     public function itStoresThePaymentIntentAgainstTheOrder(): void
     {
         /** @var ShopOrder $order */
@@ -30,7 +31,7 @@ class CreatePaymentIntentActionTest extends TestCase
         $this->assertEquals($mockToken, $order->payment_intent_secret);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheClientSecret(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -41,7 +42,7 @@ class CreatePaymentIntentActionTest extends TestCase
         $this->assertEquals($mockToken, $returnedToken);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesThePaymentIntentIfTheOrderHasAPaymentId(): void
     {
         $order = $this->create(ShopOrder::class, [

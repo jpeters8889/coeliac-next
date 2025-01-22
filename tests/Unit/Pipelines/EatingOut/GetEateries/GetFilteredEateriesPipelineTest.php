@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Pipelines\EatingOut\GetEateries\GetFilteredEateriesPipeline;
 use App\Pipelines\EatingOut\GetEateries\Steps\CheckForMissingEateriesAction;
@@ -37,7 +38,7 @@ class GetFilteredEateriesPipelineTest extends TestCase
             ->create();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheActions(): void
     {
         $this->expectPipelineToExecute(GetEateriesFromFiltersAction::class);

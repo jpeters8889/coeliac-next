@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\MarkOrderAsPaidAction;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
@@ -28,7 +29,7 @@ class MarkOrderAsPaidActionTest extends TestCase
             ->create();
     }
 
-    /** @test */
+    #[Test]
     public function itThrowsAnExceptionIfTheOrderIsntPending(): void
     {
         $this->order->update(['state_id' => OrderState::PAID]);
@@ -38,7 +39,7 @@ class MarkOrderAsPaidActionTest extends TestCase
         $this->callAction(MarkOrderAsPaidAction::class, $this->order, $this->createCharge());
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheOrderAsPaid(): void
     {
         $this->assertEquals(OrderState::PENDING, $this->order->state_id);
@@ -48,7 +49,7 @@ class MarkOrderAsPaidActionTest extends TestCase
         $this->assertEquals(OrderState::PAID, $this->order->refresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itStoresThePaymentTypeAndFee(): void
     {
         $this->assertNull($this->order->payment->payment_type_id);
@@ -60,7 +61,7 @@ class MarkOrderAsPaidActionTest extends TestCase
         $this->assertEquals(50, $this->order->payment->fee);
     }
 
-    /** @test */
+    #[Test]
     public function itStoresThePaymentResponse(): void
     {
         $this->assertNull($this->order->payment->response);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use App\Pipelines\Search\Steps\PrepareResource;
 use App\Resources\Search\SearchableItemResource;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class PrepareResourceTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHydratesABlogAndLoadsTheCorrectRelations(): void
     {
         $this->withBlogs(1);

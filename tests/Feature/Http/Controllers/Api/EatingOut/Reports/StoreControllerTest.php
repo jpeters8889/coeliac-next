@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Reports;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReportAction;
 use App\Models\EatingOut\Eatery;
 use Database\Seeders\EateryScaffoldingSeeder;
@@ -24,13 +25,13 @@ class StoreControllerTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
         $this->postJson(route('api.wheretoeat.report.store', 'foo'))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -38,7 +39,7 @@ class StoreControllerTest extends TestCase
         $this->postJson(route('api.wheretoeat.report.store', $eatery))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidReportDetails(): void
     {
         $this->submitForm(EateryCreateReviewRequestFactory::new(['details' => null])->create())
@@ -51,7 +52,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('details');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateEateryReportAction(): void
     {
         $this->expectAction(CreateEateryReportAction::class);
@@ -60,7 +61,7 @@ class StoreControllerTest extends TestCase
 
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAFullRatingThatIsNotApproved(): void
     {
         $this->assertEmpty($this->eatery->reports);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryFeature;
@@ -74,7 +75,7 @@ class BrowseEateriesPipelineTest extends TestCase
 
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheActions(): void
     {
         $this->expectPipelineToExecute(GetEateriesInLatLngRadiusAction::class);

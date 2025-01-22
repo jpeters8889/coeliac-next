@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Recipes;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Recipes\Recipe;
 use Tests\TestCase;
 
 class GetControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsIfARecipeCantBeFound(): void
     {
         $this->get(route('api.recipes.show', 'foo'))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfARecipeIsntLive(): void
     {
         $recipe = $this->build(Recipe::class)->notLive()->create();
@@ -23,7 +24,7 @@ class GetControllerTest extends TestCase
         $this->get(route('api.recipes.show', $recipe))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfARecipeIsDraft(): void
     {
         $recipe = $this->build(Recipe::class)->draft()->create();
@@ -31,7 +32,7 @@ class GetControllerTest extends TestCase
         $this->get(route('api.recipes.show', $recipe))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheRecipe(): void
     {
         $this->withRecipes(1);

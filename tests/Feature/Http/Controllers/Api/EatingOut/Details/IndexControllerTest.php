@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Details;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -28,13 +29,13 @@ class IndexControllerTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
         $this->getJson(route('api.wheretoeat.get', ['eatery' => 123]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -47,7 +48,7 @@ class IndexControllerTest extends TestCase
         return $this->getJson(route('api.wheretoeat.get', ['eatery' => $this->eatery->id]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForALiveEatery(): void
     {
         $this->visitEatery()->assertOk();

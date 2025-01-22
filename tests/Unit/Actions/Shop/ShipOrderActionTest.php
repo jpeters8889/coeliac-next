@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ShipOrderAction;
 use App\Enums\Shop\OrderState;
 use App\Events\Shop\OrderShippedEvent;
@@ -22,7 +23,7 @@ class ShipOrderActionTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itThrowsAnExceptionIfTheOrderIsntInReadyState(): void
     {
         $order = $this->build(ShopOrder::class)->asCompleted()->create();
@@ -32,7 +33,7 @@ class ShipOrderActionTest extends TestCase
         $this->callAction(ShipOrderAction::class, $order);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheOrderToShipped(): void
     {
         $order = $this->build(ShopOrder::class)->asReady()->create();
@@ -44,7 +45,7 @@ class ShipOrderActionTest extends TestCase
         $this->assertEquals(OrderState::SHIPPED, $order->fresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itSetsTheShippedAtTimestamp(): void
     {
         TestTime::freeze();
@@ -59,7 +60,7 @@ class ShipOrderActionTest extends TestCase
         $this->assertTrue(now()->isSameSecond($order->shipped_at));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesAnOrderShippedEvent(): void
     {
         $order = $this->build(ShopOrder::class)->asReady()->create();

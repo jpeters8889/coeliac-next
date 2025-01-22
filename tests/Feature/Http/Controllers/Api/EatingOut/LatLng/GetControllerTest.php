@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\LatLng;
 
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Geocoder\Geocoder;
 use Tests\TestCase;
 
 class GetControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsWithOutATerm(): void
     {
         $this->postJson(route('api.wheretoeat.lat-lng'))->assertJsonValidationErrorFor('term');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatLng(): void
     {
         $this->mock(Geocoder::class)

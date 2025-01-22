@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
 use App\Actions\EatingOut\GetLatestEateriesForHomepageAction;
@@ -18,13 +19,13 @@ use Tests\TestCase;
 
 class HomepageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itLoadsTheHomepage(): void
     {
         $this->get(route('home'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetLatestBlogsForHomepageAction(): void
     {
         $this->expectAction(GetLatestBlogsForHomepageAction::class);
@@ -32,7 +33,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetLatestRecipesForHomepageAction(): void
     {
         $this->expectAction(GetLatestRecipesForHomepageAction::class);
@@ -40,7 +41,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetLatestCollectionsForHomepageAction(): void
     {
         $this->expectAction(GetLatestCollectionsForHomepageAction::class);
@@ -48,7 +49,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetLatestReviewsForHomepageAction(): void
     {
         $this->expectAction(GetLatestReviewsForHomepageAction::class);
@@ -56,7 +57,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetLatestEateriesForHomepageAction(): void
     {
         $this->expectAction(GetLatestEateriesForHomepageAction::class);
@@ -64,7 +65,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class);
@@ -72,7 +73,7 @@ class HomepageTest extends TestCase
         $this->get(route('home'));
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSixLatestBlogs(): void
     {
         $this->withBlogs()
@@ -92,7 +93,7 @@ class HomepageTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnBlogsThatArentLive(): void
     {
         $this->withBlogs(then: fn () => Blog::query()->first()->update(['live' => false]))
@@ -112,7 +113,7 @@ class HomepageTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheEightLatestRecipes(): void
     {
         $this->withRecipes()
@@ -132,7 +133,7 @@ class HomepageTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnRecipesThatArentLive(): void
     {
         $this->withRecipes(then: fn () => Recipe::query()->first()->update(['live' => false]))
@@ -152,7 +153,7 @@ class HomepageTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itDisplaysTheCollections(): void
     {
         $this->withCollections(then: fn () => Collection::query()->first()->update(['display_on_homepage' => true]))

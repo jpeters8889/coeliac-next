@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Blogs;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Resources\Blogs\BlogSimpleCardViewResource;
@@ -24,13 +25,13 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
         $this->withBlogs();
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnACollectionOfBlogs(): void
     {
         $this->assertInstanceOf(AnonymousResourceCollection::class, $this->callAction(GetLatestBlogsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsTheBlogAsACardResource(): void
     {
         $this->callAction(GetLatestBlogsForHomepageAction::class)->each(function ($item): void {
@@ -38,13 +39,13 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsSixBlogs(): void
     {
         $this->assertCount(6, $this->callAction(GetLatestBlogsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatestBlogsFirst(): void
     {
         $blogTitles = $this->callAction(GetLatestBlogsForHomepageAction::class)->map(fn (BlogSimpleCardViewResource $blog) => $blog->title);
@@ -54,7 +55,7 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
         $this->assertNotContains('Blog 9', $blogTitles);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnBlogsThatArentLive(): void
     {
         Blog::query()->first()->update(['live' => false]);
@@ -65,7 +66,7 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
         $this->assertContains('Blog 2', $blogTitles);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheBlogs(): void
     {
         $this->assertFalse(Cache::has(config('coeliac.cache.blogs.home')));
@@ -76,7 +77,7 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
         $this->assertSame($blogs, Cache::get(config('coeliac.cache.blogs.home')));
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheBlogsFromTheCache(): void
     {
         DB::enableQueryLog();

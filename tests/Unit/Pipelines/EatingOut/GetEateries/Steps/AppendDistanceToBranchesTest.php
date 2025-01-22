@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\NationwideBranch;
 
 class AppendDistanceToBranchesTest extends GetEateriesTestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheHydratedBranches(): void
     {
         $hydratedEateries = $this->callHydrateBranchesAction();

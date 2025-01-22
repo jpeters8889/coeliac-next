@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop\Checkout;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\Checkout\CreateShippingAddressAction;
 use App\DataObjects\Shop\PendingOrderShippingAddressDetails;
 use App\Models\Shop\ShopCustomer;
@@ -24,7 +25,7 @@ class CreateShippingAddressActionTest extends TestCase
         $this->customer = $this->create(ShopCustomer::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnAddress(): void
     {
         $this->assertDatabaseEmpty(ShopShippingAddress::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Http\Requests\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Http\Requests\EatingOut\SuggestEditRequest;
 use App\Models\EatingOut\EaterySuggestedEdit;
 use Illuminate\Support\Arr;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class SuggestedEditRequestTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheAvailableEditableFieldsAsAnInRule(): void
     {
         $rules = (new SuggestEditRequest())->rules();
@@ -29,7 +30,7 @@ class SuggestedEditRequestTest extends TestCase
         $this->assertEquals("in:{$expectedKeys}", $inRule->__toString());
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheValidationRulesFromTheEditableInstance(): void
     {
         $mock = $this->partialMock(SuggestEditRequest::class);
@@ -51,7 +52,7 @@ class SuggestedEditRequestTest extends TestCase
         $this->assertEquals(['foo', 'bar'], $rules['value']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheValidationRulesFromTheEditableInstanceAsARuleEntityForComplexRules(): void
     {
         $mock = $this->partialMock(SuggestEditRequest::class);

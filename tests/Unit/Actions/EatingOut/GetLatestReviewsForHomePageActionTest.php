@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
@@ -25,13 +26,13 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnACollectionOfReviews(): void
     {
         $this->assertInstanceOf(AnonymousResourceCollection::class, $this->callAction(GetLatestReviewsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsTheReviewsAsASimpleReviewResource(): void
     {
         $this->build(EateryReview::class)
@@ -45,7 +46,7 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsEightReviews(): void
     {
         $this->build(EateryReview::class)
@@ -57,7 +58,7 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         $this->assertCount(8, $this->callAction(GetLatestReviewsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatestReviewsFirst(): void
     {
         $this->build(EateryReview::class)
@@ -78,7 +79,7 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         $this->assertNotContains('Review 9', $eateryNames);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnReviewsThatArentLive(): void
     {
         $this->build(EateryReview::class)
@@ -99,7 +100,7 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         $this->assertContains('Review 2', $eateryNames);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheEateries(): void
     {
         $this->assertFalse(Cache::has(config('coeliac.cache.eating-out.reviews.home')));
@@ -110,7 +111,7 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
         $this->assertSame($eateries, Cache::get(config('coeliac.cache.eating-out.reviews.home')));
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheBlogsFromTheCache(): void
     {
         DB::enableQueryLog();

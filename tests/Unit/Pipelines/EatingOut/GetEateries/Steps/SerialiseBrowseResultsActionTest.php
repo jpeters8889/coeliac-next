@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Collection;
 
 class SerialiseBrowseResultsActionTest extends GetEateriesTestCase
@@ -12,7 +13,7 @@ class SerialiseBrowseResultsActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 1;
 
-    /** @test */
+    #[Test]
     public function itReturnsACollectionOfSerialisedEateries(): void
     {
         $pipelineData = $this->callSerialiseBrowseResultsAction();
@@ -20,7 +21,7 @@ class SerialiseBrowseResultsActionTest extends GetEateriesTestCase
         $this->assertInstanceOf(Collection::class, $pipelineData->serialisedEateries);
     }
 
-    /** @test */
+    #[Test]
     public function eachItemInThePaginatorIsTheResource(): void
     {
         $pipelineData = $this->callSerialiseBrowseResultsAction();

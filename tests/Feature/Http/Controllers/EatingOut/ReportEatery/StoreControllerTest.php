@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\ReportEatery;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReportAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -40,19 +42,15 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(callable $route): void
     {
         $this->post($route($this, 'foo'))->assertNotFound();
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(callable $route): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -60,10 +58,8 @@ class StoreControllerTest extends TestCase
         $this->post($route($this, $eatery->slug))->assertNotFound();
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithAnInvalidReportDetails(callable $route): void
     {
         $this->submitForm($route, EateryCreateReviewRequestFactory::new(['details' => null])->create())
@@ -76,10 +72,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('details');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itCallsTheCreateEateryReportAction(callable $route): void
     {
         $this->expectAction(CreateEateryReportAction::class);
@@ -88,10 +82,8 @@ class StoreControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itCreatesAFullRatingThatIsNotApproved(callable $route): void
     {
         $this->assertEmpty($this->eatery->reports);

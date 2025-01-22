@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Blogs;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Blogs\GetBlogsForBlogIndexAction;
 use App\Actions\Blogs\GetBlogTagsAction;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
@@ -32,13 +33,13 @@ class IndexControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheBlogListPage(): void
     {
         $this->get(route('blog.index'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetBlogsForIndexAction(): void
     {
         $this->expectAction(GetBlogsForBlogIndexAction::class)
@@ -50,7 +51,7 @@ class IndexControllerTest extends TestCase
             ->get(route('blog.index.tags', ['tag' => $tag->slug]));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['blog']);
@@ -58,7 +59,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('blog.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheFirst12Blogs(): void
     {
         $this->get(route('blog.index'))
@@ -83,7 +84,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCanLoadOtherPages(): void
     {
         $this->get(route('blog.index', ['page' => 2]))
@@ -108,7 +109,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheTagsInTheResponse(): void
     {
         $this->get(route('blog.index'))
@@ -123,13 +124,13 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheBlogListPageWhenATagIsInTheUrl(): void
     {
         $this->get(route('blog.index.tags', ['tag' => $this->tag->slug]))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetBlogTagsAction(): void
     {
         $this->expectAction(GetBlogTagsAction::class)
@@ -141,7 +142,7 @@ class IndexControllerTest extends TestCase
             ->get(route('blog.index.tags', ['tag' => $tag->slug]));
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsBlogsWithTheGivenTag(): void
     {
         $this->get(route('blog.index.tags', ['tag' => $this->tag->slug]))
@@ -160,7 +161,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCanLoadOtherPagesForTheGivenTag(): void
     {
         $this->tag = $this->create(BlogTag::class);

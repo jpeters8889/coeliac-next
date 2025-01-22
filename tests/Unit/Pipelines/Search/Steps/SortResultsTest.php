@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchResultItem;
 use App\Models\Blogs\Blog;
 use App\Models\EatingOut\Eatery;
@@ -15,7 +16,7 @@ use Tests\TestCase;
 
 class SortResultsTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itSortsTheSearchResultsByScoreDesc(): void
     {
         $blog = new SearchResultItem(
@@ -64,7 +65,7 @@ class SortResultsTest extends TestCase
         app(SortResults::class)->handle($results, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itFurtherSortsTheSearchResultsByFirstWordPositionDesc(): void
     {
         $blog = new SearchResultItem(

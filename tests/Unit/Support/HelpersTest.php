@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Support;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\User;
 use App\Support\Helpers;
 use Money\Money;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class HelpersTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCanConvertMilesToMeters(): void
     {
         $miles = 5;
@@ -20,7 +21,7 @@ class HelpersTest extends TestCase
         $this->assertEquals(round($miles * $ratio), Helpers::milesToMeters($miles));
     }
 
-    /** @test */
+    #[Test]
     public function itCanFormatMoney(): void
     {
         $amount = Money::GBP(1000);
@@ -28,7 +29,7 @@ class HelpersTest extends TestCase
         $this->assertEquals('£10.00', Helpers::formatMoney($amount));
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnTheAdminUser(): void
     {
         $this->withAdminUser();

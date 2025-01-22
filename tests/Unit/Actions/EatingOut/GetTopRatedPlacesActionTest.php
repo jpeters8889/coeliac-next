@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
@@ -33,7 +34,7 @@ class GetTopRatedPlacesActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itOrdersTheEateriesByTheNumberRating(): void
     {
         $eateries = $this->callAction(GetTopRatedPlacesAction::class);
@@ -41,7 +42,7 @@ class GetTopRatedPlacesActionTest extends TestCase
         $this->assertGreaterThan($eateries->skip(1)->first()->rating_count, $eateries->first()->rating_count);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheMostRatedPlaces(): void
     {
         $this->assertFalse(Cache::has('wheretoeat_top_rated_places'));
@@ -51,7 +52,7 @@ class GetTopRatedPlacesActionTest extends TestCase
         $this->assertTrue(Cache::has('wheretoeat_top_rated_places'));
     }
 
-    /** @test */
+    #[Test]
     public function theMostRatedPlacesCacheExpiresAfter24Hours(): void
     {
         TestTime::freeze();
@@ -67,7 +68,7 @@ class GetTopRatedPlacesActionTest extends TestCase
         $this->assertFalse(Cache::has('wheretoeat_top_rated_places'));
     }
 
-    /** @test */
+    #[Test]
     public function itGetsTheMostRatedPlacesOutOfTheCacheIfTheyExist(): void
     {
         $this->callAction(GetTopRatedPlacesAction::class);

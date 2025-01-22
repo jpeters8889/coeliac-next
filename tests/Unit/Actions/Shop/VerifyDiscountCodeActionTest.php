@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\VerifyDiscountCodeAction;
 use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopDiscountCodesUsed;
@@ -39,7 +40,7 @@ class VerifyDiscountCodeActionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheDiscountCodeIsValidButHasHadTooManyClaims(): void
     {
         $code = $this->create(ShopDiscountCode::class, [
@@ -55,7 +56,7 @@ class VerifyDiscountCodeActionTest extends TestCase
         app(VerifyDiscountCodeAction::class)->handle($code, $this->order->token);
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheDiscountCodeIsValidButTheOrderDoesntMeetTheMinimumSpend(): void
     {
         $code = $this->create(ShopDiscountCode::class, [

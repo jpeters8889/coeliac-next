@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchParameters;
 use App\DataObjects\Search\SearchPipelineData;
 use App\DataObjects\Search\SearchResultsCollection;
@@ -23,7 +24,7 @@ class SearchEateriesTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntSearchAnyShopEateriesIfTheEaterySearchParameterIsFalse(): void
     {
         $eatery = $this->create(Eatery::class, ['name' => 'Foo']);
@@ -49,7 +50,7 @@ class SearchEateriesTest extends TestCase
         app(SearchEateries::class)->handle($pipelineData, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itSearchesEateries(): void
     {
         /** @var Eatery $eatery */
@@ -73,7 +74,7 @@ class SearchEateriesTest extends TestCase
         app(SearchEateries::class)->handle($pipelineData, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itPerformsAGeocodeSearchOnTheSearchTerm(): void
     {
         $searchParams = new SearchParameters(
@@ -97,7 +98,7 @@ class SearchEateriesTest extends TestCase
         app(SearchEateries::class)->handle($pipelineData, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itPerformsAGeocodeSearchOnTheLocationIfPassedIn(): void
     {
         $searchParams = new SearchParameters(

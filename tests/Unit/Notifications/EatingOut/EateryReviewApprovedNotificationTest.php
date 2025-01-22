@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Notifications\EatingOut;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Models\EatingOut\EateryReview;
 use App\Notifications\EatingOut\EateryReviewApprovedNotification;
@@ -26,11 +28,8 @@ class EateryReviewApprovedNotificationTest extends TestCase
         TestTime::freeze();
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider mailDataProvider
-     */
+    #[Test]
+    #[DataProvider('mailDataProvider')]
     public function itHasTheOrderDate(callable $closure): void
     {
         (new AnonymousNotifiable())

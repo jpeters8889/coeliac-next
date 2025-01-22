@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\RecommendAPlace;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreatePlaceRecommendationAction;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
@@ -19,7 +20,7 @@ class StoreControllerTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidName(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['name' => null]))->assertJsonValidationErrorFor('name');
@@ -27,7 +28,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['name' => true]))->assertJsonValidationErrorFor('name');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidEmail(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['email' => null]))->assertJsonValidationErrorFor('email');
@@ -36,7 +37,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['email' => 'foo']))->assertJsonValidationErrorFor('email');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceName(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_name' => null]))->assertJsonValidationErrorFor('place.name');
@@ -44,7 +45,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_name' => true]))->assertJsonValidationErrorFor('place.name');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceLocation(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_location' => null]))->assertJsonValidationErrorFor('place.location');
@@ -52,7 +53,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_location' => true]))->assertJsonValidationErrorFor('place.location');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceUrl(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_web_address' => 'foo']))->assertJsonValidationErrorFor('place.url');
@@ -60,7 +61,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_web_address' => true]))->assertJsonValidationErrorFor('place.url');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceVenueType(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_venue_type_id' => 'foo']))->assertJsonValidationErrorFor('place.venueType');
@@ -68,7 +69,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_venue_type_id' => true]))->assertJsonValidationErrorFor('place.venueType');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceDetails(): void
     {
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_details' => null]))->assertJsonValidationErrorFor('place.details');
@@ -76,7 +77,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceApiRequestFactory::new()->create(['place_details' => true]))->assertJsonValidationErrorFor('place.details');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateRecommendedPlaceAction(): void
     {
         $this->expectAction(CreatePlaceRecommendationAction::class);

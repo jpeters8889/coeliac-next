@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class GenerateNationwideBranchOpenGraphImageActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheView(): void
     {
         $this->create(Eatery::class);

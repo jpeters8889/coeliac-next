@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\ContactFormData;
 use App\Events\ContactFormSubmittedEvent;
 use App\Listeners\SendContactFormListener;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class SendContactFormListenerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itEmailsTheContactFormToTheMainEmailAddress(): void
     {
         Mail::fake();

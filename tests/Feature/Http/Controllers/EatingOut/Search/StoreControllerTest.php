@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateSearchAction;
 use App\Models\EatingOut\EaterySearchTerm;
 use Illuminate\Testing\TestResponse;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidSearchTermDetails(): void
     {
         $this->submitSearch(term: null)->assertSessionHasErrors('term');
@@ -20,7 +21,7 @@ class StoreControllerTest extends TestCase
         $this->submitSearch(term: 'aa')->assertSessionHasErrors('term'); // to short
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidSearchRangeDetails(): void
     {
         $this->submitSearch(range: null)->assertSessionHasErrors('range');
@@ -29,7 +30,7 @@ class StoreControllerTest extends TestCase
         $this->submitSearch(range: 7)->assertSessionHasErrors('range'); // not valid entry
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateSearchAction(): void
     {
         $this->expectAction(CreateSearchAction::class);
@@ -38,7 +39,7 @@ class StoreControllerTest extends TestCase
 
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsToTheResultsPage(): void
     {
         $searchTerm = $this->create(EaterySearchTerm::class, [

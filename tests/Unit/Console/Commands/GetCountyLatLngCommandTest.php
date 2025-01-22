@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\LatLng;
 use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EateryCounty;
@@ -26,7 +27,7 @@ class GetCountyLatLngCommandTest extends TestCase
             ->andReturn(new LatLng($london['lat'], $london['lng']));
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheLatLngOnACounty(): void
     {
         $county = $this
@@ -45,7 +46,7 @@ class GetCountyLatLngCommandTest extends TestCase
         $this->assertEquals('51.5,-0.1', $county->latlng);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntUpdateTheLatLngOnACountyThatAlreadyHasALatLng(): void
     {
         $county = $this
@@ -63,7 +64,7 @@ class GetCountyLatLngCommandTest extends TestCase
         $this->assertEquals('foo', $county->latlng);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntUpdateTheLatLngIfTheCountyIsNationwide(): void
     {
         $county = $this

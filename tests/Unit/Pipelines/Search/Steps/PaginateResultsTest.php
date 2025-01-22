@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchResultItem;
 use App\Models\Blogs\Blog;
 use App\Models\Recipes\Recipe;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class PaginateResultsTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itSortsTheSearchResultsByScoreDesc(): void
     {
         $blog = new SearchResultItem(

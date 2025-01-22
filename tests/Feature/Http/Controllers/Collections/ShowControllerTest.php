@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Collections;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Collections\Collection;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -22,7 +23,7 @@ class ShowControllerTest extends TestCase
         $this->collection = Collection::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForARecipeThatDoesntExist(): void
     {
         $this->get(route('collection.show', ['collection' => 'foobar']))->assertNotFound();
@@ -33,7 +34,7 @@ class ShowControllerTest extends TestCase
         return $this->get(route('collection.show', ['collection' => $this->collection]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForACollectionThatIsntLive(): void
     {
         $this->collection->update(['live' => false]);
@@ -41,13 +42,13 @@ class ShowControllerTest extends TestCase
         $this->visitCollection()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForACollectionThatIsLive(): void
     {
         $this->visitCollection()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitCollection()

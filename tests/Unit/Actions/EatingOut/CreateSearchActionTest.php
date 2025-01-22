@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateSearchAction;
 use App\Models\EatingOut\EaterySearchTerm;
 use Spatie\TestTime\TestTime;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class CreateSearchActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCreatesASearchTermRecord(): void
     {
         $this->assertEmpty(EaterySearchTerm::all());
@@ -22,7 +23,7 @@ class CreateSearchActionTest extends TestCase
         $this->assertDatabaseHas(EaterySearchTerm::class, ['term' => 'foo']);
     }
 
-    /** @test */
+    #[Test]
     public function itUsesAnExistingSearchTermIfOneExistsWithTheSameTermAndRange(): void
     {
         $this->create(EaterySearchTerm::class, [
@@ -37,7 +38,7 @@ class CreateSearchActionTest extends TestCase
         $this->assertCount(1, EaterySearchTerm::all());
     }
 
-    /** @test */
+    #[Test]
     public function itLogsTheSearch(): void
     {
         TestTime::freeze();

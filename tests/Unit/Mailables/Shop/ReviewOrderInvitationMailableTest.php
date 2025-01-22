@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mailables\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Mailables\Shop\ReviewOrderInvitationMailable;
 use App\Models\Shop\ShopOrder;
@@ -24,7 +25,7 @@ class ReviewOrderInvitationMailableTest extends TestCase
         $this->order->reviewInvitation()->create();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnMjmlMessageInstance(): void
     {
         $this->assertInstanceOf(
@@ -33,7 +34,7 @@ class ReviewOrderInvitationMailableTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         $mailable = ReviewOrderInvitationMailable::make($this->order, 'foo', 'bar');
@@ -41,7 +42,7 @@ class ReviewOrderInvitationMailableTest extends TestCase
         $this->assertEquals('Review your Coeliac Sanctuary Order!', $mailable->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $mailable = ReviewOrderInvitationMailable::make($this->order, 'foo', 'bar');
@@ -49,7 +50,7 @@ class ReviewOrderInvitationMailableTest extends TestCase
         $this->assertEquals('mailables.mjml.shop.review-invitation', $mailable->mjml);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         $data = [

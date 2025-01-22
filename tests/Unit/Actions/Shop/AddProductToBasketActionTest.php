@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AddProductToBasketAction;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
@@ -30,7 +31,7 @@ class AddProductToBasketActionTest extends TestCase
         $this->variant = $this->product->variants->first();
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAShopOrderItemAgainstTheBasketRecord(): void
     {
         $this->assertDatabaseEmpty(ShopOrderItem::class);
@@ -46,7 +47,7 @@ class AddProductToBasketActionTest extends TestCase
         $this->assertEquals(1, $item->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheQuantityOfAnExistingBasketItemIfItIsAlreadyInTheBasket(): void
     {
         $item = $this->order->items()->create([
@@ -66,7 +67,7 @@ class AddProductToBasketActionTest extends TestCase
         $this->assertEquals(2, $item->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itDeductsTheQuantityFromTheVariant(): void
     {
         $this->variant->update(['quantity' => 2]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\StoreSuggestedEditAction;
 use App\Models\EatingOut\Eatery;
 use App\Support\EatingOut\SuggestEdits\Fields\AddressField;
@@ -24,7 +25,7 @@ class StoreSuggestedEditActionTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASuggestedEditForTheEatery(): void
     {
         $this->assertEmpty($this->eatery->suggestedEdits);
@@ -34,7 +35,7 @@ class StoreSuggestedEditActionTest extends TestCase
         $this->assertNotEmpty($this->eatery->refresh()->suggestedEdits);
     }
 
-    /** @test */
+    #[Test]
     public function itResolvesTheEditableField(): void
     {
         $this->partialMock(SuggestedEditProcessor::class)

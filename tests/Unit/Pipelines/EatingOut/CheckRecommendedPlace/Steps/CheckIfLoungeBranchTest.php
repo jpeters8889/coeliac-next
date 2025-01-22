@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\CheckRecommendedPlace\Steps;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
 use App\Pipelines\EatingOut\CheckRecommendedPlace\Steps\AbstractStepAction;
@@ -26,11 +28,8 @@ class CheckIfLoungeBranchTest extends StepTestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider validValues
-     */
+    #[Test]
+    #[DataProvider('validValues')]
     public function itMarksItAsFoundIfSearchingForValidData(string $name): void
     {
         $data = $this->makeData($name);
@@ -43,7 +42,7 @@ class CheckIfLoungeBranchTest extends StepTestCase
         $this->assertEquals('Check out The Lounges', $data->label);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForALoungeBranchThatDoesntExist(): void
     {
         $data = $this->makeData('Capello Lounge');
@@ -53,7 +52,7 @@ class CheckIfLoungeBranchTest extends StepTestCase
         $this->assertFalse($data->found);
     }
 
-    /** @test */
+    #[Test]
     public function itFindsALoungeBranch(): void
     {
         $data = $this->makeData('navio lounge');

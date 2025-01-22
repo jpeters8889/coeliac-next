@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\PendingEatery;
 
 class SortPendingEateriesActionTest extends GetEateriesTestCase
 {
-    /** @test */
+    #[Test]
     public function itSortsEateries(): void
     {
         $eateries = $this->callGetEateriesInTownAction()->eateries;

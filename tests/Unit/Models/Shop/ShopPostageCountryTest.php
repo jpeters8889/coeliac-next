@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPostageCountry;
 use App\Models\Shop\ShopPostageCountryArea;
@@ -20,7 +21,7 @@ class ShopPostageCountryTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itBelongsToAPostageArea(): void
     {
         $country = $this->create(ShopPostageCountry::class);
@@ -28,7 +29,7 @@ class ShopPostageCountryTest extends TestCase
         $this->assertInstanceOf(ShopPostageCountryArea::class, $country->area);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyOrders(): void
     {
         $country = $this->create(ShopPostageCountry::class);

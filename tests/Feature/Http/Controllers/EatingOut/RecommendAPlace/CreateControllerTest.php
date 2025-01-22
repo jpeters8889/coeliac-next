@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\RecommendAPlace;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use Illuminate\Testing\TestResponse;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -16,13 +17,13 @@ class CreateControllerTest extends TestCase
         return $this->get(route('eating-out.recommend.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->visitPage()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery']);
@@ -30,7 +31,7 @@ class CreateControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitPage()->assertInertia(fn (Assert $page) => $page->component('EatingOut/RecommendAPlace'));

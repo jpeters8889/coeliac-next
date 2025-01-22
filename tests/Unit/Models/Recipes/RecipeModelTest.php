@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Recipes;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateRecipeIndexPageOpenGraphImageJob;
 use App\Models\Recipes\Recipe;
@@ -50,7 +51,7 @@ class RecipeModelTest extends TestCase
         $this->item->addMedia(UploadedFile::fake()->image('square.jpg'))->toMediaCollection('square');
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -63,31 +64,31 @@ class RecipeModelTest extends TestCase
         Bus::assertDispatched(CreateHomePageOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAFeature(): void
     {
         $this->assertEquals(1, $this->recipe->features()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnAllergen(): void
     {
         $this->assertEquals(1, $this->recipe->allergens->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasAMealType(): void
     {
         $this->assertEquals(1, $this->recipe->meals->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasNutrition(): void
     {
         $this->assertEquals(1, $this->recipe->nutrition->count());
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheSquareImage(): void
     {
         $squareImage = $this->item->square_image;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class ResolveBasketActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsABasketShopOrderRecordIfOneExistsWithTheGivenToken(): void
     {
         /** @var ShopOrder $order */
@@ -24,7 +25,7 @@ class ResolveBasketActionTest extends TestCase
         $this->assertTrue($order->is($result));
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnAnExistingBasketIfItHasExpired(): void
     {
         /** @var ShopOrder $order */
@@ -36,7 +37,7 @@ class ResolveBasketActionTest extends TestCase
         $this->assertDatabaseCount(ShopOrder::class, 2);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesANewRecordIfATokenIsntPassed(): void
     {
         $this->assertDatabaseEmpty(ShopOrder::class);
@@ -49,7 +50,7 @@ class ResolveBasketActionTest extends TestCase
         $this->assertEquals(OrderState::BASKET, $order->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itWillNotCreateABasketIfTheCreateFlagIsFalse(): void
     {
         $this->assertDatabaseEmpty(ShopOrder::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Models\Shop\ShopCategory;
 use Illuminate\Support\Facades\Storage;
@@ -21,13 +22,13 @@ class IndexControllerTest extends TestCase
         $this->withCategoriesAndProducts();
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheShopIndexPage(): void
     {
         $this->get(route('shop.index'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['shop']);
@@ -35,7 +36,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('shop.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCategories(): void
     {
         $this->get(route('shop.index'))
@@ -53,7 +54,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnACategoryThatDoesntHaveAnyLiveProducts(): void
     {
         $this->create(ShopCategory::class, [

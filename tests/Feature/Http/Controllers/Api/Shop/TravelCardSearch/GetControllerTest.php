@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop\TravelCardSearch;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\TravelCardSearchTerm;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -11,14 +12,14 @@ use Tests\TestCase;
 
 class GetControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheSearchTermDoesntExist(): void
     {
         $this->getJson(route('api.shop.travel-card-search.get', ['travelCardSearchTerm' => 123]))
             ->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itIncrementsTheHitsOfTheSearchTerm(): void
     {
         $searchTerm = $this->create(TravelCardSearchTerm::class, ['hits' => 5]);
@@ -28,7 +29,7 @@ class GetControllerTest extends TestCase
         $this->assertEquals(6, $searchTerm->refresh()->hits);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheTypeAndTerm(): void
     {
         $searchTerm = $this->create(TravelCardSearchTerm::class, [
@@ -41,7 +42,7 @@ class GetControllerTest extends TestCase
             ->assertJsonPath('term', 'Spain');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheProductsLinkedToTheSearchTerm(): void
     {
         /** @var TravelCardSearchTerm $searchTerm */

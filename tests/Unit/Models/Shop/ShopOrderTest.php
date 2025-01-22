@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopDiscountCode;
@@ -31,7 +32,7 @@ class ShopOrderTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasADefaultState(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -39,7 +40,7 @@ class ShopOrderTest extends TestCase
         $this->assertEquals(OrderState::BASKET, $order->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itHasADefaultPostageCountry(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -47,7 +48,7 @@ class ShopOrderTest extends TestCase
         $this->assertEquals(1, $order->postage_country_id);
     }
 
-    /** @test */
+    #[Test]
     public function itHasADefaultToken(): void
     {
         $order = $this->create(ShopOrder::class, [
@@ -57,7 +58,7 @@ class ShopOrderTest extends TestCase
         $this->assertNotNull($order->token);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAState(): void
     {
         $order = $this->build(ShopOrder::class)
@@ -67,7 +68,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopOrderState::class, $order->state);
     }
 
-    /** @test */
+    #[Test]
     public function itHasACustomer(): void
     {
         $customer = $this->create(ShopCustomer::class);
@@ -80,7 +81,7 @@ class ShopOrderTest extends TestCase
         $this->assertTrue($order->customer->is($customer));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnAddress(): void
     {
         $address = $this->create(ShopShippingAddress::class);
@@ -93,7 +94,7 @@ class ShopOrderTest extends TestCase
         $this->assertTrue($order->address->is($address));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAPaymentRecord(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -108,7 +109,7 @@ class ShopOrderTest extends TestCase
         $this->assertTrue($order->payment->is($payment));
     }
 
-    /** @test */
+    #[Test]
     public function itHasItems(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -123,7 +124,7 @@ class ShopOrderTest extends TestCase
         $this->assertCount(5, $order->items);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAPostageCountry(): void
     {
         $order = $this->create(ShopOrder::class, [
@@ -133,7 +134,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopPostageCountry::class, $order->postageCountry);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveADiscountCode(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -145,7 +146,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopDiscountCode::class, $order->refresh()->discountCode);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveAReviewInvitation(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -157,7 +158,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopOrderReviewInvitation::class, $order->refresh()->reviewInvitation);
     }
 
-    /** @test */
+    #[Test]
     public function itHasReviews(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -171,7 +172,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopOrderReview::class, $order->reviews->first());
     }
 
-    /** @test */
+    #[Test]
     public function itHasReviewedItems(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -185,7 +186,7 @@ class ShopOrderTest extends TestCase
         $this->assertInstanceOf(ShopOrderReviewItem::class, $order->reviewedItems->first());
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveASource(): void
     {
         $order = $this->create(ShopOrder::class);

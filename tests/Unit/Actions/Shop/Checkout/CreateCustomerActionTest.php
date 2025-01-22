@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop\Checkout;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\Checkout\CreateCustomerAction;
 use App\DataObjects\Shop\PendingOrderCustomerDetails;
 use App\Models\Shop\ShopCustomer;
@@ -14,7 +15,7 @@ class CreateCustomerActionTest extends TestCase
 {
     use WithFaker;
 
-    /** @test */
+    #[Test]
     public function itCreatesAUser(): void
     {
         $this->assertDatabaseEmpty(ShopCustomer::class);
@@ -29,7 +30,7 @@ class CreateCustomerActionTest extends TestCase
         $this->assertDatabaseHas(ShopCustomer::class, get_object_vars($payload));
     }
 
-    /** @test */
+    #[Test]
     public function itMatchesOntoAnExistingShopCustomerWithTheEmailAddress(): void
     {
         $payload = new PendingOrderCustomerDetails(
@@ -44,7 +45,7 @@ class CreateCustomerActionTest extends TestCase
         $this->assertDatabaseCount(ShopCustomer::class, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesAStoredShopCustomersDetailsToTheNewDetails(): void
     {
         $payload = new PendingOrderCustomerDetails(

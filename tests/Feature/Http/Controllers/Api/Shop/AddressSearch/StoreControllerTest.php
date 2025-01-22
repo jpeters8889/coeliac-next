@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop\AddressSearch;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithoutASearchString(): void
     {
         $this->postJson(route('api.shop.address-search'))
             ->assertJsonValidationErrorFor('search');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidSearchString(): void
     {
         $this->postJson(route('api.shop.address-search'), [
@@ -29,7 +30,7 @@ class StoreControllerTest extends TestCase
         ])->assertJsonValidationErrorFor('search');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheSearchService(): void
     {
         Http::preventStrayRequests();
@@ -50,7 +51,7 @@ class StoreControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheCountryToTheSearchIfOneIsSentInTheRequest(): void
     {
         Http::preventStrayRequests();
@@ -72,7 +73,7 @@ class StoreControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itSendsTheCountryAsUkIfTheCountryIsUnitedKingdom(): void
     {
         Http::preventStrayRequests();
@@ -92,7 +93,7 @@ class StoreControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itSendsTheLatLngIfRequested(): void
     {
         Http::preventStrayRequests();
@@ -117,7 +118,7 @@ class StoreControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfSendingLatWithoutLngAndViceVersa(): void
     {
         $this->postJson(route('api.shop.address-search'), [
@@ -129,7 +130,7 @@ class StoreControllerTest extends TestCase
         ])->assertJsonValidationErrorFor('lat');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheResults(): void
     {
         Http::preventStrayRequests();

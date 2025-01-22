@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mailables\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Mailables\Shop\OrderShippedMailable;
 use App\Models\Shop\ShopOrder;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class OrderShippedMailableTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsAnMjmlMessageInstance(): void
     {
         $this->assertInstanceOf(
@@ -20,7 +21,7 @@ class OrderShippedMailableTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         $mailable = OrderShippedMailable::make(new ShopOrder(), 'foo');
@@ -28,7 +29,7 @@ class OrderShippedMailableTest extends TestCase
         $this->assertEquals('Your Coeliac Sanctuary order is on its way!', $mailable->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $mailable = OrderShippedMailable::make(new ShopOrder(), 'foo');
@@ -36,7 +37,7 @@ class OrderShippedMailableTest extends TestCase
         $this->assertEquals('mailables.mjml.shop.order-shipped', $mailable->mjml);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         $order = $this->build(ShopOrder::class)->asPaid()->create();

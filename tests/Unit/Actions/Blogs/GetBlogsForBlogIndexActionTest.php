@@ -11,6 +11,7 @@ use App\Resources\Blogs\BlogDetailCardViewResource;
 use App\Resources\Blogs\BlogListCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetBlogsForBlogIndexActionTest extends TestCase
@@ -24,7 +25,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->withBlogs(15);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsABlogListCollection(): void
     {
         $this->assertInstanceOf(
@@ -33,7 +34,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itIsAPaginatedCollection(): void
     {
         $blogs = $this->callAction(GetBlogsForBlogIndexAction::class);
@@ -41,19 +42,19 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->assertInstanceOf(LengthAwarePaginator::class, $blogs->resource);
     }
 
-    /** @test */
+    #[Test]
     public function itReturns12ItemsPerPageByDefault(): void
     {
         $this->assertCount(12, $this->callAction(GetBlogsForBlogIndexAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveADifferentPageLimitSpecified(): void
     {
         $this->assertCount(5, $this->callAction(GetBlogsForBlogIndexAction::class, perPage: 5));
     }
 
-    /** @test */
+    #[Test]
     public function eachItemInThePageIsABlogDetailCardViewResource(): void
     {
         $resource = $this->callAction(GetBlogsForBlogIndexAction::class)->resource->first();
@@ -61,7 +62,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->assertInstanceOf(BlogDetailCardViewResource::class, $resource);
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheMediaAndTagsRelationship(): void
     {
         /** @var Blog $blog */
@@ -71,7 +72,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->assertTrue($blog->relationLoaded('tags'));
     }
 
-    /** @test */
+    #[Test]
     public function itHasACommentsCount(): void
     {
         /** @var Blog $blog */
@@ -80,7 +81,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->assertArrayHasKey('comments_count', $blog->attributesToArray());
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeFilteredByBlogTag(): void
     {
         $tag = $this->create(BlogTag::class);
@@ -96,7 +97,7 @@ class GetBlogsForBlogIndexActionTest extends TestCase
         $this->assertCount(5, $collection);
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeFilteredBySearch(): void
     {
         Blog::query()->first()->update(['title' => 'Test Blog Yay']);

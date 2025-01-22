@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\RecommendAPlace;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreatePlaceRecommendationAction;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Testing\TestResponse;
@@ -19,7 +20,7 @@ class StoreControllerTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidName(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['name' => null]))->assertSessionHasErrors('name');
@@ -27,7 +28,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['name' => true]))->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidEmail(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['email' => null]))->assertSessionHasErrors('email');
@@ -36,7 +37,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['email' => 'foo']))->assertSessionHasErrors('email');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceName(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.name' => null]))->assertSessionHasErrors('place.name');
@@ -44,7 +45,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.name' => true]))->assertSessionHasErrors('place.name');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceLocation(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.location' => null]))->assertSessionHasErrors('place.location');
@@ -52,7 +53,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.location' => true]))->assertSessionHasErrors('place.location');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceUrl(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.url' => 'foo']))->assertSessionHasErrors('place.url');
@@ -60,7 +61,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.url' => true]))->assertSessionHasErrors('place.url');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceVenueType(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.venueType' => 'foo']))->assertSessionHasErrors('place.venueType');
@@ -68,7 +69,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.venueType' => true]))->assertSessionHasErrors('place.venueType');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithAnInvalidPlaceDetails(): void
     {
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.details' => null]))->assertSessionHasErrors('place.details');
@@ -76,7 +77,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(EateryRecommendAPlaceRequestFactory::new()->create(['place.details' => true]))->assertSessionHasErrors('place.details');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateRecommendedPlaceAction(): void
     {
         $this->expectAction(CreatePlaceRecommendationAction::class);

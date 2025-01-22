@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductVariant;
@@ -13,13 +14,13 @@ use Tests\TestCase;
 
 class ShopCategoryTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasALiveScope(): void
     {
         $this->assertNotEmpty(ShopCategory::query()->toBase()->wheres);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveMedia(): void
     {
         Storage::fake('media');
@@ -32,7 +33,7 @@ class ShopCategoryTest extends TestCase
         $this->assertCount(2, $category->media);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGenerateALink(): void
     {
         $category = $this->create(ShopCategory::class, [
@@ -42,7 +43,7 @@ class ShopCategoryTest extends TestCase
         $this->assertEquals('/shop/test-category', $category->link);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyProducts(): void
     {
         ShopCategory::withoutGlobalScopes();

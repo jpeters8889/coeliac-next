@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Resources\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
@@ -32,7 +33,7 @@ class CountyTownResourceTest extends TestCase
         Storage::fake('media');
     }
 
-    /** @test */
+    #[Test]
     public function itHasANameAttribute(): void
     {
         $resource = (new CountyTownResource($this->town))->toArray(request());
@@ -41,7 +42,7 @@ class CountyTownResourceTest extends TestCase
         $this->assertEquals($this->town->town, $resource['name']);
     }
 
-    /** @test */
+    #[Test]
     public function itHasALinkAttribute(): void
     {
         $resource = (new CountyTownResource($this->town))->toArray(request());
@@ -50,7 +51,7 @@ class CountyTownResourceTest extends TestCase
         $this->assertEquals($this->town->link(), $resource['link']);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheNumberOfLiveEateries(): void
     {
         $this->build(Eatery::class)->count(4)->create();
@@ -62,7 +63,7 @@ class CountyTownResourceTest extends TestCase
         $this->assertEquals(5, $resource['eateries']); // 4 created, plus one in setup
     }
 
-    /** @test */
+    #[Test]
     public function itIncludesNationwideBranchesWithTheNumberOfLiveEateries(): void
     {
         $eateries = $this->build(Eatery::class)->count(4)->create();
@@ -83,7 +84,7 @@ class CountyTownResourceTest extends TestCase
         $this->assertEquals(10, $resource['eateries']); // 4 eateries, plus one in setup, 5 branches
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheNumberOfLiveAttractions(): void
     {
         $this->build(Eatery::class)->attraction()->count(4)->create();
@@ -95,7 +96,7 @@ class CountyTownResourceTest extends TestCase
         $this->assertEquals(4, $resource['attractions']);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheNumberOfLiveHotels(): void
     {
         $this->build(Eatery::class)->hotel()->count(4)->create();

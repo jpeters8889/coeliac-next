@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Http\Response;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Http\Response\Inertia;
 use Tests\TestCase;
 
@@ -18,13 +19,13 @@ class InertiaResponseTest extends TestCase
         $this->factory = new Inertia();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDefaultPageTitleIfOneIsntSpecified(): void
     {
         $this->assertEquals(config('metas.title'), $this->factory->getShared('meta.title'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsASpecifiedPageTitleIfOneIsSpecified(): void
     {
         $this->factory->title('Hello World');
@@ -32,13 +33,13 @@ class InertiaResponseTest extends TestCase
         $this->assertEquals('Hello World', $this->factory->getShared('meta.title'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDefaultMetaDescriptionIfOneIsntSpecified(): void
     {
         $this->assertEquals(config('metas.description'), $this->factory->getShared('meta.description'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsASpecifiedMetaDescriptionIfOneIsSpecified(): void
     {
         $this->factory->metaDescription('Hello World');
@@ -46,13 +47,13 @@ class InertiaResponseTest extends TestCase
         $this->assertEquals('Hello World', $this->factory->getShared('meta.description'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDefaultMetaTagsIfOnesArentSpecified(): void
     {
         $this->assertEquals(config('metas.tags'), $this->factory->getShared('meta.tags'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsCustomMetaTagsWithTheDefaultOnesIfCustomsOnesAreSpecified(): void
     {
         $this->factory->metaTags(['Foo', 'Bar']);
@@ -64,7 +65,7 @@ class InertiaResponseTest extends TestCase
         $this->assertContains(config('metas.tags.0'), $tags);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOnlyCustomTagsIfTheMergeFlagIsDisabled(): void
     {
         $this->factory->metaTags(['Foo', 'Bar'], false);
@@ -76,13 +77,13 @@ class InertiaResponseTest extends TestCase
         $this->assertNotContains(config('metas.tags.0'), $tags);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDefaultMetaImageIfOneIsSpecified(): void
     {
         $this->assertEquals(config('metas.image'), $this->factory->getShared('meta.image'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheGivenMetaImageIfOneIsSpecified(): void
     {
         $this->factory->metaImage('foobar.jpg');
@@ -90,7 +91,7 @@ class InertiaResponseTest extends TestCase
         $this->assertEquals('foobar.jpg', $this->factory->getShared('meta.image'));
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeSetToNotTrack(): void
     {
         $this->factory->doNotTrack();

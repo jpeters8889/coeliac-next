@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderReview;
 use App\Models\Shop\ShopOrderReviewInvitation;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class ShopOrderReviewInvitationTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasAUuidKey(): void
     {
         $invitation = $this->create(ShopOrderReviewInvitation::class);
@@ -20,7 +21,7 @@ class ShopOrderReviewInvitationTest extends TestCase
         $this->assertTrue(Str::isUuid($invitation->id));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnOrder(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -32,7 +33,7 @@ class ShopOrderReviewInvitationTest extends TestCase
         $this->assertInstanceOf(ShopOrder::class, $invitation->refresh()->order);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAReview(): void
     {
         $invitation = $this->create(ShopOrderReviewInvitation::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Product;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopProduct;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
@@ -25,13 +26,13 @@ class ShowControllerTest extends TestCase
         $this->product = ShopProduct::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheProductDoesntExist(): void
     {
         $this->get(route('shop.product', ['product' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheProductDoesntHaveAnyLiveVariants(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -39,19 +40,19 @@ class ShowControllerTest extends TestCase
         $this->get(route('shop.product', ['product' => $product->slug]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->makeRequest()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheShopProductPage(): void
     {
         $this->makeRequest()->assertInertia(fn (Assert $page) => $page->component('Shop/Product'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheProductInformation(): void
     {
         $this->makeRequest()
@@ -64,7 +65,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheVariantsInTheProduct(): void
     {
         $this->makeRequest()

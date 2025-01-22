@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
 use App\Models\EatingOut\EateryCounty;
 use Illuminate\View\View;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class GenerateCountyOpenGraphImageActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheView(): void
     {
         $county = $this->create(EateryCounty::class);

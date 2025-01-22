@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
@@ -28,7 +29,7 @@ class GetOpenGraphImageForRouteActionTest extends TestCase
         config()->set('coeliac.generate_og_images', true);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsFromTheModelIfItExistsForTheGivenRoute(): void
     {
         Bus::fake();
@@ -45,7 +46,7 @@ class GetOpenGraphImageForRouteActionTest extends TestCase
         Bus::assertNothingDispatched();
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCorrectJobIfAnOpenGraphImageDoesntExist(): void
     {
         Bus::fake();
@@ -68,7 +69,7 @@ class GetOpenGraphImageForRouteActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheDefaultJobIfTheJobIsUnknown(): void
     {
         Bus::fake();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopPayment;
 use App\Models\Shop\ShopPaymentResponse;
@@ -19,7 +20,7 @@ class ShopPaymentTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itIsLinkedToAnOrder(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -31,7 +32,7 @@ class ShopPaymentTest extends TestCase
         $this->assertInstanceOf(ShopOrder::class, $payment->refresh()->order);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAPaymentResponse(): void
     {
         $payment = $this->create(ShopPayment::class);

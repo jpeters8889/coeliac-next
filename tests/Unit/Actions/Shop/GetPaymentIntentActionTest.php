@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\GetPaymentIntentAction;
 use Stripe\PaymentIntent;
 use Tests\Concerns\MocksStripe;
@@ -13,7 +14,7 @@ class GetPaymentIntentActionTest extends TestCase
 {
     use MocksStripe;
 
-    /** @test */
+    #[Test]
     public function itCanGetAPaymentIntent(): void
     {
         $this->mockRetrievePaymentIntent('foo');

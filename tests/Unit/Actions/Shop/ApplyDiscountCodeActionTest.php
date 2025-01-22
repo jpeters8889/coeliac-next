@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\VerifyDiscountCodeAction;
 use App\Enums\Shop\DiscountCodeType;
@@ -46,7 +47,7 @@ class ApplyDiscountCodeActionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itVerifiesTheDiscountCode(): void
     {
         $this->expectAction(VerifyDiscountCodeAction::class);
@@ -54,7 +55,7 @@ class ApplyDiscountCodeActionTest extends TestCase
         app(ApplyDiscountCodeAction::class)->handle($this->discountCode, $this->order->token);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDeductionAmountIfTypeIsMoneyDeduction(): void
     {
         $this->discountCode->update([
@@ -65,7 +66,7 @@ class ApplyDiscountCodeActionTest extends TestCase
         $this->assertEquals(123, app(ApplyDiscountCodeAction::class)->handle($this->discountCode, $this->order->token));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDiscountAsAPercentageOfTheRunningSubtotalIfDiscountCodeTypeIsPercentage(): void
     {
         $this->discountCode->update([

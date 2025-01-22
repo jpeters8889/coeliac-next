@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Services\RenderOpenGraphImage;
 use Spatie\Browsershot\Browsershot;
 use Tests\TestCase;
 
 class RenderOpenGraphImageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCanGenerateABase64ImageStringUsingBrowsershot(): void
     {
         $this->mock(Browsershot::class)

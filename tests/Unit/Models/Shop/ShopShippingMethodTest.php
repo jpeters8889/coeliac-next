@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopPostagePrice;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopShippingMethod;
@@ -20,7 +21,7 @@ class ShopShippingMethodTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyProducts(): void
     {
         $shippingMethod = ShopShippingMethod::query()->first();
@@ -30,7 +31,7 @@ class ShopShippingMethodTest extends TestCase
         $this->assertInstanceOf(Collection::class, $shippingMethod->products);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyPostagePrices(): void
     {
         $shippingMethod = ShopShippingMethod::query()->first();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Basket;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AddProductToBasketAction;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Models\Shop\ShopOrder;
@@ -30,7 +31,7 @@ class StoreControllerTest extends TestCase
         $this->variant = $this->product->variants->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAnInvalidProductId(): void
     {
         $this->makeRequest(['product_id' => null])->assertSessionHasErrors('product_id');
@@ -38,13 +39,13 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['product_id' => true])->assertSessionHasErrors('product_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAProductThatDoesntExist(): void
     {
         $this->makeRequest(['product_id' => 123])->assertSessionHasErrors('product_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAProductThatHasNoLiveVariants(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -52,7 +53,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['product_id' => $product->id])->assertSessionHasErrors('product_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAnInvalidVariantId(): void
     {
         $this->makeRequest(['variant_id' => null])->assertSessionHasErrors('variant_id');
@@ -60,13 +61,13 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['variant_id' => true])->assertSessionHasErrors('variant_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAVariantThatDoesntExist(): void
     {
         $this->makeRequest(['variant_id' => 123])->assertSessionHasErrors('variant_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAVariantForADifferentProduct(): void
     {
         $variant = $this->create(ShopProductVariant::class);
@@ -74,7 +75,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['variant_id' => $variant->id])->assertSessionHasErrors('variant_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorIfTheVariantIsntLive(): void
     {
         $this->variant->update(['live' => false]);
@@ -82,7 +83,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertSessionHasErrors('variant_id');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAnInvalidQuantity(): void
     {
         $this->makeRequest(['quantity' => null])->assertSessionHasErrors('quantity');
@@ -91,7 +92,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['quantity' => -1])->assertSessionHasErrors('quantity');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorIfTheProductVariantDoesntHaveTheRequestedQuantity(): void
     {
         $this->variant->update(['quantity' => 1]);
@@ -99,7 +100,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['quantity' => 2])->assertSessionHasErrors('quantity');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheResolveBasketAction(): void
     {
         $this->expectAction(ResolveBasketAction::class);
@@ -107,7 +108,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest();
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheCookieBasketTokenToTheResolveBasketAction(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -118,7 +119,7 @@ class StoreControllerTest extends TestCase
         $this->assertDatabaseCount(ShopOrder::class, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheBasketTokenInACookie(): void
     {
         $request = $this->makeRequest();
@@ -128,7 +129,7 @@ class StoreControllerTest extends TestCase
         $request->assertCookie('basket_token', $order->token);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheAddProductToBasketAction(): void
     {
         $this->expectAction(AddProductToBasketAction::class, [function ($order, $product, $variant, $quantity) {
@@ -142,7 +143,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest();
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheBasketUpdatedAtTime(): void
     {
         TestTime::freeze();
@@ -154,7 +155,7 @@ class StoreControllerTest extends TestCase
         $this->assertTrue($order->refresh()->updated_at->isSameSecond(now()));
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsBackOnSuccess(): void
     {
         $this->from(route('shop.category', ['category' => $this->product->categories()->first()->slug]))

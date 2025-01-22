@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\ContactFormData;
 use App\Mail\ContactFormMail;
 use Illuminate\Mail\Mailables\Address;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class ContactFormMailTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         $emailData = new ContactFormData('name', 'email', 'This is the subject', 'message');
@@ -21,7 +22,7 @@ class ContactFormMailTest extends TestCase
         $this->assertEquals('New Contact Form - This is the subject', $mailable->envelope()->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheReplyToDetails(): void
     {
         $emailData = new ContactFormData('name', 'email', 'This is the subject', 'message');
@@ -31,7 +32,7 @@ class ContactFormMailTest extends TestCase
         $this->assertEquals([new Address('email', 'name')], $mailable->envelope()->replyTo);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $emailData = new ContactFormData('name', 'email', 'This is the subject', 'message');
@@ -41,7 +42,7 @@ class ContactFormMailTest extends TestCase
         $this->assertEquals('emails.contact-form', $mailable->content()->view);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         $emailData = new ContactFormData('name', 'email', 'This is the subject', 'message');

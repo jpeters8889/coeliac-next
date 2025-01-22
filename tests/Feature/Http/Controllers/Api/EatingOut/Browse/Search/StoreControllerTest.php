@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Browse\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\LatLng;
 use App\Services\EatingOut\LocationSearchService;
 use Illuminate\Testing\TestResponse;
@@ -16,19 +17,19 @@ class StoreControllerTest extends TestCase
         return $this->postJson(route('api.wheretoeat.browse.search', ['term' => $term]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorWithoutASearchTerm(): void
     {
         $this->makeRequest(null)->assertJsonValidationErrorFor('term');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorIfTheSearchTermIsTooShort(): void
     {
         $this->makeRequest('ab')->assertJsonValidationErrorFor('term');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $london = ['lat' => 51.5, 'lng' => -0.1];
@@ -41,7 +42,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest('london')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatLngForAResponse(): void
     {
         $london = ['lat' => 51.5, 'lng' => -0.1];

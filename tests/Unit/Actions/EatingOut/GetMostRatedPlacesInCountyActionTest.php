@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -40,7 +41,7 @@ class GetMostRatedPlacesInCountyActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itOrdersTheEateriesByTheNumberRating(): void
     {
         $eateries = $this->callAction(GetMostRatedPlacesInCountyAction::class, $this->county);
@@ -48,7 +49,7 @@ class GetMostRatedPlacesInCountyActionTest extends TestCase
         $this->assertGreaterThan($eateries->skip(1)->first()->rating_count, $eateries->first()->rating_count);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheMostRatedPlaces(): void
     {
         $this->assertFalse(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
@@ -58,7 +59,7 @@ class GetMostRatedPlacesInCountyActionTest extends TestCase
         $this->assertTrue(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
     }
 
-    /** @test */
+    #[Test]
     public function theMostRatedPlacesCacheExpiresAfter24Hours(): void
     {
         TestTime::freeze();
@@ -74,7 +75,7 @@ class GetMostRatedPlacesInCountyActionTest extends TestCase
         $this->assertFalse(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
     }
 
-    /** @test */
+    #[Test]
     public function itGetsTheMostRatedPlacesOutOfTheCacheIfTheyExist(): void
     {
         $this->callAction(GetMostRatedPlacesInCountyAction::class, $this->county);

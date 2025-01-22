@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Basket;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\CheckForPendingOrderAction;
@@ -68,20 +69,20 @@ class ShowControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->get(route('shop.basket.checkout'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheInertiaCheckoutView(): void
     {
         $this->get(route('shop.basket.checkout'))
             ->assertInertia(fn (Assert $page) => $page->component('Shop/Checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheResolveBasketAction(): void
     {
         $this->expectAction(ResolveBasketAction::class);
@@ -89,7 +90,7 @@ class ShowControllerTest extends TestCase
         $this->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCheckForPendingOrderActionIfThereIsAPendingOrder(): void
     {
         $order = $this->build(ShopOrder::class)->asPending()->create();
@@ -101,14 +102,14 @@ class ShowControllerTest extends TestCase
             ->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itPassesHasBasketFalseAsAPropIfNoBasket(): void
     {
         $this->get(route('shop.basket.checkout'))
             ->assertInertia(fn (Assert $page) => $page->where('has_basket', false));
     }
 
-    /** @test */
+    #[Test]
     public function itPassesHasBasketFalseAsAPropIfABasketExists(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -119,7 +120,7 @@ class ShowControllerTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page->where('has_basket', true)->etc());
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOrderItemsActonIfABasketExists(): void
     {
         $this->expectAction(GetOrderItemsAction::class);
@@ -129,7 +130,7 @@ class ShowControllerTest extends TestCase
             ->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheBasketTimestamp(): void
     {
         TestTime::freeze();
@@ -144,7 +145,7 @@ class ShowControllerTest extends TestCase
         $this->assertTrue($this->order->refresh()->updated_at->isSameSecond(now()));
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheBasketItemsToTheComponent(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -168,7 +169,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheSubtotalToTheComponent(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -193,7 +194,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCalculateOrderPostageAction(): void
     {
         $this->expectAction(CalculateOrderTotalsAction::class);
@@ -203,7 +204,7 @@ class ShowControllerTest extends TestCase
             ->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itCalculatesThePostagePriceAndPassesItToTheComponent(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -223,7 +224,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheTotalToTheComponent(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -243,7 +244,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheApplyDiscountCodeActionIfADiscountCodeIsPresentInTheSession(): void
     {
         $this->expectAction(ApplyDiscountCodeAction::class);
@@ -256,7 +257,7 @@ class ShowControllerTest extends TestCase
             ->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheShippableCountriesToTheComponent(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -271,7 +272,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheSelectedCountryId(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -291,7 +292,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheDeliveryTimescale(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -311,7 +312,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreatePaymentIntentAction(): void
     {
         $this->expectAction(CreatePaymentIntentAction::class);
@@ -321,7 +322,7 @@ class ShowControllerTest extends TestCase
             ->get(route('shop.basket.checkout'));
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheStripePaymentToken(): void
     {
         $token = $this->mockCreatePaymentIntent(300);

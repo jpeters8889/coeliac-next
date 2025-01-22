@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\CloseBasketAction;
 use App\Console\Commands\CloseBasketsCommand;
 use App\Models\Shop\ShopOrder;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class CloseBasketsCommandTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itDispatchesACloseBasketEventForBasketsThatHaventBeenUpdatedForAnHour(): void
     {
         Carbon::setTestNow('2024-04-01 12:00:00');
@@ -26,7 +27,7 @@ class CloseBasketsCommandTest extends TestCase
         $this->artisan(CloseBasketsCommand::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheEventForBasketsThatHaveRecentlyBeenUpdated(): void
     {
         Carbon::setTestNow('2024-04-01 12:00:00');
@@ -41,7 +42,7 @@ class CloseBasketsCommandTest extends TestCase
         $this->artisan(CloseBasketsCommand::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheEventForEntitiesTharArentBasketState(): void
     {
         Carbon::setTestNow('2024-04-01 12:00:00');

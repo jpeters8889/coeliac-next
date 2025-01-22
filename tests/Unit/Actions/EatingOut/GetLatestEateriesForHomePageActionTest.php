@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetLatestEateriesForHomepageAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
@@ -25,13 +26,13 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnACollectionOfEateries(): void
     {
         $this->assertInstanceOf(AnonymousResourceCollection::class, $this->callAction(GetLatestEateriesForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsTheEateriesAsASimpleEateryResource(): void
     {
         $this->build(Eatery::class)->count(5)->create();
@@ -41,7 +42,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsEightEateries(): void
     {
         $this->build(Eatery::class)->count(10)->create();
@@ -49,7 +50,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         $this->assertCount(8, $this->callAction(GetLatestEateriesForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatestEateriesFirst(): void
     {
         $this->build(Eatery::class)
@@ -68,7 +69,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         $this->assertNotContains('Eatery 9', $eateryNames);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnEateriesThatArentLive(): void
     {
         $this->build(Eatery::class)
@@ -87,7 +88,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         $this->assertContains('Eatery 2', $eateryNames);
     }
 
-    /** @test */
+    #[Test]
     public function itAlsoReturnsNationwideBranches(): void
     {
         $this->build(NationwideBranch::class)->count(5)->create([
@@ -99,7 +100,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheEateries(): void
     {
         $this->assertFalse(Cache::has(config('coeliac.cache.eating-out.home')));
@@ -110,7 +111,7 @@ class GetLatestEateriesForHomePageActionTest extends TestCase
         $this->assertSame($eateries, Cache::get(config('coeliac.cache.eating-out.home')));
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheBlogsFromTheCache(): void
     {
         DB::enableQueryLog();

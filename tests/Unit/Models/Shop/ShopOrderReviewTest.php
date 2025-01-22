@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderReview;
 use App\Models\Shop\ShopOrderReviewInvitation;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class ShopOrderReviewTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasAnInvitation(): void
     {
         $invitation = $this->create(ShopOrderReviewInvitation::class);
@@ -26,7 +27,7 @@ class ShopOrderReviewTest extends TestCase
         $this->assertTrue($review->invitation->is($invitation));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnOrder(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -39,7 +40,7 @@ class ShopOrderReviewTest extends TestCase
         $this->assertTrue($review->order->is($order));
     }
 
-    /** @test */
+    #[Test]
     public function itHasReviewedProducts(): void
     {
         $review = $this->create(ShopOrderReview::class);

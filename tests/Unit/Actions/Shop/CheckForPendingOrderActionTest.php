@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\CheckForPendingOrderAction;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class CheckForPendingOrderActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsAPendingOrderRecordIfOneExistsWithTheGivenToken(): void
     {
         /** @var ShopOrder $order */
@@ -24,7 +25,7 @@ class CheckForPendingOrderActionTest extends TestCase
         $this->assertTrue($order->is($result));
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesAPendingOrderToBasket(): void
     {
         /** @var ShopOrder $order */
@@ -36,7 +37,7 @@ class CheckForPendingOrderActionTest extends TestCase
         $this->assertEquals(OrderState::BASKET, $order->refresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnAnOrderIfItIsNotPending(): void
     {
         /** @var ShopOrder $order */

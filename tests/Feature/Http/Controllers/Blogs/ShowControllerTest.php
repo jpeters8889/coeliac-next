@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Blogs;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Comments\GetCommentsForItemAction;
 use App\Models\Blogs\Blog;
 use Illuminate\Testing\TestResponse;
@@ -23,7 +24,7 @@ class ShowControllerTest extends TestCase
         $this->blog = Blog::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForABlogThatDoesntExist(): void
     {
         $this->get(route('blog.show', ['blog' => 'foobar']))->assertNotFound();
@@ -34,7 +35,7 @@ class ShowControllerTest extends TestCase
         return $this->get(route('blog.show', ['blog' => $this->blog]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForABlogThatIsntLive(): void
     {
         $this->blog->update(['live' => false]);
@@ -42,13 +43,13 @@ class ShowControllerTest extends TestCase
         $this->visitBlog()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForABlogThatIsLive(): void
     {
         $this->visitBlog()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetCommentsForItemAction(): void
     {
         $this->expectAction(GetCommentsForItemAction::class, [Blog::class]);
@@ -56,7 +57,7 @@ class ShowControllerTest extends TestCase
         $this->visitBlog();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitBlog()

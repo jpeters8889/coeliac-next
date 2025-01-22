@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Order;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ApplyDiscountCodeAction;
 use App\Actions\Shop\Checkout\CreateCustomerAction;
 use App\Actions\Shop\Checkout\CreateShippingAddressAction;
@@ -66,7 +68,7 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorIfTheBasketDoesntExist(): void
     {
         $this->basket->delete();
@@ -74,7 +76,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertSessionHasErrors('basket');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorIfTheBasketIsntABasketState(): void
     {
         $this->basket->update(['state_id' => OrderState::PENDING]);
@@ -82,17 +84,14 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertSessionHasErrors('basket');
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider validationDataProvider
-     */
+    #[Test]
+    #[DataProvider('validationDataProvider')]
     public function itHandlesFieldValidationRules(array $data, string|array $key): void
     {
         $this->makeRequest($data)->assertSessionHasErrors($key);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheResolveBasketAction(): void
     {
         $this->expectAction(ResolveBasketAction::class, once: false, return: $this->basket);
@@ -100,7 +99,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertCreated();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateUserAction(): void
     {
         $this->expectAction(CreateCustomerAction::class, [PendingOrderCustomerDetails::class], return: $this->create(ShopCustomer::class));
@@ -108,7 +107,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertCreated();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateUserAddressAction(): void
     {
         $this->expectAction(CreateShippingAddressAction::class, [ShopCustomer::class, PendingOrderShippingAddressDetails::class], return: $this->create(ShopShippingAddress::class));
@@ -116,7 +115,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertCreated();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheApplyDiscountCodeActionIfADiscountCodeIsPresentInTheSession(): void
     {
         $this->expectAction(ApplyDiscountCodeAction::class);
@@ -126,7 +125,7 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(session: ['discountCode' => app(Encrypter::class)->encrypt('foobar')]);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesADiscountCodeUsedRecordIfADiscountCodeIsPresent(): void
     {
         $this->create(ShopDiscountCode::class, ['code' => 'foobar']);
@@ -138,7 +137,7 @@ class StoreControllerTest extends TestCase
         $this->assertDatabaseCount(ShopDiscountCodesUsed::class, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAShopPaymentRecord(): void
     {
         $this->assertDatabaseEmpty(ShopPayment::class);
@@ -149,7 +148,7 @@ class StoreControllerTest extends TestCase
         $this->assertNotNull($this->basket->refresh()->payment);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheOrder(): void
     {
         $this->assertNull($this->basket->customer_id);
@@ -167,7 +166,7 @@ class StoreControllerTest extends TestCase
         $this->assertEquals(OrderState::PENDING, $this->basket->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAKeyThatIsEightDigitsLong(): void
     {
         $this->makeRequest()->assertCreated();

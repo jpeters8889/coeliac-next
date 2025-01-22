@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MailChannel;
 use App\Models\NotificationEmail;
 use App\Models\Shop\ShopCustomer;
@@ -22,7 +23,7 @@ class MailChannelTest extends TestCase
         Mail::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itBypassesTheCustomImplementationIfItIsNotAnInstanceOfAnMjmlMessage(): void
     {
         $this->partialMock(MailChannel::class)
@@ -37,7 +38,7 @@ class MailChannelTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itStoresTheEmailInTheDatabase(): void
     {
         $this->assertDatabaseEmpty(NotificationEmail::class);
@@ -50,7 +51,7 @@ class MailChannelTest extends TestCase
         $this->assertDatabaseCount(NotificationEmail::class, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itCompilesMjml(): void
     {
         $mock = $this->partialMock(MailChannel::class);

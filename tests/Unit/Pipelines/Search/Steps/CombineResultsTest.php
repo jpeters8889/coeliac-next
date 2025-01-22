@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchParameters;
 use App\DataObjects\Search\SearchPipelineData;
 use App\DataObjects\Search\SearchResultItem;
@@ -18,7 +19,7 @@ use Tests\TestCase;
 
 class CombineResultsTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCombinesAllSearchResultsIntoOneCollection(): void
     {
         $blog = new SearchResultItem(

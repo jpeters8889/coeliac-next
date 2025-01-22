@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\EateryDetails;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\Eatery;
@@ -44,13 +45,13 @@ class GetControllerTest extends TestCase
         Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
         $this->get(route('eating-out.show', ['county' => $this->county, 'town' => $this->town, 'eatery' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -58,13 +59,13 @@ class GetControllerTest extends TestCase
         $this->get(route('eating-out.show', ['county' => $this->county, 'town' => $this->town, 'eatery' => $eatery->slug]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForALiveEatery(): void
     {
         $this->visitEatery()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageActionWhenVistingAnEatery(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -72,7 +73,7 @@ class GetControllerTest extends TestCase
         $this->visitEatery();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitEatery()
@@ -85,7 +86,7 @@ class GetControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsHttpGoneIfTheLocationHasClosedDown(): void
     {
         $this->eatery->update(['closed_down' => true]);
@@ -101,7 +102,7 @@ class GetControllerTest extends TestCase
         return $this;
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForALiveNationwideEatery(): void
     {
         $this
@@ -110,7 +111,7 @@ class GetControllerTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageActionForANationwideEatery(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -120,7 +121,7 @@ class GetControllerTest extends TestCase
             ->visitNationwideEatery();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheNationwideInertiaPage(): void
     {
         $this
@@ -135,7 +136,7 @@ class GetControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForALiveBranch(): void
     {
         $this
@@ -144,7 +145,7 @@ class GetControllerTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageActionForANationwideBranch(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -154,7 +155,7 @@ class GetControllerTest extends TestCase
             ->visitBranch();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheBranchInertiaPage(): void
     {
         $this

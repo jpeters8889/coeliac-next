@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
@@ -30,11 +32,8 @@ class CreateEatingOutOpenGraphImageJobTest extends TestCase
         config()->set('coeliac.generate_og_images', true);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider openGraphModelsDataProvider
-     */
+    #[Test]
+    #[DataProvider('openGraphModelsDataProvider')]
     public function itCallsTheRenderOpenGraphImageService($classString, $expectedAction): void
     {
         $this->mock(RenderOpenGraphImage::class)
@@ -49,11 +48,8 @@ class CreateEatingOutOpenGraphImageJobTest extends TestCase
         (new CreateEatingOutOpenGraphImageJob($model))->handle(app(RenderOpenGraphImage::class));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider openGraphModelsDataProvider
-     */
+    #[Test]
+    #[DataProvider('openGraphModelsDataProvider')]
     public function itCreatesAnOpenGraphRecord($classString, $action, $useMedia): void
     {
         $this->assertDatabaseEmpty(OpenGraphImage::class);

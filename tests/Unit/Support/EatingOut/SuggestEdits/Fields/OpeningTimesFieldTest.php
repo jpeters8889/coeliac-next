@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Support\EatingOut\SuggestEdits\Fields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryOpeningTimes;
 use App\Support\EatingOut\SuggestEdits\Fields\OpeningTimesField;
@@ -29,7 +30,7 @@ class OpeningTimesFieldTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDatabaseValue(): void
     {
         $field = app(OpeningTimesField::class);
@@ -44,7 +45,7 @@ class OpeningTimesFieldTest extends TestCase
         $this->assertArrayHasKeys(['key', 'label', 'closed', 'start', 'end'], $data[0]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsThePreparedValue(): void
     {
         $field = OpeningTimesField::make(1);
@@ -52,7 +53,7 @@ class OpeningTimesFieldTest extends TestCase
         $this->assertEquals(1, $field->prepare());
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheValueForDisplay(): void
     {
         $data = [[

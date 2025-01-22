@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Recipes;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Comments\GetCommentsForItemAction;
 use App\Models\Recipes\Recipe;
 use Illuminate\Testing\TestResponse;
@@ -23,7 +24,7 @@ class ShowControllerTest extends TestCase
         $this->recipe = Recipe::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForARecipeDoesntExist(): void
     {
         $this->get(route('recipe.show', ['recipe' => 'foobar']))->assertNotFound();
@@ -34,7 +35,7 @@ class ShowControllerTest extends TestCase
         return $this->get(route('recipe.show', ['recipe' => $this->recipe]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForARecipeThatIsntLive(): void
     {
         $this->recipe->update(['live' => false]);
@@ -42,13 +43,13 @@ class ShowControllerTest extends TestCase
         $this->visitRecipe()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForARecipeThatIsLive(): void
     {
         $this->visitRecipe()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetCommentsForItemAction(): void
     {
         $this->expectAction(GetCommentsForItemAction::class, [Recipe::class]);
@@ -56,7 +57,7 @@ class ShowControllerTest extends TestCase
         $this->visitRecipe();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitRecipe()

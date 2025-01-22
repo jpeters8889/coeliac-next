@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Contact;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\ContactFormSubmittedEvent;
 use Illuminate\Support\Facades\Event;
 use Tests\RequestFactories\ContactRequestFactory;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidName(): void
     {
         $this->post(route('contact.store'), ContactRequestFactory::new(['name' => null])->create())
@@ -24,7 +25,7 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidEmail(): void
     {
         $this->post(route('contact.store'), ContactRequestFactory::new(['email' => null])->create())
@@ -40,7 +41,7 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('email');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidSubject(): void
     {
         $this->post(route('contact.store'), ContactRequestFactory::new(['subject' => null])->create())
@@ -53,7 +54,7 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('subject');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidMessage(): void
     {
         $this->post(route('contact.store'), ContactRequestFactory::new(['message' => null])->create())
@@ -66,7 +67,7 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('message');
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheContactFormSubmittedEvent(): void
     {
         Event::fake();
@@ -77,7 +78,7 @@ class StoreControllerTest extends TestCase
         Event::assertDispatched(ContactFormSubmittedEvent::class);
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsBackToTheContactPage(): void
     {
         Event::fake();

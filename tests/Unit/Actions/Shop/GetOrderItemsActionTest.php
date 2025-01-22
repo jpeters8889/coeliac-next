@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AddProductToBasketAction;
 use App\Actions\Shop\GetOrderItemsAction;
 use App\Models\Shop\ShopOrder;
@@ -34,7 +35,7 @@ class GetOrderItemsActionTest extends TestCase
         app(AddProductToBasketAction::class)->handle($this->order, $this->product, $this->variant, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsACollectionOfOrderItems(): void
     {
         $items = app(GetOrderItemsAction::class)->handle($this->order);

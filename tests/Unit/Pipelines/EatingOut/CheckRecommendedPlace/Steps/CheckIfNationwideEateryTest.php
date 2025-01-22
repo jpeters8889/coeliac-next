@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\CheckRecommendedPlace\Steps;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -21,7 +23,7 @@ class CheckIfNationwideEateryTest extends StepTestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsFoundAsFalseIfNothingIsFound(): void
     {
         $data = $this->makeData('Bella Italia');
@@ -31,11 +33,8 @@ class CheckIfNationwideEateryTest extends StepTestCase
         $this->assertFalse($data->found);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider searchScenarios
-     */
+    #[Test]
+    #[DataProvider('searchScenarios')]
     public function itReturnsAsFoundForASearchNameButNoLocation(string $name, string $search): void
     {
         $eatery = $this
@@ -55,11 +54,8 @@ class CheckIfNationwideEateryTest extends StepTestCase
         $this->assertEquals("Check out {$name}", $data->label);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider searchScenarios
-     */
+    #[Test]
+    #[DataProvider('searchScenarios')]
     public function itReturnsAsFoundForABranchSearchByTheAddress($name, $search, $branchName, $address, $searchAddress): void
     {
         $eatery = $this
@@ -85,11 +81,8 @@ class CheckIfNationwideEateryTest extends StepTestCase
         $this->assertEquals("Check out {$name}", $data->label);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider searchScenarios
-     */
+    #[Test]
+    #[DataProvider('searchScenarios')]
     public function itReturnsAsFoundForABranchSearchWithALocationByTheTownName($name, $search, $branchName, $address, $searchAddress, $town): void
     {
         $eatery = $this

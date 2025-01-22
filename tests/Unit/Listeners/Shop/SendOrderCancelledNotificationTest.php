@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\Shop\OrderCancelledEvent;
 use App\Listeners\Shop\SendOrderCancellationNotification;
 use App\Models\Shop\ShopCustomer;
@@ -49,7 +50,7 @@ class SendOrderCancelledNotificationTest extends TestCase
         Mail::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itSendsACNotificationToTheCustomer(): void
     {
         $event = new OrderCancelledEvent($this->order);

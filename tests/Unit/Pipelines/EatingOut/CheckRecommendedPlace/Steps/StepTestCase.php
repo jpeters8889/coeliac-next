@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\CheckRecommendedPlace\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\RecommendAPlaceExistsCheckData;
 use App\Pipelines\EatingOut\CheckRecommendedPlace\Steps\AbstractStepAction;
 use Tests\TestCase;
@@ -15,7 +16,7 @@ abstract class StepTestCase extends TestCase
         return new RecommendAPlaceExistsCheckData($name, $location, $found);
     }
 
-    /** @test */
+    #[Test]
     public function itSkipsTheCheckIfTheRecommendationHasBeenFound(): void
     {
         $data = $this->makeData(found: true);

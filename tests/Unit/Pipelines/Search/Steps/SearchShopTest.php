@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchParameters;
 use App\DataObjects\Search\SearchPipelineData;
 use App\DataObjects\Search\SearchResultsCollection;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class SearchShopTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itDoesntSearchAnyShopProductsIfTheShopProductSearchParameterIsFalse(): void
     {
         $this->create(ShopProduct::class, ['title' => 'Foo']);
@@ -35,7 +36,7 @@ class SearchShopTest extends TestCase
         app(SearchShop::class)->handle($pipelineData, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itSearchesShopProducts(): void
     {
         $this->withCategoriesAndProducts(1, 1);

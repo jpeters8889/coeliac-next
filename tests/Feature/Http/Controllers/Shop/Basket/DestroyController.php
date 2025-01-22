@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Basket;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\ResolveBasketAction;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
@@ -40,7 +41,7 @@ class DestroyController extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheResolveBasketAction(): void
     {
         $this->expectAction(ResolveBasketAction::class);
@@ -48,7 +49,7 @@ class DestroyController extends TestCase
         $this->makeRequest();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfABasketDoesntExist(): void
     {
         $this->order->delete();
@@ -56,7 +57,7 @@ class DestroyController extends TestCase
         $this->makeRequest()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheItemIsntInTheUsersBasket(): void
     {
         $item = $this->create(ShopOrderItem::class);
@@ -64,7 +65,7 @@ class DestroyController extends TestCase
         $this->makeRequest($item->id)->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itRemovesTheShopOrderItemRow(): void
     {
         $this->makeRequest();
@@ -72,7 +73,7 @@ class DestroyController extends TestCase
         $this->assertModelMissing($this->item);
     }
 
-    /** @test */
+    #[Test]
     public function itIncreasesTheProductQuantity(): void
     {
         $quantity = $this->variant->quantity;
@@ -82,7 +83,7 @@ class DestroyController extends TestCase
         $this->assertEquals($quantity + 1, $this->variant->refresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itTouchesTheOrderUpdateTimestamp(): void
     {
         TestTime::addMinutes(30);
@@ -92,7 +93,7 @@ class DestroyController extends TestCase
         $this->assertTrue($this->order->refresh()->updated_at->isSameSecond(now()));
     }
 
-    /** @test */
+    #[Test]
     public function itItRedirectsBack(): void
     {
         $this

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\CancelOrderAction;
 use App\Enums\Shop\OrderState;
 use App\Events\Shop\OrderCancelledEvent;
@@ -22,7 +23,7 @@ class CancelOrderActionTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheOrderToCancelled(): void
     {
         $order = $this->build(ShopOrder::class)->asReady()->create();
@@ -34,7 +35,7 @@ class CancelOrderActionTest extends TestCase
         $this->assertEquals(OrderState::CANCELLED, $order->fresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itPutsTheOrderItemsBackIntoStock(): void
     {
         $this->withCategoriesAndProducts(1, 1);
@@ -53,7 +54,7 @@ class CancelOrderActionTest extends TestCase
         $this->assertEquals($existingQuantity + 5, $variant->fresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesAnOrderCancelledEvent(): void
     {
         $order = $this->build(ShopOrder::class)->asReady()->create();

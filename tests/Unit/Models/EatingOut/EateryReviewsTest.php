@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -24,19 +25,19 @@ class EateryReviewsTest extends TestCase
             ->create();
     }
 
-    /** @test */
+    #[Test]
     public function itHasReviews(): void
     {
         $this->assertEquals(1, $this->eatery->fresh()->reviews()->withoutGlobalScopes()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itIsNotApprovedByDefault(): void
     {
         $this->assertFalse($this->eatery->fresh()->reviews()->withoutGlobalScopes()->first()->approved);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnAverageRating(): void
     {
         $this->eatery->reviews()->delete();
@@ -54,7 +55,7 @@ class EateryReviewsTest extends TestCase
         $this->assertEquals(4.5, $this->eatery->fresh()->with('reviews')->first()->average_rating);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnAverageExpenseAttribute(): void
     {
         $this->eatery->reviews()->delete();
@@ -77,7 +78,7 @@ class EateryReviewsTest extends TestCase
         $this->assertEquals(3, $averageExpense['value']);
     }
 
-    /** @test */
+    #[Test]
     public function itRoundsTheAveragePriceRatingToTheNearestWholeNumber(): void
     {
         $this->eatery->reviews()->delete();

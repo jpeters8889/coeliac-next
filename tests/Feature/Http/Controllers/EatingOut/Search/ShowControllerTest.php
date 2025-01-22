@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\DataObjects\EatingOut\LatLng;
@@ -41,7 +42,7 @@ class ShowControllerTest extends TestCase
         $this->eaterySearchTerm = $this->create(EaterySearchTerm::class, ['term' => 'London']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForASearchTermThatDoesntExist(): void
     {
         $this->get(route('eating-out.search.show', ['eaterySearchTerm' => 'foo']))->assertNotFound();
@@ -52,13 +53,13 @@ class ShowControllerTest extends TestCase
         return $this->get(route('eating-out.search.show', ['eaterySearchTerm' => $this->eaterySearchTerm->key]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->visitSearchResults()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetEateriesInSearchAreaAction(): void
     {
         $this->expectPipelineToRun(GetSearchResultsPipeline::class);
@@ -66,7 +67,7 @@ class ShowControllerTest extends TestCase
         $this->visitSearchResults();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetFiltersAction(): void
     {
         $this->expectAction(GetFiltersForEateriesAction::class);
@@ -74,7 +75,7 @@ class ShowControllerTest extends TestCase
         $this->visitSearchResults();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery']);
@@ -82,7 +83,7 @@ class ShowControllerTest extends TestCase
         $this->visitSearchResults();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitSearchResults()

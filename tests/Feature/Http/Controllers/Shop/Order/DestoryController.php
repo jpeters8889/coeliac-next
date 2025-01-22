@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Order;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
 use Tests\TestCase;
@@ -19,13 +20,13 @@ class DestoryController extends TestCase
         $this->order = $this->build(ShopOrder::class)->asPending()->create();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNoContentEvenIfABasketDoesntExist(): void
     {
         $this->delete(route('shop.basket.revert'))->assertNoContent();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntUpdateAnOrderThatIsntPending(): void
     {
         $this->order->update(['state_id' => OrderState::EXPIRED]);
@@ -38,7 +39,7 @@ class DestoryController extends TestCase
         $this->assertEquals(OrderState::EXPIRED, $this->order->refresh()->state_id);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesAPendingOrderBackToBasket(): void
     {
         $this->assertEquals(OrderState::PENDING, $this->order->refresh()->state_id);

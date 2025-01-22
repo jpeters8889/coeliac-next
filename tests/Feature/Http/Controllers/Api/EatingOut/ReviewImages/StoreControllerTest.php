@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\ReviewImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\TemporaryFileUpload;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
@@ -21,7 +22,7 @@ class StoreControllerTest extends TestCase
         Storage::fake('uploads');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorIfNoImagesAreSent(): void
     {
         $this->makeRequest(images: null)
@@ -29,7 +30,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('images');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorIfImagesIsNotAnArray(): void
     {
         $this->makeRequest('foo')
@@ -37,7 +38,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('images');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheArrayHasMoreThanSixItems(): void
     {
         $this->makeRequest([1, 2, 3, 4, 5, 6, 7])
@@ -45,7 +46,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('images');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheImageItemsArentFiles(): void
     {
         $this->makeRequest(['foo'])
@@ -53,7 +54,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('images.0');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheImagesArentValidImageFiles(): void
     {
         $this->makeRequest([
@@ -61,7 +62,7 @@ class StoreControllerTest extends TestCase
         ])->assertStatus(422)->assertJsonValidationErrorFor('images.0');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheImagesArentAValidMimeType(): void
     {
         $this->makeRequest([UploadedFile::fake()->image('foo.svg')])
@@ -69,7 +70,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('images.0');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheImagesAreGreaterThan5mbInSize(): void
     {
         $this->makeRequest([
@@ -77,13 +78,13 @@ class StoreControllerTest extends TestCase
         ])->assertStatus(422)->assertJsonValidationErrorFor('images.0');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->makeRequest([UploadedFile::fake()->image('foo.jpg')])->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itStoresTheImageInTheFileUploadsBucket(): void
     {
         Storage::disk('uploads')->assertDirectoryEmpty('/');
@@ -95,7 +96,7 @@ class StoreControllerTest extends TestCase
         $this->assertNotEmpty(Storage::disk('uploads')->allFiles('/'));
     }
 
-    /** @test */
+    #[Test]
     public function itStoresImagesWithARandomName(): void
     {
         $this->makeRequest([UploadedFile::fake()->image('foo.jpg')]);
@@ -103,7 +104,7 @@ class StoreControllerTest extends TestCase
         Storage::disk('uploads')->assertMissing('foo.jpg');
     }
 
-    /** @test */
+    #[Test]
     public function itStoresUploadedImagesInTheDatabase(): void
     {
         $this->assertEmpty(TemporaryFileUpload::all());
@@ -113,7 +114,7 @@ class StoreControllerTest extends TestCase
         $this->assertNotEmpty(TemporaryFileUpload::all());
     }
 
-    /** @test */
+    #[Test]
     public function itStoresTheCorrectImageUploadProperties(): void
     {
         TestTime::freeze();
@@ -129,13 +130,13 @@ class StoreControllerTest extends TestCase
         $this->assertEquals(Carbon::now()->addMinutes(15)->toDateTimeString(), $fileUpload->delete_at);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnImagesArray(): void
     {
         $this->makeRequest([UploadedFile::fake()->image('foo.jpg')])->assertJsonStructure(['images']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAObjectForEachImage(): void
     {
         $this->makeRequest([
@@ -144,7 +145,7 @@ class StoreControllerTest extends TestCase
         ])->assertJsonCount(2, 'images');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAFormattedObjectForEachImage(): void
     {
         $this->makeRequest([
@@ -155,7 +156,7 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheIdFromTheDatabase(): void
     {
         $response = $this->makeRequest([UploadedFile::fake()->image('foo.jpg')])->json();
@@ -165,7 +166,7 @@ class StoreControllerTest extends TestCase
         $this->assertEquals($fileUpload->id, $response['images'][0]['id']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAImagePathFromTheDatabase(): void
     {
         TestTime::freeze();

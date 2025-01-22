@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Concerns;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ trait DisplaysMediaTestTrait
         $this->item = $item;
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheFirstImage(): void
     {
         $firstImage = $this->item->first_image;
@@ -47,7 +48,7 @@ trait DisplaysMediaTestTrait
         $this->assertStringContainsString(self::FIRST_IMAGE, $firstImage);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetThePrimaryImage(): void
     {
         $primaryImage = $this->item->main_image;
@@ -56,7 +57,7 @@ trait DisplaysMediaTestTrait
         $this->assertStringContainsString(self::PRIMARY_IMAGE, $primaryImage);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheSocialImage(): void
     {
         $socialImage = $this->item->social_image;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mailables;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Mailables\CommentRepliedMailable;
 use App\Models\Blogs\Blog;
@@ -20,7 +21,7 @@ class CommentRepliedMailableTest extends TestCase
         $this->withBlogs(5);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnMjmlMessageInstance(): void
     {
         $this->assertInstanceOf(
@@ -29,7 +30,7 @@ class CommentRepliedMailableTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         /** @var Comment $comment */
@@ -41,7 +42,7 @@ class CommentRepliedMailableTest extends TestCase
        commentable->title} on Coeliac Sanctuary has been replied to!", $mailable->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $mailable = CommentRepliedMailable::make($this->build(CommentReply::class)->on(Blog::query()->first())->create(), 'foo');
@@ -49,7 +50,7 @@ class CommentRepliedMailableTest extends TestCase
         $this->assertEquals('mailables.mjml.comment-replied', $mailable->mjml);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         /** @var CommentReply $comment */

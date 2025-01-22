@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Enums\Shop\OrderState;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderState;
@@ -20,7 +21,7 @@ class ShopOrderStateTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasOrders(): void
     {
         $this->build(ShopOrder::class)

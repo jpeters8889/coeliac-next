@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopSource;
 use Illuminate\Support\Collection;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class ShopSourceTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasManyOrders(): void
     {
         $source = $this->create(ShopSource::class);

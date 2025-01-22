@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Models\Recipes\Recipe;
@@ -12,13 +14,9 @@ use Tests\TestCase;
 
 class PublishItemsCommandTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @dataProvider publishableModels
-     *
-     * @param  class-string<Model>  $model
-     */
+    /** @param  class-string<Model>  $model */
+    #[Test]
+    #[DataProvider('publishableModels')]
     public function itPublishesAModel(string $model): void
     {
         /** @var Model $instance */
@@ -33,13 +31,9 @@ class PublishItemsCommandTest extends TestCase
         $this->assertTrue($instance->refresh()->live);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider publishableModels
-     *
-     * @param  class-string<Model>  $model
-     */
+    /** @param  class-string<Model>  $model */
+    #[Test]
+    #[DataProvider('publishableModels')]
     public function itDoesntPublishADraftModel(string $model): void
     {
         /** @var Model $instance */
@@ -54,13 +48,9 @@ class PublishItemsCommandTest extends TestCase
         $this->assertFalse($instance->refresh()->live);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider publishableModels
-     *
-     * @param  class-string<Model>  $model
-     */
+    /** @param  class-string<Model>  $model */
+    #[Test]
+    #[DataProvider('publishableModels')]
     public function itDoesntPublishAModelWithAFuturePublishAt(string $model): void
     {
         /** @var Model $instance */

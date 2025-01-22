@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
@@ -13,13 +14,13 @@ use Illuminate\Support\Collection;
 
 class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheNextClosureInTheAction(): void
     {
         $this->assertInstanceOf(GetEateriesPipelineData::class, $this->callGetEateriesInLatLngAction());
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsEachEateryAPendingEatery(): void
     {
         $collection = $this->callGetEateriesInLatLngAction()->eateries;
@@ -27,7 +28,7 @@ class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
         $collection->each(fn ($item) => $this->assertInstanceOf(PendingEatery::class, $item));
     }
 
-    /** @test */
+    #[Test]
     public function itAppendsToThePassedInCollection(): void
     {
         $eateries = new Collection(range(0, 4));
@@ -37,7 +38,7 @@ class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
         $this->assertCount(10, $newCollection); // 5 in setup, 5 from above
     }
 
-    /** @test */
+    #[Test]
     public function itCanFilterTheEateriesByCategory(): void
     {
         $eatery = $this->build(Eatery::class)
@@ -54,7 +55,7 @@ class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);
     }
 
-    /** @test */
+    #[Test]
     public function itCanFilterTheEateriesByVenueType(): void
     {
         $venueType = $this->create(EateryVenueType::class, ['slug' => 'test']);
@@ -73,7 +74,7 @@ class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);
     }
 
-    /** @test */
+    #[Test]
     public function itCanFilterTheEateriesByFeature(): void
     {
         $feature = $this->create(EateryFeature::class, ['slug' => 'test']);
@@ -93,7 +94,7 @@ class GetEateriesInLatLngRadiusActionTest extends GetEateriesTestCase
         $this->assertEquals($eatery->id, $eateries->eateries->first()->id);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntGetEateriesThatAreMarkedAsClosedDown(): void
     {
         Eatery::query()->update(['closed_down' => true]);

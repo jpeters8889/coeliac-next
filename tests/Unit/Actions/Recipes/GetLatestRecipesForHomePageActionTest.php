@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Recipes;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Models\Recipes\Recipe;
 use App\Resources\Recipes\RecipeSimpleCardViewResource;
@@ -24,13 +25,13 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
         $this->withRecipes();
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnACollectionOfRecipes(): void
     {
         $this->assertInstanceOf(AnonymousResourceCollection::class, $this->callAction(GetLatestRecipesForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsTheRecipeAsACardResource(): void
     {
         $this->callAction(GetLatestRecipesForHomepageAction::class)->each(function ($item): void {
@@ -38,13 +39,13 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsEightRecipes(): void
     {
         $this->assertCount(8, $this->callAction(GetLatestRecipesForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheLatestRecipesFirst(): void
     {
         $recipeTitles = $this->callAction(GetLatestRecipesForHomepageAction::class)->map(fn (RecipeSimpleCardViewResource $recipe) => $recipe->title);
@@ -54,7 +55,7 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
         $this->assertNotContains('Recipe 9', $recipeTitles);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnRecipesThatArentLive(): void
     {
         Recipe::query()->first()->update(['live' => false]);
@@ -65,7 +66,7 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
         $this->assertContains('Recipe 2', $recipeTitles);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheRecipes(): void
     {
         $this->assertFalse(Cache::has(config('coeliac.cache.recipes.home')));
@@ -76,7 +77,7 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
         $this->assertSame($recipes, Cache::get(config('coeliac.cache.recipes.home')));
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheRecipesFromTheCache(): void
     {
         DB::enableQueryLog();

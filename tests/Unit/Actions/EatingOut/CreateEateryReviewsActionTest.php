@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReviewAction;
 use App\Jobs\EatingOut\ProcessReviewImagesJob;
 use App\Models\EatingOut\Eatery;
@@ -31,7 +32,7 @@ class CreateEateryReviewsActionTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAFullRatingThatIsNotApproved(): void
     {
         $this->assertEmpty($this->eatery->reviews);
@@ -60,7 +61,7 @@ class CreateEateryReviewsActionTest extends TestCase
         $this->assertEquals('foo@bar.com', $review->email);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheProcessReviewImagesJobIfThereAreImagesInThePayload(): void
     {
         $data = [
@@ -81,7 +82,7 @@ class CreateEateryReviewsActionTest extends TestCase
         Queue::assertPushed(ProcessReviewImagesJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheJobIfThereIsNoImages(): void
     {
         $data = [

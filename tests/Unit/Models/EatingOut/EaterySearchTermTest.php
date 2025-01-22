@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\EaterySearchTerm;
 use Tests\TestCase;
 
 class EaterySearchTermTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itGeneratesAKeyWhenARowIsCreated(): void
     {
         $this->assertNotNull($this->create(EaterySearchTerm::class)->key);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveSearchesAppliedToIt(): void
     {
         /** @var EaterySearchTerm $searchTerm */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\ReviewMyOrder;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopOrderReview;
@@ -53,13 +54,13 @@ class StoreControllerTest extends TestCase
         $this->invitation = $this->order->reviewInvitation()->create();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnInvitationThatDoesntExist(): void
     {
         $this->post(route('shop.review-order.store', ['invitation' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheInvitationHasAReviewAssociatedWithIt(): void
     {
         $this->invitation->review()->create(['order_id' => $this->order->id, 'name' => 'Foo']);
@@ -67,31 +68,31 @@ class StoreControllerTest extends TestCase
         $this->makeRequest()->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itAllowsRequestsWithoutAName(): void
     {
         $this->makeRequest(['name' => null])->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfARequestHasAnInvalidName(): void
     {
         $this->makeRequest(['name' => 123])->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itAllowsRequestsWithoutWhereHeard(): void
     {
         $this->makeRequest(['whereHeard' => null])->assertSessionHasErrors('whereHeard');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenWhereHeardIsntAnArray(): void
     {
         $this->makeRequest(['whereHeard' => 123])->assertSessionHasErrors('whereHeard');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenWhereHeardIsntAnArrayOfStrings(): void
     {
         $this->makeRequest(['whereHeard' => ['foo', 123]])
@@ -99,37 +100,37 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('whereHeard.1');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAProductsParameterInTheRequest(): void
     {
         $this->makeRequest(products: collect([]))->assertSessionHasErrors('products');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheProductsParameterIsntAnArray(): void
     {
         $this->makeRequest(['products' => 'foo'])->assertSessionHasErrors('products');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductDoesntHaveAnId(): void
     {
         $this->makeRequest(['products' => [['review' => 'foo']]])->assertSessionHasErrors('products.0.id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductDoesntHasAnInvalidId(): void
     {
         $this->makeRequest(['products' => [['id' => 'foo']]])->assertSessionHasErrors('products.0.id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductHasAIdThatDoesntExist(): void
     {
         $this->makeRequest(['products' => [['id' => 999]]])->assertSessionHasErrors('products.0.id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTryingToLeaveFeedbackForAnItemNotInTheOrder(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -137,19 +138,19 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['products' => [['id' => $product->id]]])->assertSessionHasErrors('products.0.id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductDoesntHaveARating(): void
     {
         $this->makeRequest(['products' => [['id' => 1]]])->assertSessionHasErrors('products.0.rating');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductHasARatingThatIsntNumeric(): void
     {
         $this->makeRequest(['products' => [['rating' => 'foo']]])->assertSessionHasErrors('products.0.rating');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductsHasARatingThatIsntInTheRange(): void
     {
         $this->makeRequest(['products' => [['rating' => -1]]])->assertSessionHasErrors('products.0.rating');
@@ -157,13 +158,13 @@ class StoreControllerTest extends TestCase
         $this->makeRequest(['products' => [['rating' => 6]]])->assertSessionHasErrors('products.0.rating');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAProductHasAnInvalidReview(): void
     {
         $this->makeRequest(['products' => [['review' => 123]]])->assertSessionHasErrors('products.0.review');
     }
 
-    /** @test */
+    #[Test]
     public function itAssociatesTheShopSourceWithTheOrder(): void
     {
         $this->assertEmpty($this->order->sources);
@@ -173,7 +174,7 @@ class StoreControllerTest extends TestCase
         $this->assertNotEmpty($this->order->refresh()->sources);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesTheShopSourceIfItDoestExist(): void
     {
         $this->assertDatabaseMissing(ShopSource::class, ['source' => 'foobar']);
@@ -183,7 +184,7 @@ class StoreControllerTest extends TestCase
         $this->assertDatabaseHas(ShopSource::class, ['source' => 'foobar']);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesTheReview(): void
     {
         $this->assertDatabaseEmpty(ShopOrderReview::class);
@@ -193,7 +194,7 @@ class StoreControllerTest extends TestCase
         $this->assertInstanceOf(ShopOrderReview::class, $this->invitation->review);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAReviewForTheProducts(): void
     {
         $this->assertDatabaseEmpty(ShopOrderReviewItem::class);
@@ -207,7 +208,7 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsToTheThanksPage(): void
     {
         $this->makeRequest()->assertRedirectToRoute('shop.review-order.thanks', $this->invitation);

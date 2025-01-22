@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\CheckRecommendedPlace\Steps;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -20,7 +22,7 @@ class CheckIfStandardEateryTest extends StepTestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfThereIsNoLocation(): void
     {
         $this->create(Eatery::class, ['name' => 'Cafe']);
@@ -32,7 +34,7 @@ class CheckIfStandardEateryTest extends StepTestCase
         $this->assertFalse($data->found);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsFoundAsFalseIfNothingIsFoundForTheNameAndLocation(): void
     {
         $data = $this->makeData('Doesnt Exist', 'Anywhere');
@@ -42,7 +44,7 @@ class CheckIfStandardEateryTest extends StepTestCase
         $this->assertFalse($data->found);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsFoundAsFalseIfNothingIsFoundForTheLocation(): void
     {
         $this->create(Eatery::class, ['name' => 'Foo']);
@@ -54,11 +56,8 @@ class CheckIfStandardEateryTest extends StepTestCase
         $this->assertFalse($data->found);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider searchScenarios
-     */
+    #[Test]
+    #[DataProvider('searchScenarios')]
     public function itReturnsAsFoundForAEateryByTheNameAndAddress($name, $search, $address, $searchAddress): void
     {
         $county = $this->create(EateryCounty::class);
@@ -83,11 +82,8 @@ class CheckIfStandardEateryTest extends StepTestCase
         $this->assertEquals("Check out {$name}", $data->label);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider searchScenarios
-     */
+    #[Test]
+    #[DataProvider('searchScenarios')]
     public function itReturnsAsFoundForAnEaterySearchWithANameAndLocationByTheTownName($name, $search, $address, $searchAddress, $town): void
     {
         $county = $this->create(EateryCounty::class);

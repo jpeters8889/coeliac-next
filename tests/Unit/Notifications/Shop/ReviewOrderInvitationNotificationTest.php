@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Notifications\Shop;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Models\Shop\ShopOrder;
 use App\Notifications\Shop\ReviewOrderInvitationNotification;
@@ -29,11 +31,8 @@ class ReviewOrderInvitationNotificationTest extends TestCase
         TestTime::freeze();
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider mailDataProvider
-     */
+    #[Test]
+    #[DataProvider('mailDataProvider')]
     public function itHasTheOrderDate(callable $closure): void
     {
         $this->order->customer->notify(new ReviewOrderInvitationNotification($this->order, 'foobar'));

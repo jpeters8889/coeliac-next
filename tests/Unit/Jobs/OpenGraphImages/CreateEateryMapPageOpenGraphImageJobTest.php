@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
 use App\Models\OpenGraphImage;
 use App\Services\RenderOpenGraphImage;
@@ -21,7 +22,7 @@ class CreateEateryMapPageOpenGraphImageJobTest extends TestCase
         config()->set('coeliac.generate_og_images', true);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsRenderOpenGraphImageAction(): void
     {
         $this->mock(RenderOpenGraphImage::class)
@@ -32,7 +33,7 @@ class CreateEateryMapPageOpenGraphImageJobTest extends TestCase
         (new CreateEateryMapPageOpenGraphImageJob())->handle(app(RenderOpenGraphImage::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnOpenGraphRecord(): void
     {
         $this->assertDatabaseEmpty(OpenGraphImage::class);

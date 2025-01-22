@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
 use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
@@ -15,7 +16,7 @@ class RelateEateriesAndBranchesActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 1;
 
-    /** @test */
+    #[Test]
     public function itSortsEateries(): void
     {
         $eatery = Eatery::query()->first();

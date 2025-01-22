@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Comments;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use App\Models\Comments\Comment;
 use Illuminate\Testing\TestResponse;
@@ -24,37 +25,37 @@ class GetControllerTest extends TestCase
         return $this->post(route('comments.create'), CommentRequestFactory::new()->create($parameters));
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAModule(): void
     {
         $this->createComment(['module' => null])->assertSessionHasErrors('module');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheModuleDoesNotExist(): void
     {
         $this->createComment(['module' => 'foo'])->assertSessionHasErrors('module');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAnId(): void
     {
         $this->createComment(['id' => null])->assertSessionHasErrors('id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithANonNumericId(): void
     {
         $this->createComment(['id' => 'foo'])->assertSessionHasErrors('id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnIdThatDoesntExist(): void
     {
         $this->createComment(['id' => 999])->assertSessionHasErrors('id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnIdOfAnItemThatIsntLive(): void
     {
         Blog::query()->find(2)->update(['live' => false]);
@@ -62,44 +63,44 @@ class GetControllerTest extends TestCase
         $this->createComment(['id' => 2])->assertSessionHasErrors('id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithOutAName(): void
     {
         $this->createComment(['name' => null])->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidName(): void
     {
         $this->createComment(['name' => 123])->assertSessionHasErrors('name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithOutAnEmail(): void
     {
         $this->createComment(['email' => null])->assertSessionHasErrors('email');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidEmail(): void
     {
         $this->createComment(['email' => 123])->assertSessionHasErrors('email');
         $this->createComment(['email' => 'foo'])->assertSessionHasErrors('email');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithOutAComment(): void
     {
         $this->createComment(['comment' => null])->assertSessionHasErrors('comment');
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntReturnAnyErrorsWithASuccessfulRequest(): void
     {
         $this->createComment()->assertSessionDoesntHaveErrors();
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesTheComment(): void
     {
         $this->assertEmpty(Comment::query()->get());
@@ -110,7 +111,7 @@ class GetControllerTest extends TestCase
         $this->assertNotEmpty(Blog::query()->first()->allComments);
     }
 
-    /** @test */
+    #[Test]
     public function commentsAreNotApprovedByDefault(): void
     {
         $this->createComment();
@@ -120,7 +121,7 @@ class GetControllerTest extends TestCase
         $this->assertFalse($comment->approved);
     }
 
-    /** @test */
+    #[Test]
     public function itStoresTheCommentsDetails(): void
     {
         $this->createComment([
@@ -137,7 +138,7 @@ class GetControllerTest extends TestCase
         $this->assertEquals('Hello There!', $comment->comment);
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsBack(): void
     {
         $this->createComment()->assertRedirect();

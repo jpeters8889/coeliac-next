@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\EateryOpeningTimes;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class EateryOpeningTimesTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsAnIsOpenAttribute(): void
     {
         $openingTime = $this->create(EateryOpeningTimes::class);
@@ -20,7 +21,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertIsBool($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsNotOpenIfThereIsNoOpeningTimesForTheGivenDay(): void
     {
         $today = Str::lower(Carbon::now()->dayName);
@@ -30,7 +31,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertFalse($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsClosedIfBeforeOpeningTimes(): void
     {
         TestTime::freeze()->startOfHour();
@@ -44,7 +45,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertFalse($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsClosedIfAfterOpeningTimes(): void
     {
         TestTime::freeze()->startOfHour();
@@ -58,7 +59,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertFalse($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsOpenIfBetweenOpeningTimes(): void
     {
         TestTime::freeze()->startOfHour();
@@ -75,7 +76,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertTrue($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsOpenIfBetweenOpeningTimesThatArentHours(): void
     {
         TestTime::freeze()->startOfHour();
@@ -92,7 +93,7 @@ class EateryOpeningTimesTest extends TestCase
         $this->assertTrue($openingTime->is_open_now);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAsOpenWhenClosingTimeIsAtMidnight(): void
     {
         TestTime::freeze()->startOfHour();

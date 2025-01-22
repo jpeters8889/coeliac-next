@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopProductPrice;
 use Spatie\TestTime\TestTime;
 use Tests\TestCase;
 
 class CleanUpOldProductPricesCommandTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itDoesntDeleteProductPricesWithoutAnEndAt(): void
     {
         $price = $this->create(ShopProductPrice::class);
@@ -22,7 +23,7 @@ class CleanUpOldProductPricesCommandTest extends TestCase
         $this->assertModelExists($price);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDeleteProductPricesWithAnEndAtInTheFuture(): void
     {
         $price = $this->create(ShopProductPrice::class, [
@@ -36,7 +37,7 @@ class CleanUpOldProductPricesCommandTest extends TestCase
         $this->assertModelExists($price);
     }
 
-    /** @test */
+    #[Test]
     public function itDeletesProductPricesThatHaveEnded(): void
     {
         TestTime::freeze();

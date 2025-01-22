@@ -10,7 +10,7 @@ class CheckForMissingEateriesActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 9;
 
-    /** @test */
+    #[Test]
     public function itAddsOnMissingEateries(): void
     {
         $eateries = $this->callHydrateEateriesAction();

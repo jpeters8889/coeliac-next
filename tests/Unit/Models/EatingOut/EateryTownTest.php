@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class EateryTownTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSavedForTownAndCounty(): void
     {
         config()->set('coeliac.generate_og_images', true);

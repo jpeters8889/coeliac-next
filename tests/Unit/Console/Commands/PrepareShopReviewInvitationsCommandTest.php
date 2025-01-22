@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Console\Commands\PrepareShopReviewInvitationsCommand;
 use App\Jobs\Shop\SendReviewInvitationJob;
 use App\Models\Shop\ShopOrder;
@@ -25,7 +26,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheJobForOrdersThatArentMarkedAsShipped(): void
     {
         $this->build(ShopOrder::class)->asPaid()->create();
@@ -35,7 +36,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertNothingDispatched();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheJobsForOrdersThatHaveNotBeenShippedToday(): void
     {
         $this->build(ShopOrder::class)->asShipped(shippedAt: Carbon::yesterday())->create();
@@ -45,7 +46,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertNothingDispatched();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDispatchTheJobForOrdersThatAlreadyHaveAnInvitation(): void
     {
         /** @var ShopOrder $order */
@@ -57,7 +58,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertNothingDispatched();
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheJobForQualifiedOrders(): void
     {
         $this->build(ShopOrder::class)->asShipped(shippedAt: Carbon::now()->subDays(10))->create([
@@ -69,7 +70,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertDispatched(SendReviewInvitationJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesUKOrdersAfterTheRelevantPeriod(): void
     {
         $this->build(ShopOrder::class)->asShipped(shippedAt: Carbon::now()->subDays(9))->create([
@@ -89,7 +90,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertDispatched(SendReviewInvitationJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesEUOrdersAfterTheRelevantPeriod(): void
     {
         $this->build(ShopOrder::class)->asShipped(shippedAt: Carbon::now()->subDays(9))->create([
@@ -109,7 +110,7 @@ class PrepareShopReviewInvitationsCommandTest extends TestCase
         Bus::assertDispatched(SendReviewInvitationJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesUSAndOZOrdersAfterTheRelevantPeriod(): void
     {
         $this->build(ShopOrder::class)->asShipped(shippedAt: Carbon::now()->subDays(9))->create([

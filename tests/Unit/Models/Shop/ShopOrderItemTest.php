@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopProduct;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class ShopOrderItemTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCanGetTheOrder(): void
     {
         $order = $this->create(ShopOrder::class);
@@ -24,7 +25,7 @@ class ShopOrderItemTest extends TestCase
         $this->assertInstanceOf(ShopOrder::class, $item->order);
     }
 
-    /** @test */
+    #[Test]
     public function itBelongsToAProduct(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -36,7 +37,7 @@ class ShopOrderItemTest extends TestCase
         $this->assertInstanceOf(ShopProduct::class, $item->refresh()->product()->withoutGlobalScopes()->first());
     }
 
-    /** @test */
+    #[Test]
     public function itBelongsToAVariant(): void
     {
         $product = $this->create(ShopProductVariant::class);

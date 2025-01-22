@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Popup\Activity;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Popup;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -26,13 +27,13 @@ class StoreControllerTest extends TestCase
         $this->popup->addMedia(UploadedFile::fake()->image('popup.jpg'))->toMediaCollection('primary');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfThePopupDoesntExist(): void
     {
         $this->post(route('popup.activity.store', ['popup' => 123]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesACookieThatThePopupHasBeenSeen(): void
     {
         $this->post(route('popup.activity.store', $this->popup))

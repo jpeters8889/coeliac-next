@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use Illuminate\Support\Collection;
 
@@ -15,7 +16,7 @@ class HydrateEateriesActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 50;
 
-    /** @test */
+    #[Test]
     public function itReturnsTheHydratedEateries(): void
     {
         $hydratedEateries = $this->callHydrateEateriesAction();

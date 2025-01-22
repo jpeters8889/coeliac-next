@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Events\Shop\OrderPaidEvent;
 use App\Listeners\Shop\SendOrderConfirmationMails;
 use App\Models\Shop\ShopCustomer;
@@ -51,7 +52,7 @@ class SendOrderConfirmationMailsTest extends TestCase
         Mail::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itSendsAConfirmationEmailToTheCustomer(): void
     {
         $event = new OrderPaidEvent($this->order);
@@ -61,7 +62,7 @@ class SendOrderConfirmationMailsTest extends TestCase
         Notification::assertSentTo($this->customer, OrderConfirmedNotification::class);
     }
 
-    /** @test */
+    #[Test]
     public function itSendsAnOrderAlertEmailToTheAdmin(): void
     {
         $event = new OrderPaidEvent($this->order);

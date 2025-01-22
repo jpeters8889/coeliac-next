@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Collections;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
@@ -26,19 +27,19 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         $this->withCollections(2);
     }
 
-    /** @test */
+    #[Test]
     public function itCanReturnACollectionOfCollections(): void
     {
         $this->assertInstanceOf(AnonymousResourceCollection::class, $this->callAction(GetLatestCollectionsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntLoadAnyCollectionsIfNoneAreSetToDisplayOnTheHomepage(): void
     {
         $this->assertCount(0, $this->callAction(GetLatestCollectionsForHomepageAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCollectionsAsACardResource(): void
     {
         Collection::query()->update(['display_on_homepage' => true]);
@@ -48,7 +49,7 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCollectedItemsWithTheCollectionResource(): void
     {
         /** @var Collection $collection */
@@ -69,7 +70,7 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itOnlyReturnsThreeCollectedItemsWithTheResource(): void
     {
         /** @var Collection $collection */
@@ -86,7 +87,7 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         $this->assertCount(3, $collectionResource['items']);
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheCollections(): void
     {
         Collection::query()->update(['display_on_homepage' => true]);
@@ -99,7 +100,7 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         $this->assertSame($collections, Cache::get(config('coeliac.cache.collections.home')));
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheCollectionsFromTheCache(): void
     {
         Collection::query()->update(['display_on_homepage' => true]);

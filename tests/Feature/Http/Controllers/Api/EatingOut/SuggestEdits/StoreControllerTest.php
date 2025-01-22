@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\SuggestEdits;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\StoreSuggestedEditAction;
 use App\Models\EatingOut\Eatery;
 use Database\Seeders\EateryScaffoldingSeeder;
@@ -23,7 +24,7 @@ class StoreControllerTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithAMissingOrInvalidField(): void
     {
         $this->makeRequest(field: null)
@@ -35,7 +36,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('field');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorWithoutAValue(): void
     {
         $this->makeRequest(value: null)
@@ -43,7 +44,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForAnAddress(): void
     {
         $this->makeRequest(field: 'address', value: null)
@@ -59,7 +60,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForAnCuisine(): void
     {
         $this->makeRequest(field: 'cuisine', value: null)
@@ -79,7 +80,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingFeaturesThatIsntAnArray(): void
     {
         $this->makeRequest(field: 'features', value: null)
@@ -99,7 +100,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingFeaturesWithAnInvalidKey(): void
     {
         $this->makeRequest(field: 'features', value: [['key' => null]])
@@ -119,7 +120,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.key');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingFeaturesWithAnInvalidLabel(): void
     {
         $this->makeRequest(field: 'features', value: [['label' => null]])
@@ -135,7 +136,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.label');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingFeaturesWithAnInvalidSelectedToggle(): void
     {
         $this->makeRequest(field: 'features', value: [['selected' => null]])
@@ -151,7 +152,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.selected');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForTheMenuLink(): void
     {
         $this->makeRequest(field: 'gf_menu_link', value: null)
@@ -171,7 +172,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForTheInfoField(): void
     {
         $this->makeRequest(field: 'gf_menu_link', value: null)
@@ -179,7 +180,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesThatIsntAnArray(): void
     {
         $this->makeRequest(field: 'opening_times', value: null)
@@ -199,7 +200,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheValueArrayIsLessThan7Elements(): void
     {
         $this->makeRequest(field: 'opening_times', value: [1, 2, 3, 4, 5, 6])
@@ -211,7 +212,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidKey(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['key' => null]])
@@ -231,7 +232,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.key');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidLabel(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['label' => null]])
@@ -251,7 +252,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.label');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidStartTime(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['start' => null]])
@@ -279,7 +280,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.start');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidStartHour(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['start' => ['foo']]])
@@ -299,7 +300,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.start.0');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidStartMinutes(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['start' => [0, 'foo']]])
@@ -319,7 +320,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.start.1');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidEndTime(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['end' => null]])
@@ -347,7 +348,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.end');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidEndHour(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['end' => ['foo']]])
@@ -367,7 +368,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.end.0');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenSubmittingOpeningTimesWithAnInvalidEndMinutes(): void
     {
         $this->makeRequest(field: 'opening_times', value: [['end' => [0, 'foo']]])
@@ -387,7 +388,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value.0.end.1');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForThePhoneField(): void
     {
         $this->makeRequest(field: 'phone', value: null)
@@ -395,7 +396,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForAnCVenueType(): void
     {
         $this->makeRequest(field: 'venue_type', value: null)
@@ -415,7 +416,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorWhenSubmittingAnInvalidValueForTheWebsite(): void
     {
         $this->makeRequest(field: 'website', value: null)
@@ -435,13 +436,13 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('value');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForAValidRequest(): void
     {
         $this->makeRequest()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheStoreSuggestedEditAction(): void
     {
         $this->expectAction(StoreSuggestedEditAction::class, [Eatery::class, 'address', 'foobar']);

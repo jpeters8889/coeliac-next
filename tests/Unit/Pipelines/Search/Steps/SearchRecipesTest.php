@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchParameters;
 use App\DataObjects\Search\SearchPipelineData;
 use App\DataObjects\Search\SearchResultsCollection;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class SearchRecipesTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itDoesntSearchAnyRecipesIfTheRecipeSearchParameterIsFalse(): void
     {
         $this->create(Recipe::class, ['title' => 'Foo']);
@@ -35,7 +36,7 @@ class SearchRecipesTest extends TestCase
         app(SearchRecipes::class)->handle($pipelineData, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itSearchesRecipes(): void
     {
         /** @var Recipe $recipe */

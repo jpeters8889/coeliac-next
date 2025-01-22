@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\SuggestEdits;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryFeature;
@@ -32,13 +33,13 @@ class IndexControllerTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
         $this->get(route('api.wheretoeat.suggest-edit.get', ['eatery' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -46,13 +47,13 @@ class IndexControllerTest extends TestCase
         $this->get(route('api.wheretoeat.suggest-edit.get', ['eatery' => $eatery->id]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheResponseWrappedInADataObject(): void
     {
         $this->makeRequest()->assertJsonStructure(['data']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheRequiredEateryAttributes(): void
     {
         $response = $this->makeRequest()->json('data');
@@ -65,7 +66,7 @@ class IndexControllerTest extends TestCase
         $this->assertArrayHasKeys($keys, $response);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheVenueObject(): void
     {
         $venueType = $this->makeRequest()->json('data.venue_type');
@@ -79,7 +80,7 @@ class IndexControllerTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCuisineObject(): void
     {
         $Cuisine = $this->makeRequest()->json('data.cuisine');
@@ -93,7 +94,7 @@ class IndexControllerTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheFeaturesObject(): void
     {
         $this->eatery->features()->attach($this->create(EateryFeature::class));

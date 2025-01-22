@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Collections;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Collections\GetCollectionsForIndexAction;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use Illuminate\Support\Facades\Storage;
@@ -21,13 +22,13 @@ class IndexControllerTest extends TestCase
         $this->withCollections(30);
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheCollectionListPage(): void
     {
         $this->get(route('collection.index'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetCollectionsForIndexAction(): void
     {
         $this->expectAction(GetCollectionsForIndexAction::class);
@@ -35,7 +36,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('collection.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['collection']);
@@ -43,7 +44,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('collection.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheFirst12Collections(): void
     {
         $this->get(route('collection.index'))
@@ -67,7 +68,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCanLoadOtherPages(): void
     {
         $this->get(route('collection.index', ['page' => 2]))

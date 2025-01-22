@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Console\Commands\ApplyMassDiscountsCommand;
 use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopMassDiscount;
@@ -21,7 +22,7 @@ class ApplyMassDiscountsCommandTest extends TestCase
         $this->withCategoriesAndProducts();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntDoAnythingIfThereAreNoMassDiscountsToProcess(): void
     {
         $count = ShopProductPrice::query()->count();
@@ -31,7 +32,7 @@ class ApplyMassDiscountsCommandTest extends TestCase
         $this->assertDatabaseCount(ShopProductPrice::class, $count);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntProcessMassDiscountsWithAStartDateInTheFuture(): void
     {
         $this->create(ShopMassDiscount::class, [
@@ -45,7 +46,7 @@ class ApplyMassDiscountsCommandTest extends TestCase
         $this->assertDatabaseCount(ShopProductPrice::class, $count);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASalePriceForEachProductInACategoryLinkedToAMassDiscount(): void
     {
         $category = ShopCategory::query()->first();
@@ -66,7 +67,7 @@ class ApplyMassDiscountsCommandTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntCreateASalePriceForProductsInAnotherCategory(): void
     {
         $category = ShopCategory::query()->first();
@@ -87,7 +88,7 @@ class ApplyMassDiscountsCommandTest extends TestCase
         $otherCategory->products()->each(fn (ShopProduct $product) => $this->assertCount(1, $product->prices));
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntProcessMassDiscountsThatHaveAlreadyBeenProcessed(): void
     {
         $category = ShopCategory::query()->first();

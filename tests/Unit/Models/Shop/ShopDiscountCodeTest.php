@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopDiscountCodesUsed;
 use App\Models\Shop\ShopDiscountCodeType;
@@ -20,7 +21,7 @@ class ShopDiscountCodeTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasADiscountCodeType(): void
     {
         $discountCode = $this->create(ShopDiscountCode::class);
@@ -28,7 +29,7 @@ class ShopDiscountCodeTest extends TestCase
         $this->assertInstanceOf(ShopDiscountCodeType::class, $discountCode->type);
     }
 
-    /** @test */
+    #[Test]
     public function itHasARelationshipToTheUsedDiscountCodes(): void
     {
         $discountCode = $this->create(ShopDiscountCode::class);
@@ -40,7 +41,7 @@ class ShopDiscountCodeTest extends TestCase
         $this->assertCount(1, $discountCode->refresh()->used);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyOrders(): void
     {
         $orders = $this->build(ShopOrder::class)

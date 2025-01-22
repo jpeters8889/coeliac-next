@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Order\Done;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\GetPaymentIntentAction;
 use App\Actions\Shop\GetStripeChargeAction;
 use App\Actions\Shop\MarkOrderAsPaidAction;
@@ -36,7 +37,7 @@ class ShowControllerTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorIfItIsMissingAPaymentIntent(): void
     {
         $this->get(route('shop.basket.done'))
@@ -44,7 +45,7 @@ class ShowControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnErrorIfItIsMissingAPaymentIntentSecret(): void
     {
         $this->get(route('shop.basket.done'))
@@ -52,7 +53,7 @@ class ShowControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfItCantFindABasketWithThePaymentIntent(): void
     {
         $this
@@ -63,7 +64,7 @@ class ShowControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheMatchingBasketIsntAPendingOrder(): void
     {
         $this->order->update(['state_id' => OrderState::PAID]);
@@ -76,7 +77,7 @@ class ShowControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetPaymentIntentAction(): void
     {
         $this->mockRetrieveCharge('bar');
@@ -92,7 +93,7 @@ class ShowControllerTest extends TestCase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsBackToTheBasketPageIfTheStatusIsNotSucceeded(): void
     {
         $this->mockRetrievePaymentIntent('foo', PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD);
@@ -106,7 +107,7 @@ class ShowControllerTest extends TestCase
             ->withCookie('basket_token', $this->order->token);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetStripeChargeAction(): void
     {
         $this->mockRetrievePaymentIntent('foo', params: ['latest_charge' => 'bar']);
@@ -122,7 +123,7 @@ class ShowControllerTest extends TestCase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheMarkOrderAsPaidAction(): void
     {
         $this->mockRetrievePaymentIntent('foo', params: ['latest_charge' => 'bar']);
@@ -136,7 +137,7 @@ class ShowControllerTest extends TestCase
         ]));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheOrderPaidEvent(): void
     {
         $this->mockRetrievePaymentIntent('foo', params: ['latest_charge' => 'bar']);
@@ -150,7 +151,7 @@ class ShowControllerTest extends TestCase
         Event::assertDispatched(OrderPaidEvent::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheInertiaResponse(): void
     {
         $this->mockRetrievePaymentIntent('foo', params: ['latest_charge' => 'bar']);

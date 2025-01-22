@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Reviews;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReviewAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
@@ -25,13 +26,13 @@ class StoreControllerTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(): void
     {
         $this->postJson(route('api.wheretoeat.reviews.store', 'foo'))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(): void
     {
         $eatery = $this->build(Eatery::class)->notLive()->create();
@@ -39,7 +40,7 @@ class StoreControllerTest extends TestCase
         $this->postJson(route('api.wheretoeat.reviews.store', $eatery))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAnInvalidRating(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['rating' => null])->create())
@@ -58,7 +59,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('rating');
     }
 
-    /** @test */
+    #[Test]
     public function itFailsWithAnInvalidMethodValue(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['method' => null])->create())
@@ -74,7 +75,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('method');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutABranchNameWhenTheEateryIsNationwide(): void
     {
         $this->eatery->county->update(['county' => 'Nationwide']);
@@ -86,14 +87,14 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('branch_name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAName(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['name' => null])->create())
             ->assertJsonValidationErrorFor('name');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAEmail(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['email' => null])->create())
@@ -109,14 +110,14 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('email');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAReviewField(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['comment' => null])->create())
             ->assertJsonValidationErrorFor('review');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidFoodRatingValue(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['food' => 123])->create())
@@ -129,7 +130,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('food_rating');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithAnInvalidServiceRatingValue(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['service' => 123])->create())
@@ -142,7 +143,7 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('service_rating');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWithoutAnInvalidHowExpensiveField(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['expense' => 'foo'])->create())
@@ -158,27 +159,27 @@ class StoreControllerTest extends TestCase
             ->assertJsonValidationErrorFor('how_expensive');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfSubmittingMoreThan6Images(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['images' => [1, 2, 3, 4, 5, 6, 7]])->create())
             ->assertJsonValidationErrorFor('images');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfAnImageDoesntExistInTheTable(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->state(['images' => [1]])->create())
             ->assertJsonValidationErrorFor('images.0');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->submitForm(EateryCreateReviewApiRequestFactory::new()->create())->assertJsonMissingValidationErrors();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheCreateEateryReviewAction(): void
     {
         $this->expectAction(CreateEateryReviewAction::class);
@@ -187,7 +188,7 @@ class StoreControllerTest extends TestCase
 
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAFullRatingThatIsNotApproved(): void
     {
         $this->assertEmpty($this->eatery->reviews);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Support\EatingOut\SuggestEdits\Fields;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryFeature;
 use App\Support\EatingOut\SuggestEdits\Fields\FeaturesField;
@@ -23,7 +24,7 @@ class FeaturesFieldTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheDatabaseValue(): void
     {
         $field = app(FeaturesField::class);
@@ -34,7 +35,7 @@ class FeaturesFieldTest extends TestCase
         $this->assertJson($currentValue);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsThePreparedValue(): void
     {
         $field = FeaturesField::make(1);
@@ -42,7 +43,7 @@ class FeaturesFieldTest extends TestCase
         $this->assertEquals(1, $field->prepare());
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheValueForDisplay(): void
     {
         $feature = EateryFeature::query()->first();

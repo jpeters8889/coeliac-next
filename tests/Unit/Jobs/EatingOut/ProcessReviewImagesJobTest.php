@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\EatingOut\ProcessReviewImagesJob;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
@@ -48,7 +49,7 @@ class ProcessReviewImagesJobTest extends TestCase
             ->andReturn($file->getContent());
     }
 
-    /** @test */
+    #[Test]
     public function itPersistTheImageInTheReviewImagesDisk(): void
     {
         $this->assertFalse(Storage::disk('review-images')->exists($this->fileUpload->path));
@@ -58,7 +59,7 @@ class ProcessReviewImagesJobTest extends TestCase
         $this->assertTrue(Storage::disk('review-images')->exists($this->fileUpload->filename));
     }
 
-    /** @test */
+    #[Test]
     public function itPersistTheImageThumbnailInTheReviewImagesDiskThumbsDirectory(): void
     {
         $this->assertFalse(Storage::disk('review-images')->exists('thumbs/' . $this->fileUpload->path));
@@ -68,7 +69,7 @@ class ProcessReviewImagesJobTest extends TestCase
         $this->assertTrue(Storage::disk('review-images')->exists('thumbs/' . $this->fileUpload->filename));
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAReviewImageRow(): void
     {
         $this->assertEmpty($this->review->images);

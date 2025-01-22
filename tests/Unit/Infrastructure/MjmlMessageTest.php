@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Infrastructure;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Tests\TestCase;
 
 class MjmlMessageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itExtendsTheMailMessage(): void
     {
         $instance = new MjmlMessage();
@@ -18,7 +19,7 @@ class MjmlMessageTest extends TestCase
         $this->assertInstanceOf(MailMessage::class, $instance);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAStaticConstructor(): void
     {
         $this->assertInstanceOf(
@@ -27,7 +28,7 @@ class MjmlMessageTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itCanSetAViewAndDataFromTheStaticConstructor(): void
     {
         $instance = MjmlMessage::make('test-view', ['foo' => 'bar']);
@@ -36,7 +37,7 @@ class MjmlMessageTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $instance->viewData);
     }
 
-    /** @test */
+    #[Test]
     public function itCanSetTheViewAndDataFromAnMjmlMethod(): void
     {
         $instance = new MjmlMessage();
@@ -47,7 +48,7 @@ class MjmlMessageTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $instance->viewData);
     }
 
-    /** @test */
+    #[Test]
     public function itIsSentViaTheMailChannel(): void
     {
         $instance = MjmlMessage::make('test-view', ['foo' => 'bar']);

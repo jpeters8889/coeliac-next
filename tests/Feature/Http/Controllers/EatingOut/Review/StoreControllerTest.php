@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\Review;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReviewAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -42,10 +44,8 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itReturnsNotFoundForAnEateryThatDoesntExist(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -53,10 +53,8 @@ class StoreControllerTest extends TestCase
         $this->post($route($this, 'foo'))->assertNotFound();
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itReturnsNotFoundForAnEateryThatIsNotLive(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -66,10 +64,8 @@ class StoreControllerTest extends TestCase
         $this->post($route($this, $eatery->slug))->assertNotFound();
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutAnInvalidRating(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -90,10 +86,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('rating');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itFailsWithAnInvalidMethodValue(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -111,10 +105,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('method');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutABranchNameWhenTheEateryIsNationwide(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -128,10 +120,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('branch_name');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutAName(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -146,10 +136,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('name');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutAEmail(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -167,10 +155,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('email');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutAReviewField(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -185,10 +171,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('review');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithAnInvalidFoodRatingValue(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -203,10 +187,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('food_rating');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithAnInvalidServiceRatingValue(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -221,10 +203,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('service_rating');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsWithoutAnInvalidHowExpensiveField(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -242,10 +222,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('how_expensive');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsIfSubmittingMoreThan6Images(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -254,10 +232,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('images');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itErrorsIfAnImageDoesntExistInTheTable(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -266,10 +242,8 @@ class StoreControllerTest extends TestCase
             ->assertSessionHasErrors('images.0');
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itReturnsOk(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -277,10 +251,8 @@ class StoreControllerTest extends TestCase
         $this->submitForm($route, $data()->create())->assertSessionHasNoErrors();
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itCallsTheCreateEateryReviewAction(callable $route, callable $data, $before): void
     {
         $before($this);
@@ -291,10 +263,8 @@ class StoreControllerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     * @dataProvider routesToVisit
-     */
+    #[Test]
+    #[DataProvider('routesToVisit')]
     public function itCreatesAFullRatingThatIsNotApproved(callable $route, callable $data, $before): void
     {
         $before($this);

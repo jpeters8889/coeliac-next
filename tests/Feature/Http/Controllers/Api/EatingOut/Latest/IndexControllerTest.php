@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\EatingOut\Latest;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\NationwideBranch;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsTheLatestPlaces(): void
     {
         $eatery = $this->create(Eatery::class);
@@ -18,7 +19,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('api.wheretoeat.latest'))->assertJsonFragment(['name' => $eatery->name]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNationwideBranches(): void
     {
         $eatery = $this->create(Eatery::class);
@@ -31,7 +32,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('api.wheretoeat.latest'))->assertJsonFragment(['name' => "{$branch->name} - {$eatery->name}"]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturns5Results(): void
     {
         $this->build(Eatery::class)->count(10)->create();

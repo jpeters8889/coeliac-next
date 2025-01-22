@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\NotificationEmail;
 use App\Models\Shop\ShopCustomer;
 use Carbon\Carbon;
@@ -12,7 +13,7 @@ use Tests\TestCase;
 
 class NotificationEmailTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCreatesAUuidForTheKeyIfNotSpecified(): void
     {
         $model = $this->create(NotificationEmail::class);
@@ -21,7 +22,7 @@ class NotificationEmailTest extends TestCase
         $this->assertTrue(Str::isUuid($model->key));
     }
 
-    /** @test */
+    #[Test]
     public function itCastsTheEmailData(): void
     {
         /** @var NotificationEmail $model */
@@ -32,7 +33,7 @@ class NotificationEmailTest extends TestCase
         $this->assertInstanceOf(Carbon::class, $model->data['date']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeAssociatedToAShopCustomer(): void
     {
         /** @var NotificationEmail $model */

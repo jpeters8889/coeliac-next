@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Basket;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AlterItemQuantityAction;
 use App\Actions\Shop\VerifyDiscountCodeAction;
 use App\Models\Shop\ShopDiscountCode;
@@ -40,7 +41,7 @@ class UpdateControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsBackIfAnOrderDoesntExist(): void
     {
         $this
@@ -49,7 +50,7 @@ class UpdateControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itAllowsValidRequestWithNoData(): void
     {
         $this
@@ -59,7 +60,7 @@ class UpdateControllerTest extends TestCase
             ->assertRedirectToRoute('shop.index');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAValidationErrorIfTheCountryDoesntExist(): void
     {
         $this
@@ -70,7 +71,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionHasErrors('postage_country_id');
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheCountry(): void
     {
         $country = $this->create(ShopPostageCountry::class, [
@@ -92,7 +93,7 @@ class UpdateControllerTest extends TestCase
         $this->assertEquals($country->id, $this->order->postage_country_id);
     }
 
-    /** @test */
+    #[Test]
     public function itThrowsAValidationErrorIfActionIsInRequestButNotValidValue(): void
     {
         $this
@@ -117,7 +118,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionHasErrors('action');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfSendingActionWithoutProductIdOrInvalidItemId(): void
     {
         $this
@@ -144,7 +145,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionHasErrors('item_id');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheItemIsntInTheBasket(): void
     {
         $this
@@ -156,7 +157,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionHasErrors(['item_id' => "This product isn't in your basket"]);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheAlterItemQuantityAction(): void
     {
         $this->expectAction(AlterItemQuantityAction::class);
@@ -170,7 +171,7 @@ class UpdateControllerTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheDiscountCodeDoesntExist(): void
     {
         $this
@@ -182,7 +183,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionMissing('discountCode');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheDiscountCodeExistsButIsntActiveYet(): void
     {
         $this->build(ShopDiscountCode::class)->startsTomorrow()->create(['code' => 'foobar']);
@@ -196,7 +197,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionMissing('discountCode');
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfTheDiscountCodeExistsButHasExpired(): void
     {
         $this->build(ShopDiscountCode::class)->expired()->create(['code' => 'foobar']);
@@ -210,7 +211,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionMissing('discountCode');
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheVerifyDiscountCodeAction(): void
     {
         $this->build(ShopDiscountCode::class)->create(['code' => 'foobar']);
@@ -224,7 +225,7 @@ class UpdateControllerTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itAddsTheDiscountCodeToTheSessionIfItIsValid(): void
     {
         $this->create(ShopDiscountCode::class, [
@@ -239,7 +240,7 @@ class UpdateControllerTest extends TestCase
             ->assertSessionHas('discountCode');
     }
 
-    /** @test */
+    #[Test]
     public function itEncryptsTheDiscountCodeInTheSession(): void
     {
         $this->create(ShopDiscountCode::class, [

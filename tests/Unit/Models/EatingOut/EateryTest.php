@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\LatLng;
 use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
@@ -44,14 +45,14 @@ class EateryTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASlug(): void
     {
         $this->assertNotNull($this->eatery->slug);
         $this->assertEquals(Str::slug($this->eatery->name), $this->eatery->slug);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSavedForEateryAndTownAndCounty(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -81,7 +82,7 @@ class EateryTest extends TestCase
         $this->assertTrue($county->is($dispatchedModels[2]));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -95,43 +96,43 @@ class EateryTest extends TestCase
         Bus::assertDispatched(CreateEateryIndexPageOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasATown(): void
     {
         $this->assertEquals(1, $this->eatery->town()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasACounty(): void
     {
         $this->assertEquals(1, $this->eatery->county()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasACountry(): void
     {
         $this->assertEquals(1, $this->eatery->country()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasFeatures(): void
     {
         $this->assertEquals(1, $this->eatery->features()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasAVenueType(): void
     {
         $this->assertEquals(1, $this->eatery->venueType()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasACuisineType(): void
     {
         $this->assertEquals(1, $this->eatery->cuisine()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveOpeningTimes(): void
     {
         $this->assertNull($this->eatery->openingTimes);
@@ -144,25 +145,25 @@ class EateryTest extends TestCase
         $this->assertTrue($this->eatery->openingTimes->is($openingTimes));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnHasCategoriesScope(): void
     {
         $this->assertInstanceOf(Builder::class, Eatery::query()->hasCategories([]));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnHasVenueTypesScope(): void
     {
         $this->assertInstanceOf(Builder::class, Eatery::query()->hasVenueTypes([]));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnHasFeaturesScope(): void
     {
         $this->assertInstanceOf(Builder::class, Eatery::query()->hasFeatures([]));
     }
 
-    /** @test */
+    #[Test]
     public function itHasAStaticBuilderForLatLngSearch(): void
     {
         $latLng = new LatLng(51.1, 0.23);
@@ -175,7 +176,7 @@ class EateryTest extends TestCase
         $this->assertEquals($latLng->toString(), $parameters['aroundLatLng']);
     }
 
-    /** @test */
+    #[Test]
     public function itIncludesTheSearchRadiusInTheLatLngSearch(): void
     {
         $latLng = new LatLng(51.1, 0.23);

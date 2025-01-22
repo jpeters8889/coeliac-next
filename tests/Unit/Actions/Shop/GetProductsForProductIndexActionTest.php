@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\GetProductsForProductIndexAction;
 use App\Models\Shop\ShopProduct;
 use App\Resources\Shop\ShopProductApiCollection;
@@ -23,7 +24,7 @@ class GetProductsForProductIndexActionTest extends TestCase
         $this->withCategoriesAndProducts(1, 15);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAShopProductApiCollection(): void
     {
         $this->assertInstanceOf(
@@ -32,7 +33,7 @@ class GetProductsForProductIndexActionTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itIsAPaginatedCollection(): void
     {
         $blogs = $this->callAction(GetProductsForProductIndexAction::class);
@@ -40,19 +41,19 @@ class GetProductsForProductIndexActionTest extends TestCase
         $this->assertInstanceOf(LengthAwarePaginator::class, $blogs->resource);
     }
 
-    /** @test */
+    #[Test]
     public function itReturns12ItemsPerPageByDefault(): void
     {
         $this->assertCount(12, $this->callAction(GetProductsForProductIndexAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveADifferentPageLimitSpecified(): void
     {
         $this->assertCount(5, $this->callAction(GetProductsForProductIndexAction::class, perPage: 5));
     }
 
-    /** @test */
+    #[Test]
     public function eachItemInThePageIsAShopProductApiResource(): void
     {
         $resource = $this->callAction(GetProductsForProductIndexAction::class)->resource->first();
@@ -60,7 +61,7 @@ class GetProductsForProductIndexActionTest extends TestCase
         $this->assertInstanceOf(ShopProductApiResource::class, $resource);
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheMediaAndPricesRelationship(): void
     {
         /** @var ShopProduct $product */
@@ -70,7 +71,7 @@ class GetProductsForProductIndexActionTest extends TestCase
         $this->assertTrue($product->relationLoaded('prices'));
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeFilteredBySearch(): void
     {
         ShopProduct::query()->first()->update(['title' => 'Test Product Yay']);

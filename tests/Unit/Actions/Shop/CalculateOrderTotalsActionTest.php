@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AddProductToBasketAction;
 use App\Actions\Shop\CalculateOrderTotalsAction;
 use App\Actions\Shop\GetOrderItemsAction;
@@ -66,7 +67,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAnArrayWithTheCorrectKeys(): void
     {
         $keys = ['subtotal', 'postage'];
@@ -77,7 +78,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertArrayHasKeys($keys, $result);
     }
 
-    /** @test */
+    #[Test]
     public function itCalculatesTheSubtotal(): void
     {
         ['subtotal' => $subtotal] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
@@ -85,7 +86,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertEquals(600, $subtotal);
     }
 
-    /** @test */
+    #[Test]
     public function itCalculatesThePostagePrice(): void
     {
         ['postage' => $postage] = $this->callAction(CalculateOrderTotalsAction::class, $this->itemsCollection, $this->order->postageCountry);
@@ -93,7 +94,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertEquals(150, $postage);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAPostagePriceForAGivenPostageCountry(): void
     {
         $this->create(ShopPostagePrice::class, [
@@ -114,7 +115,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertEquals(300, $price);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAPostagePriceForTheWeightOfTheItems(): void
     {
         $this->create(ShopPostagePrice::class, [
@@ -129,7 +130,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertEquals(100, $price);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsThePostagePriceForTheLargestShippingMethod(): void
     {
         $this->create(ShopPostagePrice::class, [
@@ -156,7 +157,7 @@ class CalculateOrderTotalsActionTest extends TestCase
         $this->assertEquals(300, $price);
     }
 
-    /** @test */
+    #[Test]
     public function itThrowsAnExceptionIfThePostagePriceCantBeCalculated(): void
     {
         $this->callAction(AddProductToBasketAction::class, $this->order, $this->product, $this->variant, 10);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -55,7 +56,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheFiltersWithTheCorrectKeys(): void
     {
         $this->assertIsArray($this->callAction(GetFiltersForEateriesAction::class, $this->whereClause));
@@ -67,7 +68,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheEateryCategoryFilters(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['categories'];
@@ -81,7 +82,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function eachCategoryFilterIsNotCheckedByDefault(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['categories'];
@@ -91,7 +92,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function aFilterCategoryCanBeCheckedViaTheRequest(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause, ['categories' => 'att'])['categories'];
@@ -101,7 +102,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         $this->assertFalse($categoryFilters[2]['checked']); // hotel
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheEateryVenueTypeFilters(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['venueTypes'];
@@ -115,7 +116,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function eachVenueTypeFilterIsNotCheckedByDefault(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['venueTypes'];
@@ -125,7 +126,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function aFilterVenueTypeCanBeCheckedViaTheRequest(): void
     {
         $venueType = EateryVenueType::query()->first();
@@ -137,7 +138,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         $this->assertFalse($categoryFilters[2]['checked']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheEateryFeaturesFilters(): void
     {
         $categoryFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['features'];
@@ -151,7 +152,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function eachFeatureFilterIsNotCheckedByDefault(): void
     {
         $featureFilters = $this->callAction(GetFiltersForEateriesAction::class, $this->whereClause)['features'];
@@ -161,7 +162,7 @@ class GetFiltersForEateriesActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function aFilterFeatureCanBeCheckedViaTheRequest(): void
     {
         $feature = EateryFeature::query()->first();

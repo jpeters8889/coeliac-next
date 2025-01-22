@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop\AddressSearch;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class ShowControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCallsTheGeoAddressService(): void
     {
         Http::preventStrayRequests();
@@ -29,7 +30,7 @@ class ShowControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheAddressFormatted(): void
     {
         Http::preventStrayRequests();
@@ -74,7 +75,7 @@ class ShowControllerTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itConcatsLine3And4IfPresent(): void
     {
         Http::preventStrayRequests();

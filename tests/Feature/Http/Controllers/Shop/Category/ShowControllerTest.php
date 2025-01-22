@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\Category;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopProduct;
 use App\Models\Shop\ShopProductPrice;
@@ -29,13 +30,13 @@ class ShowControllerTest extends TestCase
         $this->category = ShopCategory::query()->first();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheCategoryDoesntExist(): void
     {
         $this->get(route('shop.category', ['category' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundIfTheCategoryDoesntHaveAnyLiveProducts(): void
     {
         $category = $this->create(ShopCategory::class);
@@ -43,19 +44,19 @@ class ShowControllerTest extends TestCase
         $this->get(route('shop.category', ['category' => $category->slug]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->makeRequest()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheShopCategoryPage(): void
     {
         $this->makeRequest()->assertInertia(fn (Assert $page) => $page->component('Shop/Category'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCategoryInformation(): void
     {
         $this->makeRequest()
@@ -67,7 +68,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheProductsInTheCategory(): void
     {
         $this->makeRequest()
@@ -84,7 +85,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsThePinnedProductFirst(): void
     {
         $this->build(ShopProduct::class)
@@ -109,7 +110,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntListAProductThatIsntLive(): void
     {
         $this->build(ShopProduct::class)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetCountyListAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCountry;
@@ -55,7 +56,7 @@ class GetCountyListActionTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsACollection(): void
     {
         $this->assertInstanceOf(
@@ -64,7 +65,7 @@ class GetCountyListActionTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCountriesGroupedByCountry(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -75,7 +76,7 @@ class GetCountyListActionTest extends TestCase
         $this->assertArrayHasKeys($countries, $collection);
     }
 
-    /** @test */
+    #[Test]
     public function eachCountryHasAListPropertyThatIsAnArray(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -85,7 +86,7 @@ class GetCountyListActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function eachCountryListHasANameSlugAndTotal(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -97,7 +98,7 @@ class GetCountyListActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function eachCountryListHasTheCountiesInThatCounty(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -114,7 +115,7 @@ class GetCountyListActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itListsTheNumberOfCountiesInEachCountry(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -128,7 +129,7 @@ class GetCountyListActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itListsTheNumberOfEateriesAndBranchesInEachCounty(): void
     {
         $collection = app(GetCountyListAction::class)->handle();
@@ -148,7 +149,7 @@ class GetCountyListActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itCachesTheResults(): void
     {
         $key = 'wheretoeat_index_county_status';
@@ -160,7 +161,7 @@ class GetCountyListActionTest extends TestCase
         $this->assertTrue(Cache::has($key));
     }
 
-    /** @test */
+    #[Test]
     public function itGetsTheResultsFromTheCache(): void
     {
         Cache::partialMock()

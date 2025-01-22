@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\County\Town;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetFiltersForEateriesAction;
 use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
@@ -37,19 +38,19 @@ class ShowControllerTest extends TestCase
         Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForACountyThatDoesntExistWithAValidTown(): void
     {
         $this->get(route('eating-out.town', ['county' => 'foo', 'town' => $this->town]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForATownThatDoesntExistWithAValidCounty(): void
     {
         $this->get(route('eating-out.town', ['county' => $this->county, 'town' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForATownThatHasNoLiveEateries(): void
     {
         $town = $this->create(EateryTown::class);
@@ -57,13 +58,13 @@ class ShowControllerTest extends TestCase
         $this->get(route('eating-out.town', ['county' => $this->county, 'town' => $town]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForACountyThatHasPlaces(): void
     {
         $this->visitTown()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetEateriesInTownAction(): void
     {
         $this->expectPipelineToRun(GetEateriesPipeline::class);
@@ -71,7 +72,7 @@ class ShowControllerTest extends TestCase
         $this->visitTown();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetFiltersForTownAction(): void
     {
         $this->expectAction(GetFiltersForEateriesAction::class);
@@ -79,7 +80,7 @@ class ShowControllerTest extends TestCase
         $this->visitTown();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageAction(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -87,7 +88,7 @@ class ShowControllerTest extends TestCase
         $this->visitTown();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitTown()

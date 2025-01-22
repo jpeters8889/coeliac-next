@@ -8,6 +8,7 @@ use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
 use App\Models\OpenGraphImage;
 use App\Services\RenderOpenGraphImage;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateEateryIndexPageOpenGraphImageJobTest extends TestCase
@@ -21,7 +22,7 @@ class CreateEateryIndexPageOpenGraphImageJobTest extends TestCase
         config()->set('coeliac.generate_og_images', true);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsRenderOpenGraphImageAction(): void
     {
         $this->mock(RenderOpenGraphImage::class)
@@ -32,7 +33,7 @@ class CreateEateryIndexPageOpenGraphImageJobTest extends TestCase
         (new CreateEateryIndexPageOpenGraphImageJob())->handle(app(RenderOpenGraphImage::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnOpenGraphRecord(): void
     {
         $this->assertDatabaseEmpty(OpenGraphImage::class);

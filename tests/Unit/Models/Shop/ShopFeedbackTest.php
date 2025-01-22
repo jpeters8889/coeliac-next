@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopFeedback;
 use App\Models\Shop\ShopProduct;
 use Tests\TestCase;
 
 class ShopFeedbackTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHasAProductRelationship(): void
     {
         $product = $this->create(ShopProduct::class);

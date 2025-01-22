@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Concerns;
 
+use PHPUnit\Framework\Attributes\Test;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
@@ -28,25 +29,25 @@ trait CanBePublishedTestTrait
         return call_user_func($this->factoryClosure, $params);
     }
 
-    /** @test */
+    #[Test]
     public function itHasAPublishAtColumn(): void
     {
         $this->assertNotNull($this->factory()->publish_at);
     }
 
-    /** @test */
+    #[Test]
     public function itCastsThePublishAtColumnToCarbon(): void
     {
         $this->assertInstanceOf(Carbon::class, $this->factory()->publish_at);
     }
 
-    /** @test */
+    #[Test]
     public function itHasADraftColumn(): void
     {
         $this->assertNotNull($this->factory()->draft);
     }
 
-    /** @test */
+    #[Test]
     public function itCastsTheDraftColumnAsABool(): void
     {
         $this->assertIsBool($this->factory()->draft);

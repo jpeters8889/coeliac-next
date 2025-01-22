@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopCategory;
 use App\Models\Shop\ShopFeedback;
 use App\Models\Shop\ShopOrderReviewItem;
@@ -27,13 +28,13 @@ class ShopProductTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasALiveScope(): void
     {
         $this->assertNotEmpty(ShopProduct::query()->toBase()->wheres);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveMedia(): void
     {
         Storage::fake('media');
@@ -46,7 +47,7 @@ class ShopProductTest extends TestCase
         $this->assertCount(2, $product->media);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGenerateALink(): void
     {
         $product = $this->create(ShopProduct::class, [
@@ -56,7 +57,7 @@ class ShopProductTest extends TestCase
         $this->assertEquals('/shop/product/test-product', $product->link);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyCategories(): void
     {
         ShopCategory::withoutGlobalScopes();
@@ -74,7 +75,7 @@ class ShopProductTest extends TestCase
         $this->assertCount(5, $product->categories()->withoutGlobalScopes()->get());
     }
 
-    /** @test */
+    #[Test]
     public function itHasAShippingMethod(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -82,7 +83,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(ShopShippingMethod::class, $product->shippingMethod);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyVariants(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -95,7 +96,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(Collection::class, $product->refresh()->variants);
     }
 
-    /** @test */
+    #[Test]
     public function itHasManyPrices(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -108,7 +109,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(Collection::class, $product->refresh()->prices);
     }
 
-    /** @test */
+    #[Test]
     public function itHasFeedback(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -121,7 +122,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(Collection::class, $product->refresh()->feedback);
     }
 
-    /** @test */
+    #[Test]
     public function itHasReviews(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -134,7 +135,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(Collection::class, $product->refresh()->reviews);
     }
 
-    /** @test */
+    #[Test]
     public function itHasSearchTerms(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -148,7 +149,7 @@ class ShopProductTest extends TestCase
         $this->assertInstanceOf(Collection::class, $product->refresh()->travelCardSearchTerms);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetACollectionOfCurrentPrices(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -165,7 +166,7 @@ class ShopProductTest extends TestCase
         $this->assertCount(1, $product->currentPrices());
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheCurrentPrice(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -186,7 +187,7 @@ class ShopProductTest extends TestCase
         $this->assertEquals(100, $product->currentPrice);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheOldPrice(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -207,7 +208,7 @@ class ShopProductTest extends TestCase
         $this->assertEquals(200, $product->oldPrice);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheOldPriceAsNullIfNotOnSale(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -227,7 +228,7 @@ class ShopProductTest extends TestCase
         $this->assertNull($product->oldPrice);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAPriceObject(): void
     {
         $product = $this->create(ShopProduct::class);
@@ -248,7 +249,7 @@ class ShopProductTest extends TestCase
         $this->assertEquals(['current_price' => '£1.00', 'old_price' => '£2.00'], $product->price);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsAPriceObjectWithoutAnOldPrice(): void
     {
         $product = $this->create(ShopProduct::class);

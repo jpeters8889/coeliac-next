@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Notifications\Shop;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Models\Shop\ShopCustomer;
 use App\Models\Shop\ShopOrder;
@@ -49,11 +51,8 @@ class OrderCancelledNotificationTest extends TestCase
         TestTime::freeze();
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider mailDataProvider
-     */
+    #[Test]
+    #[DataProvider('mailDataProvider')]
     public function itHasTheOrderDate(callable $closure): void
     {
         $this->customer->notify(new OrderCancelledNotification($this->order));

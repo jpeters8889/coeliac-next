@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Shop\TravelCardSearch;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\TravelCardSearchTerm;
 use App\Models\Shop\TravelCardSearchTermHistory;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -11,14 +12,14 @@ use Tests\TestCase;
 
 class StoreControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsWithoutASearchTerm(): void
     {
         $this->postJson(route('api.shop.travel-card-search.store'))
             ->assertJsonValidationErrorFor('term');
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASearchHistoryRecordForTheSearchTerm(): void
     {
         $this->assertDatabaseEmpty(TravelCardSearchTermHistory::class);
@@ -31,7 +32,7 @@ class StoreControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheHitsOnAnExistingSearchTermIfOneExists(): void
     {
         $searchTerm = $this->create(TravelCardSearchTermHistory::class, [
@@ -44,7 +45,7 @@ class StoreControllerTest extends TestCase
         $this->assertEquals(6, $searchTerm->refresh()->hits);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsMatchSearchTerms(): void
     {
         $this->build(TravelCardSearchTerm::class)

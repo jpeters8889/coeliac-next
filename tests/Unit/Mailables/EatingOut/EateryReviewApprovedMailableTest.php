@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mailables\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Mailables\EatingOut\EateryReviewApprovedMailable;
 use App\Models\EatingOut\EateryReview;
@@ -11,7 +12,7 @@ use Tests\TestCase;
 
 class EateryReviewApprovedMailableTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itReturnsAnMjmlMessageInstance(): void
     {
         $this->assertInstanceOf(
@@ -20,7 +21,7 @@ class EateryReviewApprovedMailableTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheSubjectSet(): void
     {
         /** @var EateryReview $eateryReview */
@@ -31,7 +32,7 @@ class EateryReviewApprovedMailableTest extends TestCase
         $this->assertEquals("Your review of {$eateryReview->eatery->name} on Coeliac Sanctuary has been approved!", $mailable->subject);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectView(): void
     {
         $mailable = EateryReviewApprovedMailable::make($this->create(EateryReview::class), 'foo');
@@ -39,7 +40,7 @@ class EateryReviewApprovedMailableTest extends TestCase
         $this->assertEquals('mailables.mjml.eating-out.review-approved', $mailable->mjml);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheCorrectData(): void
     {
         /** @var EateryReview $eateryReview */

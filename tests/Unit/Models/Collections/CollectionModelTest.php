@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Collections;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
@@ -37,13 +38,13 @@ class CollectionModelTest extends TestCase
         $this->setUpCanBePublishedModelTest(fn (array $params = []) => $this->create(Collection::class, $params));
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheLiveScopeApplied(): void
     {
         $this->assertTrue(Collection::hasGlobalScope(LiveScope::class));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -55,7 +56,7 @@ class CollectionModelTest extends TestCase
         Bus::assertDispatched(CreateCollectionIndexPageOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveItemsAddedToTheCollection(): void
     {
         $this->assertEmpty($this->collection->items);

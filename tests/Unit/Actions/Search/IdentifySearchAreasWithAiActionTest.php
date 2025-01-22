@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Search\IdentifySearchAreasWithAiAction;
 use App\DataObjects\Search\SearchAiResponse;
 use App\Models\Search\Search;
@@ -22,7 +23,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
 
     }
 
-    /** @test */
+    #[Test]
     public function itUsesACachedResponseFromTheDatabaseIfThereIsOneForTheSearchHistory(): void
     {
         $searchHistory = $this->create(Search::class);
@@ -37,7 +38,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
         OpenAI::assertNothingSent();
     }
 
-    /** @test */
+    #[Test]
     public function itUsesTheCorrectAiModel(): void
     {
         OpenAI::fake([CreateResponse::fake([
@@ -62,7 +63,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itPassesTheCorrectPrompt(): void
     {
         OpenAI::fake([CreateResponse::fake([
@@ -91,7 +92,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNullIfJsonValidationFails(): void
     {
         OpenAI::fake([CreateResponse::fake([
@@ -107,7 +108,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
         $this->assertNull(app(IdentifySearchAreasWithAiAction::class)->handle($this->create(Search::class)));
     }
 
-    /** @test */
+    #[Test]
     public function itJsonDecodesTheResponseAndReturnsItAsASearchAiResponse(): void
     {
         OpenAI::fake([CreateResponse::fake([
@@ -136,7 +137,7 @@ class IdentifySearchAreasWithAiActionTest extends TestCase
         $this->assertEquals('foobar', $response->reasoning);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnSearchAiResponseAgainstTheHistoryClass(): void
     {
         OpenAI::fake([CreateResponse::fake([

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\CheckRecommendedPlace;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\RecommendAPlaceExistsCheckData;
 use App\Pipelines\EatingOut\CheckRecommendedPlace\CheckRecommendedPlacePipeline;
 use App\Pipelines\EatingOut\CheckRecommendedPlace\Steps\CheckIfLoungeBranch;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class CheckRecommendedPlacePipelineTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCallsTheActions(): void
     {
         $this->expectPipelineToExecute(CheckIfLoungeBranch::class);

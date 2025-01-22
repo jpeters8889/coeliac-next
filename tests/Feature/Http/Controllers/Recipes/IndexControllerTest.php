@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Recipes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
 use App\Actions\Recipes\GetRecipesForIndexAction;
@@ -26,13 +28,13 @@ class IndexControllerTest extends TestCase
         $this->withRecipes(30);
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheRecipeListPage(): void
     {
         $this->get(route('recipe.index'))->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetRecipesForIndexAction(): void
     {
         $this->expectAction(GetRecipesForIndexAction::class);
@@ -52,7 +54,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('recipe.index', ['meals' => 'test']));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['recipe']);
@@ -69,13 +71,9 @@ class IndexControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itCallsTheGetRecipeFiltersForIndexAction(string $relationship, string $name): void
     {
         $this->expectAction(
@@ -96,7 +94,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('recipe.index', [$name => 'test']));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheFirst12Recipes(): void
     {
         $this->get(route('recipe.index'))
@@ -121,7 +119,7 @@ class IndexControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itCanLoadOtherPages(): void
     {
         $this->get(route('recipe.index', ['page' => 2]))

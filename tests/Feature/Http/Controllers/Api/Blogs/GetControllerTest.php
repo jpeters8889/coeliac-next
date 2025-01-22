@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Api\Blogs;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use Tests\TestCase;
 
 class GetControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itErrorsIfABlogCantBeFound(): void
     {
         $this->get(route('api.blogs.show', 'foo'))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfABlogIsntLive(): void
     {
         $blog = $this->build(Blog::class)->notLive()->create();
@@ -23,7 +24,7 @@ class GetControllerTest extends TestCase
         $this->get(route('api.blogs.show', $blog))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsIfABlogIsDraft(): void
     {
         $blog = $this->build(Blog::class)->draft()->create();
@@ -31,7 +32,7 @@ class GetControllerTest extends TestCase
         $this->get(route('api.blogs.show', $blog))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheBlog(): void
     {
         $this->withBlogs(1);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Resources\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryReview;
@@ -30,7 +31,7 @@ class CountyPageResourceTest extends TestCase
         Storage::fake('media');
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCorrectKeys(): void
     {
         $keys = ['name', 'slug', 'image', 'towns', 'eateries', 'reviews'];
@@ -42,7 +43,7 @@ class CountyPageResourceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function itUsesTheImageAssociatedWithTheCountyIfOneIsSet(): void
     {
         $this->county->addMedia(UploadedFile::fake()->image('county.jpg'))->toMediaCollection('primary');
@@ -52,7 +53,7 @@ class CountyPageResourceTest extends TestCase
         $this->assertStringContainsString('county.jpg', $resource['image']);
     }
 
-    /** @test */
+    #[Test]
     public function itFallsBackToTheGenericCountryImageIfTheCountyDoesntHaveOne(): void
     {
         $resource = (new CountyPageResource($this->county))->toArray(request());
@@ -60,7 +61,7 @@ class CountyPageResourceTest extends TestCase
         $this->assertStringContainsString('england.jpg', $resource['image']);
     }
 
-    /** @test */
+    #[Test]
     public function itListsTheNumberOfEateriesInThatCounty(): void
     {
         $this->build(Eatery::class)
@@ -72,7 +73,7 @@ class CountyPageResourceTest extends TestCase
         $this->assertEquals(5, $resource['eateries']);
     }
 
-    /** @test */
+    #[Test]
     public function itListsTheNumberOfReviewsInTheCounty(): void
     {
         $this->build(Eatery::class)
@@ -85,7 +86,7 @@ class CountyPageResourceTest extends TestCase
         $this->assertEquals(25, $resource['reviews']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheTownsAsACollection(): void
     {
         $this->build(EateryTown::class)
@@ -97,7 +98,7 @@ class CountyPageResourceTest extends TestCase
         $this->assertInstanceOf(CountyTownCollection::class, $resource['towns']);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsEachTownAsATownResource(): void
     {
         $this->build(EateryTown::class)

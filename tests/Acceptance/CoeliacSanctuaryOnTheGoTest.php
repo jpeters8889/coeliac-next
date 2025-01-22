@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Acceptance;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -31,7 +32,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->seed(EateryScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesToEat(): void
     {
         $this->create(Eatery::class, ['name' => 'My Eatery']);
@@ -41,7 +42,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonFragment(['name' => 'My Eatery']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesViaSearchTerm(): void
     {
         $this->create(Eatery::class, [
@@ -58,7 +59,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonFragment(['name' => 'My Eatery']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesViaLatLng(): void
     {
         $this->create(Eatery::class, [
@@ -77,7 +78,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonFragment(['name' => 'My Eatery']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesWithFilters(): void
     {
         $venueType = $this->create(EateryVenueType::class, ['venue_type' => 'Special Place']);
@@ -105,7 +106,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonMissing(['name' => 'My Other Eatery']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPaginatedPlaces(): void
     {
         $this->build(Eatery::class)->count(20)->create();
@@ -114,7 +115,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/wheretoeat?page=2')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itGetsPlacesAndReturnsTheRequiredData(): void
     {
         $eatery = $this->create(Eatery::class, [
@@ -187,7 +188,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesToEatForTheMap(): void
     {
         $eatery = $this->create(Eatery::class, [
@@ -204,7 +205,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonFragment(['id' => $eatery->id]);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetPlacesWithFiltersForTheMap(): void
     {
         $venueType = $this->create(EateryVenueType::class, ['venue_type' => 'Special Place']);
@@ -230,7 +231,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonMissing(['id' => $invalidEatery->id]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheRequiredDataForTheMap(): void
     {
         $this->create(Eatery::class, [
@@ -250,7 +251,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetAPlaceDetails(): void
     {
         $eatery = $this->create(Eatery::class);
@@ -302,7 +303,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetNationwidePlaces(): void
     {
         $this->create(Eatery::class);
@@ -358,7 +359,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheLatestBlogs(): void
     {
         $this->withBlogs(1, function (): void {
@@ -368,7 +369,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/blogs')->assertOk()->assertJsonFragment(['title' => 'My Blog']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheLatestRecipes(): void
     {
         $this->withRecipes(1, function (): void {
@@ -378,7 +379,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/recipes')->assertOk()->assertJsonFragment(['title' => 'My Recipe']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheWhereToEatSummary(): void
     {
         $this->get('/api/wheretoeat/summary')
@@ -386,7 +387,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
             ->assertJsonStructure(['total', 'eateries', 'attractions', 'hotels', 'reviews']);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheLatestPlaceRatings(): void
     {
         $eatery = $this->create(Eatery::class, ['name' => 'My Eatery']);
@@ -399,7 +400,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/wheretoeat/ratings/latest')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheLatestPlacesAdded(): void
     {
         $this->build(Eatery::class)
@@ -409,7 +410,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/wheretoeat/latest')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheShopCta(): void
     {
         Storage::fake('media');
@@ -420,19 +421,19 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->get('/api/popup')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheListOfVenueTypes(): void
     {
         $this->get('/api/wheretoeat/venueTypes')->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCanSearchForALatLng(): void
     {
         $this->post('/api/wheretoeat/lat-lng', ['term' => 'London'])->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCanSubmitAnEateryRating(): void
     {
         $eatery = $this->create(Eatery::class, ['name' => 'My Eatery']);
@@ -445,7 +446,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->assertCount(1, EateryReview::all());
     }
 
-    /** @test */
+    #[Test]
     public function itCanSubmitAnEateryReview(): void
     {
         $eatery = $this->create(Eatery::class, ['name' => 'My Eatery']);
@@ -463,7 +464,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->assertCount(1, EateryReview::withoutGlobalScopes()->get());
     }
 
-    /** @test */
+    #[Test]
     public function itCanRecommendAPlace(): void
     {
         $this->setUpFaker();
@@ -484,7 +485,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->assertCount(1, EateryRecommendation::all());
     }
 
-    /** @test */
+    #[Test]
     public function itCanReportAPlace(): void
     {
         Mail::fake();
@@ -502,7 +503,7 @@ class CoeliacSanctuaryOnTheGoTest extends TestCase
         $this->assertCount(1, EateryReport::all());
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetACsrfToken(): void
     {
         $this->get('/api/app-request-token')->assertOk();

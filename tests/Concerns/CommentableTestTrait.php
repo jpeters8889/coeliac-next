@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Concerns;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -21,7 +22,7 @@ trait CommentableTestTrait
         $this->factoryClosure = $factory;
     }
 
-    /** @test */
+    #[Test]
     public function itHasACommentsRelationship(): void
     {
         $item = call_user_func($this->factoryClosure);
@@ -29,7 +30,7 @@ trait CommentableTestTrait
         $this->assertInstanceOf(MorphMany::class, $item->comments());
     }
 
-    /** @test */
+    #[Test]
     public function itHasAnAllCommentsRelationship(): void
     {
         $item = call_user_func($this->factoryClosure);
@@ -37,7 +38,7 @@ trait CommentableTestTrait
         $this->assertInstanceOf(MorphMany::class, $item->allComments());
     }
 
-    /** @test */
+    #[Test]
     public function commentsAreNotApprovedByDefault(): void
     {
         $item = call_user_func($this->factoryClosure);
@@ -47,7 +48,7 @@ trait CommentableTestTrait
         $this->assertFalse($comment->approved);
     }
 
-    /** @test */
+    #[Test]
     public function theCommentsRelationshipDoesntReturnCommentsThatAreNotApproved(): void
     {
         $item = call_user_func($this->factoryClosure);
@@ -57,7 +58,7 @@ trait CommentableTestTrait
         $this->assertCount(0, $item->fresh()->comments);
     }
 
-    /** @test */
+    #[Test]
     public function theAllCommentsRelationshipReturnsCommentsThatAreNotApproved(): void
     {
         $item = call_user_func($this->factoryClosure);

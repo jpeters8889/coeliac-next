@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Recipes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Recipes\GetRecipeFiltersForIndexAction;
 use App\Contracts\Recipes\FilterableRecipeRelation;
 use App\Models\Recipes\Recipe;
@@ -32,13 +34,9 @@ class GetRecipeFiltersForIndexActionTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itReturnsTheFilterableRelationshipWithNoFiltersInTheRequest(string $relationship, string $name): void
     {
         $this->build(Recipe::class)
@@ -49,13 +47,9 @@ class GetRecipeFiltersForIndexActionTest extends TestCase
         $this->assertCount(25, $this->callAction(GetRecipeFiltersForIndexAction::class, $relationship));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itReturnsTheFilterableInstanceThatHasAnAdditionalFeatureFilter(string $relationship, string $name): void
     {
         $this->build(Recipe::class)
@@ -81,13 +75,9 @@ class GetRecipeFiltersForIndexActionTest extends TestCase
         $this->assertEquals(1, data_get($features, '0.recipes_count'));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itReturnsTheFilterableInstanceThatHasAnAdditionalMealFilter(string $relationship, string $name): void
     {
         $this->build(Recipe::class)
@@ -113,13 +103,9 @@ class GetRecipeFiltersForIndexActionTest extends TestCase
         $this->assertEquals(1, data_get($meals, '0.recipes_count'));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itReturnsTheFilterableInstanceThatHasAnAdditionalFreeFromFilter(string $relationship, string $name): void
     {
         $this->build(Recipe::class)

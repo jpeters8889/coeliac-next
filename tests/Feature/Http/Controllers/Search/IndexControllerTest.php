@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Search\IdentifySearchAreasWithAiAction;
 use App\DataObjects\Search\SearchAiResponse;
 use App\DataObjects\Search\SearchParameters;
@@ -15,7 +16,7 @@ use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCreatesASearchRecordIfOneDoesntExist(): void
     {
         $this->assertDatabaseEmpty(Search::class);
@@ -26,7 +27,7 @@ class IndexControllerTest extends TestCase
         $this->assertEquals('foo', Search::query()->first()->term);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASearchHistoryRecordForTheSearch(): void
     {
         $this->assertDatabaseEmpty(SearchHistory::class);
@@ -38,7 +39,7 @@ class IndexControllerTest extends TestCase
         $this->assertDatabaseCount(Search::class, 1);
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntCallTheAiSearchActionIfTheRequestWasMadeFromTheSearchPage(): void
     {
         $this->mock(IdentifySearchAreasWithAiAction::class)->shouldNotReceive('handle');
@@ -47,7 +48,7 @@ class IndexControllerTest extends TestCase
             ->get(route('search.index', ['q' => 'bar']));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheAiSearchActionIfSearchingFromElsewhere(): void
     {
         $this->mock(IdentifySearchAreasWithAiAction::class)
@@ -59,7 +60,7 @@ class IndexControllerTest extends TestCase
             ->get(route('search.index', ['q' => 'foo']));
     }
 
-    /** @test */
+    #[Test]
     public function itSetsTheSearchParametersUsingTheScoreFromTheAiResultIfItIsGreaterThan10(): void
     {
         $this->mock(IdentifySearchAreasWithAiAction::class)
@@ -95,7 +96,7 @@ class IndexControllerTest extends TestCase
             ]));
     }
 
-    /** @test */
+    #[Test]
     public function itSetsTheLocationOnTheSearchParamsIfOneIsPresentFromTheAi(): void
     {
         $this->mock(IdentifySearchAreasWithAiAction::class)
@@ -123,7 +124,7 @@ class IndexControllerTest extends TestCase
             ->get(route('search.index', ['q' => 'foo']));
     }
 
-    /** @test */
+    #[Test]
     public function itCallsThePerformSearchPipeline(): void
     {
         $this->expectPipelineToRun(PerformSearchPipeline::class);
@@ -131,7 +132,7 @@ class IndexControllerTest extends TestCase
         $this->get(route('search.index', ['q' => 'foo']));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheInertiaView(): void
     {
         $this

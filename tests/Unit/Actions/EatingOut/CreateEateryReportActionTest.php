@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReportAction;
 use App\Models\EatingOut\Eatery;
 use Database\Seeders\EateryScaffoldingSeeder;
@@ -28,7 +29,7 @@ class CreateEateryReportActionTest extends TestCase
         $this->eatery = $this->create(Eatery::class);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAStandardRating(): void
     {
         $this->assertEmpty($this->eatery->reports);

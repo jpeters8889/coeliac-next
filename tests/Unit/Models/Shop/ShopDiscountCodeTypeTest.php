@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopDiscountCode;
 use App\Models\Shop\ShopDiscountCodeType;
 use Database\Seeders\ShopScaffoldingSeeder;
@@ -18,7 +19,7 @@ class ShopDiscountCodeTypeTest extends TestCase
         $this->seed(ShopScaffoldingSeeder::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasACodesRelationship(): void
     {
         $type = ShopDiscountCodeType::query()->first();

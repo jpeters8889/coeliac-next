@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\EatingOut\GetEateries\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PaginateEateriesActionTest extends GetEateriesTestCase
@@ -14,7 +15,7 @@ class PaginateEateriesActionTest extends GetEateriesTestCase
 
     protected int $branchesToCreate = 50;
 
-    /** @test */
+    #[Test]
     public function itCreatesAPaginator(): void
     {
         $paginatedEateries = $this->callPaginateEateriesAction();
@@ -22,7 +23,7 @@ class PaginateEateriesActionTest extends GetEateriesTestCase
         $this->assertInstanceOf(LengthAwarePaginator::class, $paginatedEateries->paginator);
     }
 
-    /** @test */
+    #[Test]
     public function itReturns10ItemsPerPage(): void
     {
         /** @var LengthAwarePaginator $paginatedEateries */

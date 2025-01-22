@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\Shop\SendReviewInvitationJob;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderReviewInvitation;
@@ -20,7 +21,7 @@ class SendReviewInvitationJobTest extends TestCase
         Notification::fake();
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnInvitationRowLinkedToTheOrder(): void
     {
         /** @var ShopOrder $order */
@@ -35,7 +36,7 @@ class SendReviewInvitationJobTest extends TestCase
         $this->assertNotNull($order->refresh()->reviewInvitation);
     }
 
-    /** @test */
+    #[Test]
     public function itNotifiesTheCustomerUsingTheReviewOrderNotification(): void
     {
         /** @var ShopOrder $order */
@@ -46,7 +47,7 @@ class SendReviewInvitationJobTest extends TestCase
         Notification::assertSentTo($order->customer, ReviewOrderInvitationNotification::class);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheInvitationToMarkItAsSent(): void
     {
         /** @var ShopOrder $order */

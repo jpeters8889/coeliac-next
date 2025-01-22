@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Jobs\OpenGraphImages;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateShopIndexPageOpenGraphImageJob;
 use App\Models\OpenGraphImage;
 use App\Models\Shop\ShopProduct;
@@ -29,7 +30,7 @@ class CreateShopIndexPageOpenGraphImageJobTest extends TestCase
         $products->third()->update(['title' => 'coeliac+']);
     }
 
-    /** @test */
+    #[Test]
     public function itCallsRenderOpenGraphImageAction(): void
     {
         $this->mock(RenderOpenGraphImage::class)
@@ -40,7 +41,7 @@ class CreateShopIndexPageOpenGraphImageJobTest extends TestCase
         (new CreateShopIndexPageOpenGraphImageJob())->handle(app(RenderOpenGraphImage::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesAnOpenGraphRecord(): void
     {
         $this->assertDatabaseEmpty(OpenGraphImage::class);

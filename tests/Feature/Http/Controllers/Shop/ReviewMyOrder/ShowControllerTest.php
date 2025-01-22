@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\ReviewMyOrder;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopOrderReviewInvitation;
@@ -51,25 +52,25 @@ class ShowControllerTest extends TestCase
         $this->invitation = $this->order->reviewInvitation()->create();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnInvitationThatDoesntExist(): void
     {
         $this->get(route('shop.review-order', ['invitation' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itErrorsWhenVisitingTheReviewPageDirectly(): void
     {
         $this->get(route('shop.review-order', [$this->invitation]))->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkWhenVisitingAValidInvitation(): void
     {
         $this->getSignedLink()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheInertiaPage(): void
     {
         $this->getSignedLink()
@@ -83,7 +84,7 @@ class ShowControllerTest extends TestCase
             );
     }
 
-    /** @test */
+    #[Test]
     public function itRedirectsToTheThanksPageIfTheInvitationHasAReviewAssociatedWithIt(): void
     {
         $this->invitation->review()->create(['order_id' => $this->order->id, 'name' => 'Foo']);

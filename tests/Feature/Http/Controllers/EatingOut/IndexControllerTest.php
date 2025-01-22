@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetCountyListAction;
 use App\Actions\EatingOut\GetMostRatedPlacesAction;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
@@ -29,13 +30,13 @@ class IndexControllerTest extends TestCase
         return $this->get(route('eating-out.index'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->visitPage()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetCountyListAction(): void
     {
         $this->expectAction(GetCountyListAction::class);
@@ -43,7 +44,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheTopRatedPlacesAction(): void
     {
         $this->expectAction(GetTopRatedPlacesAction::class);
@@ -51,7 +52,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheMostRatedPlacesAction(): void
     {
         $this->expectAction(GetMostRatedPlacesAction::class);
@@ -59,7 +60,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageForRouteAction(): void
     {
         $this->expectAction(GetOpenGraphImageForRouteAction::class, ['eatery']);
@@ -67,7 +68,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitPage()->assertInertia(fn (Assert $page) => $page->component('EatingOut/Index'));

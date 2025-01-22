@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Shop;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Shop\AlterItemQuantityAction;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
@@ -46,7 +47,7 @@ class AlterItemQuantityActionTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itThrowsAnExceptionIfTryingToIncreaseQuantityButStockIsntAvailable(): void
     {
         $this->variant->update(['quantity' => 0]);
@@ -56,7 +57,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->callAction(AlterItemQuantityAction::class, $this->item, 'increase');
     }
 
-    /** @test */
+    #[Test]
     public function itTouchesTheOrder(): void
     {
         TestTime::freeze();
@@ -69,7 +70,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->assertTrue($this->order->refresh()->updated_at->isSameSecond(now()));
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheItemQuantityWhenCallingToIncrease(): void
     {
         $this->callAction(AlterItemQuantityAction::class, $this->item, 'increase');
@@ -77,7 +78,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->assertEquals(2, $this->item->refresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheRemainingVariantQuantityWhenCallingToIncrease(): void
     {
         $this->callAction(AlterItemQuantityAction::class, $this->item, 'increase');
@@ -85,7 +86,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->assertEquals(0, $this->variant->refresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheItemQuantityWhenCallingToDecrease(): void
     {
         $this->item->update(['quantity' => 2]);
@@ -94,7 +95,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->assertEquals(1, $this->item->refresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itUpdatesTheRemainingVariantQuantityWhenCallingToDecrease(): void
     {
         $this->callAction(AlterItemQuantityAction::class, $this->item, 'decrease');
@@ -102,7 +103,7 @@ class AlterItemQuantityActionTest extends TestCase
         $this->assertEquals(2, $this->variant->refresh()->quantity);
     }
 
-    /** @test */
+    #[Test]
     public function itWillDeleteTheItemFromBasketIfTheRemainingQuantityIsZero(): void
     {
         $this->callAction(AlterItemQuantityAction::class, $this->item, 'decrease');

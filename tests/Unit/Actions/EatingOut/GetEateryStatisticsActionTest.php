@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetEateryStatisticsAction;
 use App\DataObjects\EatingOut\EateryStatistics;
 use App\Models\EatingOut\Eatery;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class GetEateryStatisticsActionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCachesTheResult(): void
     {
         Cache::shouldReceive('remember')
@@ -23,7 +24,7 @@ class GetEateryStatisticsActionTest extends TestCase
         app(GetEateryStatisticsAction::class)->handle();
     }
 
-    /** @test */
+    #[Test]
     public function itDoesntCountNonLiveEateries(): void
     {
         $this->build(Eatery::class)->notLive()->create();
@@ -33,7 +34,7 @@ class GetEateryStatisticsActionTest extends TestCase
         $this->assertEquals(0, $statistics->total);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCountOfEateries(): void
     {
         $this->build(Eatery::class)
@@ -45,7 +46,7 @@ class GetEateryStatisticsActionTest extends TestCase
         $this->assertEquals(20, $statistics->eateries);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCountOfAttractions(): void
     {
         $this->build(Eatery::class)
@@ -58,7 +59,7 @@ class GetEateryStatisticsActionTest extends TestCase
         $this->assertEquals(15, $statistics->attractions);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCountOfHotels(): void
     {
         $this->build(Eatery::class)
@@ -71,7 +72,7 @@ class GetEateryStatisticsActionTest extends TestCase
         $this->assertEquals(10, $statistics->hotels);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsATotalOfAllEateriesAttractionsAndHotels(): void
     {
         $this->build(Eatery::class)
@@ -93,7 +94,7 @@ class GetEateryStatisticsActionTest extends TestCase
         $this->assertEquals(45, $statistics->total);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsTheCountOfReviews(): void
     {
         $this->build(Eatery::class)

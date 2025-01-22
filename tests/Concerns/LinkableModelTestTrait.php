@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Concerns;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Concerns\LinkableModel;
 use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
@@ -30,7 +31,7 @@ trait LinkableModelTestTrait
         return call_user_func($this->factoryClosure, $params);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetTheLink(): void
     {
         /** @var LinkableModel $item */
@@ -40,7 +41,7 @@ trait LinkableModelTestTrait
         $this->assertStringContainsString('foo-bar', $item->link);
     }
 
-    /** @test */
+    #[Test]
     public function itCanGetAnAbsoluteLink(): void
     {
         /** @var LinkableModel $item */

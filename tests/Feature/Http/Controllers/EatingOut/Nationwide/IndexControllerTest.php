@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\Nationwide;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
 use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
@@ -37,13 +38,13 @@ class IndexControllerTest extends TestCase
         Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOk(): void
     {
         $this->visitPage()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetMostRatedPlacesInCountyAction(): void
     {
         $this->expectAction(GetMostRatedPlacesInCountyAction::class);
@@ -51,7 +52,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetTopRatedPlacesInCountyAction(): void
     {
         $this->expectAction(GetTopRatedPlacesInCountyAction::class);
@@ -59,7 +60,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageAction(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -67,7 +68,7 @@ class IndexControllerTest extends TestCase
         $this->visitPage();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitPage()

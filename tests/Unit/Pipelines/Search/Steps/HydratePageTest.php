@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search\Steps;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Contracts\Search\IsSearchable;
 use App\DataObjects\Search\SearchResultItem;
 use App\Models\Blogs\Blog;
@@ -17,7 +18,7 @@ use Tests\TestCase;
 
 class HydratePageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itHydratesABlogAndLoadsTheCorrectRelations(): void
     {
         /** @var Blog $blogModel */
@@ -45,7 +46,7 @@ class HydratePageTest extends TestCase
         app(HydratePage::class)->handle($paginator, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itHydratesARecipeAndLoadsTheCorrectRelations(): void
     {
         /** @var Recipe $recipeModel */
@@ -73,7 +74,7 @@ class HydratePageTest extends TestCase
         app(HydratePage::class)->handle($paginator, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itHydratesAnEateryAndLoadsTheCorrectRelations(): void
     {
         /** @var Eatery $eateryModel */
@@ -103,7 +104,7 @@ class HydratePageTest extends TestCase
         app(HydratePage::class)->handle($paginator, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itHydratesANationwideBranchAndLoadsTheCorrectRelations(): void
     {
         /** @var NationwideBranch $nationwideBranchModel */
@@ -136,7 +137,7 @@ class HydratePageTest extends TestCase
         app(HydratePage::class)->handle($paginator, $closure);
     }
 
-    /** @test */
+    #[Test]
     public function itHydratesAShopProductAndLoadsTheCorrectRelations(): void
     {
         $this->withCategoriesAndProducts(1, 1);

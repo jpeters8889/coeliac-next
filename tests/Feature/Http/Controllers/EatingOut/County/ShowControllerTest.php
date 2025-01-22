@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\County;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Actions\EatingOut\GetTopRatedPlacesInCountyAction;
 use App\Actions\OpenGraphImages\GetEatingOutOpenGraphImageAction;
@@ -37,13 +38,13 @@ class ShowControllerTest extends TestCase
         Bus::fake(CreateEatingOutOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForACountyThatDoesntExist(): void
     {
         $this->get(route('eating-out.county', ['county' => 'foobar']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForACountyThatHasNoLiveEateries(): void
     {
         $county = $this->create(EateryCounty::class);
@@ -51,13 +52,13 @@ class ShowControllerTest extends TestCase
         $this->get(route('eating-out.county', ['county' => $county]))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForACountyThatHasPlaces(): void
     {
         $this->visitCounty()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkForACountyThatJustHasNationwideBranches(): void
     {
         $this->county = $this->create(EateryCounty::class);
@@ -75,7 +76,7 @@ class ShowControllerTest extends TestCase
         $this->visitCounty()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetMostRatedPlacesInCountyAction(): void
     {
         $this->expectAction(GetMostRatedPlacesInCountyAction::class);
@@ -83,7 +84,7 @@ class ShowControllerTest extends TestCase
         $this->visitCounty();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetTopRatedPlacesInCountyAction(): void
     {
         $this->expectAction(GetTopRatedPlacesInCountyAction::class);
@@ -91,7 +92,7 @@ class ShowControllerTest extends TestCase
         $this->visitCounty();
     }
 
-    /** @test */
+    #[Test]
     public function itCallsTheGetOpenGraphImageAction(): void
     {
         $this->expectAction(GetEatingOutOpenGraphImageAction::class);
@@ -99,7 +100,7 @@ class ShowControllerTest extends TestCase
         $this->visitCounty();
     }
 
-    /** @test */
+    #[Test]
     public function itRendersTheInertiaPage(): void
     {
         $this->visitCounty()

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Shop\ReviewMyOrder\Thanks;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Models\Shop\ShopOrder;
 use App\Models\Shop\ShopOrderItem;
 use App\Models\Shop\ShopOrderReviewInvitation;
@@ -53,26 +54,26 @@ class ShowControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsNotFoundForAnInvitationThatDoesntExist(): void
     {
         $this->get(route('shop.review-order', ['invitation' => 'foo']))->assertNotFound();
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsOkWhenVisitingAValidInvitation(): void
     {
         $this->makeRequest()->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheInertiaPage(): void
     {
         $this->makeRequest()
             ->assertInertia(fn (Assert $page) => $page->component('Shop/ReviewMyOrderThanks'));
     }
 
-    /** @test */
+    #[Test]
     public function itReturns404IfTheInvitationDoesntHaveAReview(): void
     {
         $this->invitation->review()->delete();

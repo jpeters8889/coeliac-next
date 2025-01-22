@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
@@ -39,14 +40,14 @@ class NationwideBranchTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function itCreatesASlug(): void
     {
         $this->assertNotNull($this->eatery->slug);
         $this->assertEquals(Str::slug($this->eatery->name), $this->eatery->slug);
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSavedForBranchAndEateryAndTownAndCounty(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -83,7 +84,7 @@ class NationwideBranchTest extends TestCase
         $this->assertTrue($county->is($dispatchedModels[3]));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -97,19 +98,19 @@ class NationwideBranchTest extends TestCase
         Bus::assertDispatched(CreateEateryIndexPageOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasATown(): void
     {
         $this->assertEquals(1, $this->eatery->town()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasACounty(): void
     {
         $this->assertEquals(1, $this->eatery->county()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasACountry(): void
     {
         $this->assertEquals(1, $this->eatery->country()->count());

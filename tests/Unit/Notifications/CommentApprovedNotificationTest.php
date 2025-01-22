@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Notifications;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Infrastructure\MjmlMessage;
 use App\Models\Blogs\Blog;
 use App\Models\Comments\Comment;
@@ -34,11 +36,8 @@ class CommentApprovedNotificationTest extends TestCase
         TestTime::freeze();
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider mailDataProvider
-     */
+    #[Test]
+    #[DataProvider('mailDataProvider')]
     public function itHasTheOrderDate(callable $closure): void
     {
         (new AnonymousNotifiable())

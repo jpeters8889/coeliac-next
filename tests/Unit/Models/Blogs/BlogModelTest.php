@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Blogs;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
@@ -41,7 +42,7 @@ class BlogModelTest extends TestCase
         $this->setUpCanBePublishedModelTest(fn (array $params = []) => $this->create(Blog::class, $params));
     }
 
-    /** @test */
+    #[Test]
     public function itDispatchesTheCreateOpenGraphImageJobWhenSaved(): void
     {
         config()->set('coeliac.generate_og_images', true);
@@ -54,13 +55,13 @@ class BlogModelTest extends TestCase
         Bus::assertDispatched(CreateHomePageOpenGraphImageJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function itHasTags(): void
     {
         $this->assertEquals(3, $this->blog->tags()->count());
     }
 
-    /** @test */
+    #[Test]
     public function itHasTheLiveScopeApplied(): void
     {
         $this->assertTrue(Blog::hasGlobalScope(LiveScope::class));

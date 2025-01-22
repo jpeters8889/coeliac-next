@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Pipelines\Search;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\Search\SearchParameters;
 use App\Pipelines\EatingOut\CheckRecommendedPlace\Steps\CombineResults;
 use App\Pipelines\Search\PerformSearchPipeline;
@@ -19,7 +20,7 @@ use Tests\TestCase;
 
 class PerformSearchPipelineTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCallsThePipelineSteps(): void
     {
         $this->expectPipelineToExecute(SearchBlogs::class);

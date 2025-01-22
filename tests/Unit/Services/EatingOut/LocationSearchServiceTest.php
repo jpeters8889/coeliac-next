@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\EatingOut;
 
+use PHPUnit\Framework\Attributes\Test;
 use App\Services\EatingOut\LocationSearchService;
 use Tests\TestCase;
 
 class LocationSearchServiceTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function itCanGetTheLatLngForAResult(): void
     {
         $london = ['lat' => 51.5, 'lng' => -0.1];

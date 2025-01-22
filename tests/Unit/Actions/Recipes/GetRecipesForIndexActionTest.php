@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Recipes;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Recipes\GetRecipesForIndexAction;
 use App\Contracts\Recipes\FilterableRecipeRelation;
 use App\Models\Recipes\Recipe;
@@ -27,7 +29,7 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->withRecipes(15);
     }
 
-    /** @test */
+    #[Test]
     public function itReturnsARecipeListCollection(): void
     {
         $this->assertInstanceOf(
@@ -36,7 +38,7 @@ class GetRecipesForIndexActionTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function itIsAPaginatedCollection(): void
     {
         $recipes = $this->callAction(GetRecipesForIndexAction::class);
@@ -44,19 +46,19 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->assertInstanceOf(LengthAwarePaginator::class, $recipes->resource);
     }
 
-    /** @test */
+    #[Test]
     public function itReturns12ItemsPerPageByDefault(): void
     {
         $this->assertCount(12, $this->callAction(GetRecipesForIndexAction::class));
     }
 
-    /** @test */
+    #[Test]
     public function itCanHaveADifferentPageLimitSpecified(): void
     {
         $this->assertCount(5, $this->callAction(GetRecipesForIndexAction::class, perPage: 5));
     }
 
-    /** @test */
+    #[Test]
     public function eachItemInThePageIsARecipeDetailCardViewResource(): void
     {
         $resource = $this->callAction(GetRecipesForIndexAction::class)->resource->first();
@@ -64,7 +66,7 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->assertInstanceOf(RecipeDetailCardViewResource::class, $resource);
     }
 
-    /** @test */
+    #[Test]
     public function itLoadsTheMediaFeaturesAndNutritionRelationship(): void
     {
         /** @var Recipe $recipe */
@@ -75,13 +77,9 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->assertTrue($recipe->relationLoaded('nutrition'));
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider filterableImplementations
-     *
-     * @param  class-string<FilterableRecipeRelation>  $relationship
-     */
+    /** @param  class-string<FilterableRecipeRelation>  $relationship */
+    #[Test]
+    #[DataProvider('filterableImplementations')]
     public function itCanBeFiltered(string $relationship, string $name, string $filter, string $search): void
     {
         $this->build(Recipe::class)
@@ -105,7 +103,7 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->assertCount(1, $recipes->resource);
     }
 
-    /** @test */
+    #[Test]
     public function itCanBeSearched(): void
     {
         Recipe::query()->first()->update(['title' => 'Test Recipe Yay']);
