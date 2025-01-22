@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Request;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -65,6 +66,18 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        $query = $query->where('draft', false);
+
+        if (app(Request::class)->wantsJson()) {
+            return $query->where('id', $value); /** @phpstan-ignore-line */
+        }
+
+        /** @phpstan-ignore-next-line  */
+        return $query->where('slug', $value);
     }
 
     public function registerMediaCollections(): void

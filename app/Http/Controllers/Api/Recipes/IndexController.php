@@ -6,11 +6,12 @@ namespace App\Http\Controllers\Api\Recipes;
 
 use App\Actions\Recipes\GetRecipesForIndexAction;
 use App\Resources\Recipes\RecipeApiCollection;
+use Illuminate\Http\Request;
 
 class IndexController
 {
-    public function __invoke(GetRecipesForIndexAction $getRecipesForIndexAction): RecipeApiCollection
+    public function __invoke(Request $request, GetRecipesForIndexAction $getRecipesForIndexAction): RecipeApiCollection
     {
-        return $getRecipesForIndexAction->handle(resource: RecipeApiCollection::class);
+        return $getRecipesForIndexAction->handle(resource: RecipeApiCollection::class, search: $request->get('search'));
     }
 }

@@ -105,6 +105,16 @@ class GetRecipesForIndexActionTest extends TestCase
         $this->assertCount(1, $recipes->resource);
     }
 
+    /** @test */
+    public function itCanBeSearched(): void
+    {
+        Recipe::query()->first()->update(['title' => 'Test Recipe Yay']);
+
+        $recipes = $this->callAction(GetRecipesForIndexAction::class, search: 'Test Recipe');
+
+        $this->assertCount(1, $recipes->resource);
+    }
+
     public static function filterableImplementations(): array
     {
         return [

@@ -18,7 +18,7 @@ class GetRecipesForIndexAction
      * @param  class-string<T>  $resource
      * @return T
      */
-    public function handle(array $filters = [], int $perPage = 12, string $resource = RecipeListCollection::class): ResourceCollection
+    public function handle(array $filters = [], int $perPage = 12, string $resource = RecipeListCollection::class, ?string $search = null): ResourceCollection
     {
         $featureFilters = array_filter($filters['features'] ?? []);
         $mealFilters = array_filter($filters['meals'] ?? []);
@@ -41,6 +41,11 @@ class GetRecipesForIndexAction
 
         return new $resource(
             $query
+                ->when($search, fn (Builder $builder) => $builder->where(
+                    fn (Builder $builder) => $builder
+                        ->where('id', $search)
+                        ->orWhere('title', 'LIKE', "%{$search}%")
+                ))
                 ->latest()
                 ->paginate($perPage)
                 ->withQueryString()

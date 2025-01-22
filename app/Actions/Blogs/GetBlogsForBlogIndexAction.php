@@ -18,7 +18,7 @@ class GetBlogsForBlogIndexAction
      * @param  class-string<T>  $resource
      * @return T
      */
-    public function handle(?BlogTag $tag = null, int $perPage = 12, string $resource = BlogListCollection::class): ResourceCollection
+    public function handle(?BlogTag $tag = null, int $perPage = 12, string $resource = BlogListCollection::class, ?string $search = null): ResourceCollection
     {
         return new $resource(
             Blog::query()
@@ -28,6 +28,11 @@ class GetBlogsForBlogIndexAction
                         /** @var Builder<BlogTag> $builder */
                         return $builder->where('slug', $tag?->slug);
                     }
+                ))
+                ->when($search, fn (Builder $builder) => $builder->where(
+                    fn (Builder $builder) => $builder
+                        ->where('id', $search)
+                        ->orWhere('title', 'LIKE', "%{$search}%")
                 ))
                 ->with(['media', 'tags'])
                 ->withCount(['comments'])

@@ -95,4 +95,14 @@ class GetBlogsForBlogIndexActionTest extends TestCase
 
         $this->assertCount(5, $collection);
     }
+
+    /** @test */
+    public function itCanBeFilteredBySearch(): void
+    {
+        Blog::query()->first()->update(['title' => 'Test Blog Yay']);
+
+        $collection = $this->callAction(GetBlogsForBlogIndexAction::class, search: 'test blog');
+
+        $this->assertCount(1, $collection);
+    }
 }

@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 use Money\Money;
@@ -50,6 +51,16 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        if (app(Request::class)->wantsJson()) {
+            return $query->where('id', $value); /** @phpstan-ignore-line */
+        }
+
+        /** @phpstan-ignore-next-line  */
+        return $query->where('slug', $value);
     }
 
     public function registerMediaCollections(): void
@@ -266,7 +277,7 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
                         ->reviews($reviews)
                         ->aggregateRating(
                             Schema::aggregateRating()
-                                ->ratingValue((float)$this->reviews()->average('rating'))
+                                ->ratingValue((float) $this->reviews()->average('rating'))
                                 ->reviewCount($this->reviews()->count())
                         );
                 }

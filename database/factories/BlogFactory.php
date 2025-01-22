@@ -33,4 +33,9 @@ class BlogFactory extends Factory
     {
         return $this->state(fn () => ['live' => false]);
     }
+
+    public function draft()
+    {
+        return $this->state(fn () => ['draft' => true]);
+    }
 }

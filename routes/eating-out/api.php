@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EatingOut\Features\IndexController as FeatureIndexC
 use App\Http\Controllers\Api\EatingOut\IndexController as WhereToEatIndexController;
 use App\Http\Controllers\Api\EatingOut\Latest\IndexController as WhereToEatLatestIndexController;
 use App\Http\Controllers\Api\EatingOut\LatLng\GetController as WhereToEatLatLngGetController;
+use App\Http\Controllers\Api\EatingOut\Random\ShowController as RandomShowController;
 use App\Http\Controllers\Api\EatingOut\Ratings\Latest\IndexController as WhereToEatRatingsLatestIndexController;
 use App\Http\Controllers\Api\EatingOut\RecommendAPlace\StoreController as WhereToEatRecommendAPlaceStoreController;
 use App\Http\Controllers\Api\EatingOut\Reports\StoreController as ReportStoreController;
@@ -39,6 +40,8 @@ Route::get('browse', BrowseIndexController::class)->name('api.wheretoeat.browse'
 Route::post('browse/search', BrowseSearchStoreController::class)->name('api.wheretoeat.browse.search');
 
 Route::post('check-recommended-place', CheckRecommendedPlaceGetController::class)->name('api.wheretoeat.check-recommended-place');
+
+Route::get('random', RandomShowController::class)->name('api.wheretoeat.random');
 
 Route::get('{eatery}', DetailsShowController::class)->name('api.wheretoeat.get');
 
