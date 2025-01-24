@@ -234,7 +234,7 @@ const clusterStyle = (feature: FeatureLike) => {
 
 const zoomLimit = (): number => {
   if (screenIsGreaterThanOrEqualTo('2xl')) {
-    return 8;
+    return 10;
   }
 
   if (screenIsGreaterThanOrEqualTo('lg')) {
@@ -497,7 +497,7 @@ const navigateTo = (latLng: LatLng): void => {
   view.value.animate({
     center: coordinates,
     duration: 1000,
-    zoom: zoomLimit(),
+    zoom: 13,
   });
 };
 

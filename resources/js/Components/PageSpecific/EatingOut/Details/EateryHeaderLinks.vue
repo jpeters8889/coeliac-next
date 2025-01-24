@@ -135,6 +135,7 @@ const openText = computed(() => {
       :open="viewMap"
       no-padding
       size="large"
+      width="w-full"
       @close="viewMap = false"
     >
       <DynamicMap

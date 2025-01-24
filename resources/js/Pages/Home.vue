@@ -13,6 +13,7 @@ import {
 import HomeLatestEateries from '@/Components/PageSpecific/Home/HomeLatestEateries.vue';
 import HomeLatestReviews from '@/Components/PageSpecific/Home/HomeLatestReviews.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import HomeNewsletterSignup from '@/Components/PageSpecific/Home/HomeNewsletterSignup.vue';
 
 defineProps<{
   blogs: HomeHoverItem[];
@@ -55,7 +56,7 @@ defineProps<{
         />
       </template>
 
-      <Card> Newsletter Sign up </Card>
+      <HomeNewsletterSignup />
 
       <HomeHoverGroup
         :items="blogs"

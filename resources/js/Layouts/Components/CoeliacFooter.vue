@@ -6,6 +6,9 @@ import CoeliacButton from '@/Components/CoeliacButton.vue';
 import FormInput from '@/Components/Forms/FormInput.vue';
 import { Link } from '@inertiajs/vue3';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import useNewsletter from '@/composables/useNewsletter';
+import { CheckCircleIcon } from '@heroicons/vue/24/outline';
+import { ref } from 'vue';
 
 const year = new Date().getFullYear();
 
@@ -22,6 +25,10 @@ const navigation: { links: { label: string; url: string }[] } = {
     { label: 'Work with Us', url: '/work-with-us' },
   ],
 };
+
+const hasSignedUpToNewsletter = ref(false);
+
+const { subscribeForm } = useNewsletter();
 </script>
 
 <template>
@@ -66,9 +73,19 @@ const navigation: { links: { label: string; url: string }[] } = {
             Enter your email address below to get our newsletter sent straight
             to your inbox!
           </p>
-          <form class="mt-6 sm:flex sm:items-center">
+          <form
+            v-if="!hasSignedUpToNewsletter"
+            class="mt-6 sm:flex sm:items-center"
+            @submit.prevent="
+              subscribeForm.submit({
+                preserveScroll: true,
+                onSuccess: () => (hasSignedUpToNewsletter = true),
+              })
+            "
+          >
             <FormInput
               id="email-address"
+              v-model="subscribeForm.email"
               label=""
               hide-label
               autocomplete="email"
@@ -77,6 +94,8 @@ const navigation: { links: { label: string; url: string }[] } = {
               required
               type="email"
               class="flex-1"
+              :error="subscribeForm.errors?.email"
+              borders
             />
             <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
               <CoeliacButton
@@ -85,9 +104,22 @@ const navigation: { links: { label: string; url: string }[] } = {
                 label="Subscribe"
                 theme="secondary"
                 type="submit"
+                :loading="subscribeForm.processing"
               />
             </div>
           </form>
+          <div
+            v-else
+            class="mt-6 flex space-x-2 items-center"
+          >
+            <div class="text-secondary">
+              <CheckCircleIcon class="h-12 w-12" />
+            </div>
+
+            <p class="text-center text-xl">
+              Thank you for signing up to my newsletter!
+            </p>
+          </div>
         </div>
       </div>
 

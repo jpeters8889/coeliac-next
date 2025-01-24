@@ -66,6 +66,8 @@ const classes = (): string[] => {
     }
   }
 
+  base.push(props.inputClasses);
+
   return base;
 };
 </script>
@@ -98,7 +100,7 @@ const classes = (): string[] => {
 
     <div
       class="relative rounded-md"
-      :class="borders ? 'shadow-sm' : ''"
+      :class="[{ 'shadow-sm': borders }, wrapperClasses]"
     >
       <input
         v-model="value"
@@ -133,6 +135,7 @@ const classes = (): string[] => {
       v-if="error"
       :id="`${name}-error`"
       class="mt-2 text-sm text-red"
+      :class="errorClasses"
       v-text="error"
     />
   </div>

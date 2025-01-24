@@ -8,6 +8,7 @@ use App\Http\Controllers\Contact\IndexController as ContactIndexController;
 use App\Http\Controllers\Contact\StoreController as ContactStoreController;
 use App\Http\Controllers\CookiePolicy\IndexController as CookiePolicyIndexController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Newsletter\StoreController as NewsletterStoreController;
 use App\Http\Controllers\Popup\Activity\StoreController as PopupActivityStoreController;
 use App\Http\Controllers\PrivacyPolicy\IndexController as PrivacyPolicyIndexController;
 use App\Http\Controllers\Shop\TravelCards\IndexController as ShopTravelCardsLandingPageIndexController;
@@ -42,3 +43,7 @@ Route::get('work-with-us', WorkWithUsIndexController::class)->name('work-with-us
 Route::get('gluten-free-travel-translation-cards', ShopTravelCardsLandingPageIndexController::class)->name('shop.travel-cards.landing-page');
 
 Route::post('popup/{popup}', PopupActivityStoreController::class)->name('popup.activity.store');
+
+Route::post('newsletter', NewsletterStoreController::class)
+    ->middleware(HandlePrecognitiveRequests::class)
+    ->name('newsletter.store');

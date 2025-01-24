@@ -36,7 +36,7 @@ const mobileNavOpen = ref(false);
         </div>
 
         <Link
-          class="my-2 flex flex-1"
+          class="my-2 flex flex-1 md:flex-none"
           href="/"
         >
           <Sealic class="h-10" />
