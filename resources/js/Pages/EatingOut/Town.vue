@@ -3,15 +3,15 @@ import Card from '@/Components/Card.vue';
 import { EateryFilters, TownEatery, TownPage } from '@/types/EateryTypes';
 import TownHeading from '@/Components/PageSpecific/EatingOut/Town/TownHeading.vue';
 import Warning from '@/Components/Warning.vue';
-import { PaginatedCollection, PaginatedResponse } from '@/types/GenericTypes';
+import { PaginatedCollection } from '@/types/GenericTypes';
 import EateryCard from '@/Components/PageSpecific/EatingOut/EateryCard.vue';
 import TownFilterSidebar from '@/Components/PageSpecific/EatingOut/Town/TownFilterSidebar.vue';
 import { Ref, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import useScreensize from '@/composables/useScreensize';
 import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
-import { RequestPayload } from '@inertiajs/core/types/types';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import { RequestPayload } from '@inertiajs/core';
 
 defineProps<{
   town: TownPage;

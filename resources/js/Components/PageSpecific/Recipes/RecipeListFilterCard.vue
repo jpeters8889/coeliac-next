@@ -38,7 +38,7 @@ const optionClasses = (disabled: boolean, selected: boolean): string[] => {
   ];
 
   if (selected) {
-    base.push('bg-primary-light', 'bg-opacity-50');
+    base.push('bg-primary-light/50');
   }
 
   base.push(disabled ? 'text-grey-off-dark' : 'hover:bg-grey-light');
@@ -66,8 +66,10 @@ const openBox = (open: boolean) => {
       multiple
     >
       <ListboxButton
-        :class="open ? 'rounded-t-lg' : 'rounded-lg bg-opacity-70'"
-        class="flex w-full items-center justify-between bg-secondary p-2 text-lg font-semibold transition hover:bg-opacity-100"
+        :class="
+          open ? 'rounded-t-lg bg-secondary' : 'rounded-lg bg-secondary/70'
+        "
+        class="flex w-full items-center justify-between p-2 text-lg font-semibold transition hover:bg-secondary/100"
         @click="openBox(!open)"
       >
         <div class="flex items-center">

@@ -29,7 +29,7 @@ import Card from '@/Components/Card.vue';
         href="/shop/standard-coeliac-travel-cards"
         size="xl"
         label="View all Coeliac Travel Cards"
-        classes="items-center justify-center !text-2xl font-semibold lg:!text-3xl"
+        classes="items-center justify-center text-2xl! font-semibold lg:text-3xl!"
       />
     </Card>
 
@@ -56,7 +56,7 @@ import Card from '@/Components/Card.vue';
         href="/shop/coeliac-cards"
         size="xl"
         label="View all Coeliac+ Travel Cards"
-        classes="items-center justify-center !text-2xl font-semibold lg:!text-3xl"
+        classes="items-center justify-center text-2xl! font-semibold lg:text-3xl!"
       />
     </Card>
   </div>

@@ -17,7 +17,7 @@ const props = withDefaults(
 );
 
 const classes = (): string[] => {
-  const base: string[] = ['rounded'];
+  const base: string[] = ['rounded-sm'];
 
   if (!props.noFlex) {
     base.push('flex', 'flex-col');
@@ -28,27 +28,23 @@ const classes = (): string[] => {
   }
 
   if (props.shadow) {
-    base.push('shadow');
+    base.push('shadow-sm');
   }
 
   if (props.theme === 'white') {
-    base.push('bg-white');
+    base.push(props.faded ? 'bg-white/40' : 'bg-white');
   }
 
   if (props.theme === 'primary') {
-    base.push('bg-primary');
+    base.push(props.faded ? 'bg-primary/40' : 'bg-primary');
   }
 
   if (props.theme === 'primary-light') {
-    base.push('bg-primary-light');
+    base.push(props.faded ? 'bg-primary-light/40' : 'bg-primary-light');
   }
 
   if (props.theme === 'secondary') {
-    base.push('bg-secondary');
-  }
-
-  if (props.faded) {
-    base.push('bg-opacity-40');
+    base.push(props.faded ? 'bg-secondary/40' : 'bg-secondary');
   }
 
   return base;

@@ -32,7 +32,7 @@ const linkCards = [
       class="my-3 xxs:absolute xxs:top-4 xxs:m-0 xxs:flex xxs:w-full xxs:justify-between xxs:p-3"
     >
       <div
-        class="w-full bg-white p-2 text-center shadow xxs:w-auto xxs:rounded xxs:bg-primary-light/90 xxs:text-left xxs:shadow-lg xs:p-4"
+        class="w-full bg-white p-2 text-center shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:text-left xxs:shadow-lg xs:p-4"
       >
         <h1
           class="text-xl font-semibold xxs:text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
@@ -52,11 +52,11 @@ const linkCards = [
       <Link
         v-for="item in linkCards"
         :key="item.title"
-        class="flex-shrink-0"
+        class="shrink-0"
         :href="item.href"
       >
         <div
-          class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded bg-gradient-to-br from-primary/90 to-primary-light/90 p-2 shadow-lg transition duration-500 hover:sm:from-primary/95 hover:sm:to-primary-light/95 md:justify-between md:p-4"
+          class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded-sm bg-linear-to-br from-primary/90 to-primary-light/90 p-2 shadow-lg transition duration-500 sm:hover:from-primary/95 sm:hover:to-primary-light/95 md:justify-between md:p-4"
         >
           <div
             class="flex flex-1 flex-col items-center justify-center xs:w-full xs:flex-row md:flex-none md:items-start"
@@ -88,7 +88,7 @@ const linkCards = [
       v-if="image"
       :alt="`Gluten Free places to eat in ${name}`"
       :src="image"
-      class="mt-4 w-full shadow"
+      class="mt-4 w-full shadow-sm"
       loading="lazy"
     />
   </div>

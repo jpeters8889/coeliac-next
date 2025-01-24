@@ -50,7 +50,7 @@ const classes = computed((): string[] => {
     'border',
     'border-transparent',
     'font-medium',
-    'shadow-sm',
+    'shadow-xs',
     'transition',
     'relative',
   ];
@@ -80,7 +80,7 @@ const classes = computed((): string[] => {
   }
 
   if (props.bold) {
-    base.push('!font-semibold');
+    base.push('font-semibold!');
   }
 
   if (props.icon && props.iconPosition === 'left') {

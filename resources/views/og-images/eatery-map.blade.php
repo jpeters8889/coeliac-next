@@ -2,7 +2,7 @@
 @vite('resources/js/app.ts')
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
 
-<div class="w-[1200px] h-[630px] bg-gradient-to-b from-primary to-primary-light relative overflow-hidden flex object-cover">
+<div class="w-[1200px] h-[630px] bg-linear-to-b from-primary to-primary-light relative overflow-hidden flex object-cover">
     <div class="flex flex-col flex-1">
         <div class="flex-1">
             <div class="flex flex-col justify-center space-x-6 items-center z-20 w-full p-6 relative">
@@ -80,7 +80,7 @@
     </div>
 
     <div class="p-8 opacity-50">
-        <div class="p-4 bg-gradient-to-br from-primary-darkest to-primary-dark rounded-xl shadow-2xl h-full">
+        <div class="p-4 bg-linear-to-br from-primary-darkest to-primary-dark rounded-xl shadow-2xl h-full">
             <img class="rounded-lg h-full" src="{{ asset('images/misc/eating-out-map.png') }}" />
         </div>
     </div>

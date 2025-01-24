@@ -19,7 +19,7 @@ defineEmits(['filtersUpdated', 'sidebarClosed']);
 <template>
   <div class="fixed bottom-0 right-0 z-10 p-4 xmd:hidden">
     <div
-      class="-ml-3 rounded-full border-2 border-white bg-primary p-3 text-white shadow transition"
+      class="-ml-3 rounded-full border-2 border-white bg-primary p-3 text-white shadow-sm transition"
     >
       <AdjustmentsHorizontalIcon
         class="h-8 w-8"

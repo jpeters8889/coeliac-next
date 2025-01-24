@@ -67,7 +67,7 @@ defineProps<{ image: string }>();
         title="Google Play Store"
         href="https://play.google.com/store/apps/details?id=com.coeliacsanctuary.onthego"
         target="_blank"
-        class="flex flex-col space-y-2 bg-gradient-to-br from-primary/30 to-primary-light/30 rounded p-2 lg:p-4 items-center sm:max-w-1/2 sm:h-full"
+        class="flex flex-col space-y-2 bg-linear-to-br from-primary/30 to-primary-light/30 rounded-sm p-2 lg:p-4 items-center sm:max-w-1/2 sm:h-full"
       >
         <img
           style="width: 250px"
@@ -83,7 +83,7 @@ defineProps<{ image: string }>();
         title="Apple App Store"
         href="https://apps.apple.com/us/app/coeliac-sanctuary-on-the-go/id1608694621"
         target="_blank"
-        class="flex flex-col space-y-2 bg-gradient-to-br from-primary/30 to-primary-light/30 rounded p-2 lg:p-4 items-center sm:max-w-1/2 sm:h-full"
+        class="flex flex-col space-y-2 bg-linear-to-br from-primary/30 to-primary-light/30 rounded-sm p-2 lg:p-4 items-center sm:max-w-1/2 sm:h-full"
       >
         <img
           style="width: 220px"

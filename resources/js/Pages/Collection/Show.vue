@@ -19,7 +19,7 @@ defineProps<{ collection: CollectionPage }>();
       v-text="collection.description"
     />
 
-    <div class="-m-4 !-mb-4 bg-grey-light p-4 shadow-inner">
+    <div class="-m-4 -mb-4! bg-grey-light p-4 shadow-inner">
       <p v-if="collection.updated">
         <span class="font-semibold">Last updated</span> {{ collection.updated }}
       </p>

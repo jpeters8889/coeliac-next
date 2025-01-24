@@ -160,7 +160,7 @@ const submitForm = () => {
         <div
           class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
         >
-          <div class="flex-shrink-0 sm:w-1/4">
+          <div class="shrink-0 sm:w-1/4">
             <img
               :src="product.image"
               :alt="product.title"

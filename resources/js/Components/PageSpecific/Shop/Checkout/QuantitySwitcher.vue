@@ -11,17 +11,17 @@ defineEmits(['alter']);
 <template>
   <div class="flex h-5 space-x-px font-semibold leading-none">
     <div
-      class="flex w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-l-full bg-secondary"
+      class="flex w-6 shrink-0 cursor-pointer items-center justify-center rounded-l-full bg-secondary"
       @click="$emit('alter', 'decrease')"
     >
       <MinusIcon class="h-4 w-4" />
     </div>
     <div
-      class="flex w-6 flex-shrink-0 items-center justify-center bg-secondary"
+      class="flex w-6 shrink-0 items-center justify-center bg-secondary"
       v-text="quantity"
     />
     <div
-      class="flex w-6 flex-shrink-0 cursor-pointer items-center justify-center rounded-r-full bg-secondary"
+      class="flex w-6 shrink-0 cursor-pointer items-center justify-center rounded-r-full bg-secondary"
       @click="$emit('alter', 'increase')"
     >
       <PlusIcon class="h-4 w-4" />

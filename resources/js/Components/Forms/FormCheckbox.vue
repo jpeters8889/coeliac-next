@@ -39,7 +39,7 @@ const value = defineModel<boolean>();
         :id="name"
         v-model="value"
         :disabled="disabled"
-        class="rounded border-gray-300 text-primary focus:ring-primary"
+        class="rounded-sm border-gray-300 text-primary focus:ring-primary"
         :class="props.xl ? 'h-6 w-6' : 'h-4 w-4 xmd:h-5 xmd:w-5'"
         type="checkbox"
       />

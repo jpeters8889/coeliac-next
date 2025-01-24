@@ -30,10 +30,10 @@ const classes = (): string[] => {
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
-    'outline-none',
+    'outline-hidden',
     'xl:w-full',
     'focus:ring-0',
-    'focus:outline-none',
+    'focus:outline-hidden',
     'transition',
     'disabled:text-gray-300',
     'disabled:cursor-not-allowed',
@@ -41,16 +41,16 @@ const classes = (): string[] => {
 
   if (props.size === 'large') {
     base.push(
-      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]',
+      'text-base md:text-lg px-[calc(--spacing(4)-1px)] py-[calc(var(--spacing-1_75)-1px)]',
     );
   } else {
     base.push(
-      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6',
+      'px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] text-base sm:text-sm sm:leading-6',
     );
   }
 
   if (props.borders) {
-    base.push('border border-grey-off shadow-sm');
+    base.push('border border-grey-off shadow-xs');
   } else {
     base.push('border-0');
   }
@@ -62,10 +62,10 @@ const classes = (): string[] => {
   }
 
   if (props.error) {
-    base.push('!border-red', 'focus:border-red-dark');
+    base.push('border-red!', 'focus:border-red-dark');
 
     if (!props.borders && props.background) {
-      base.push('!bg-red/90');
+      base.push('bg-red/90!');
     }
   }
 
@@ -142,7 +142,7 @@ watchDebounced(value, performSearch, { debounce: 500 });
     <div
       class="relative rounded-md"
       :class="{
-        'shadow-sm': borders,
+        'shadow-xs': borders,
         'rounded-md': showResultsBox === false,
         'rounded-t-md': showResultsBox,
       }"
@@ -176,7 +176,7 @@ watchDebounced(value, performSearch, { debounce: 500 });
 
     <div
       v-if="showResultsBox"
-      class="rounded-b-md border border-grey-off focus:border-grey-dark shadow-sm border-t-0"
+      class="rounded-b-md border border-grey-off focus:border-grey-dark shadow-xs border-t-0"
     >
       <ul v-if="results.length > 0">
         <li

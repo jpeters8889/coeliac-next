@@ -163,7 +163,7 @@ const handleTouchEnd = (event: TouchEvent) => {
           >
             <div
               v-if="displayImage > 0"
-              class="absolute left-0 top-0 flex h-full items-center justify-center bg-black bg-opacity-25 px-4 text-white transition group-hover:bg-opacity-50"
+              class="absolute left-0 top-0 flex h-full items-center justify-center bg-black/25 px-4 text-white transition group-hover:bg-black/50"
             >
               <ChevronLeftIcon class="h-6 w-6" />
             </div>
@@ -174,7 +174,7 @@ const handleTouchEnd = (event: TouchEvent) => {
           >
             <div
               v-if="displayImage < images.length - 1"
-              class="absolute right-0 top-0 flex h-full items-center justify-center bg-black bg-opacity-25 px-4 text-white transition group-hover:bg-opacity-50"
+              class="absolute right-0 top-0 flex h-full items-center justify-center bg-black/25 px-4 text-white transition group-hover:bg-black/50"
             >
               <ChevronRightIcon class="h-6 w-6" />
             </div>

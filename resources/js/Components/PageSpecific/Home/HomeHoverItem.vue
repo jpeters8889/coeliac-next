@@ -10,7 +10,7 @@ defineProps<{ item: HomeHoverItemType }>();
 <template>
   <Card
     :shadow="false"
-    class="scale-95 transform transition duration-500 hover:scale-105 hover:!opacity-100 group-hover:opacity-50"
+    class="scale-95 transform transition duration-500 hover:scale-105 hover:opacity-100! group-hover:opacity-50"
   >
     <Link
       :href="item.link"

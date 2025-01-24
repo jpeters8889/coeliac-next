@@ -66,7 +66,7 @@ const loadMoreComments = () => {
     />
 
     <div
-      class="-m-4 !-mb-4 flex flex flex-col flex-col space-y-4 bg-grey-light p-4 text-sm shadow-inner"
+      class="-m-4 -mb-4! flex flex flex-col flex-col space-y-4 bg-grey-light p-4 text-sm shadow-inner"
     >
       <div>
         <strong>Tagged With</strong>

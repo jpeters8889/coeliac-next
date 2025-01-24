@@ -12,7 +12,7 @@ const { hasError, searchForm, submitSearch } = useSearch();
     @submit.prevent="submitSearch()"
   >
     <div
-      class="flex w-full rounded-xl bg-white bg-opacity-50 focus-within:bg-opacity-90 pr-2"
+      class="flex w-full rounded-xl bg-white/50 focus-within:bg-white/90 pr-2"
     >
       <FormInput
         v-model="searchForm.q"

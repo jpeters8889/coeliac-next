@@ -69,7 +69,7 @@ const submitMessage = () => {
         </Warning>
 
         <form
-          class="flex flex-col gap-5 !mt-10"
+          class="flex flex-col gap-5 mt-10!"
           method="post"
           action="/contact"
           @submit.prevent="submitMessage()"

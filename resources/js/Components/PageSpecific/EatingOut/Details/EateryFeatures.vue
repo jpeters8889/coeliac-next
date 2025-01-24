@@ -23,7 +23,7 @@ defineProps<{
         :key="feature.slug"
         class="flex items-center space-x-2 leading-none lg:space-x-4"
       >
-        <div class="h-8 w-8 lg:h-12 lg:w-12 flex-shrink-0 text-primary">
+        <div class="h-8 w-8 lg:h-12 lg:w-12 shrink-0 text-primary">
           <Icon
             :name="feature.slug"
             class="h-8 w-8 lg:h-12 lg:w-12"

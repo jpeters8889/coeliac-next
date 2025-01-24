@@ -56,7 +56,7 @@ const info = computed((): string => {
 
 <template>
   <Card
-    class="flex flex-col bg-gradient-to-br from-primary/50 to-primary-light/50 hover:from-primary/70 hover:to-primary-light/70"
+    class="flex flex-col bg-linear-to-br from-primary/50 to-primary-light/50 hover:from-primary/70 hover:to-primary-light/70"
   >
     <Link :href="town.link">
       <h3 class="mb-4 text-lg font-semibold md:text-xl lg:text-2xl">

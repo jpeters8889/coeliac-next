@@ -13,19 +13,19 @@ const classes = (): string[] => {
     'min-w-0',
     'appearance-none',
     'rounded-md',
-    'px-[calc(theme(spacing.3)-1px)]',
-    'py-[calc(theme(spacing[1.5])-1px)]',
+    'px-[calc(--spacing(3)-1px)]',
+    'py-[calc(--spacing(1.5)-1px)]',
     'text-base',
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
-    'shadow-sm',
-    'outline-none',
+    'shadow-xs',
+    'outline-hidden',
     'sm:text-sm',
     'sm:leading-6',
     'xl:w-full',
     'focus:ring-0',
-    'focus:outline-none transition',
+    'focus:outline-hidden transition',
   ];
 
   if (props.borders) {
@@ -41,10 +41,10 @@ const classes = (): string[] => {
   }
 
   if (props.error) {
-    base.push('!border-red', 'focus:border-red-dark');
+    base.push('border-red!', 'focus:border-red-dark');
 
     if (!props.borders && props.background) {
-      base.push('!bg-red/90');
+      base.push('bg-red/90!');
     }
   }
 
@@ -71,7 +71,7 @@ const classes = (): string[] => {
         v-text="'*'"
       />
     </label>
-    <div class="relative rounded-md shadow-sm">
+    <div class="relative rounded-md shadow-xs">
       <textarea
         v-model="value"
         :class="classes()"

@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/vue3';
 
 <template>
   <div class="flex flex-col gap-5 mt-5">
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl !block">
+    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
       <Heading :border="false">About Coeliac Sanctuary</Heading>
 
       <div class="flex">
@@ -80,46 +80,46 @@ import { Link } from '@inertiajs/vue3';
           </p>
         </div>
 
-        <div class="hidden md:flex flex-col space-y-2 ml-4 w-60 flex-shrink-0">
+        <div class="hidden md:flex flex-col space-y-2 ml-4 w-60 shrink-0">
           <ArticleImage
             src="/images/misc/coeliac-v1.jpg"
             title="First version of Coeliac Sanctuary, August 2014"
             position="right"
-            class="!max-w-60"
+            class="max-w-60!"
           />
 
           <ArticleImage
             src="/images/misc/coeliac-v2.jpg"
             title="Second version of Coeliac Sanctuary, September 2015"
             position="right"
-            class="!max-w-60"
+            class="max-w-60!"
           />
 
           <ArticleImage
             src="/images/misc/coeliac-v3.jpg"
             title="Third version of Coeliac Sanctuary, August 2018"
             position="right"
-            class="!max-w-60"
+            class="max-w-60!"
           />
 
           <ArticleImage
             src="/images/misc/coeliac-v4.jpg"
             title="Fourth version of Coeliac Sanctuary, November 2020"
             position="right"
-            class="!max-w-60"
+            class="max-w-60!"
           />
         </div>
       </div>
     </Card>
 
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl !block">
+    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
       <Heading :border="false">Alison - Founder/Owner</Heading>
 
       <ArticleImage
         title="Alison - Coeliac Sanctuary founder"
         src="/images/misc/alison.jpg"
         position="right"
-        class="!max-w-60"
+        class="max-w-60!"
       />
       <p>
         In June 2014 Alison developed anxiety about her job and had been
@@ -147,7 +147,7 @@ import { Link } from '@inertiajs/vue3';
       </p>
     </Card>
 
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl !block">
+    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
       <Heading :border="false"
         >Jamie - The sidekick, the brains, developer and tech guru</Heading
       >
@@ -156,7 +156,7 @@ import { Link } from '@inertiajs/vue3';
         title="Jamie - Coeliac Sanctuary developer and tech guru"
         src="/images/misc/jamie.png"
         position="right"
-        class="!max-w-60"
+        class="max-w-60!"
       />
       <p>
         The sidekick has always been part of the site helping out when he can,

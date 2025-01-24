@@ -40,7 +40,7 @@ const logExpandDiscountCode = () => {
 <template>
   <Disclosure
     as="div"
-    class="rounded bg-secondary bg-opacity-50 p-2"
+    class="rounded-sm bg-secondary/50 p-2"
   >
     <DisclosureButton
       class="flex w-full items-center justify-between text-left ui-open:mb-2"

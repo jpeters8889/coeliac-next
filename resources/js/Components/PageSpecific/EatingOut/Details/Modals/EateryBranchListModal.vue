@@ -70,7 +70,7 @@ const branchName = (branch: EateryNationwideBranch): string => {
             }"
           >
             <DisclosureButton
-              class="flex w-full justify-between rounded-lg focus:outline-none"
+              class="flex w-full justify-between rounded-lg focus:outline-hidden"
             >
               <div class="flex flex-col space-y-1">
                 <span

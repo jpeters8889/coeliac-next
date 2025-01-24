@@ -18,7 +18,7 @@ const openBasket = () => {
 <template>
   <div
     id="header-basket-detail"
-    class="border border-primary-light bg-primary-light bg-opacity-50"
+    class="border border-primary-light bg-primary-light/50"
   >
     <div
       class="mx-auto flex max-w-8xl flex-col items-center justify-between p-2 xs:flex-row sm:p-4"

@@ -19,7 +19,7 @@ defineProps<{
       class="group block px-4 sm:px-6 2xl:px-0"
       :href="category.link"
     >
-      <div class="relative overflow-hidden rounded xmd:h-[32rem]">
+      <div class="relative overflow-hidden rounded-sm xmd:h-[32rem]">
         <div class="absolute inset-0">
           <img
             :src="category.image"
@@ -30,7 +30,7 @@ defineProps<{
         <div class="relative h-72 w-full xmd:hidden" />
         <div class="relative h-32 w-full xmd:hidden" />
         <div
-          class="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-primary-dark bg-opacity-75 p-4 backdrop-blur backdrop-filter xs:flex xs:items-center xs:justify-between xmd:inset-x-auto xmd:inset-y-0 xmd:w-96 xmd:flex-col xmd:items-start xmd:rounded-br-none xmd:rounded-tl-lg xmd:p-6"
+          class="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-primary-dark/75 p-4 backdrop-blur-sm backdrop-filter xs:flex xs:items-center xs:justify-between xmd:inset-x-auto xmd:inset-y-0 xmd:w-96 xmd:flex-col xmd:items-start xmd:rounded-br-none xmd:rounded-tl-lg xmd:p-6"
         >
           <div>
             <h2
@@ -44,7 +44,7 @@ defineProps<{
           </div>
 
           <div
-            class="mt-6 flex flex-shrink-0 items-center justify-center rounded-md border border-white border-opacity-25 bg-primary-dark bg-opacity-0 px-4 py-3 text-base font-medium text-white hover:bg-opacity-50 xs:ml-8 xs:mt-0 xmd:ml-0 xmd:w-full xl:text-lg"
+            class="mt-6 flex shrink-0 items-center justify-center rounded-md border border-white/25 bg-primary-dark/0 px-4 py-3 text-base font-medium text-white hover:bg-primary-dark/50 xs:ml-8 xs:mt-0 xmd:ml-0 xmd:w-full xl:text-lg"
           >
             Shop Now
           </div>

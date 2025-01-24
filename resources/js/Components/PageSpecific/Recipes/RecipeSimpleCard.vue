@@ -9,7 +9,7 @@ defineProps<{ recipe: RecipeDetailCard }>();
 <template>
   <Card
     :shadow="false"
-    class="scale-95 transform transition duration-500 hover:scale-105 hover:!opacity-100"
+    class="scale-95 transform transition duration-500 hover:scale-105 hover:opacity-100!"
   >
     <Link
       :href="recipe.link"

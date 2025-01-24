@@ -103,7 +103,7 @@ const isSelected = (index: number): boolean => {
               class="hidden border-[0.75rem] border-transparent border-r-secondary xs:block"
             />
             <div
-              class="flex h-6 w-full items-center justify-center rounded bg-secondary text-sm font-semibold xs:justify-start xs:rounded-none xs:px-4 xs:text-base"
+              class="flex h-6 w-full items-center justify-center rounded-sm bg-secondary text-sm font-semibold xs:justify-start xs:rounded-none xs:px-4 xs:text-base"
               v-text="displayText"
             />
           </div>

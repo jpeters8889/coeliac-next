@@ -349,7 +349,7 @@ onMounted(() => {
     <div class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 xl:grid-cols-3">
       <Card
         theme="primary-light"
-        class="bg-opacity-20"
+        class="bg-primary-light/20!"
       >
         <CheckoutItems :items="basket.items" />
         <CheckoutTotals
@@ -380,7 +380,7 @@ onMounted(() => {
           <p
             v-if="errors?.basket"
             ref="basketError"
-            class="-mt-4 !border-t-0 text-lg font-semibold text-red lg:text-xl"
+            class="-mt-4 border-t-0! text-lg font-semibold text-red lg:text-xl"
             v-text="errors.basket"
           />
         </div>

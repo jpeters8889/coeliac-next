@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="w-[1200px] h-[630px] bg-gradient-to-b from-primary to-primary-light relative overflow-hidden flex flex-col object-cover">
+<div class="w-[1200px] h-[630px] bg-linear-to-b from-primary to-primary-light relative overflow-hidden flex flex-col object-cover">
     <div class="absolute w-full h-full object-cover opacity-15">
         <img src="{{ $county->image ?? $county->country->image }}" class="object-cover"/>
     </div>

@@ -9,9 +9,9 @@ withDefaults(defineProps<{ noIcon?: boolean; faded?: boolean }>(), {
 
 <template>
   <div
-    class="rounded border-2 bg-red-dark p-2 shadow"
+    class="rounded-sm border-2 bg-red-dark p-2 shadow-sm"
     :class="
-      faded ? 'border-red/20 bg-opacity-5' : 'border-red-dark bg-opacity-20'
+      faded ? 'border-red/20 bg-red-dark/5' : 'border-red-dark bg-red-dark/20'
     "
   >
     <div

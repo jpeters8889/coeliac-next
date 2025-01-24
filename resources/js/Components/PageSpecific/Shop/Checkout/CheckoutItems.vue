@@ -67,7 +67,7 @@ const removeItem = (item: ShopBasketItem) => {
           width="border-8"
         />
         <div
-          class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+          class="h-24 w-24 shrink-0 overflow-hidden rounded-md border border-gray-200"
         >
           <img
             :src="item.image"
@@ -117,7 +117,7 @@ const removeItem = (item: ShopBasketItem) => {
               size="xxl"
               as="button"
               type="button"
-              classes="!p-1 hover:text-primary-dark shadow-none"
+              classes="p-1! hover:text-primary-dark shadow-none"
               :loading="deletingItem === item.id"
               @click="removeItem(item)"
             />

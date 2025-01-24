@@ -106,7 +106,7 @@ const countyDescription = (county: EateryCountryList): string => {
 
 <template>
   <div
-    class="block space-y-3 rounded bg-gradient-to-br from-primary/50 to-primary-light/50 p-3 shadow"
+    class="block space-y-3 rounded-sm bg-linear-to-br from-primary/50 to-primary-light/50 p-3 shadow-sm"
   >
     <div
       class="z-10 cursor-pointer"
@@ -125,7 +125,7 @@ const countyDescription = (county: EateryCountryList): string => {
       </p>
     </div>
 
-    <div class="!mt-0">
+    <div class="mt-0!">
       <transition
         enter-active-class="duration-500 ease-out"
         enter-class="-translate-y-full opacity-0"
@@ -136,13 +136,13 @@ const countyDescription = (county: EateryCountryList): string => {
       >
         <div
           v-if="show"
-          class="transform rounded"
+          class="transform rounded-sm"
         >
           <ul class="mt-3 flex flex-col space-y-3">
             <li
               v-for="county in details.list"
               :key="county.slug"
-              class="group transform rounded-md border-b bg-white bg-opacity-80 p-3 shadow-inner transition duration-500 hover:scale-105 hover:bg-opacity-100 hover:shadow-lg"
+              class="group transform rounded-md border-b bg-white/80 p-3 shadow-inner transition duration-500 hover:scale-105 hover:bg-white/100 hover:shadow-lg"
             >
               <Link :href="'/wheretoeat/' + county.slug">
                 <h4

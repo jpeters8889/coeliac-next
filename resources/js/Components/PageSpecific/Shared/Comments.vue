@@ -56,7 +56,7 @@ const submitComment = () => {
       <div
         v-for="(comment, index) in comments.data"
         :key="`${comment.name}-${index}`"
-        class="flex flex-col space-y-2 border-l-8 border-secondary bg-gradient-to-br from-primary/30 to-primary-light/30 p-3 shadow"
+        class="flex flex-col space-y-2 border-l-8 border-secondary bg-linear-to-br from-primary/30 to-primary-light/30 p-3 shadow-sm"
       >
         <div
           class="prose prose-sm max-w-none md:prose-base"
@@ -71,7 +71,7 @@ const submitComment = () => {
         </div>
         <div
           v-if="comment.reply"
-          class="mt-2 flex flex-col space-y-2 bg-white bg-opacity-80 p-3"
+          class="mt-2 flex flex-col space-y-2 bg-white/80 p-3"
         >
           <div class="flex space-x-2 text-sm font-medium text-grey">
             <span
@@ -89,7 +89,7 @@ const submitComment = () => {
 
       <div
         v-if="comments.links.next"
-        class="hover:bg-primary-gradient-10 cursor-pointer border border-primary bg-gradient-to-br from-primary/20 to-primary-light/20 p-1 text-center text-lg shadow"
+        class="hover:bg-primary-gradient-10 cursor-pointer border border-primary bg-linear-to-br from-primary/20 to-primary-light/20 p-1 text-center text-lg shadow-sm"
         @click="emits('load-more')"
         v-text="'Load more comments...'"
       />

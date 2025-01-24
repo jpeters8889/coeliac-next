@@ -30,7 +30,7 @@ const submitSearch = () => {
 </script>
 
 <template>
-  <Card class="flex flex-col space-y-3 !bg-primary-light !bg-opacity-50">
+  <Card class="flex flex-col space-y-3 bg-primary-light/50!">
     <p
       class="font-weight-bold prose-xl max-w-none text-center font-semibold md:prose-2xl"
     >

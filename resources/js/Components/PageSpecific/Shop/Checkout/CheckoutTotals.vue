@@ -123,7 +123,7 @@ watch(
           </small>
         </dt>
         <dd
-          class="flex-shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
+          class="shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
           v-text="postage"
         />
       </div>
@@ -141,7 +141,7 @@ watch(
           />
         </dt>
         <dd
-          class="flex-shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
+          class="shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
           v-text="`-${discount}`"
         />
       </div>

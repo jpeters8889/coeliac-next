@@ -41,9 +41,7 @@ const closeOverlay = () => emit('close');
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div
-            class="fixed inset-0 bg-black bg-opacity-70 transition-opacity"
-          />
+          <div class="fixed inset-0 bg-black/70 transition-opacity" />
         </TransitionChild>
 
         <div class="fixed inset-0 overflow-hidden">
@@ -94,7 +92,7 @@ const closeOverlay = () => emit('close');
                       class="absolute top-0 flex pt-4"
                     >
                       <button
-                        class="rounded-md text-gray-300 hover:text-white focus:outline-none"
+                        class="rounded-md text-gray-300 hover:text-white focus:outline-hidden"
                         type="button"
                         @click="closeOverlay()"
                       >

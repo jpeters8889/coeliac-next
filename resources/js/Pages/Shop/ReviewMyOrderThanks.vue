@@ -18,7 +18,7 @@ import { CheckCircleIcon } from '@heroicons/vue/24/outline';
     </p>
 
     <a
-      class="mt-3 block w-full rounded-lg bg-primary-light p-2 text-center transition-all hover:bg-opacity-75"
+      class="mt-3 block w-full rounded-lg bg-primary-light p-2 text-center transition-all hover:bg-primary-light/75"
       href="/"
     >
       Go back home!

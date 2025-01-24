@@ -21,8 +21,7 @@ const classes = (): string[] => {
     'mx-0',
     'my-2',
     'sm:m-2',
-    'bg-primary',
-    'bg-opacity-20',
+    'bg-primary/20',
     'w-full',
   ];
 
@@ -60,7 +59,7 @@ watch(zoomed, () => {
     <img
       :alt="title"
       :src="src"
-      class="!m-0 h-auto w-full"
+      class="m-0! h-auto w-full"
       loading="lazy"
       style="cursor: zoom-in"
       @click="zoomed = true"

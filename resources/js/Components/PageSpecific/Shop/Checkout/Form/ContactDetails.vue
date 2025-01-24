@@ -75,7 +75,7 @@ watch(data, () => store.setUserDetails(data));
       class="flex flex-col space-y-6"
       @keyup.enter="submitForm()"
     >
-      <p class="prose !mt-2 max-w-none xl:prose-lg">
+      <p class="prose mt-2! max-w-none xl:prose-lg">
         To start the checkout process we just need some basic details from you
         including your name, the email address for your order confirmation, and
         optionally, a telephone number.
@@ -128,7 +128,7 @@ watch(data, () => store.setUserDetails(data));
         type="button"
         label="Continue..."
         size="xxl"
-        classes="!px-6 text-xl justify-between"
+        classes="px-6! text-xl justify-between"
         theme="secondary"
         :icon="ArrowRightIcon"
         icon-position="right"

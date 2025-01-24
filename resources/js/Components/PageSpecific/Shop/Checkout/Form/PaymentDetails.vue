@@ -111,7 +111,7 @@ watch(billingAddressSelect, () => {
     </h2>
 
     <template v-if="show">
-      <p class="prose !mt-2 max-w-none xl:prose-lg">
+      <p class="prose mt-2! max-w-none xl:prose-lg">
         Thanks for letting us know where you went your order shipped, finally we
         need to know how you'd like to pay.
       </p>
@@ -207,7 +207,7 @@ watch(billingAddressSelect, () => {
         type="button"
         label="Pay Now!"
         size="xxl"
-        classes="!px-6 text-xl justify-between"
+        classes="px-6! text-xl justify-between"
         theme="secondary"
         :icon="ArrowRightIcon"
         icon-position="right"

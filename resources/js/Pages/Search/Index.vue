@@ -183,9 +183,9 @@ watchDebounced(
 
 <template>
   <div class="flex flex-col space-y-4 xmd:flex-row xmd:space-x-4 xmd:space-y-0">
-    <div class="xmd:flex-shrink-0 xmd:w-1/4 xmd:max-w-[215px]">
+    <div class="xmd:shrink-0 xmd:w-1/4 xmd:max-w-[215px]">
       <Card
-        class="mt-3 mx-3 rounded-lg !bg-primary-light !bg-opacity-40 xmd:!bg-opacity-10 xmd:border-2 xmd:border-primary xmd:rounded-lg xmd:p-3 xmd:fixed xmd:max-w-[195px]"
+        class="mt-3 mx-3 rounded-lg bg-primary-light/40! xmd:bg-primary-light/10! xmd:border-2 xmd:border-primary xmd:rounded-lg xmd:p-3 xmd:fixed xmd:max-w-[195px]"
         :class="stickyNav ? 'xmd:top-[40px]' : 'xmd:top-auto'"
         faded
         :shadow="false"
@@ -251,7 +251,7 @@ watchDebounced(
 
     <Card
       v-if="searchForm.processing"
-      class="w-full !mt-4"
+      class="w-full mt-4!"
     >
       <Loader
         color="primary"
@@ -263,7 +263,7 @@ watchDebounced(
 
     <Card
       v-else-if="items.length === 0"
-      class="w-full !mt-4"
+      class="w-full mt-4!"
     >
       <div
         class="py-8 px-4 text-center text-xl font-semibold text-primary-dark"
@@ -274,7 +274,7 @@ watchDebounced(
 
     <div
       v-else
-      class="group xmd:pt-2 xmd:!-ml-3 flex flex-col space-y-2 min-h-screen"
+      class="group xmd:pt-2 xmd:-ml-3! flex flex-col space-y-2 min-h-screen"
     >
       <Card
         v-if="hasEatery"
@@ -296,7 +296,7 @@ watchDebounced(
       <Card
         v-for="item in items"
         :key="item.link"
-        class="transition-all transform scale-95 hover:scale-100 p-4 group/item bg-opacity-90 hover:bg-opacity-100 group-hover:opacity-50 hover:!opacity-100"
+        class="transition-all transform scale-95 hover:scale-100 p-4 group/item group-hover:opacity-50 hover:opacity-100!"
       >
         <Link
           :href="item.link"

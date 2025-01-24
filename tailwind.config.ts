@@ -1,4 +1,3 @@
-import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import headlessui from '@headlessui/tailwindcss';
@@ -121,4 +120,4 @@ export default {
   },
 
   plugins: [forms, typography, headlessui, containerQueries],
-} satisfies Config;
+};

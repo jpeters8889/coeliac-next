@@ -32,7 +32,7 @@ defineProps<{ eateries: EaterySimpleHomeResource[] }>();
           {{ eatery.location.name }}
         </Link>
         <span
-          class="!mt-4 block text-sm italic"
+          class="mt-4! block text-sm italic"
           v-text="eatery.created_at"
         />
       </li>

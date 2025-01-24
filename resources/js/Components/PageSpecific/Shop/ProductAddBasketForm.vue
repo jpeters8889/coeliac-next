@@ -104,10 +104,10 @@ const addToBasket = () => {
               <div
                 :class="[
                   checked
-                    ? 'bg-primary-light bg-opacity-50 font-semibold ring-2 ring-primary'
+                    ? 'bg-primary-light/50 font-semibold ring-2 ring-primary'
                     : 'ring-0',
-                  disabled ? 'border-opacity-30' : '',
-                  'relative block cursor-pointer rounded-lg border border-grey-off p-3 outline-none',
+                  disabled ? 'border-grey-off/30' : 'border-grey-off',
+                  'relative block cursor-pointer rounded-lg border p-3 outline-hidden',
                 ]"
               >
                 <RadioGroupLabel

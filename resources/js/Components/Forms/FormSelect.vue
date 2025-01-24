@@ -20,20 +20,20 @@ const classes = (): string[] => {
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
-    'shadow-sm',
-    'outline-none',
+    'shadow-xs',
+    'outline-hidden',
     'focus:ring-0',
-    'focus:outline-none transition',
+    'focus:outline-hidden transition',
     'w-full',
   ];
 
   if (props.size === 'large') {
     base.push(
-      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]',
+      'text-base md:text-lg px-[calc(--spacing(4)-1px)] py-[calc(var(--spacing-1_75)-1px)]',
     );
   } else {
     base.push(
-      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6',
+      'px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] text-base sm:text-sm sm:leading-6',
     );
   }
 
@@ -50,10 +50,10 @@ const classes = (): string[] => {
   }
 
   if (props.error) {
-    base.push('!border-red', 'focus:border-red-dark');
+    base.push('border-red!', 'focus:border-red-dark');
 
     if (!props.borders && props.background) {
-      base.push('!bg-red/90');
+      base.push('bg-red/90!');
     }
   }
 
@@ -80,7 +80,7 @@ const classes = (): string[] => {
         v-text="'*'"
       />
     </label>
-    <div class="relative rounded-md shadow-sm">
+    <div class="relative rounded-md shadow-xs">
       <select
         v-model="value"
         :name="name"

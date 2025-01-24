@@ -190,7 +190,7 @@ const loadMoreReviews = () => {
     </div>
   </Card>
 
-  <Card class="mx-3 !mt-0 mb-3 sm:p-4 lg:!mt-1">
+  <Card class="mx-3 mt-0! mb-3 sm:p-4 lg:mt-1!">
     <div class="divide-y divide-gray-200">
       <Disclosure
         v-for="additionalDetail in additionalDetails"

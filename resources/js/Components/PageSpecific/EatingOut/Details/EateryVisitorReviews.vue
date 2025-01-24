@@ -52,7 +52,7 @@ const howExpensive = (review: EateryReview) => {
     rtr += '£';
   }
 
-  return `<strong class="flex-shrink-0">Price ${rtr}:</strong> <span>${review.expense?.label}</span>`;
+  return `<strong class="shrink-0">Price ${rtr}:</strong> <span>${review.expense?.label}</span>`;
 };
 </script>
 
@@ -72,9 +72,7 @@ const howExpensive = (review: EateryReview) => {
 
       <div class="mt-8 md:col-span-2 md:mt-0 xl:col-span-3">
         <div class="flow-root">
-          <div
-            class="mb-2 w-auto rounded bg-primary-light bg-opacity-50 px-3 py-1"
-          >
+          <div class="mb-2 w-auto rounded-sm bg-primary-light/50 px-3 py-1">
             <FormCheckbox
               v-model="hideReviewsWithoutBody"
               name="hide-ratings"
@@ -131,19 +129,19 @@ const howExpensive = (review: EateryReview) => {
                   >
                     <li
                       v-if="review.expense"
-                      class="rounded bg-primary-light bg-opacity-50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                      class="rounded-sm bg-primary-light/50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                       v-html="howExpensive(review)"
                     />
                     <li
                       v-if="review.food_rating"
-                      class="rounded bg-primary-light bg-opacity-50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                      class="rounded-sm bg-primary-light/50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                     >
                       <strong>Food:</strong>
                       <span v-text="ucfirst(review.food_rating)" />
                     </li>
                     <li
                       v-if="review.service_rating"
-                      class="rounded bg-primary-light bg-opacity-50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                      class="rounded-sm bg-primary-light/50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                     >
                       <strong>Service:</strong>
                       <span v-text="ucfirst(review.service_rating)" />

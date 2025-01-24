@@ -67,7 +67,7 @@ const reviewBody = computed(() => {
         class="mb-2 grid grid-cols-1 gap-1 leading-none xs:grid-cols-4 xs:gap-3 lg:text-lg"
       >
         <li
-          class="flex items-center space-x-1 rounded bg-primary-light bg-opacity-50 px-3 py-2"
+          class="flex items-center space-x-1 rounded-sm bg-primary-light/50 px-3 py-2"
         >
           <strong>Our Rating</strong>
           <StarRating
@@ -79,18 +79,18 @@ const reviewBody = computed(() => {
 
         <li
           v-if="review.expense"
-          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
+          class="flex items-center rounded-sm bg-primary-light/50 px-3 py-2"
           v-html="howExpensive()"
         />
         <li
           v-if="review.food_rating"
-          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
+          class="flex items-center rounded-sm bg-primary-light/50 px-3 py-2"
         >
           <strong>Food</strong>: {{ ucfirst(review.food_rating) }}
         </li>
         <li
           v-if="review.service_rating"
-          class="flex items-center rounded bg-primary-light bg-opacity-50 px-3 py-2"
+          class="flex items-center rounded-sm bg-primary-light/50 px-3 py-2"
         >
           <strong>Service</strong>: {{ ucfirst(review.service_rating) }}
         </li>
@@ -111,7 +111,7 @@ const reviewBody = computed(() => {
 
       <div
         v-if="review.images"
-        class="flex flex-col rounded border border-primary bg-primary-light bg-opacity-25 p-2"
+        class="flex flex-col rounded-sm border border-primary bg-primary-light/25 p-2"
       >
         <p class="text-md font-semibold lg:text-lg">Our Photos</p>
 

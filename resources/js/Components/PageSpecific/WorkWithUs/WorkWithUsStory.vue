@@ -42,7 +42,7 @@ withDefaults(
             <li
               v-for="link in links"
               :key="link.href"
-              class="pl-0 !ps-0 my-0 font-semibold text-primary-dark hover:text-black"
+              class="pl-0 ps-0! my-0 font-semibold text-primary-dark hover:text-black"
             >
               <a
                 :href="link.href"
@@ -53,7 +53,7 @@ withDefaults(
           </ul>
         </div>
 
-        <div class="hidden @sm:block @sm:w-1/4 @sm:flex-shrink-0 @sm:max-w-xs">
+        <div class="hidden @sm:block @sm:w-1/4 @-sm:shrink-0 @sm:max-w-xs">
           <img
             :src="image"
             :alt="title"

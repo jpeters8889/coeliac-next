@@ -30,7 +30,7 @@ const eateryName = (): string => {
 
     <ul class="flex flex-wrap items-center gap-2 lg:gap-4">
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
+        class="rounded-sm bg-secondary/25 px-2 py-1 leading-none transition-all hover:bg-secondary/75 lg:px-3 lg:py-2"
       >
         <a
           class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"
@@ -42,7 +42,7 @@ const eateryName = (): string => {
       </li>
 
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
+        class="rounded-sm bg-secondary/25 px-2 py-1 leading-none transition-all hover:bg-secondary/75 lg:px-3 lg:py-2"
       >
         <a
           class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"
@@ -54,7 +54,7 @@ const eateryName = (): string => {
       </li>
 
       <li
-        class="rounded bg-secondary bg-opacity-25 px-2 py-1 leading-none transition-all hover:bg-opacity-75 lg:px-3 lg:py-2"
+        class="rounded-sm bg-secondary/25 px-2 py-1 leading-none transition-all hover:bg-secondary/75 lg:px-3 lg:py-2"
       >
         <a
           class="flex cursor-pointer items-center space-x-2 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black lg:text-lg lg:space-x-3"

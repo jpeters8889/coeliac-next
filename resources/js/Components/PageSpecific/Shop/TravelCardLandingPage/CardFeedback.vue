@@ -21,7 +21,7 @@ defineProps<{
     <div
       v-for="item in feedback"
       :key="item.name"
-      class="border-l-8 border-secondary bg-primary-light bg-opacity-30 p-4"
+      class="border-l-8 border-secondary bg-primary-light/30 p-4"
     >
       <div class="flex items-center justify-between">
         <div class="flex flex-col">

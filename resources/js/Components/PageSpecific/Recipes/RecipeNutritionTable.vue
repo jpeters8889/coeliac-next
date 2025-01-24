@@ -8,10 +8,10 @@ defineProps<{ nutrition: RecipePage['nutrition'] }>();
   <div class="flex text-xs xs:text-sm sm:text-base">
     <div class="grid grid-rows-2 leading-none">
       <div
-        class="grid grid-cols-6 divide-x-2 divide-primary border-b-2 border-primary bg-primary-light bg-opacity-50 font-semibold"
+        class="grid grid-cols-6 divide-x-2 divide-primary border-b-2 border-primary bg-primary-light/50 font-semibold"
       >
         <div class="p-2 xs:hidden">Cals</div>
-        <div class="hidden !border-l-transparent p-2 xs:block">Calories</div>
+        <div class="hidden border-l-transparent! p-2 xs:block">Calories</div>
         <div class="p-2">Carbs</div>
         <div class="p-2">Fibre</div>
         <div class="p-2">Fat</div>

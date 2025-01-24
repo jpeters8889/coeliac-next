@@ -18,7 +18,7 @@ defineProps<{
 
 <template>
   <h1
-    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow xxs:w-auto xxs:rounded xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
   >
     Gluten Free Places to Eat and Visit
   </h1>

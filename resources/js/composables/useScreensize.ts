@@ -1,7 +1,4 @@
 import { ref } from 'vue';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import { KeyValuePair } from 'tailwindcss/types/config';
-import tailwindConfig from '../../../tailwind.config';
 
 type BreakPoint =
   | 'xxxs'
@@ -20,14 +17,21 @@ type ScreenSize = {
   to: number;
 };
 
-type ScreenConfig = KeyValuePair<BreakPoint, string>;
+type ScreenConfig = { [T in BreakPoint]: string };
 
 export default () => {
-  const fullConfig = resolveConfig(tailwindConfig);
-
   const rawWidth = ref(window.screen.width);
 
-  const screenConfig: ScreenConfig = fullConfig?.theme?.screens as ScreenConfig;
+  const screenConfig: ScreenConfig = {
+    xxs: '400px',
+    xs: '500px',
+    sm: '640px',
+    md: '768px',
+    xmd: '860px',
+    lg: '1024px',
+    xl: '1280px',
+    '2xl': '1536px',
+  } as ScreenConfig;
 
   const objectKeys: BreakPoint[] = Object.keys(screenConfig) as BreakPoint[];
 

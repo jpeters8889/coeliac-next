@@ -29,7 +29,7 @@ watch(
   <OverlayFrame
     :open="open"
     width="w-full"
-    class="mb-auto mt-14 !bg-transparent"
+    class="mb-auto mt-14 bg-transparent!"
     @close="emit('close')"
   >
     <form

@@ -58,15 +58,14 @@ const elemClasses = (index: number): string[] => {
     'divide-y',
     'divide-gray-200',
     'rounded-lg',
-    'bg-primary-light',
-    'bg-opacity-50',
+    'bg-primary-light/50',
     'p-4',
     'text-center',
-    'shadow',
+    'shadow-sm',
     'transition-all',
     'transform',
     'hover:scale-105',
-    'hover:bg-opacity-70',
+    'hover:bg-primary-light/70',
     'hover:shadow-lg',
     'md:col-span-2',
   ];
@@ -91,7 +90,7 @@ const elemClasses = (index: number): string[] => {
 
 <template>
   <h1
-    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow xxs:w-auto xxs:rounded xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 xs:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 xs:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
   >
     Gluten Free Places to Eat and Visit
   </h1>

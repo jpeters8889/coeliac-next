@@ -87,7 +87,7 @@ const loadMoreComments = () => {
       </div>
 
       <div v-if="recipe.allergens.length">
-        <div class="w-full rounded bg-red-light bg-opacity-10 p-3 pr-12">
+        <div class="w-full rounded-sm bg-red-light/10 p-3 pr-12">
           <h3 class="font-semibold text-grey-darkest">This recipe contains:</h3>
           <ul class="flex flex-row flex-wrap gap-2 gap-y-1 leading-tight">
             <li
@@ -102,7 +102,7 @@ const loadMoreComments = () => {
     </div>
 
     <div
-      class="-m-4 !-mb-4 flex justify-between bg-grey-light p-4 shadow-inner"
+      class="-m-4 -mb-4! flex justify-between bg-grey-light p-4 shadow-inner"
     >
       <div>
         <p v-if="recipe.updated">

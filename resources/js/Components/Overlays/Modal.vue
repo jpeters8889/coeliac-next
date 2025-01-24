@@ -43,7 +43,7 @@ const slots = useSlots();
       class="absolute right-0 top-0 z-50 pr-2 pt-2"
     >
       <button
-        class="rounded-md border border-transparent bg-white bg-opacity-40 text-grey-dark hover:border-grey-dark hover:bg-opacity-80"
+        class="rounded-md border border-transparent bg-white/40 text-grey-dark hover:border-grey-dark hover:bg-white/80"
         type="button"
         @click="closeOverlay()"
       >

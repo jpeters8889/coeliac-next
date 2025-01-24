@@ -51,7 +51,7 @@ const openText = computed(() => {
   <ul class="flex flex-wrap items-center gap-2">
     <li
       v-if="eatery.county.id > 1"
-      class="rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none"
+      class="rounded-sm bg-primary-light/25 px-3 py-1 leading-none"
     >
       <a
         class="flex cursor-pointer items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
@@ -64,7 +64,7 @@ const openText = computed(() => {
 
     <li
       v-if="eatery.website"
-      class="rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none"
+      class="rounded-sm bg-primary-light/25 px-3 py-1 leading-none"
     >
       <a
         class="flex items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
@@ -78,7 +78,7 @@ const openText = computed(() => {
 
     <li
       v-if="eatery.phone"
-      class="rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none"
+      class="rounded-sm bg-primary-light/25 px-3 py-1 leading-none"
     >
       <a
         class="flex items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
@@ -93,7 +93,7 @@ const openText = computed(() => {
 
     <li
       v-if="eatery.menu"
-      class="hidden rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none xs:block"
+      class="hidden rounded-sm bg-primary-light/25 px-3 py-1 leading-none xs:block"
     >
       <a
         class="flex items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
@@ -108,7 +108,7 @@ const openText = computed(() => {
 
     <li
       v-if="eatery.reviews.expense"
-      class="hidden rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none md:block"
+      class="hidden rounded-sm bg-primary-light/25 px-3 py-1 leading-none md:block"
     >
       <a
         class="flex items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"
@@ -120,7 +120,7 @@ const openText = computed(() => {
 
     <li
       v-if="eatery.opening_times"
-      class="hidden rounded bg-primary-light bg-opacity-25 px-3 py-1 leading-none xmd:block"
+      class="hidden rounded-sm bg-primary-light/25 px-3 py-1 leading-none xmd:block"
     >
       <a
         class="flex cursor-pointer items-center space-x-3 text-sm font-semibold text-grey transition-all ease-in-out hover:text-black"

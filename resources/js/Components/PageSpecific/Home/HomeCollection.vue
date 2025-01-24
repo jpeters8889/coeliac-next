@@ -19,7 +19,7 @@ defineProps<{ collection: HomepageCollection }>();
     />
 
     <div
-      class="mx-auto my-2 h-px w-4/5 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40"
+      class="mx-auto my-2 h-px w-4/5 bg-linear-to-r from-secondary/40 via-secondary/60 to-secondary/40"
     />
 
     <section class="group grid grid-cols-1 sm:grid-cols-3">

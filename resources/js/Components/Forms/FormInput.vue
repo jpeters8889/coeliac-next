@@ -5,7 +5,7 @@ import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(defineProps<InputProps>(), InputPropDefaults);
 
-const emits = defineEmits(['focus', 'blur']);
+const emits = defineEmits(['focus', 'blur-sm']);
 
 const [value, modifiers] = defineModel<string | number, string | number>({
   set(v: string | number): string | number {
@@ -27,10 +27,10 @@ const classes = (): string[] => {
     'leading-7',
     'text-gray-900',
     'placeholder-gray-400',
-    'outline-none',
+    'outline-hidden',
     'xl:w-full',
     'focus:ring-0',
-    'focus:outline-none',
+    'focus:outline-hidden',
     'transition',
     'disabled:text-gray-300',
     'disabled:cursor-not-allowed',
@@ -38,16 +38,16 @@ const classes = (): string[] => {
 
   if (props.size === 'large') {
     base.push(
-      'text-base md:text-lg px-[calc(theme(spacing.4)-1px)] py-[calc(theme(spacing[1.75])-1px)]',
+      'text-base md:text-lg px-[calc(--spacing(4)-1px)] py-[calc(var(--spacing-1_75)-1px)]',
     );
   } else {
     base.push(
-      'px-[calc(theme(spacing.3)-1px)] py-[calc(theme(spacing[1.5])-1px)] text-base sm:text-sm sm:leading-6',
+      'px-[calc(--spacing(3)-1px)] py-[calc(--spacing(1.5)-1px)] text-base sm:text-sm sm:leading-6',
     );
   }
 
   if (props.borders) {
-    base.push('border border-grey-off focus:border-grey-dark shadow-sm');
+    base.push('border border-grey-off focus:border-grey-dark shadow-xs');
   } else {
     base.push('border-0');
   }
@@ -59,10 +59,10 @@ const classes = (): string[] => {
   }
 
   if (props.error) {
-    base.push('!border-red', 'focus:border-red-dark');
+    base.push('border-red!', 'focus:border-red-dark');
 
     if (!props.borders && props.background) {
-      base.push('!bg-red/90');
+      base.push('bg-red/90!');
     }
   }
 
@@ -100,7 +100,7 @@ const classes = (): string[] => {
 
     <div
       class="relative rounded-md"
-      :class="[{ 'shadow-sm': borders }, wrapperClasses]"
+      :class="[{ 'shadow-xs': borders }, wrapperClasses]"
     >
       <input
         v-model="value"
@@ -117,7 +117,7 @@ const classes = (): string[] => {
           ...(max ? { max } : null),
         }"
         @focus="emits('focus')"
-        @blur="emits('blur')"
+        @blur="emits('blur-sm')"
       />
 
       <div

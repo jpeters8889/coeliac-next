@@ -238,7 +238,7 @@ watchDebounced(
 
         <div
           v-if="placeAlreadyRecommended"
-          class="bg-primary-light bg-opacity-15 p-3 rounded-xl"
+          class="bg-primary-light/15 p-3 rounded-xl"
         >
           <FormCheckbox
             v-model="confirmNewEatery"

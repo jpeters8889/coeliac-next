@@ -75,7 +75,7 @@ const icon = computed((): string => {
     size="2xl"
     @close="closeSidebar()"
   >
-    <Card class="flex h-screen flex-col space-y-3 !p-0">
+    <Card class="flex h-screen flex-col space-y-3 p-0!">
       <Loader
         class="z-50"
         size="w-16 h-16"
@@ -131,7 +131,7 @@ const icon = computed((): string => {
                 <div>
                   <a
                     v-if="placeDetails.website"
-                    class="mt-2 inline-flex items-center rounded-full bg-primary-light bg-opacity-90 px-3 py-1 text-xs font-semibold leading-none text-black transition-all ease-in-out hover:bg-opacity-100"
+                    class="mt-2 inline-flex items-center rounded-full bg-primary-light/90 px-3 py-1 text-xs font-semibold leading-none text-black transition-all ease-in-out hover:bg-primary-light/100"
                     :href="placeDetails.website"
                     target="_blank"
                   >
@@ -210,7 +210,7 @@ const icon = computed((): string => {
             </div>
 
             <div
-              class="!mt-8 rounded bg-gradient-to-br from-primary/30 to-primary-light/30 text-center transition duration-500 hover:from-primary/50 hover:to-primary-light/50 md:p-4 md:text-lg"
+              class="mt-8! rounded-sm bg-linear-to-br from-primary/30 to-primary-light/30 text-center transition duration-500 hover:from-primary/50 hover:to-primary-light/50 md:p-4 md:text-lg"
             >
               <Link
                 :href="placeDetails.link"

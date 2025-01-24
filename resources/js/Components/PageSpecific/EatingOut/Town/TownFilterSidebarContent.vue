@@ -57,7 +57,7 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <Card class="flex h-auto flex-col space-y-3 !p-0">
+  <Card class="flex h-auto flex-col space-y-3 p-0!">
     <div
       class="flex items-center justify-between border-b border-grey-off bg-grey-off-light p-3"
     >
@@ -66,10 +66,10 @@ const resetFilters = () => {
       <a
         :class="
           isFiltered
-            ? 'bg-opacity-70 opacity-100 hover:opacity-100'
-            : 'opacity-0'
+            ? 'bg-primary-light/70 opacity-100 hover:opacity-100'
+            : 'bg-primary-light opacity-0'
         "
-        class="cursor-pointer rounded-lg bg-primary-light px-2 py-1 shadow transition"
+        class="cursor-pointer rounded-lg px-2 py-1 shadow-sm transition"
         @click="resetFilters"
       >
         Reset

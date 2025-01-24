@@ -49,7 +49,7 @@ defineProps<{ item: CollectionItem }>();
       <div class="flex flex-1 items-end justify-between">
         <p class="text-xs md:text-sm">Added on {{ item.date }}</p>
         <div
-          class="rounded-lg bg-primary-light bg-opacity-50 px-4 py-2 text-sm font-semibold leading-none md:text-base"
+          class="rounded-lg bg-primary-light/50 px-4 py-2 text-sm font-semibold leading-none md:text-base"
         >
           <span v-text="item.type" />
         </div>

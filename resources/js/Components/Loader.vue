@@ -51,9 +51,9 @@ const classes = computed((): string[] => {
     class="left-0 top-0 flex h-full w-full items-center justify-center"
     :class="{
       absolute: absolute,
-      'bg-black bg-opacity-50': background,
-      'z-[999]': onTop,
-      'backdrop-blur-sm': blur,
+      'bg-black/50': background,
+      'z-999': onTop,
+      'backdrop-blur-xs': blur,
     }"
   >
     <div :class="classes" />

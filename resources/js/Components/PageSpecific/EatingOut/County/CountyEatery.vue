@@ -9,7 +9,7 @@ defineProps<{ eatery: CountyEateryType }>();
 
 <template>
   <Card
-    class="flex flex-col space-y-2 bg-gradient-to-br from-primary/50 to-primary-light/50"
+    class="flex flex-col space-y-2 bg-linear-to-br from-primary/50 to-primary-light/50"
   >
     <Link :href="eatery.link">
       <h3 class="text-lg font-semibold md:text-xl lg:text-2xl">

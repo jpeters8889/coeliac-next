@@ -359,7 +359,7 @@ const openReport = () => {
             >
               <div
                 v-if="field.updated"
-                class="bg-blue-light rounded bg-opacity-25 p-1 text-center"
+                class="bg-blue-light/25 rounded-sm p-1 text-center"
               >
                 Thanks for your suggestion!
               </div>

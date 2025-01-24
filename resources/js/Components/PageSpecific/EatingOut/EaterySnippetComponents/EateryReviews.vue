@@ -32,7 +32,7 @@ defineProps<{
     </div>
 
     <div
-      class="rounded bg-gradient-to-br from-primary/30 to-primary-light/30 text-center transition duration-500 hover:from-primary/50 hover:to-primary-light/50 md:text-lg"
+      class="rounded-sm bg-linear-to-br from-primary/30 to-primary-light/30 text-center transition duration-500 hover:from-primary/50 hover:to-primary-light/50 md:text-lg"
     >
       <Link
         :href="link"

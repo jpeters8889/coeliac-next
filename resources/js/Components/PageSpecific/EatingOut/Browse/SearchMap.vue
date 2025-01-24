@@ -67,7 +67,7 @@ watch(hasError, (check) => {
   <div class="absolute z-10 w-[calc(100%-40px)] p-2">
     <div>
       <form
-        class="flex w-full max-w-lg items-center gap-2 rounded-md bg-white shadow"
+        class="flex w-full max-w-lg items-center gap-2 rounded-md bg-white shadow-sm"
         :class="hasError ? 'border border-red' : ''"
         @submit.prevent="handleSearch()"
       >
@@ -106,7 +106,7 @@ watch(hasError, (check) => {
     </div>
 
     <div
-      class="mt-1 w-[calc(100%-35px)] max-w-lg rounded-md bg-red bg-opacity-70 p-1 text-sm font-semibold leading-none text-white shadow transition-all"
+      class="mt-1 w-[calc(100%-35px)] max-w-lg rounded-md bg-red/70 p-1 text-sm font-semibold leading-none text-white shadow-sm transition-all"
       :class="hasError ? 'opacity-100' : 'opacity-0'"
       v-text="errorMessage"
     />

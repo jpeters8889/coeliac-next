@@ -87,7 +87,7 @@ const submitForm = () => {
       class="flex flex-col space-y-6 pt-4"
       @keyup.enter="submitForm()"
     >
-      <p class="prose !mt-2 max-w-none xl:prose-lg">
+      <p class="prose mt-2! max-w-none xl:prose-lg">
         Thanks {{ customerName }}, next we need to know where to send your
         order.
       </p>
@@ -163,7 +163,7 @@ const submitForm = () => {
         type="button"
         label="Continue..."
         size="xxl"
-        classes="!px-6 text-xl justify-between"
+        classes="px-6! text-xl justify-between"
         theme="secondary"
         :icon="ArrowRightIcon"
         icon-position="right"

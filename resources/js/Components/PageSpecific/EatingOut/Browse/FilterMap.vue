@@ -73,7 +73,7 @@ onMounted(() => {
     </div>
 
     <div
-      class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow transition md:shadow-lg"
+      class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow-sm transition md:shadow-lg"
     >
       <AdjustmentsHorizontalIcon
         class="h-8 w-8 md:h-12 md:w-12 xmd:h-14 xmd:w-14"

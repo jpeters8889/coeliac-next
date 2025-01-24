@@ -64,7 +64,7 @@ setInterval(() => {
     </div>
     <div class="absolute bottom-0 h-full w-full bg-gray-50">
       <div
-        class="absolute h-full w-full bg-gradient-to-b from-primary-light/70 to-primary-light/60"
+        class="absolute h-full w-full bg-linear-to-b from-primary-light/70 to-primary-light/60"
       />
       <img
         class="h-full w-full object-cover"

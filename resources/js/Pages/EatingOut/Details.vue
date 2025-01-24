@@ -62,7 +62,7 @@ const eateryName = (): string => {
 
       <EateryBranchList
         v-if="eatery.is_nationwide && eatery.nationwide_branches?.length"
-        class="md:w-1/3 md:flex-shrink-0 md:flex-grow-0 xl:w-1/4"
+        class="md:w-1/3 md:shrink-0 md:grow-0 xl:w-1/4"
         :eatery="eatery"
       />
     </div>
