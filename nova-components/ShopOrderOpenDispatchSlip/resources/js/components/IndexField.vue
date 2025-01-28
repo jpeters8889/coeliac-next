@@ -1,19 +1,26 @@
 <template>
   <div>
-    <DefaultButton
-      size="sm"
-      component="a"
+    <Button
+      size="small"
+      as="div"
       @click.stop="() => undefined"
-      :href="`/cs-adm/order-dispatch-slip/${fieldValue}`"
-      target="_blank"
     >
-      View Dispatch Slip
-    </DefaultButton>
+      <a
+        :href="`/cs-adm/order-dispatch-slip/${fieldValue}`"
+        target="_blank"
+      >
+        View Dispatch Slip
+      </a>
+    </Button>
   </div>
 </template>
 
 <script>
+import { Button } from 'laravel-nova-ui';
+
 export default {
+  components: { Button },
+
   props: ['resourceName', 'field'],
 
   computed: {

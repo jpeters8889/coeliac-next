@@ -90,7 +90,7 @@ class Products extends Resource
                         ->pluck('title'),
                 ])->onlyOnIndex(),
 
-                Stack::make('', [
+                Stack::make('Quantity', [
                     fn (ShopProduct $resource) => $resource
                         ->variants
                         ->pluck('quantity'),

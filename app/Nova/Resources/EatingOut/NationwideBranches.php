@@ -60,7 +60,7 @@ class NationwideBranches extends Resource
 
             Boolean::make('Live'),
 
-            ...$request->viaRelationship() === false ? [Panel::make('Location', [
+            Panel::make('Location', [
                 BelongsTo::make('Town', resource: Towns::class)
                     ->onlyOnForms()
                     ->fullWidth()
@@ -105,7 +105,7 @@ class NationwideBranches extends Resource
                     ->required()
                     ->latitudeField('lat')
                     ->longitudeField('lng'),
-            ])] : [],
+            ]),
 
             HasMany::make('Reports', resource: PlaceReports::class),
         ];

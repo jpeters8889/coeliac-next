@@ -128,7 +128,7 @@ const loadMoreReviews = () => {
             class="cursor-zoom-in md:col-start-1"
             @click="viewImage = true"
           >
-            <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg">
+            <div class="aspect-square overflow-hidden rounded-lg">
               <img
                 :src="product.image"
                 :alt="product.title"

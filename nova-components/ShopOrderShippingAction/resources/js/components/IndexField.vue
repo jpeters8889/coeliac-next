@@ -3,27 +3,27 @@
     <template v-if="currentState !== states.CANCELLED">
       <span v-if="currentState === states.PAID">No, order not printed yet</span>
 
-      <DefaultButton
+      <Button
         v-else-if="currentState === states.READY"
         class="w-[150px] bg-green-500 hover:bg-green-700"
-        size="sm"
+        size="small"
         @click.stop="handleShipOrder()"
       >
         Mark As Shipped
-      </DefaultButton>
+      </Button>
 
       <span v-if="currentState === states.SHIPPED">
         Yes, {{ fieldValue.shipped_at }}
       </span>
 
-      <DefaultButton
+      <Button
         v-if="currentState !== states.SHIPPED"
         class="w-[150px] bg-red-500 hover:bg-red-700"
-        size="sm"
+        size="small"
         @click.stop="confirmCancelOrder()"
       >
         Cancel Order
-      </DefaultButton>
+      </Button>
     </template>
 
     <span
@@ -47,13 +47,59 @@
 </template>
 
 <script>
+import { Button } from 'laravel-nova-ui';
+
 export default {
+  components: { Button },
+
   props: ['resourceName', 'field'],
 
   data: () => ({
     showCancelModal: false,
     working: false,
   }),
+
+  computed: {
+    fieldValue() {
+      return this.field.displayedAs || this.field.value;
+    },
+
+    currentState() {
+      return this.fieldValue.state_id;
+    },
+
+    states() {
+      return {
+        PAID: 3,
+        READY: 4,
+        SHIPPED: 5,
+        REFUNDED: 6,
+        CANCELLED: 7,
+      };
+    },
+
+    actionPayload() {
+      return {
+        cancelButtonText: 'Cancel',
+        component: 'confirm-action-modal',
+        confirmButtonText: 'Run Action',
+        confirmText: 'Are you sure you want to run this action?',
+        destructive: true,
+        authorizedToRun: null,
+        name: 'Cancel Order',
+        uriKey: 'cancel-order',
+        fields: [],
+        showOnDetail: true,
+        showOnIndex: true,
+        showOnTableRow: true,
+        standalone: false,
+        modalSize: '2xl',
+        modalStyle: 'window',
+        responseType: 'json',
+        withoutConfirmation: false,
+      };
+    },
+  },
 
   methods: {
     confirmCancelOrder() {
@@ -115,48 +161,6 @@ export default {
         search: '',
         filters: {},
         trashed: '',
-      };
-    },
-  },
-
-  computed: {
-    fieldValue() {
-      return this.field.displayedAs || this.field.value;
-    },
-
-    currentState() {
-      return this.fieldValue.state_id;
-    },
-
-    states() {
-      return {
-        PAID: 3,
-        READY: 4,
-        SHIPPED: 5,
-        REFUNDED: 6,
-        CANCELLED: 7,
-      };
-    },
-
-    actionPayload() {
-      return {
-        cancelButtonText: 'Cancel',
-        component: 'confirm-action-modal',
-        confirmButtonText: 'Run Action',
-        confirmText: 'Are you sure you want to run this action?',
-        destructive: true,
-        authorizedToRun: null,
-        name: 'Cancel Order',
-        uriKey: 'cancel-order',
-        fields: [],
-        showOnDetail: true,
-        showOnIndex: true,
-        showOnTableRow: true,
-        standalone: false,
-        modalSize: '2xl',
-        modalStyle: 'window',
-        responseType: 'json',
-        withoutConfirmation: false,
       };
     },
   },

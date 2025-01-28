@@ -37,9 +37,9 @@ class PostagePrice extends Resource
                 ->asMinorUnits()
                 ->rules(['required']),
 
-            BelongsTo::make('Postage Area', 'area', PostageArea::class)->readonly(),
+            BelongsTo::make('Postage Area', 'area', PostageArea::class)->filterable()->readonly(),
 
-            BelongsTo::make('Shipping Method', 'shippingMethod', ShippingMethod::class)->readonly(),
+            BelongsTo::make('Shipping Method', 'shippingMethod', ShippingMethod::class)->filterable()->readonly(),
         ];
     }
 

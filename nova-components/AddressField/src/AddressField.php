@@ -39,7 +39,7 @@ class AddressField extends Field
         return $this;
     }
 
-    protected function resolveAttribute($resource, $attribute)
+    protected function resolveAttribute($resource, $attribute): mixed
     {
         $address = $resource->$attribute;
         $latitude = $resource->{self::$latitude};

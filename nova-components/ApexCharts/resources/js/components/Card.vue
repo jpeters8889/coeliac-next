@@ -10,9 +10,9 @@
         <div class="flex space-x-2 items-center">
           <SelectControl
             v-if="!loading"
+            v-model="selectedDateRange"
             :options="dateRangeOptions"
-            :selected="selectedDateRange"
-            @change="handleDateRangeChange"
+            @selected="handleDateRangeChange"
           />
 
           <input
@@ -126,10 +126,16 @@ export default {
       return url + '?' + params.toString();
     },
 
-    handleDateRangeChange(value) {
-      this.selectedDateRange = value;
-
+    handleDateRangeChange(e) {
+      console.log(e);
       this.getChartable();
+    },
+
+    watch: {
+      selectedDateRange: function (a, b) {
+        console.log(this.selectedDateRange);
+        console.log({ a, b });
+      },
     },
   },
 };

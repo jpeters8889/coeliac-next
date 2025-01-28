@@ -131,7 +131,7 @@ use Money\Money;
             </tr>
             @if($order->payment->discount > 0)
                 <tr>
-                    <td colspan="2"><strong>{{ $order->discountCode->name }}</strong></td>
+                    <td colspan="2"><strong>{{ $order->discountCode?->name }}</strong></td>
                     <td><strong>-{{ Helpers::formatMoney(Money::GBP($order->payment->discount)) }}</strong></td>
                 </tr>
             @endif

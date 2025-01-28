@@ -43,6 +43,8 @@ Route::get('/', function (Request $request): array {
         /** @var Carbon $endDate */
         $endDate = $request->date('endDate');
 
+        dd($request->all());
+
         $difference = $startDate->diffInDays($endDate);
 
         $selectedDateRange = new DateRange(

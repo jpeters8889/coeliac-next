@@ -11,13 +11,13 @@
         disappears!!
       </p>
 
-      <DefaultButton
+      <Button
         class="h-16 text-3xl"
         style="font-size: 1.5rem !important; height: 3rem !important"
         @click.prevent.stop="print()"
       >
         Print
-      </DefaultButton>
+      </Button>
 
       <iframe
         id="iFramePdf"
@@ -30,7 +30,10 @@
 </template>
 
 <script>
+import { Button } from 'laravel-nova-ui';
+
 export default {
+  components: { Button },
   props: {
     orders: {
       type: Array,
@@ -39,6 +42,12 @@ export default {
     id: {
       required: true,
       type: String,
+    },
+  },
+
+  computed: {
+    frameSrc() {
+      return '/cs-adm/order-dispatch-slip/render/' + this.id;
     },
   },
 
@@ -54,12 +63,6 @@ export default {
           elem.focus();
           elem.contentWindow.print();
         });
-    },
-  },
-
-  computed: {
-    frameSrc() {
-      return '/cs-adm/order-dispatch-slip/render/' + this.id;
     },
   },
 };

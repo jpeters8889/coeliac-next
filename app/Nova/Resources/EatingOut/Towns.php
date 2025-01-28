@@ -33,6 +33,8 @@ class Towns extends Resource
 
     public static $search = ['town'];
 
+    public static $perPageViaRelationship = 25;
+
     public function fields(NovaRequest $request)
     {
         return [

@@ -32,6 +32,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
     public function register(): void
     {
+        parent::register();
+
         AddressFieldServiceProvider::setGoogleApiKey(config('services.google.maps.admin'));
 
         FieldRegistrar::handle();

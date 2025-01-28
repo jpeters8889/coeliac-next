@@ -1,7 +1,5 @@
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
-import headlessui from '@headlessui/tailwindcss';
-import containerQueries from '@tailwindcss/container-queries';
 
 export default {
   content: [
@@ -119,5 +117,5 @@ export default {
     },
   },
 
-  plugins: [forms, typography, headlessui, containerQueries],
+  plugins: [forms, typography],
 };

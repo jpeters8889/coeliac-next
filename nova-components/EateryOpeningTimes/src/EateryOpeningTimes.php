@@ -36,7 +36,7 @@ class EateryOpeningTimes extends Field
     public $fullWidth = true;
 
     /** @param  Eatery  $resource */
-    public function resolveAttribute($resource, $attribute = null)
+    public function resolveAttribute($resource, $attribute = null): mixed
     {
         $openingTimes = $resource->openingTimes;
 

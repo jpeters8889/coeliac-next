@@ -41,13 +41,18 @@ const logExpandDiscountCode = () => {
   <Disclosure
     as="div"
     class="rounded-sm bg-secondary/50 p-2"
+    v-slot="{ open }"
   >
     <DisclosureButton
-      class="flex w-full items-center justify-between text-left ui-open:mb-2"
+      class="flex w-full items-center justify-between text-left"
+      :class="{ 'mb-2': open }"
       @click="logExpandDiscountCode()"
     >
       <span>Got a discount code?</span>
-      <ChevronDownIcon class="h-6 w-6 ui-open:hidden" />
+      <ChevronDownIcon
+        class="h-6 w-6"
+        :class="{ hidden: open }"
+      />
     </DisclosureButton>
 
     <transition

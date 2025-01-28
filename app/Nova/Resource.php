@@ -52,7 +52,7 @@ abstract class Resource extends NovaResource
         return false;
     }
 
-    public static function fill(NovaRequest $request, $model)
+    public static function fill(NovaRequest $request, $model): array
     {
         self::$deferrableFields = new Collection();
 
@@ -65,7 +65,7 @@ abstract class Resource extends NovaResource
         return parent::fill($request, $model);
     }
 
-    public static function fillForUpdate(NovaRequest $request, $model)
+    public static function fillForUpdate(NovaRequest $request, $model): array
     {
         self::$deferrableFields = new Collection();
 
@@ -78,7 +78,7 @@ abstract class Resource extends NovaResource
         return parent::fill($request, $model);
     }
 
-    protected static function fillFields(NovaRequest $request, $model, $fields)
+    protected static function fillFields(NovaRequest $request, $model, $fields): array
     {
         /** @phpstan-ignore-next-line  */
         self::$deferrableFields = $fields->filter(fn ($field) => property_exists($field, 'deferrable') && $field->deferrable);

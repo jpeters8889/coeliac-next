@@ -32,7 +32,7 @@ class Body extends Field
         return $this->withMeta(['rows' => $rows]);
     }
 
-    protected function resolveAttribute($resource, $attribute)
+    protected function resolveAttribute($resource, $attribute): mixed
     {
         $rawContents = parent::resolveAttribute($resource, $attribute);
 

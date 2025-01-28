@@ -18,7 +18,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
  */
 class ReplyToComment extends Action
 {
-    public $name = 'Approve';
+    public $name = 'Reply & Approve';
 
     public $withoutActionEvents = true;
 

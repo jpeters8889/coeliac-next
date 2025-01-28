@@ -10,21 +10,28 @@
     <div
       class="@sm/peekable:w-3/4 @md/modal:w-3/4 @sm/peekable:py-3 @md/peekable:break-words @lg/modal:break-words break-all md:w-3/4 md/modal:py-3 md:py-3 lg:break-words"
     >
-      <DefaultButton
-        size="sm"
-        component="a"
+      <Button
+        size="small"
+        as="div"
         @click.stop="() => undefined"
-        :href="`/cs-adm/order-dispatch-slip/${fieldValue}`"
-        target="_blank"
       >
-        View Dispatch Slip
-      </DefaultButton>
+        <a
+          :href="`/cs-adm/order-dispatch-slip/${fieldValue}`"
+          target="_blank"
+        >
+          View Dispatch Slip
+        </a>
+      </Button>
     </div>
   </div>
 </template>
 
 <script>
+import { Button } from 'laravel-nova-ui';
+
 export default {
+  components: { Button },
+
   props: ['index', 'resource', 'resourceName', 'resourceId', 'field'],
 
   computed: {
