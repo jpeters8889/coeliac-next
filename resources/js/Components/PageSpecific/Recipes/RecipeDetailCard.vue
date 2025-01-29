@@ -13,6 +13,7 @@ defineProps<{ recipe: RecipeDetailCard }>();
       <Link
         :href="recipe.link"
         class="-m-4 mb-0 flex flex-col"
+        prefetch
       >
         <img
           v-if="recipe.square_image"

@@ -58,6 +58,7 @@ const { subscribeForm } = useNewsletter();
             <Link
               :href="item.url"
               class="leading-6 hover:text-gray-900"
+              prefetch
             >
               {{ item.label }}
             </Link>

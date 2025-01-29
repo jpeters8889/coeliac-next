@@ -23,6 +23,7 @@ defineProps<{ reviews: EaterySimpleReviewResource[] }>();
           <Link
             :href="review.eatery.link"
             class="text-lg font-semibold text-primary-dark hover:text-black hover:underline"
+            prefetch
           >
             {{ review.eatery.name }}
           </Link>

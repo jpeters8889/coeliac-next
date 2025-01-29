@@ -35,6 +35,7 @@ const icon = computed((): string => {
         <Link
           :href="link"
           class="hover:text-primary-dark hover:underline"
+          prefetch
         >
           {{ name }}
         </Link>

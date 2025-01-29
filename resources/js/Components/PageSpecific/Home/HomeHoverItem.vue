@@ -15,6 +15,7 @@ defineProps<{ item: HomeHoverItemType }>();
     <Link
       :href="item.link"
       class="group -m-4"
+      prefetch
     >
       <img
         v-if="

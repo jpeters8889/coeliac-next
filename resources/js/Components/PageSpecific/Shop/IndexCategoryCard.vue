@@ -18,6 +18,7 @@ defineProps<{
     <Link
       class="group block px-4 sm:px-6 2xl:px-0"
       :href="category.link"
+      prefetch
     >
       <div class="relative overflow-hidden rounded-sm xmd:h-[32rem]">
         <div class="absolute inset-0">

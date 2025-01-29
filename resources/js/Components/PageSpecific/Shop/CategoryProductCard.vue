@@ -44,6 +44,7 @@ const addToBasket = () => {
     <Link
       class="aspect-3/4 sm:aspect-none bg-gray-200 sm:h-96"
       :href="product.link"
+      prefetch
     >
       <img
         :src="product.image"

@@ -22,6 +22,7 @@ withDefaults(
     }"
     :href="href"
     class="flex h-full items-center px-4 font-medium"
+    prefetch
   >
     {{ label }}
   </Link>

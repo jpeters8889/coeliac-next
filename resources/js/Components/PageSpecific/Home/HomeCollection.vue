@@ -33,6 +33,7 @@ defineProps<{ collection: HomepageCollection }>();
     <Link
       :href="collection.link"
       class="text-lg font-semibold text-primary-dark transition hover:text-grey-dark"
+      prefetch
     >
       View more {{ collection.title }} items
     </Link>

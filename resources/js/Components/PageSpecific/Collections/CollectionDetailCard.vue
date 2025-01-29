@@ -12,6 +12,7 @@ defineProps<{ collection: CollectionDetailCard }>();
       <Link
         :href="collection.link"
         class="-m-4 mb-0 flex flex-col"
+        prefetch
       >
         <img
           :alt="collection.title"

@@ -58,7 +58,10 @@ const info = computed((): string => {
   <Card
     class="flex flex-col bg-linear-to-br from-primary/50 to-primary-light/50 hover:from-primary/70 hover:to-primary-light/70"
   >
-    <Link :href="town.link">
+    <Link
+      :href="town.link"
+      prefetch="click"
+    >
       <h3 class="mb-4 text-lg font-semibold md:text-xl lg:text-2xl">
         {{ town.name }}
       </h3>

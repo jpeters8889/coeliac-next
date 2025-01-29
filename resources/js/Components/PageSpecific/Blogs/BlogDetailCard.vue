@@ -13,6 +13,7 @@ defineProps<{ blog: BlogDetailCard }>();
       <Link
         :href="blog.link"
         class="-m-4 mb-0 flex flex-col"
+        prefetch
       >
         <img
           :alt="blog.title"

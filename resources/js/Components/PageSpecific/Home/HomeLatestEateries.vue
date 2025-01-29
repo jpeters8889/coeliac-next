@@ -21,6 +21,7 @@ defineProps<{ eateries: EaterySimpleHomeResource[] }>();
         <Link
           :href="eatery.link"
           class="text-lg font-semibold text-primary-dark hover:text-black hover:underline"
+          prefetch
         >
           {{ eatery.name }}
         </Link>

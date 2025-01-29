@@ -11,7 +11,10 @@ defineProps<{ eatery: CountyEateryType }>();
   <Card
     class="flex flex-col space-y-2 bg-linear-to-br from-primary/50 to-primary-light/50"
   >
-    <Link :href="eatery.link">
+    <Link
+      :href="eatery.link"
+      prefetch
+    >
       <h3 class="text-lg font-semibold md:text-xl lg:text-2xl">
         {{ eatery.name }}
       </h3>

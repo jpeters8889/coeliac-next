@@ -53,6 +53,7 @@ watch(
             <Link
               :href="link.href"
               class="block w-full px-2"
+              prefetch
               @click="close()"
             >
               {{ link.label }}

@@ -13,6 +13,7 @@ defineProps<{ item: CollectionItem }>();
       <Link
         :href="item.link"
         class="mb-0 flex flex-col"
+        prefetch
       >
         <img
           v-if="
@@ -32,7 +33,10 @@ defineProps<{ item: CollectionItem }>();
     </div>
 
     <div class="mt-4 flex flex-1 flex-col space-y-3">
-      <Link :href="item.link">
+      <Link
+        :href="item.link"
+        prefetch
+      >
         <h2
           class="text-xl font-semibold text-primary-dark transition hover:text-grey-dark md:text-2xl"
           v-text="item.title"

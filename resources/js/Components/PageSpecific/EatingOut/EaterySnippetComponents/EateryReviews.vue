@@ -37,6 +37,7 @@ defineProps<{
       <Link
         :href="link"
         class="block p-2"
+        prefetch
       >
         Read more about <strong>{{ name }}</strong
         >, {{ reviews.number > 0 ? ' read experiences from other people' : '' }}

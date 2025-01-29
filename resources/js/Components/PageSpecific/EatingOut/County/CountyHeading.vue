@@ -83,6 +83,7 @@ const linkCards = [
         :key="item.title"
         class="shrink-0"
         :href="item.href"
+        prefetch
       >
         <div
           class="flex h-full w-full cursor-pointer flex-col items-center justify-center space-y-2 rounded-sm bg-linear-to-br from-primary/90 to-primary-light/90 p-2 shadow-lg transition duration-500 sm:hover:from-primary/95 sm:hover:to-primary-light/95 md:justify-between md:p-4"

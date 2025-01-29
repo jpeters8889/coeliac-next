@@ -215,6 +215,7 @@ const icon = computed((): string => {
               <Link
                 :href="placeDetails.link"
                 class="block p-2"
+                prefetch
               >
                 Read more about <strong v-text="placeDetails.name" />
                 {{

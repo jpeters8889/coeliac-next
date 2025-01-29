@@ -144,7 +144,10 @@ const countyDescription = (county: EateryCountryList): string => {
               :key="county.slug"
               class="group transform rounded-md border-b bg-white/80 p-3 shadow-inner transition duration-500 hover:scale-105 hover:bg-white/100 hover:shadow-lg"
             >
-              <Link :href="'/wheretoeat/' + county.slug">
+              <Link
+                :href="'/wheretoeat/' + county.slug"
+                prefetch="click"
+              >
                 <h4
                   class="text-md mb-2 transform font-semibold text-primary-dark transition duration-500 group-hover:text-lg md:text-xl md:group-hover:text-xl"
                 >

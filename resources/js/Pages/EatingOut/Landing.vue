@@ -107,7 +107,10 @@ const elemClasses = (index: number): string[] => {
         :key="item.title"
         :class="elemClasses(index)"
       >
-        <Link :href="item.href">
+        <Link
+          :href="item.href"
+          prefetch
+        >
           <div class="flex flex-1 flex-col space-y-4">
             <Icon
               class="mx-auto h-32 w-32 text-secondary"

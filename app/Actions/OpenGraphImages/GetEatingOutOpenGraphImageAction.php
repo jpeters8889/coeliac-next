@@ -16,7 +16,7 @@ class GetEatingOutOpenGraphImageAction
         }
 
         /** @phpstan-ignore-next-line  */
-        if ($model->openGraphImage?->imageUrl()) {
+        if ($model->openGraphImage?->image_url) {
             return $model->openGraphImage->image_url;
         }
 

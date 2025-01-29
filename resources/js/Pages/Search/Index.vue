@@ -301,6 +301,7 @@ watchDebounced(
         <Link
           :href="item.link"
           class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+          prefetch
         >
           <div class="w-full sm:w-1/4 xl:w-1/5">
             <RecipeSquareImage
