@@ -14,7 +14,7 @@ const props = withDefaults(
   }>(),
   {
     absolute: true,
-    size: 'w-6 h-6',
+    size: 'size-6',
     width: 'border-4',
     color: 'white',
     background: false,

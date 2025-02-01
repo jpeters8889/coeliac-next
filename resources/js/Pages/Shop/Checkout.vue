@@ -339,7 +339,7 @@ onMounted(() => {
       :display="showLoader"
       class="fixed h-screen w-screen"
       blur
-      size="w-24 h-24"
+      size="size-24"
       on-top
       color="secondary"
       width="border-[12px]"

@@ -63,7 +63,7 @@ const removeItem = (item: ShopBasketItem) => {
           on-top
           blur
           color="secondary"
-          size="w-12 h-12"
+          size="size-12"
           width="border-8"
         />
         <div

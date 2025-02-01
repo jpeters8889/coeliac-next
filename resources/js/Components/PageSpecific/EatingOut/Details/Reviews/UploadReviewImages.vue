@@ -85,10 +85,8 @@ const displayImage = (image: UploadableImage, index: number): void => {
 };
 
 const processedImages = (): UploadableImage[] =>
-  <UploadableImage[]>(
-    images.value.filter(
-      (image: ProcessingImage | UploadableImage) => !image.processing,
-    )
+  images.value.filter(
+    (image: ProcessingImage | UploadableImage) => !image.processing,
   );
 
 const emitChange = (): void => {
@@ -189,7 +187,7 @@ const deleteImage = (id: string) => {
           >
             <Loader
               :display="true"
-              size="w-16 h-16"
+              size="size-16"
               color="primary"
               :absolute="false"
               width="border-[6px]"

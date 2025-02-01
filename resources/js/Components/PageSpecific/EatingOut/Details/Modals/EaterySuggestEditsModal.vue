@@ -302,7 +302,7 @@ const openReport = () => {
       >
         <Loader
           color="primary"
-          size="w-24 h-24"
+          size="size-24"
           width="border-8"
           :absolute="false"
           display

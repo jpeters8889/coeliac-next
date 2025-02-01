@@ -133,7 +133,7 @@ const filtersForFilterBar: ComputedRef<
       return;
     }
 
-    const url: string = processedUrl.value[key] as string;
+    const url: string = processedUrl.value[key];
 
     rtr[key] = url.split(',');
   });
@@ -247,7 +247,6 @@ const zoomLimit = (): number => {
 const createMaMarkerLayer = (
   markers: Feature[],
 ): VectorLayer<VectorSource> | VectorLayer<Cluster> => {
-  console.log({ zoom: getZoom(), limit: zoomLimit() });
   if (getZoom() < zoomLimit()) {
     return new VectorLayer({
       properties: {
@@ -517,7 +516,7 @@ onMounted(() => {
   >
     <Loader
       class="z-50"
-      size="w-16 h-16"
+      size="size-16"
       width="border-8"
       :display="isLoading"
       background

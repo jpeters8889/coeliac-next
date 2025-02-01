@@ -13,8 +13,10 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
+use Inertia\DeferProp;
 use Inertia\Inertia as BaseInertia;
 use Inertia\LazyProp;
+use Inertia\MergeProp;
 use Inertia\Response;
 use Money\Money;
 use Spatie\SchemaOrg\Schema;
@@ -177,5 +179,15 @@ class Inertia
             ->name($name)
             ->author(Schema::person()->name('Alison Peters'))
             ->toScript();
+    }
+
+    public static function defer(callable $closure): DeferProp
+    {
+        return BaseInertia::defer($closure);
+    }
+
+    public static function merge(mixed $value): MergeProp
+    {
+        return BaseInertia::merge($value);
     }
 }

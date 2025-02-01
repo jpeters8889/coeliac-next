@@ -78,7 +78,7 @@ const icon = computed((): string => {
     <Card class="flex h-screen flex-col space-y-3 p-0!">
       <Loader
         class="z-50"
-        size="w-16 h-16"
+        size="size-16"
         width="border-8"
         color="primary"
         :display="isLoading && !placeDetails"

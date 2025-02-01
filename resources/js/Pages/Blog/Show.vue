@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, WhenVisible } from '@inertiajs/vue3';
 import Comments from '@/Components/PageSpecific/Shared/Comments.vue';
-import { ref, Ref } from 'vue';
+import { nextTick, ref, Ref } from 'vue';
 import { BlogPage } from '@/types/BlogTypes';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { Comment } from '@/types/Types';
 import RenderedString from '@/Components/RenderedString.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import { Page } from '@inertiajs/core';
 
 const props = defineProps<{
   blog: BlogPage;
@@ -29,25 +30,13 @@ const loadMoreComments = () => {
       preserveScroll: true,
       preserveState: true,
       only: ['comments'],
-      onSuccess: (event: {
-        props: { comments?: PaginatedResponse<Comment> };
-      }) => {
-        // eslint-disable-next-line no-restricted-globals
-        history.pushState(
-          null,
-          '',
-          `${window.location.origin}${window.location.pathname}`,
-        );
-
-        if (!event.props.comments) {
-          return true;
+      preserveUrl: true,
+      onSuccess: (event: Page<{ comments?: PaginatedResponse<Comment> }>) => {
+        if (event.props.comments) {
+          allComments.value.data.push(...event.props.comments.data);
+          allComments.value.links = event.props.comments.links;
+          allComments.value.meta = event.props.comments.meta;
         }
-
-        allComments.value.data.push(...event.props.comments.data);
-        allComments.value.links = event.props.comments.links;
-        allComments.value.meta = event.props.comments.meta;
-
-        return false;
       },
     },
   );
@@ -101,7 +90,7 @@ const loadMoreComments = () => {
     />
   </Card>
 
-  <Card v-if="blog.featured_in.length">
+  <Card v-if="blog.featured_in?.length">
     <h3 class="text-base font-semibold text-grey-darkest">
       This blog was featured in
     </h3>

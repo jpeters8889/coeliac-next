@@ -27,7 +27,7 @@ class IndexController
             ->metaImage($getOpenGraphImageForRouteAction->handle('blog'))
             ->render('Blog/Index', [
                 'blogs' => fn () => $getBlogsForBlogIndexAction->handle($tag),
-                'tags' => fn () => $getBlogTagsAction->handle(),
+                'tags' => Inertia::defer(fn () => $getBlogTagsAction->handle()),
                 'activeTag' => $tag->exists ? $tag : null,
             ]);
     }

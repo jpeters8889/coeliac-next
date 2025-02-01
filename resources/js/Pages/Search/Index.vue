@@ -257,7 +257,7 @@ watchDebounced(
         color="primary"
         :display="true"
         :absolute="false"
-        size="w-12 h-12"
+        size="size-12"
       />
     </Card>
 

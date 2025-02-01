@@ -31,23 +31,13 @@ const loadMoreComments = () => {
       preserveScroll: true,
       preserveState: true,
       only: ['comments'],
+      preserveUrl: true,
       onSuccess: (page: Page<{ comments?: PaginatedResponse<Comment> }>) => {
-        // eslint-disable-next-line no-restricted-globals
-        history.pushState(
-          null,
-          '',
-          `${window.location.origin}${window.location.pathname}`,
-        );
-
-        if (!page.props.comments) {
-          return true;
+        if (page.props.comments) {
+          allComments.value.data.push(...page.props.comments.data);
+          allComments.value.links = page.props.comments.links;
+          allComments.value.meta = page.props.comments.meta;
         }
-
-        allComments.value.data.push(...page.props.comments.data);
-        allComments.value.links = page.props.comments.links;
-        allComments.value.meta = page.props.comments.meta;
-
-        return false;
       },
     },
   );

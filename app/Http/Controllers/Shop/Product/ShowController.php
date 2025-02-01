@@ -29,7 +29,7 @@ class ShowController
             ->schema($product->schema()->toScript())
             ->render('Shop/Product', [
                 'product' => new ShopProductResource($product),
-                'reviews' => ShopProductReviewResource::collection($reviews),
+                'reviews' => fn () => ShopProductReviewResource::collection($reviews),
             ]);
     }
 }
