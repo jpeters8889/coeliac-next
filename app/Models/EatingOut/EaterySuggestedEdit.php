@@ -27,7 +27,7 @@ class EaterySuggestedEdit extends Model
         'rejected' => 'bool',
     ];
 
-    /** @return BelongsTo<Eatery, EaterySuggestedEdit> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');

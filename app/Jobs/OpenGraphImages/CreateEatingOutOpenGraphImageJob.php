@@ -8,9 +8,9 @@ use App\Actions\OpenGraphImages\GenerateCountyOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateEateryOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateNationwideBranchOpenGraphImageAction;
 use App\Actions\OpenGraphImages\GenerateTownOpenGraphImageAction;
-use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\OpenGraphActionContract;
 use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryCountry;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
 use App\Models\EatingOut\NationwideBranch;
@@ -32,7 +32,7 @@ class CreateEatingOutOpenGraphImageJob implements ShouldQueue
 
     public int $tries = 2;
 
-    public function __construct(public HasOpenGraphImageContract $model)
+    public function __construct(public Eatery|NationwideBranch|EateryTown|EateryCounty|EateryCountry $model)
     {
         //
     }
@@ -55,8 +55,7 @@ class CreateEatingOutOpenGraphImageJob implements ShouldQueue
         $base64Image = $renderOpenGraphImage->handle($action->handle($this->model)->render());
 
         /** @var OpenGraphImage $openGraphModel */
-        $openGraphModel = $this->model->openGraphImage()->firstOrCreate();
-
+        $openGraphModel = $this->model->openGraphImage()->firstOrCreate(); /** @phpstan-ignore-line */
         $openGraphModel->clearMediaCollection();
         $openGraphModel->addMediaFromBase64($base64Image)->usingFileName('og-image.png')->toMediaCollection();
     }

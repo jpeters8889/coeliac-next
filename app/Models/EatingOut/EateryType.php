@@ -17,7 +17,7 @@ class EateryType extends Model
 
     protected $table = 'wheretoeat_types';
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'type_id');

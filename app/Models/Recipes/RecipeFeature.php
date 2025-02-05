@@ -9,12 +9,12 @@ use App\Contracts\Recipes\FilterableRecipeRelation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/** @implements FilterableRecipeRelation<self> */
+/** @implements FilterableRecipeRelation<$this> */
 class RecipeFeature extends Model implements FilterableRecipeRelation
 {
     use FiltersRecipeRelations;
 
-    /** @return BelongsToMany<Recipe> */
+    /** @return BelongsToMany<Recipe, $this> */
     public function recipes(): BelongsToMany
     {
         return $this->belongsToMany(Recipe::class, 'recipe_assigned_features', 'feature_type_id', 'recipe_id');

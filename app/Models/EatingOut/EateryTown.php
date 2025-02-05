@@ -15,16 +15,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @implements HasOpenGraphImageContract<$this>
+ */
 class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
 {
     use DisplaysMedia;
+
+    /** @use HasOpenGraphImage<$this> */
     use HasOpenGraphImage;
+
     use InteractsWithMedia;
 
     protected $table = 'wheretoeat_towns';
@@ -63,42 +68,43 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
     }
 
     /**
-     * @param  Relation<self>  $query
+     * @param  Builder<static>  $query
      * @param  string  $value
      * @param  ?string  $field
-     * @return Relation<self>
+     * @return Builder<static>
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         if (app(Request::class)->wantsJson()) {
-            return $query->where('id', $value); /** @phpstan-ignore-line */
+            return $query->where('id', $value);
         }
 
         if (app(Request::class)->route('county')) {
-            /** @var EateryCounty $county | string */
-            $county = app(Request::class)->route('county');
-
+            /** @var ?EateryCounty $county | string */
+            $county = app(Request::class)->route('county'); /** @phpstan-ignore-line */
             if ( ! $county instanceof EateryCounty) {
                 $county = EateryCounty::query()->where('slug', $county)->firstOrFail();
             }
 
-            return $county->towns()->where('slug', $value);
+            /** @var Builder<static> $return */
+            $return = $county->towns()->where('slug', $value)->getQuery();
+
+            return $return;
         }
 
-        /** @phpstan-ignore-next-line  */
         return $query->where('slug', $value);
     }
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'town_id');
     }
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function liveEateries(): HasMany
     {
-        /** @var HasMany<Eatery> $relation */
+        /** @var HasMany<Eatery, $this> $relation */
         $relation = $this->hasMany(Eatery::class, 'town_id')->where('live', true);
 
         if ( ! request()->routeIs('eating-out.show')) {
@@ -108,19 +114,19 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
         return $relation;
     }
 
-    /** @return HasMany<NationwideBranch> */
+    /** @return HasMany<NationwideBranch, $this> */
     public function liveBranches(): HasMany
     {
         return $this->hasMany(NationwideBranch::class, 'town_id')->where('live', true);
     }
 
-    /** @return BelongsTo<EateryCounty, EateryTown> */
+    /** @return BelongsTo<EateryCounty, $this> */
     public function county(): BelongsTo
     {
         return $this->belongsTo(EateryCounty::class, 'county_id');
     }
 
-    /** @return HasManyThrough<EateryReview> */
+    /** @return HasManyThrough<EateryReview, Eatery, $this> */
     public function reviews(): HasManyThrough
     {
         return $this->hasManyThrough(EateryReview::class, Eatery::class, 'town_id', 'wheretoeat_id');
@@ -151,7 +157,7 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
         $this->addMediaCollection('primary')->singleFile();
     }
 
-    /** @return Attribute<string | null, never> */
+    /** @return Attribute<non-falsy-string | null, never> */
     public function image(): Attribute
     {
         return Attribute::get(function () { /** @phpstan-ignore-line */

@@ -18,13 +18,13 @@ class ShopOrderReviewInvitation extends Model
         'sent_at' => 'datetime',
     ];
 
-    /** @return BelongsTo<ShopOrder, self> */
+    /** @return BelongsTo<ShopOrder, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(ShopOrder::class, 'order_id');
     }
 
-    /** @return HasOne<ShopOrderReview> */
+    /** @return HasOne<ShopOrderReview, $this> */
     public function review(): HasOne
     {
         return $this->hasOne(ShopOrderReview::class, 'invitation_id');

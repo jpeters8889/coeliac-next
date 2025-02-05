@@ -11,7 +11,7 @@ class EateryVenueType extends Model
 {
     protected $table = 'wheretoeat_venue_types';
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'venue_type_id');

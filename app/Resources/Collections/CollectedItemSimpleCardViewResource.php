@@ -10,7 +10,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin CollectionItem
- * @property CollectionItem $item
  */
 class CollectedItemSimpleCardViewResource extends JsonResource
 {

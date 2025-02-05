@@ -20,7 +20,7 @@ class EateryOpeningTimes extends Model
 
     protected $table = 'wheretoeat_opening_times';
 
-    /** @return BelongsTo<Eatery, EateryOpeningTimes> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');

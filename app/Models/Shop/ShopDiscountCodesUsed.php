@@ -11,13 +11,13 @@ class ShopDiscountCodesUsed extends Model
 {
     protected $table = 'shop_discount_codes_used';
 
-    /** @return BelongsTo<ShopDiscountCode, self> */
+    /** @return BelongsTo<ShopDiscountCode, $this> */
     public function code(): BelongsTo
     {
         return $this->belongsTo(ShopDiscountCode::class, 'discount_id');
     }
 
-    /** @return BelongsTo<ShopOrder, self> */
+    /** @return BelongsTo<ShopOrder, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(ShopOrder::class, 'order_id');

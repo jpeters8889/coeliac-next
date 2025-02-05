@@ -18,13 +18,13 @@ class ShopDiscountCode extends Model
         'end_at' => 'datetime',
     ];
 
-    /** @return BelongsTo<ShopDiscountCodeType, self> */
+    /** @return BelongsTo<ShopDiscountCodeType, $this> */
     public function type(): BelongsTo
     {
         return $this->belongsTo(ShopDiscountCodeType::class, 'type_id');
     }
 
-    /** @return HasManyThrough<ShopOrder> */
+    /** @return HasManyThrough<ShopOrder, ShopDiscountCodesUsed, $this> */
     public function orders(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -37,7 +37,7 @@ class ShopDiscountCode extends Model
         );
     }
 
-    /** @return HasMany<ShopDiscountCodesUsed> */
+    /** @return HasMany<ShopDiscountCodesUsed, $this> */
     public function used(): HasMany
     {
         return $this->hasMany(ShopDiscountCodesUsed::class, 'discount_id');

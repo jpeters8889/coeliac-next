@@ -11,7 +11,7 @@ class EateryAttractionRestaurant extends Model
 {
     protected $table = 'attraction_restaurants';
 
-    /** @return BelongsTo<Eatery, EateryAttractionRestaurant> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id', 'id');

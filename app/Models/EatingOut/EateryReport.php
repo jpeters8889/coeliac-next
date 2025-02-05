@@ -13,13 +13,13 @@ class EateryReport extends Model
 
     protected $casts = ['completed' => 'bool'];
 
-    /** @return BelongsTo<Eatery, EateryReport> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');
     }
 
-    /** @return BelongsTo<NationwideBranch, EateryReport> */
+    /** @return BelongsTo<NationwideBranch, $this> */
     public function branch(): BelongsTo
     {
         return $this->belongsTo(NationwideBranch::class, 'branch_id');

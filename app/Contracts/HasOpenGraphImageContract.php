@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
- * @phpstan-property  OpenGraphImage $openGraphImage
+ * @template T of Model
  *
  * @mixin Model
  */
 interface HasOpenGraphImageContract
 {
-    /** @return MorphOne<OpenGraphImage> */
+    /** @return MorphOne<OpenGraphImage, T> */
     public function openGraphImage(): MorphOne;
 }

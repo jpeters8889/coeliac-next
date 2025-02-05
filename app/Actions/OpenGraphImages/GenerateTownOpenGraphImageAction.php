@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Actions\OpenGraphImages;
 
-use App\Contracts\HasOpenGraphImageContract;
 use App\Contracts\OpenGraphActionContract;
 use App\Enums\EatingOut\EateryType;
+use App\Models\EatingOut\Eatery;
+use App\Models\EatingOut\EateryCountry;
+use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryTown;
+use App\Models\EatingOut\NationwideBranch;
 use Illuminate\View\View;
 
 class GenerateTownOpenGraphImageAction implements OpenGraphActionContract
 {
-    /** @param EateryTown $model */
-    public function handle(HasOpenGraphImageContract $model): View
+    public function handle(Eatery|NationwideBranch|EateryTown|EateryCounty|EateryCountry $model): View
     {
+        /** @var EateryTown $model */
         $model->loadMissing(['media', 'county', 'county.media', 'county.country']);
 
         $eateries = $model->liveEateries()->where('type_id', EateryType::EATERY)->count() + $model->liveBranches()->count();

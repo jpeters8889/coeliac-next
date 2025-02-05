@@ -6,7 +6,6 @@ namespace App\Resources\EatingOut;
 
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryAttractionRestaurant;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,12 +15,6 @@ class EateryBrowseDetailsResource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray(Request $request)
     {
-        /** @var callable(Model): array{name: string, info: string} $formatAttractions */
-        $formatAttractions = fn (EateryAttractionRestaurant $restaurant): array => [
-            'name' => $restaurant->restaurant_name,
-            'info' => $restaurant->info,
-        ];
-
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -31,7 +24,10 @@ class EateryBrowseDetailsResource extends JsonResource
             'type' => $this->type?->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,
-            'restaurants' => $this->restaurants->map($formatAttractions),
+            'restaurants' => $this->restaurants->map(fn (EateryAttractionRestaurant $restaurant): array => [
+                'name' => $restaurant->restaurant_name,
+                'info' => $restaurant->info,
+            ]),
             'info' => $this->info,
             'location' => [
                 'address' => collect(explode("\n", $this->address))

@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace App\Models\Collections;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
+/**
+ * @property string $title
+ * @property string $link
+ * @property string $main_image
+ * @property string $square_image
+ * @property string $meta_description
+ * @property Carbon $lastUpdated
+ */
 class CollectionItem extends Model implements Sortable
 {
     use SortableTrait;
@@ -19,13 +28,13 @@ class CollectionItem extends Model implements Sortable
         'sort_when_creating' => true,
     ];
 
-    /** @return BelongsTo<Collection, CollectionItem> */
+    /** @return BelongsTo<Collection, $this> */
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);
     }
 
-    /** @return MorphTo<Model, CollectionItem> */
+    /** @return MorphTo<Model, $this> */
     public function item(): MorphTo
     {
         return $this->morphTo('item');

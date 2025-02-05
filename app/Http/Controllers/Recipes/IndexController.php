@@ -25,12 +25,16 @@ class IndexController
         GetRecipeFiltersForIndexAction $getRecipeFiltersForIndexAction,
         GetOpenGraphImageForRouteAction $getOpenGraphImageForRouteAction,
     ): Response {
-        /** @var array{filters: string[], meals: string[], freeFrom: string[]} $filters */
-        $filters = [
-            'features' => $request->string('features', '')->explode(',')->filter()->toArray(),
-            'meals' => $request->string('meals', '')->explode(',')->filter()->toArray(),
-            'freeFrom' => $request->string('freeFrom', '')->explode(',')->filter()->toArray(),
-        ];
+        /** @var string[] $features */
+        $features = $request->string('features', '')->explode(',')->filter()->toArray();
+
+        /** @var string[] $meals */
+        $meals = $request->string('meals', '')->explode(',')->filter()->toArray();
+
+        /** @var string[] $freeFrom */
+        $freeFrom = $request->string('freeFrom', '')->explode(',')->filter()->toArray();
+
+        $filters = ['features' => $features, 'meals' => $meals, 'freeFrom' => $freeFrom];
 
         return $inertia
             ->title('Gluten Free Recipes')

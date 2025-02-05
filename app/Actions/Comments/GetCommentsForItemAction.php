@@ -9,6 +9,12 @@ use App\Resources\Comments\CommentCollection;
 
 class GetCommentsForItemAction
 {
+    /**
+     * @template T of HasComments
+     *
+     * @param  T  $item
+     * @return CommentCollection<T>
+     */
     public function handle(HasComments $item): CommentCollection
     {
         return new CommentCollection(

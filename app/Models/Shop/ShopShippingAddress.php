@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopShippingAddress extends Model
 {
-    /** @return BelongsTo<ShopCustomer, self> */
+    /** @return BelongsTo<ShopCustomer, $this> */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(ShopCustomer::class, 'customer_id');
     }
 
-    /** @return HasMany<ShopOrder> */
+    /** @return HasMany<ShopOrder, $this> */
     public function orders(): HasMany
     {
         return $this->hasMany(ShopOrder::class, 'shipping_address_id');

@@ -35,67 +35,67 @@ class ShopOrder extends Model
         });
     }
 
-    /** @return BelongsTo<ShopOrderState, self> */
+    /** @return BelongsTo<ShopOrderState, $this> */
     public function state(): BelongsTo
     {
         return $this->belongsTo(ShopOrderState::class, 'state_id');
     }
 
-    /** @return BelongsTo<ShopCustomer, self> */
+    /** @return BelongsTo<ShopCustomer, $this> */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(ShopCustomer::class);
     }
 
-    /** @return BelongsTo<ShopShippingAddress, self> */
+    /** @return BelongsTo<ShopShippingAddress, $this> */
     public function address(): BelongsTo
     {
         return $this->belongsTo(ShopShippingAddress::class, 'shipping_address_id');
     }
 
-    /** @return HasOne<ShopPayment> */
+    /** @return HasOne<ShopPayment, $this> */
     public function payment(): HasOne
     {
         return $this->hasOne(ShopPayment::class, 'order_id');
     }
 
-    /** @return HasMany<ShopOrderItem> */
+    /** @return HasMany<ShopOrderItem, $this> */
     public function items(): HasMany
     {
         return $this->hasMany(ShopOrderItem::class, 'order_id');
     }
 
-    /** @return BelongsTo<ShopPostageCountry, self> */
+    /** @return BelongsTo<ShopPostageCountry, $this> */
     public function postageCountry(): BelongsTo
     {
         return $this->belongsTo(ShopPostageCountry::class, 'postage_country_id');
     }
 
-    /** @return HasOneThrough<ShopDiscountCode> */
+    /** @return HasOneThrough<ShopDiscountCode, ShopDiscountCodesUsed, $this> */
     public function discountCode(): HasOneThrough
     {
         return $this->hasOneThrough(ShopDiscountCode::class, ShopDiscountCodesUsed::class, 'order_id', 'id', 'id', 'discount_id');
     }
 
-    /** @return HasOne<ShopOrderReviewInvitation> */
+    /** @return HasOne<ShopOrderReviewInvitation, $this> */
     public function reviewInvitation(): HasOne
     {
         return $this->hasOne(ShopOrderReviewInvitation::class, 'order_id');
     }
 
-    /** @return HasMany<ShopOrderReview> */
+    /** @return HasMany<ShopOrderReview, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(ShopOrderReview::class, 'order_id');
     }
 
-    /** @return HasMany<ShopOrderReviewItem> */
+    /** @return HasMany<ShopOrderReviewItem, $this> */
     public function reviewedItems(): HasMany
     {
         return $this->hasMany(ShopOrderReviewItem::class, 'order_id');
     }
 
-    /** @return BelongsToMany<ShopSource> */
+    /** @return BelongsToMany<ShopSource, $this> */
     public function sources(): BelongsToMany
     {
         return $this->belongsToMany(ShopSource::class, 'shop_order_sources', 'order_id', 'source_id');

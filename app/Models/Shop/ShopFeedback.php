@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /** @property ShopProduct $product */
 class ShopFeedback extends Model
 {
-    /** @return BelongsTo<ShopProduct, self> */
+    /** @return BelongsTo<ShopProduct, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(ShopProduct::class, 'product_id');

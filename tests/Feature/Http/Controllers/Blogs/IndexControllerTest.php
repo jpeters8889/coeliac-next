@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\Blogs;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Blogs\GetBlogsForBlogIndexAction;
 use App\Actions\Blogs\GetBlogTagsAction;
 use App\Actions\OpenGraphImages\GetOpenGraphImageForRouteAction;
 use App\Models\Blogs\Blog;
 use App\Models\Blogs\BlogTag;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Support\Header;
 use Inertia\Testing\AssertableInertia as Assert;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
@@ -110,9 +111,23 @@ class IndexControllerTest extends TestCase
     }
 
     #[Test]
-    public function itHasTheTagsInTheResponse(): void
+    public function itDoesntHaveTheBlogTagsByDefault(): void
     {
         $this->get(route('blog.index'))
+            ->assertInertia(
+                fn (Assert $page) => $page
+                    ->component('Blog/Index')
+                    ->missing('tags')
+            );
+    }
+
+    #[Test]
+    public function itHasTheTagsInADeferredResponse(): void
+    {
+        $this->get(route('blog.index'), [
+            Header::PARTIAL_ONLY => 'tags',
+            Header::PARTIAL_COMPONENT => 'Blog/Index',
+        ])
             ->assertInertia(
                 fn (Assert $page) => $page
                     ->component('Blog/Index')
@@ -131,15 +146,15 @@ class IndexControllerTest extends TestCase
     }
 
     #[Test]
-    public function itCallsTheGetBlogTagsAction(): void
+    public function itCallsTheGetBlogTagsActionWhenRequestingTags(): void
     {
-        $this->expectAction(GetBlogTagsAction::class)
-            ->get(route('blog.index'));
-
         $tag = BlogTag::query()->first();
 
         $this->expectAction(GetBlogTagsAction::class)
-            ->get(route('blog.index.tags', ['tag' => $tag->slug]));
+            ->get(route('blog.index.tags', ['tag' => $tag->slug]), [
+                Header::PARTIAL_ONLY => 'tags',
+                Header::PARTIAL_COMPONENT => 'Blog/Index',
+            ]);
     }
 
     #[Test]

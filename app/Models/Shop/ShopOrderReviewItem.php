@@ -13,19 +13,19 @@ class ShopOrderReviewItem extends Model
         'rating' => 'float',
     ];
 
-    /** @return BelongsTo<ShopProduct, self> */
+    /** @return BelongsTo<ShopProduct, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(ShopProduct::class, 'product_id');
     }
 
-    /** @return BelongsTo<ShopOrderReview, self> */
+    /** @return BelongsTo<ShopOrderReview, $this> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(ShopOrderReview::class, 'review_id');
     }
 
-    /** @return BelongsTo<ShopOrder, self> */
+    /** @return BelongsTo<ShopOrder, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(ShopOrder::class, 'order_id');

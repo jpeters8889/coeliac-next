@@ -27,13 +27,13 @@ class EateryReviewImage extends Model
         });
     }
 
-    /** @return BelongsTo<Eatery, EateryReviewImage> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return BelongsTo<EateryReview, EateryReviewImage> */
+    /** @return BelongsTo<EateryReview, $this> */
     public function review(): BelongsTo
     {
         return $this->belongsTo(EateryReview::class, 'wheretoeat_review_id', 'id');

@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
+ * @template T of Model
+ *
  * @mixin Model
  */
 trait CanBeCollected
 {
-    /** @return MorphMany<CollectionItem> */
+    /** @return MorphMany<CollectionItem, T> */
     public function associatedCollections(): MorphMany
     {
         return $this->morphMany(CollectionItem::class, 'item');

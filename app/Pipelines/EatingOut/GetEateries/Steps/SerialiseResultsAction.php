@@ -6,6 +6,7 @@ namespace App\Pipelines\EatingOut\GetEateries\Steps;
 
 use App\Contracts\EatingOut\GetEateriesPipelineActionContract;
 use App\DataObjects\EatingOut\GetEateriesPipelineData;
+use App\DataObjects\EatingOut\PendingEatery;
 use App\Models\EatingOut\Eatery;
 use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,7 +20,7 @@ class SerialiseResultsAction implements GetEateriesPipelineActionContract
         /** @var Collection<int, Eatery> $eateries */
         $eateries = $pipelineData->hydrated;
 
-        /** @var Collection<int, JsonResource> $serialisedEateries */
+        /** @var Collection<int, PendingEatery> $serialisedEateries */
         $serialisedEateries = $eateries->map(fn (Eatery $eatery) => new ($pipelineData->jsonResource)($eatery));
 
         if ($pipelineData->paginator) {
@@ -29,6 +30,7 @@ class SerialiseResultsAction implements GetEateriesPipelineActionContract
             $serialisedEateries = $pipelineData->paginator->setCollection($collection);
         }
 
+        /** @phpstan-ignore-next-line  */
         $pipelineData->serialisedEateries = $serialisedEateries;
 
         return $next($pipelineData);

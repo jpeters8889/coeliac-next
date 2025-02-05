@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Blog */
 class BlogApiResource extends JsonResource
 {
-    /** @return array{id: int, title: string, description: string, meta_description: string, link: string, main_image: string, created_at: string}} */
+    /** @return array{id: int, title: string, description: string, meta_description: string, link: string, main_image: string, created_at: string} */
     public function toArray(Request $request)
     {
         return [

@@ -11,7 +11,6 @@ use App\Models\EatingOut\EateryOpeningTimes;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryReviewImage;
 use App\Models\EatingOut\NationwideBranch;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
@@ -22,12 +21,6 @@ class EateryDetailsResource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray(Request $request)
     {
-        /** @var callable(Model): array{name: string, info: string} $formatAttractions */
-        $formatAttractions = fn (EateryAttractionRestaurant $restaurant): array => [
-            'name' => $restaurant->restaurant_name,
-            'info' => $restaurant->info,
-        ];
-
         /** @var Collection<int, EateryReview> $reviews */
         $reviews = $this->reviews;
 
@@ -62,7 +55,10 @@ class EateryDetailsResource extends JsonResource
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,
             'menu' => $this->gf_menu_link,
-            'restaurants' => $this->restaurants->map($formatAttractions),
+            'restaurants' => $this->restaurants->map(fn (EateryAttractionRestaurant $restaurant): array => [
+                'name' => $restaurant->restaurant_name,
+                'info' => $restaurant->info,
+            ]),
             'info' => $this->info,
             'location' => [
                 'address' => collect(explode("\n", $this->address))

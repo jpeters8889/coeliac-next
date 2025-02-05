@@ -11,7 +11,6 @@ use App\Models\EatingOut\EateryFeature;
 use App\Models\EatingOut\EateryReview;
 use App\Models\EatingOut\EateryType;
 use App\Models\EatingOut\EateryVenueType;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,11 +20,6 @@ class EateryAppResource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray(Request $request)
     {
-        /** @var callable(Model): array{name: string, info: string} $formatAttractions */
-        $formatAttractions = fn (EateryAttractionRestaurant $restaurant): array => [
-            'name' => $restaurant->restaurant_name,
-            'info' => $restaurant->info,
-        ];
 
         $branch = $this->relationLoaded('branch') ? $this->branch : null;
 
@@ -115,7 +109,10 @@ class EateryAppResource extends JsonResource
                 // icon?
                 // image?
             ]) : [],
-            'restaurants' => $this->restaurants->map($formatAttractions),
+            'restaurants' => $this->restaurants->map(fn (EateryAttractionRestaurant $restaurant): array => [
+                'name' => $restaurant->restaurant_name,
+                'info' => $restaurant->info,
+            ]),
             'user_reviews' => $reviews,
         ];
     }

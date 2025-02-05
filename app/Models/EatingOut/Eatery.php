@@ -16,7 +16,6 @@ use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
 use App\Scopes\LiveScope;
 use App\Support\Helpers;
-use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -24,13 +23,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 
 /**
+ * @implements HasOpenGraphImageContract<$this>
+ *
  * @property string | null $average_rating
  * @property string | null $average_expense
  * @property bool | null $has_been_rated
@@ -42,7 +42,10 @@ use Laravel\Scout\Searchable;
 class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
 {
     use HasEateryDetails;
+
+    /** @use HasOpenGraphImage<$this> */
     use HasOpenGraphImage;
+
     use Searchable;
 
     protected $casts = [
@@ -104,7 +107,7 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
         return $searcher->with($params);
     }
 
-    /** @return Builder<self> */
+    /** @return Builder<static> */
     public static function databaseSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): Builder
     {
         return static::query()
@@ -128,27 +131,28 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
     }
 
     /**
-     * @param  Relation<self>  $query
-     * @return Relation<self>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         if (app(Request::class)->wantsJson()) {
-            return $query->where('id', $value); /** @phpstan-ignore-line */
+            return $query->where('id', $value);
         }
 
         if (app(Request::class)->route('town')) {
-            /** @var EateryTown $town | string */
-            $town = app(Request::class)->route('town');
-
+            /** @var EateryTown | string $town */
+            $town = app(Request::class)->route('town'); /** @phpstan-ignore-line */
             if ( ! $town instanceof EateryTown) {
                 $town = EateryTown::query()->where('slug', $town)->firstOrFail();
             }
 
-            return $town->liveEateries()->where('slug', $value);
+            /** @var Builder<static> $return */
+            $return = $town->liveEateries()->where('slug', $value)->getQuery();
+
+            return $return;
         }
 
-        /** @phpstan-ignore-next-line  */
         return $query->where('slug', $value);
     }
 
@@ -166,13 +170,13 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
         ]);
     }
 
-    /** @return HasOne<EateryCuisine> */
+    /** @return HasOne<EateryCuisine, $this> */
     public function cuisine(): HasOne
     {
         return $this->hasOne(EateryCuisine::class, 'id', 'cuisine_id');
     }
 
-    /** @return BelongsToMany<EateryFeature> */
+    /** @return BelongsToMany<EateryFeature, $this> */
     public function features(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -183,37 +187,37 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
         )->withTimestamps();
     }
 
-    /** @return HasMany<NationwideBranch> */
+    /** @return HasMany<NationwideBranch, $this> */
     public function nationwideBranches(): HasMany
     {
         return $this->hasMany(NationwideBranch::class, 'wheretoeat_id');
     }
 
-    /** @return HasOne<NationwideBranch> */
+    /** @return HasOne<NationwideBranch, $this> */
     public function branch(): HasOne
     {
         return $this->hasOne(NationwideBranch::class, 'wheretoeat_id');
     }
 
-    /** @return HasOne<EateryOpeningTimes> */
+    /** @return HasOne<EateryOpeningTimes, $this> */
     public function openingTimes(): HasOne
     {
         return $this->hasOne(EateryOpeningTimes::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return HasMany<EateryReport> */
+    /** @return HasMany<EateryReport, $this> */
     public function reports(): HasMany
     {
         return $this->hasMany(EateryReport::class, 'wheretoeat_id');
     }
 
-    /** @return HasMany<EateryAttractionRestaurant> */
+    /** @return HasMany<EateryAttractionRestaurant, $this> */
     public function restaurants(): HasMany
     {
         return $this->hasMany(EateryAttractionRestaurant::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return HasOne<EateryReview> */
+    /** @return HasOne<EateryReview, $this> */
     public function adminReview(): HasOne
     {
         return $this->hasOne(EateryReview::class, 'wheretoeat_id', 'id')
@@ -221,38 +225,38 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
             ->latest();
     }
 
-    /** @return HasMany<EateryReview> */
+    /** @return HasMany<EateryReview, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(EateryReview::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return HasMany<EateryReviewImage> */
+    /** @return HasMany<EateryReviewImage, $this> */
     public function reviewImages(): HasMany
     {
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return HasMany<EateryReviewImage> */
+    /** @return HasMany<EateryReviewImage, $this> */
     public function approvedReviewImages(): HasMany
     {
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_id', 'id')
             ->whereRelation('review', 'approved', true);
     }
 
-    /** @return HasOne<EateryType> */
+    /** @return HasOne<EateryType, $this> */
     public function type(): HasOne
     {
         return $this->hasOne(EateryType::class, 'id', 'type_id');
     }
 
-    /** @return HasOne<EateryVenueType> */
+    /** @return HasOne<EateryVenueType, $this> */
     public function venueType(): HasOne
     {
         return $this->hasOne(EateryVenueType::class, 'id', 'venue_type_id');
     }
 
-    /** @return HasMany<EaterySuggestedEdit> */
+    /** @return HasMany<EaterySuggestedEdit, $this> */
     public function suggestedEdits(): HasMany
     {
         return $this->hasMany(EaterySuggestedEdit::class, 'wheretoeat_id', 'id');
@@ -341,48 +345,30 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
     }
 
     /**
-     * @param  Builder<Eatery>  $builder
-     * @return Builder<Eatery>
+     * @param  Builder<static>  $builder
+     * @return Builder<static>
      */
     public function scopeHasCategories(Builder $builder, array $categories): Builder
     {
-        /** @var Closure(Builder<Eatery>): Builder<Eatery> $closure */
-        $closure = fn (Builder $builder) => Arr::map(
-            $categories,
-            fn ($category) => $builder->orWhereRelation('type', 'type', $category)
-        );
-
-        return $builder->where($closure);
+        return $builder->where(fn (Builder $builder) => $builder->whereHas('type', fn (Builder $builder) => $builder->whereIn('type', $categories)));
     }
 
     /**
-     * @param  Builder<Eatery>  $builder
-     * @return Builder<Eatery>
+     * @param  Builder<static>  $builder
+     * @return Builder<static>
      */
     public function scopeHasVenueTypes(Builder $builder, array $venueTypes): Builder
     {
-        /** @var Closure(Builder<Eatery>): Builder<Eatery> $closure */
-        $closure = fn (Builder $builder) => Arr::map(
-            $venueTypes,
-            fn ($venueType) => $builder->orWhereRelation('venueType', 'slug', $venueType)
-        );
-
-        return $builder->where($closure);
+        return $builder->where(fn (Builder $builder) => $builder->whereHas('venueType', fn (Builder $builder) => $builder->whereIn('slug', $venueTypes)));
     }
 
     /**
-     * @param  Builder<Eatery>  $builder
-     * @return Builder<Eatery>
+     * @param  Builder<static>  $builder
+     * @return Builder<static>
      */
     public function scopeHasFeatures(Builder $builder, array $features): Builder
     {
-        /** @var Closure(Builder<Eatery>): Builder<Eatery> $closure */
-        $closure = fn (Builder $builder) => Arr::map(
-            $features,
-            fn ($feature) => $builder->orWhereRelation('features', 'slug', $feature)
-        );
-
-        return $builder->where($closure);
+        return $builder->where(fn (Builder $builder) => $builder->whereHas('features', fn (Builder $builder) => $builder->whereIn('slug', $features)));
     }
 
     public function keywords(): array
@@ -432,8 +418,8 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
     }
 
     /**
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     protected function makeAllSearchableUsing(Builder $query): Builder
     {

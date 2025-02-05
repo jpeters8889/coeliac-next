@@ -9,7 +9,6 @@ use App\Models\EatingOut\EateryAttractionRestaurant;
 use App\Models\EatingOut\EateryType;
 use App\Models\EatingOut\EateryVenueType;
 use App\Models\EatingOut\NationwideBranch;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,12 +18,6 @@ class EateryListResource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray(Request $request)
     {
-        /** @var callable(Model): array{name: string, info: string} $formatAttractions */
-        $formatAttractions = fn (EateryAttractionRestaurant $restaurant): array => [
-            'name' => $restaurant->restaurant_name,
-            'info' => $restaurant->info,
-        ];
-
         /** @var NationwideBranch | null $branch */
         $branch = $this->relationLoaded('branch') ? $this->branch : null;
 
@@ -65,7 +58,10 @@ class EateryListResource extends JsonResource
             'type' => $eateryType->name,
             'cuisine' => $this->cuisine?->cuisine,
             'website' => $this->website,
-            'restaurants' => $this->restaurants->map($formatAttractions),
+            'restaurants' => $this->restaurants->map(fn (EateryAttractionRestaurant $restaurant): array => [
+                'name' => $restaurant->restaurant_name,
+                'info' => $restaurant->info,
+            ]),
             'info' => $this->info,
             'location' => [
                 'address' => collect(explode("\n", $this->address))
@@ -79,7 +75,7 @@ class EateryListResource extends JsonResource
                 'number' => $this->reviews->count(),
                 'average' => $this->average_rating,
             ],
-            'distance' => $branch?->distance ?? $this->distance,
+            'distance' => $branch->distance ?? $this->distance,
         ];
     }
 }

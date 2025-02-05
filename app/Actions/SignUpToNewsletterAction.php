@@ -8,7 +8,9 @@ use Spatie\MailcoachSdk\Mailcoach;
 
 class SignUpToNewsletterAction
 {
-    public function __construct(protected Mailcoach $mailcoach) {}
+    public function __construct(protected Mailcoach $mailcoach)
+    {
+    }
 
     public function handle(string $emailAddress): void
     {

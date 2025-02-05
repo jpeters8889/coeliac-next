@@ -33,14 +33,22 @@ use Spatie\SchemaOrg\RestrictedDiet;
 use Spatie\SchemaOrg\Schema;
 
 /**
+ * @implements Collectable<$this>
+ * @implements HasComments<$this>
+ *
  * @property string $servings
  * @property string $portion_size
  */
 class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSearchable
 {
+    /** @use CanBeCollected<$this> */
     use CanBeCollected;
+
     use CanBePublished;
+
+    /** @use Commentable<$this> */
     use Commentable;
+
     use DisplaysDates;
     use DisplaysMedia;
     use HasLegacyImage;
@@ -68,7 +76,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
         return 'slug';
     }
 
-    /** @param Builder<self> $query */
+    /** @param Builder<static> $query */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         $query = $query->where('draft', false);
@@ -91,7 +99,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
         $this->addMediaCollection('body');
     }
 
-    /** @return BelongsToMany<RecipeAllergen> */
+    /** @return BelongsToMany<RecipeAllergen, $this> */
     public function allergens(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -110,7 +118,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
             ->reject(fn (RecipeAllergen $allergen) => $this->allergens->where('allergen', $allergen->allergen)->count() > 0);
     }
 
-    /** @return BelongsToMany<RecipeFeature> */
+    /** @return BelongsToMany<RecipeFeature, $this> */
     public function features(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -121,7 +129,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
         )->withTimestamps();
     }
 
-    /** @return BelongsToMany<RecipeMeal> */
+    /** @return BelongsToMany<RecipeMeal, $this> */
     public function meals(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -183,7 +191,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     }
 
     /**
-     * @return HasOne<RecipeNutrition>
+     * @return HasOne<RecipeNutrition, $this>
      */
     public function nutrition(): HasOne
     {

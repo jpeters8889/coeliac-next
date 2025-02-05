@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopPaymentType extends Model
 {
-    /** @return HasMany<ShopPayment> */
+    /** @return HasMany<ShopPayment, $this> */
     public function payment(): HasMany
     {
         return $this->hasMany(ShopPayment::class, 'payment_type_id');

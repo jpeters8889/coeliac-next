@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopPostageCountryArea extends Model
 {
-    /** @return HasMany<ShopPostageCountry> */
+    /** @return HasMany<ShopPostageCountry, $this> */
     public function countries(): HasMany
     {
         return $this->hasMany(ShopPostageCountry::class, 'postage_area_id');
     }
 
-    /** @return HasMany<ShopPostagePrice> */
+    /** @return HasMany<ShopPostagePrice, $this> */
     public function postagePrices(): HasMany
     {
         return $this->hasMany(ShopPostagePrice::class, 'postage_country_area_id');

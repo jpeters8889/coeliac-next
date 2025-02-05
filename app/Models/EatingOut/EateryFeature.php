@@ -11,7 +11,7 @@ class EateryFeature extends Model
 {
     protected $table = 'wheretoeat_features';
 
-    /** @return BelongsToMany<Eatery> */
+    /** @return BelongsToMany<Eatery, $this> */
     public function eateries(): BelongsToMany
     {
         return $this->belongsToMany(Eatery::class, 'wheretoeat_assigned_features', 'feature_id', 'wheretoeat_id');

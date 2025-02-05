@@ -40,7 +40,7 @@ class EateryReview extends Model
         static::addGlobalScope(new LiveScope('approved'));
     }
 
-    /** @return BelongsTo<Eatery, EateryReview> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id', 'id');
@@ -94,7 +94,7 @@ class EateryReview extends Model
         });
     }
 
-    /** @return HasMany<EateryReviewImage> */
+    /** @return HasMany<EateryReviewImage, $this> */
     public function images(): HasMany
     {
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_review_id', 'id');

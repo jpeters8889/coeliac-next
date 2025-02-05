@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Search extends Model
 {
-    /** @return HasOne<SearchAiResponse> */
+    /** @return HasOne<SearchAiResponse, $this> */
     public function aiResponse(): HasOne
     {
         return $this->hasOne(SearchAiResponse::class);
     }
 
-    /** @return HasMany<SearchHistory> */
+    /** @return HasMany<SearchHistory, $this> */
     public function history(): HasMany
     {
         return $this->hasMany(SearchHistory::class);

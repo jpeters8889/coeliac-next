@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShopPostagePrice extends Model
 {
-    /** @return BelongsTo<ShopPostageCountryArea, self> */
+    /** @return BelongsTo<ShopPostageCountryArea, $this> */
     public function area(): BelongsTo
     {
         return $this->belongsTo(ShopPostageCountryArea::class, 'postage_country_area_id');
     }
 
-    /** @return BelongsTo<ShopShippingMethod, self> */
+    /** @return BelongsTo<ShopShippingMethod, $this> */
     public function shippingMethod(): BelongsTo
     {
         return $this->belongsTo(ShopShippingMethod::class, 'shipping_method_id');

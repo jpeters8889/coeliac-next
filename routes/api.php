@@ -15,7 +15,7 @@ Route::get('app-request-token', fn () => ['token' => csrf_token()]);
 Route::get('popup', function (GetPopupCtaAction $getPopupCtaAction) {
     $popup = $getPopupCtaAction->handle();
 
-    if( ! $popup) {
+    if ( ! $popup) {
         return [];
     }
 

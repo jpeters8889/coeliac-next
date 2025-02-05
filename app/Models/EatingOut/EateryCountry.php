@@ -16,13 +16,13 @@ class EateryCountry extends Model
 {
     protected $table = 'wheretoeat_countries';
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'country_id');
     }
 
-    /** @return HasMany<EateryCounty> */
+    /** @return HasMany<EateryCounty, $this> */
     public function counties(): HasMany
     {
         return $this->hasMany(EateryCounty::class, 'country_id');

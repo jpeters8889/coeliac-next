@@ -14,7 +14,7 @@ class ShopProductPrice extends Model
         'end_at' => 'datetime',
     ];
 
-    /** @return BelongsTo<ShopProduct, self> */
+    /** @return BelongsTo<ShopProduct, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(ShopProduct::class, 'product_id');

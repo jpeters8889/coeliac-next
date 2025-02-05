@@ -29,7 +29,7 @@ use Illuminate\Support\Arr;
 class GetFilteredEateriesPipeline
 {
     /**
-     * @param  array{categories: string[], features: string[], venueTypes: string []}  $filters
+     * @param  array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null }  $filters
      * @param  class-string<JsonResource>  $jsonResource
      * @return LengthAwarePaginator<JsonResource>
      */
@@ -70,6 +70,7 @@ class GetFilteredEateriesPipeline
 
         Arr::forget($filters, ['search', 'range', 'lat', 'lng']);
 
+        /** @var array{categories: string[] | null, features: string[] | null, venueTypes: string [] | null, county: string | int | null } $filters */
         $pipelineData = new GetEateriesPipelineData(
             filters: $filters,
             searchTerm: $searchTerm,

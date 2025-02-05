@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopShippingMethod extends Model
 {
-    /** @return HasMany<ShopProduct> */
+    /** @return HasMany<ShopProduct, $this> */
     public function products(): HasMany
     {
         return $this->hasMany(ShopProduct::class, 'shipping_method_id');
     }
 
-    /** @return HasMany<ShopPostagePrice> */
+    /** @return HasMany<ShopPostagePrice, $this> */
     public function prices(): HasMany
     {
         return $this->hasMany(ShopPostagePrice::class, 'shipping_method_id');

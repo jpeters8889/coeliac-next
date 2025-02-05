@@ -12,19 +12,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class ShopOrderItem extends Model
 {
-    /** @return BelongsTo<ShopOrder, self> */
+    /** @return BelongsTo<ShopOrder, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(ShopOrder::class, 'order_id');
     }
 
-    /** @return BelongsTo<ShopProduct, self> */
+    /** @return BelongsTo<ShopProduct, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(ShopProduct::class, 'product_id');
     }
 
-    /** @return BelongsTo<ShopProductVariant, self> */
+    /** @return BelongsTo<ShopProductVariant, $this> */
     public function variant(): BelongsTo
     {
         return $this->belongsTo(ShopProductVariant::class, 'product_variant_id');

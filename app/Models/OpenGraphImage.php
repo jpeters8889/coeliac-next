@@ -19,7 +19,7 @@ class OpenGraphImage extends Model implements HasMedia
     use InteractsWithMedia;
 
     /**
-     * @return MorphTo<HasOpenGraphImageContract, self>
+     * @return MorphTo<HasOpenGraphImageContract, $this>
      */
     public function model(): MorphTo /** @phpstan-ignore-line  */
     {

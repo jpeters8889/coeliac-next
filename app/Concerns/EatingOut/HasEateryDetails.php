@@ -59,25 +59,25 @@ trait HasEateryDetails
             ->toString();
     }
 
-    /** @return BelongsTo<Eatery, self> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id', 'id');
     }
 
-    /** @return BelongsTo<EateryTown, self> */
+    /** @return BelongsTo<EateryTown, $this> */
     public function town(): BelongsTo
     {
         return $this->belongsTo(EateryTown::class, 'town_id');
     }
 
-    /** @return BelongsTo<EateryCounty, self> */
+    /** @return BelongsTo<EateryCounty, $this> */
     public function county(): BelongsTo
     {
         return $this->belongsTo(EateryCounty::class, 'county_id');
     }
 
-    /** @return BelongsTo<EateryCountry, self> */
+    /** @return BelongsTo<EateryCountry, $this> */
     public function country(): BelongsTo
     {
         return $this->belongsTo(EateryCountry::class, 'country_id');
@@ -89,7 +89,7 @@ trait HasEateryDetails
         return Attribute::get(fn () => Str::of($this->address)->explode('<br />')->join(', '));
     }
 
-    /** @return Attribute<string | null, never> */
+    /** @return Attribute<non-falsy-string | null, never> */
     public function fullLocation(): Attribute
     {
         return Attribute::get(function () {
@@ -109,7 +109,7 @@ trait HasEateryDetails
         });
     }
 
-    /** @return Attribute<string | null, never> */
+    /** @return Attribute<non-falsy-string | null, never> */
     public function shortLocation(): Attribute
     {
         return Attribute::get(function () {
@@ -129,8 +129,8 @@ trait HasEateryDetails
     }
 
     /**
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeNationwide(Builder $query): Builder
     {
@@ -138,8 +138,8 @@ trait HasEateryDetails
     }
 
     /**
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeNotNationwide(Builder $query): Builder
     {

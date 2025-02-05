@@ -11,6 +11,8 @@ use App\Concerns\LinkableModel;
 use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Models\Blogs\Blog;
+use App\Models\Recipes\Recipe;
 use App\Scopes\LiveScope;
 use App\Support\Collections\Collectable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -63,7 +65,7 @@ class Collection extends Model implements HasMedia
         $this->addMediaCollection('primary')->singleFile()->withResponsiveImages();
     }
 
-    /** @return HasMany<CollectionItem> */
+    /** @return HasMany<CollectionItem, $this> */
     public function items(): HasMany
     {
         return $this->hasMany(CollectionItem::class)->orderBy('position');
@@ -74,6 +76,7 @@ class Collection extends Model implements HasMedia
         return 'collection';
     }
 
+    /** @param Collectable<Recipe | Blog> $item */
     public function addItem(Collectable $item, string $description, ?int $position = null): static
     {
         $this->items()->create([

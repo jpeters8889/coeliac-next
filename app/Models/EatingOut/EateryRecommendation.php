@@ -15,7 +15,7 @@ class EateryRecommendation extends Model
         'completed' => 'bool',
     ];
 
-    /** @return BelongsTo<EateryVenueType, EateryRecommendation> */
+    /** @return BelongsTo<EateryVenueType, $this> */
     public function venueType(): BelongsTo
     {
         return $this->belongsTo(EateryVenueType::class, 'place_venue_type_id');

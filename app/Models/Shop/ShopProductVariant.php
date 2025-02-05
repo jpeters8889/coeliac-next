@@ -20,7 +20,7 @@ class ShopProductVariant extends Model
         static::addGlobalScope(new LiveScope());
     }
 
-    /** @return BelongsTo<ShopProduct, self> */
+    /** @return BelongsTo<ShopProduct, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(ShopProduct::class);

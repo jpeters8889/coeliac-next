@@ -44,7 +44,7 @@ class GetController
         $eatery->load([
             'adminReview', 'adminReview.images', 'reviewImages', 'reviews.images', 'restaurants', 'features', 'openingTimes',
             'reviews' => function (HasMany $builder) {
-                /** @var HasMany<EateryReview> $builder */
+                /** @var HasMany<EateryReview, Eatery> $builder */
                 return $builder->latest()->where('admin_review', false);
             },
         ]);

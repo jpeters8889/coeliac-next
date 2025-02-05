@@ -14,12 +14,14 @@ class PrepareResource
 {
     /**
      * @param  LengthAwarePaginator<IsSearchable>  $paginator
+     * @return LengthAwarePaginator<SearchableItemResource>
      */
     public function handle(LengthAwarePaginator $paginator, Closure $next): mixed
     {
         /** @var Collection<int, SearchableItemResource> $items */
         $items = $paginator->map(fn (IsSearchable $searchable) => SearchableItemResource::make($searchable));
 
+        /** @var LengthAwarePaginator<SearchableItemResource> $paginator */
         $paginator->setCollection($items);
 
         return $next($paginator);

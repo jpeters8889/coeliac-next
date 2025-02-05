@@ -54,6 +54,7 @@ class MailChannel extends BaseMailChannel
 
     protected function buildMjml(MjmlMessage $message): string
     {
+        /** @phpstan-ignore-next-line  */
         $rawMessage = view($message->mjml, $message->data())->render();
 
         return Mjml::new()->minify()->toHtml($rawMessage);
@@ -61,14 +62,10 @@ class MailChannel extends BaseMailChannel
 
     /**
      * @param  MjmlMessage  $message
-     * @return array|string
+     * @return array
      */
     protected function buildView($message)
     {
-        if (property_exists($message, 'mjml')) {
-            return ['html' => new HtmlString($this->buildMjml($message))];
-        }
-
-        return parent::buildView($message);
+        return ['html' => new HtmlString($this->buildMjml($message))];
     }
 }

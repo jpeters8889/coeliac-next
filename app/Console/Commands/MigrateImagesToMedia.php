@@ -92,9 +92,9 @@ class MigrateImagesToMedia extends Command
         $blog->addMediaFromUrl($blog->main_legacy_image)->toMediaCollection('primary');
 
         $blog->images()
-            ->where('image_category_id', Image::IMAGE_CATEGORY_GENERAL)
+            ->where('image_category_id', Image::IMAGE_CATEGORY_GENERAL) /** @phpstan-ignore-line */
             ->get()
-            ->each(function (ImageAssociations $image) use ($blog): void {
+            ->each(function (ImageAssociations $image) use ($blog): void { /** @phpstan-ignore-line */
                 $media = $blog->addMediaFromUrl($image->image->image_url)->toMediaCollection('body');
 
                 $contents = Str::of($blog->body)

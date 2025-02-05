@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopPostageCountry extends Model
 {
-    /** @return BelongsTo<ShopPostageCountryArea, self> */
+    /** @return BelongsTo<ShopPostageCountryArea, $this> */
     public function area(): BelongsTo
     {
         return $this->belongsTo(ShopPostageCountryArea::class, 'postage_area_id');
     }
 
-    /** @return HasMany<ShopOrder> */
+    /** @return HasMany<ShopOrder, $this> */
     public function orders(): HasMany
     {
         return $this->hasMany(ShopOrder::class, 'postage_country_id');

@@ -21,23 +21,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Laravel\Scout\Searchable;
 
 /**
+ * @implements HasOpenGraphImageContract<$this>
+ *
  * @property Eatery $eatery
  */
 class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSearchable
 {
     use HasEateryDetails;
+
+    /** @use HasOpenGraphImage<$this> */
     use HasOpenGraphImage;
+
     use Searchable;
 
     protected $table = 'wheretoeat_nationwide_branches';
 
-    protected $appends = ['formatted_address', 'full_location'];
+    /** @phpstan-ignore-next-line */
+    protected $appends = ['formattedAddress', 'fullLocation'];
 
     protected $casts = [
         'lat' => 'float',
@@ -87,7 +92,7 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
         return $searcher->with($params);
     }
 
-    /** @return Builder<self> */
+    /** @return Builder<static> */
     public static function databaseSearchAroundLatLng(LatLng $latLng, int|float $radius = 2): Builder
     {
         return static::query()
@@ -108,7 +113,7 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
             ->orderBy('distance');
     }
 
-    /** @return BelongsTo<Eatery, NationwideBranch> */
+    /** @return BelongsTo<Eatery, $this> */
     public function eatery(): BelongsTo
     {
         return $this->belongsTo(Eatery::class, 'wheretoeat_id');
@@ -125,16 +130,15 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
     }
 
     /**
-     * @param  Relation<self>  $query
-     * @return Relation<self>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         if (app(Request::class)->wantsJson()) {
-            return $query->where('id', $value); /** @phpstan-ignore-line */
+            return $query->where('id', $value);
         }
 
-        /** @phpstan-ignore-next-line  */
         return $query->where('slug', $value);
     }
 
@@ -149,7 +153,7 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
             'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town && $this->county ? $this->town->town . ', ' . $this->county->county : '',
             'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
             'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
-            'info' => $this->eatery ? $this->eatery->info : '', /** @phpstan-ignore-line */
+            'info' => $this->eatery->info,
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -173,33 +177,33 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
     }
 
     /**
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<static>  $query
+     * @return Builder<static>
      */
     protected function makeAllSearchableUsing(Builder $query)
     {
         return $query->with(['town', 'county', 'country']);
     }
 
-    /** @return HasMany<EateryReport> */
+    /** @return HasMany<EateryReport, $this> */
     public function reports(): HasMany
     {
         return $this->hasMany(EateryReport::class, 'branch_id');
     }
 
-    /** @return HasManyThrough<EateryReview> */
+    /** @return HasManyThrough<EateryReview, Eatery, $this> */
     public function reviews(): HasManyThrough
     {
         return $this->hasManyThrough(EateryReview::class, Eatery::class, 'id', 'wheretoeat_id', 'id', 'id');
     }
 
-    /** @return HasManyThrough<EateryReviewImage> */
+    /** @return HasManyThrough<EateryReviewImage, Eatery, $this> */
     public function reviewImages(): HasManyThrough
     {
         return $this->hasManyThrough(EateryReviewImage::class, Eatery::class, 'id', 'wheretoeat_id', 'id', 'id');
     }
 
-    /** @return Attribute<string, never> */
+    /** @return Attribute<non-falsy-string, never> */
     public function fullName(): Attribute
     {
         return Attribute::get(function () {

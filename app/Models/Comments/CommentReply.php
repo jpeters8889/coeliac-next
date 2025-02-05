@@ -12,7 +12,7 @@ class CommentReply extends Model
 {
     use DisplaysDates;
 
-    /** @return BelongsTo<Comment, CommentReply> */
+    /** @return BelongsTo<Comment, $this> */
     public function comment(): BelongsTo
     {
         return $this->belongsTo(Comment::class);

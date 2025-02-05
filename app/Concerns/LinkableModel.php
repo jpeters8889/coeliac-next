@@ -21,7 +21,7 @@ trait LinkableModel
         $this->append('link');
     }
 
-    /** @return Attribute<string, never> */
+    /** @return Attribute<non-falsy-string, never> */
     public function link(): Attribute
     {
         return Attribute::get(fn () => '/' . $this->linkRoot() . '/' . $this->linkColumn());

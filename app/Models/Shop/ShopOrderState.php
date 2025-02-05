@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopOrderState extends Model
 {
-    /** @return HasMany<ShopOrder> */
+    /** @return HasMany<ShopOrder, $this> */
     public function orders(): HasMany
     {
         return $this->hasMany(ShopOrder::class, 'state_id');

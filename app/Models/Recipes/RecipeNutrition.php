@@ -11,7 +11,7 @@ class RecipeNutrition extends Model
 {
     protected $hidden = ['id', 'created_at', 'updated_at'];
 
-    /** @return BelongsTo<Recipe, RecipeNutrition> */
+    /** @return BelongsTo<Recipe, $this> */
     public function recipe(): BelongsTo
     {
         return $this->belongsTo(Recipe::class);

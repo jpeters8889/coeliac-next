@@ -27,7 +27,7 @@ class NotificationEmail extends Model
         });
     }
 
-    /** @return BelongsTo<ShopCustomer, NotificationEmail> */
+    /** @return BelongsTo<ShopCustomer, $this> */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(ShopCustomer::class, 'user_id');

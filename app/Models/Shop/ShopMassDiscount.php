@@ -15,7 +15,7 @@ class ShopMassDiscount extends Model
         'end_at' => 'datetime',
     ];
 
-    /** @return BelongsToMany<ShopCategory> */
+    /** @return BelongsToMany<ShopCategory, $this> */
     public function assignedCategories(): BelongsToMany
     {
         return $this->belongsToMany(

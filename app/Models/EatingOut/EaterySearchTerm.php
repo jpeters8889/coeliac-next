@@ -49,7 +49,7 @@ class EaterySearchTerm extends Model
         $this->touch();
     }
 
-    /** @return HasMany<EaterySearch> */
+    /** @return HasMany<EaterySearch, $this> */
     public function searches(): HasMany
     {
         return $this->hasMany(EaterySearch::class, 'search_term_id');

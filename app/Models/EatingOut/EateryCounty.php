@@ -18,10 +18,16 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
+/**
+ * @implements HasOpenGraphImageContract<$this>
+ */
 class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
 {
     use DisplaysMedia;
+
+    /** @use HasOpenGraphImage<$this> */
     use HasOpenGraphImage;
+
     use InteractsWithMedia;
 
     protected $table = 'wheretoeat_counties';
@@ -43,44 +49,41 @@ class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
         $this->addMediaCollection('primary')->singleFile();
     }
 
-    /** @return HasMany<EateryTown> */
+    /** @return HasMany<EateryTown, $this> */
     public function activeTowns(): HasMany
     {
         return $this->hasMany(EateryTown::class, 'county_id')
-            /** @phpstan-ignore-next-line  */
-            ->where(function (Builder $builder) {
-                return $builder
-                    ->whereHas('liveEateries')
-                    ->orWhereHas('liveBranches');
-            })
+            ->where(fn (Builder $builder) => $builder
+                ->whereHas('liveEateries')
+                ->orWhereHas('liveBranches'))
             ->orderBy('town');
     }
 
-    /** @return HasMany<Eatery> */
+    /** @return HasMany<Eatery, $this> */
     public function eateries(): HasMany
     {
         return $this->hasMany(Eatery::class, 'county_id');
     }
 
-    /** @return HasMany<NationwideBranch> */
+    /** @return HasMany<NationwideBranch, $this> */
     public function nationwideBranches(): HasMany
     {
         return $this->hasMany(NationwideBranch::class, 'county_id');
     }
 
-    /** @return HasManyThrough<EateryReview> */
+    /** @return HasManyThrough<EateryReview, Eatery, $this> */
     public function reviews(): HasManyThrough
     {
         return $this->hasManyThrough(EateryReview::class, Eatery::class, 'county_id', 'wheretoeat_id');
     }
 
-    /** @return HasMany<EateryTown> */
+    /** @return HasMany<EateryTown, $this> */
     public function towns(): HasMany
     {
         return $this->hasMany(EateryTown::class, 'county_id');
     }
 
-    /** @return BelongsTo<EateryCountry, EateryCounty> */
+    /** @return BelongsTo<EateryCountry, $this> */
     public function country(): BelongsTo
     {
         return $this->belongsTo(EateryCountry::class, 'country_id');
@@ -97,7 +100,7 @@ class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
         ];
     }
 
-    /** @return Attribute<string | null, never> */
+    /** @return Attribute<non-falsy-string | null, never> */
     public function image(): Attribute
     {
         return Attribute::get(function () { /** @phpstan-ignore-line */

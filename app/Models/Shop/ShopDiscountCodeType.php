@@ -11,7 +11,7 @@ class ShopDiscountCodeType extends Model
 {
     protected $table = 'shop_discount_code_types';
 
-    /** @return HasMany<ShopDiscountCode> */
+    /** @return HasMany<ShopDiscountCode, $this> */
     public function codes(): HasMany
     {
         return $this->hasMany(ShopDiscountCode::class, 'type_id');

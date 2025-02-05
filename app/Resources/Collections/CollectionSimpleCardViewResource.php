@@ -15,7 +15,6 @@ class CollectionSimpleCardViewResource extends JsonResource
     /** @return array{title: string, link: string, description: string} */
     public function toArray(Request $request)
     {
-        /** @phpstan-ignore-next-line  */
         $this->load(['items' => fn (Relation $relation) => $relation->take(3), 'items.item', 'items.item.media']);
 
         return [

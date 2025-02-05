@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SearchHistory extends Model
 {
-    /** @return BelongsTo<Search, self> */
+    /** @return BelongsTo<Search, $this> */
     protected function search(): BelongsTo
     {
         return $this->belongsTo(Search::class);

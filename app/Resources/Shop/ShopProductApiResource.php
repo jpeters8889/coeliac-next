@@ -14,7 +14,7 @@ use Money\Money;
 /** @mixin ShopProduct */
 class ShopProductApiResource extends JsonResource
 {
-    /** @return array{id: int, title: string, description: string, meta_description: string, link: string, main_image: string, price: string, created_at: Carbon}} */
+    /** @return array{id: int, title: string, description: string, meta_description: string, link: string, main_image: string, price: string, created_at: Carbon} */
     public function toArray(Request $request)
     {
         return [

@@ -11,7 +11,7 @@ class ShopPaymentResponse extends Model
 {
     protected $casts = ['response' => 'json'];
 
-    /** @return BelongsTo<ShopPayment, self> */
+    /** @return BelongsTo<ShopPayment, $this> */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(ShopPayment::class, 'payment_id');

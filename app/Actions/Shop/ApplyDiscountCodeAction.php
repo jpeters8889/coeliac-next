@@ -22,18 +22,16 @@ class ApplyDiscountCodeAction
             return $discountCode->deduction;
         }
 
-        if ($discountCode->type_id === DiscountCodeType::PERCENTAGE) {
-            /** @var int $runningTotal */
-            $runningTotal = ShopOrderItem::query()
-                ->whereRelation('order', function (Builder $builder) use ($basketToken) {
-                    /** @var Builder<ShopOrder> $builder */
-                    return $builder
-                        ->where('state_id', OrderState::BASKET)
-                        ->where('token', $basketToken);
-                })
-                ->sum(DB::raw('product_price * quantity'));
+        /** @var int $runningTotal */
+        $runningTotal = ShopOrderItem::query()
+            ->whereRelation('order', function (Builder $builder) use ($basketToken) {
+                /** @var Builder<ShopOrder> $builder */
+                return $builder
+                    ->where('state_id', OrderState::BASKET)
+                    ->where('token', $basketToken);
+            })
+            ->sum(DB::raw('product_price * quantity'));
 
-            return ($runningTotal / 100) * $discountCode->deduction;
-        }
+        return ($runningTotal / 100) * $discountCode->deduction;
     }
 }

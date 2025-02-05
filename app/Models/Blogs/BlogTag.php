@@ -13,7 +13,7 @@ class BlogTag extends Model
 {
     use HasSlug;
 
-    /** @return BelongsToMany<Blog> */
+    /** @return BelongsToMany<Blog, $this> */
     public function blogs(): BelongsToMany
     {
         return $this->belongsToMany(Blog::class, 'blog_assigned_tags', 'tag_id', 'blog_id');

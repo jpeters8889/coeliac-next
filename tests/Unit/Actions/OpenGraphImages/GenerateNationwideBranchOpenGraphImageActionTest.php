@@ -16,8 +16,10 @@ class GenerateNationwideBranchOpenGraphImageActionTest extends TestCase
     #[Test]
     public function itReturnsTheView(): void
     {
-        $this->create(Eatery::class);
-        $branch = $this->create(NationwideBranch::class);
+        $eatery = $this->create(Eatery::class);
+        $branch = $this->create(NationwideBranch::class, [
+            'wheretoeat_id' => $eatery->id,
+        ]);
 
         $action = app(GenerateNationwideBranchOpenGraphImageAction::class)->handle($branch);
 

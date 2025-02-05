@@ -11,7 +11,7 @@ class EaterySearch extends Model
 {
     protected $table = 'wheretoeat_searches';
 
-    /** @return BelongsTo<EaterySearchTerm, EaterySearch> */
+    /** @return BelongsTo<EaterySearchTerm, $this> */
     public function term(): BelongsTo
     {
         return $this->belongsTo(EaterySearchTerm::class, 'search_term_id');

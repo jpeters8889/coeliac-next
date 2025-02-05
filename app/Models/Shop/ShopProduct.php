@@ -71,43 +71,43 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
         $this->addMediaCollection('primary')->singleFile();
     }
 
-    /** @return BelongsToMany<ShopCategory> */
+    /** @return BelongsToMany<ShopCategory, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(ShopCategory::class, 'shop_product_categories', 'product_id', 'category_id');
     }
 
-    /** @return BelongsTo<ShopShippingMethod, self> */
+    /** @return BelongsTo<ShopShippingMethod, $this> */
     public function shippingMethod(): BelongsTo
     {
         return $this->belongsTo(ShopShippingMethod::class);
     }
 
-    /** @return HasMany<ShopProductVariant> */
+    /** @return HasMany<ShopProductVariant, $this> */
     public function variants(): HasMany
     {
         return $this->hasMany(ShopProductVariant::class, 'product_id');
     }
 
-    /** @return HasMany<ShopProductPrice> */
+    /** @return HasMany<ShopProductPrice, $this> */
     public function prices(): HasMany
     {
         return $this->hasMany(ShopProductPrice::class, 'product_id');
     }
 
-    /** @return HasMany<ShopFeedback> */
+    /** @return HasMany<ShopFeedback, $this> */
     public function feedback(): HasMany
     {
         return $this->hasMany(ShopFeedback::class, 'product_id');
     }
 
-    /** @return HasMany<ShopOrderReviewItem> */
+    /** @return HasMany<ShopOrderReviewItem, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(ShopOrderReviewItem::class, 'product_id');
     }
 
-    /** @return BelongsToMany<TravelCardSearchTerm> */
+    /** @return BelongsToMany<TravelCardSearchTerm, $this> */
     public function travelCardSearchTerms(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -270,7 +270,7 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
                         ->map(
                             fn (ShopOrderReviewItem $review) => Schema::review()
                                 ->reviewRating(Schema::rating()->ratingValue($review->rating)->bestRating(5))
-                                ->author(Schema::person()->name($review->parent?->name ?? ''))
+                                ->author(Schema::person()->name($review->parent?->name ?: ''))
                         )
                         ->toArray();
 

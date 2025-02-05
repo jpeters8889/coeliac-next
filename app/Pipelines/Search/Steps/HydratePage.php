@@ -54,6 +54,7 @@ class HydratePage
             return $res;
         });
 
+        /** @var LengthAwarePaginator<IsSearchable> $paginator */
         $paginator->setCollection($hydratedResults);
 
         return $next($paginator);

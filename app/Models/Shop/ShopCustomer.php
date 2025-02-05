@@ -12,7 +12,7 @@ class ShopCustomer extends Model
 {
     use Notifiable;
 
-    /** @return HasMany<ShopShippingAddress> */
+    /** @return HasMany<ShopShippingAddress, $this> */
     public function addresses(): HasMany
     {
         return $this->hasMany(ShopShippingAddress::class, 'customer_id');

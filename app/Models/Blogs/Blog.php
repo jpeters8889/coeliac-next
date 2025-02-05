@@ -28,11 +28,20 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\SchemaOrg\Blog as BlogSchema;
 use Spatie\SchemaOrg\Schema;
 
+/**
+ * @implements Collectable<$this>
+ * @implements HasComments<$this>
+ */
 class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearchable
 {
+    /** @use CanBeCollected<$this> */
     use CanBeCollected;
+
     use CanBePublished;
+
+    /** @use Commentable<$this> */
     use Commentable;
+
     use DisplaysDates;
     use DisplaysMedia;
     use HasLegacyImage;
@@ -60,7 +69,7 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
         return 'slug';
     }
 
-    /** @param Builder<self> $query */
+    /** @param Builder<static> $query */
     public function resolveRouteBindingQuery($query, $value, $field = null)
     {
         $query = $query->where('draft', false);
@@ -81,7 +90,7 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
         $this->addMediaCollection('body');
     }
 
-    /** @return BelongsToMany<BlogTag> */
+    /** @return BelongsToMany<BlogTag, $this> */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(

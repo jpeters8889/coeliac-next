@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controllers\EatingOut\Review;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\CreateEateryReviewAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
@@ -15,6 +13,8 @@ use App\Models\EatingOut\NationwideBranch;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Support\Arr;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\RequestFactories\EateryCreateReviewRequestFactory;
 use Tests\TestCase;
 
@@ -298,23 +298,18 @@ class StoreControllerTest extends TestCase
     {
         return [
             'normal eatery' => [
-                function (self $test, ?string $eatery = null): string {
-                    return route('eating-out.show.reviews.create', [
-                        'county' => $test->county->slug,
-                        'town' => $test->town->slug,
-                        'eatery' => $eatery ?? $test->eatery->slug,
-                    ]);
-                },
-                fn (array $data = []): EateryCreateReviewRequestFactory
-                => EateryCreateReviewRequestFactory::new($data),
+                fn (self $test, ?string $eatery = null): string => route('eating-out.show.reviews.create', [
+                    'county' => $test->county->slug,
+                    'town' => $test->town->slug,
+                    'eatery' => $eatery ?? $test->eatery->slug,
+                ]),
+                fn (array $data = []): EateryCreateReviewRequestFactory => EateryCreateReviewRequestFactory::new($data),
                 function (): void {},
             ],
             'nationwide eatery' => [
-                function (self $test, ?string $eatery = null): string {
-                    return route('eating-out.nationwide.show.reviews.create', [
-                        'eatery' => $eatery ?? $test->eatery->slug,
-                    ]);
-                },
+                fn (self $test, ?string $eatery = null): string => route('eating-out.nationwide.show.reviews.create', [
+                    'eatery' => $eatery ?? $test->eatery->slug,
+                ]),
                 function (array $data = []): EateryCreateReviewRequestFactory {
                     $request = EateryCreateReviewRequestFactory::new($data);
 
@@ -327,15 +322,13 @@ class StoreControllerTest extends TestCase
                 function (self $test): void {
                     $test->county->update(['county' => 'Nationwide']);
                     $test->town->update(['town' => 'nationwide']);
-                }
+                },
             ],
             'nationwide branch' => [
-                function (self $test, ?string $eatery = null): string {
-                    return route('eating-out.nationwide.show.branch.reviews.create', [
-                        'eatery' => $eatery ?? $test->eatery->slug,
-                        'nationwideBranch' => $test->nationwideBranch->slug,
-                    ]);
-                }  ,
+                fn (self $test, ?string $eatery = null): string => route('eating-out.nationwide.show.branch.reviews.create', [
+                    'eatery' => $eatery ?? $test->eatery->slug,
+                    'nationwideBranch' => $test->nationwideBranch->slug,
+                ]),
                 function (array $data = []): EateryCreateReviewRequestFactory {
                     $request = EateryCreateReviewRequestFactory::new($data);
 

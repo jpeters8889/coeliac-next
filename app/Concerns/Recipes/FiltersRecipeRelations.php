@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 trait FiltersRecipeRelations
 {
     /**
-     * @param Builder<self> $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeHasRecipesWithFeatures(Builder $query, array $features): Builder
     {
@@ -23,8 +23,8 @@ trait FiltersRecipeRelations
     }
 
     /**
-     * @param Builder<self> $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeHasRecipesWithMeals(Builder $query, array $meals): Builder
     {
@@ -33,8 +33,8 @@ trait FiltersRecipeRelations
     }
 
     /**
-     * @param Builder<self> $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeHasRecipesWithFreeFrom(Builder $query, array $freeFrom): Builder
     {
