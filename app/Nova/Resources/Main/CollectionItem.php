@@ -8,8 +8,8 @@ use App\Models\Collections\CollectionItem as CollectionItemModel;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use PixelCreation\NovaFieldSortable\Concerns\SortsIndexEntries;
-use PixelCreation\NovaFieldSortable\Sortable;
+use CoeliacSanctuary\NovaFieldSortable\Concerns\SortsIndexEntries;
+use CoeliacSanctuary\NovaFieldSortable\Sortable;
 
 /** @extends Resource<CollectionItemModel> */
 /**

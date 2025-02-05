@@ -37,7 +37,7 @@ class ApproveComment extends Action
 
             (new AnonymousNotifiable())
                 ->route('mail', $comment->email)
-                ->notify(new CommentApprovedNotification($commentc));
+                ->notify(new CommentApprovedNotification($comment));
         });
     }
 
