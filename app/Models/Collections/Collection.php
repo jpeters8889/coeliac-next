@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Collections;
 
 use App\Concerns\CanBePublished;
+use App\Concerns\ClearsCache;
 use App\Concerns\DisplaysDates;
 use App\Concerns\DisplaysMedia;
 use App\Concerns\LinkableModel;
@@ -12,6 +13,7 @@ use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
 use App\Models\Blogs\Blog;
+use App\Models\Media;
 use App\Models\Recipes\Recipe;
 use App\Scopes\LiveScope;
 use App\Support\Collections\Collectable;
@@ -28,10 +30,12 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Collection extends Model implements HasMedia
 {
     use CanBePublished;
+    use ClearsCache;
     use DisplaysDates;
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
     use LinkableModel;
 
@@ -99,5 +103,10 @@ class Collection extends Model implements HasMedia
     public function metaTags(): Attribute
     {
         return Attribute::get(fn () => $this->meta_keywords);
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'collections';
     }
 }

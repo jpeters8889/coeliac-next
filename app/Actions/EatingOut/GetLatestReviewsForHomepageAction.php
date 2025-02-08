@@ -14,7 +14,7 @@ class GetLatestReviewsForHomepageAction
     public function handle(): AnonymousResourceCollection
     {
         /** @var string $key */
-        $key = config('coeliac.cache.eating-out.reviews.home');
+        $key = config('coeliac.cacheable.eating-out-reviews.home');
 
         /** @var AnonymousResourceCollection $reviews */
         $reviews = Cache::rememberForever(

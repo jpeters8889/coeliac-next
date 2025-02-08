@@ -6,10 +6,11 @@ namespace App\Nova\Resources\Main;
 
 use App\Models\Collections\CollectionItem as CollectionItemModel;
 use App\Nova\Resource;
-use Laravel\Nova\Fields\MorphTo;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use CoeliacSanctuary\NovaFieldSortable\Concerns\SortsIndexEntries;
 use CoeliacSanctuary\NovaFieldSortable\Sortable;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Nova\Fields\MorphTo;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 /** @extends Resource<CollectionItemModel> */
 /**
@@ -35,5 +36,17 @@ class CollectionItem extends Resource
 
             Sortable::make('Position')->onlyOnIndex(),
         ];
+    }
+
+    public static function afterCreate(NovaRequest $request, Model $model): void
+    {
+        /** @var CollectionItemModel $model */
+        $model->collection->touch();
+    }
+
+    public static function afterUpdate(NovaRequest $request, Model $model): void
+    {
+        /** @var CollectionItemModel $model */
+        $model->collection->touch();
     }
 }

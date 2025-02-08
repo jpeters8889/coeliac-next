@@ -1,13 +1,13 @@
 import './bootstrap';
 import '../css/app.css';
-import { Component, createApp, h, Plugin } from 'vue';
+import { Component, createApp, h } from 'vue';
 import { createInertiaApp, router } from '@inertiajs/vue3';
 import { createPinia } from 'pinia';
 import Coeliac from '@/Layouts/Coeliac.vue';
 import ArticleHeader from '@/Components/ArticleHeader.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
-import vClickOutside from 'v-click-outside';
 import { InertiaPage } from '@/types/Core';
+import { GlobalEvent, Page } from '@inertiajs/core';
 
 const appName = 'Coeliac Sanctuary';
 
@@ -45,12 +45,14 @@ void createInertiaApp({
       .component('article-image', ArticleImage as Component)
       .use(plugin)
       .use(pinia)
-      .use(vClickOutside as Plugin)
       .mount(el);
   },
 });
 
-router.on('navigate', (event) => {
+type Event = { detail: { page: Page<{ meta?: { title?: string } }> } };
+
+/** @ts-ignore */
+router.on('navigate', (event: Event) => {
   window.gtag('event', 'page_view', {
     page_location: event.detail.page.url,
     page_title: getTitle(event.detail.page.props?.meta?.title),

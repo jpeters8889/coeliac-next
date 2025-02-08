@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\EatingOut;
 
+use App\Concerns\ClearsCache;
 use App\Scopes\LiveScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class EateryReview extends Model
 {
+    use ClearsCache;
+
     public const HOW_EXPENSIVE_LABELS = [
         1 => 'Cheap Eats',
         2 => 'Great Value',
@@ -98,5 +101,10 @@ class EateryReview extends Model
     public function images(): HasMany
     {
         return $this->hasMany(EateryReviewImage::class, 'wheretoeat_review_id', 'id');
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'eating-out-reviews';
     }
 }

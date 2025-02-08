@@ -13,29 +13,20 @@ class GetCountyListAction
     /** @return Collection<string, array{list: Collection<int, object{country: string, county: string, county_slug: string, branches: int, eateries: int, attractions: int, hotels: int}>, counties: int, count: int}> */
     public function handle(): Collection
     {
-        $key = 'wheretoeat_index_county_status';
+        $key = config('coeliac.cacheable.eating-out.index-counts');
 
-        if (Cache::has($key)) {
-            /** @var Collection<string, array{list: Collection<int, object{country: string, county: string, county_slug: string, branches: int, eateries: int, attractions: int, hotels: int}>, counties: int, count: int}> $cached */
-            $cached = Cache::get($key);
+        return Cache::rememberForever(
+            $key,
+            fn () => $this->getCountries()->map(function (Collection $places) {
+                $list = $places->map(fn ($county) => $this->formatCountry($county));
 
-            return $cached;
-        }
-
-        /** @var Collection<string, array{list: Collection<int, object{country: string, county: string, county_slug: string, branches: int, eateries: int, attractions: int, hotels: int}>, counties: int, count: int}> $places */
-        $places = $this->getCountries()->map(function (Collection $places) {
-            $list = $places->map(fn ($county) => $this->formatCountry($county));
-
-            return [
-                'list' => $list,
-                'counties' => $list->count(),
-                'eateries' => $list->pluck('total')->sum(),
-            ];
-        });
-
-        Cache::put($key, $places, now()->addDay());
-
-        return $places;
+                return [
+                    'list' => $list,
+                    'counties' => $list->count(),
+                    'eateries' => $list->pluck('total')->sum(),
+                ];
+            })
+        );
     }
 
     /** @param  object{country: string, county: string, county_slug: string, branches: int, eateries: int, attractions: int, hotels: int}  $details */

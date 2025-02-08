@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Recipes;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateRecipeIndexPageOpenGraphImageJob;
 use App\Models\Recipes\Recipe;
@@ -14,6 +13,8 @@ use App\Models\Recipes\RecipeMeal;
 use App\Models\Recipes\RecipeNutrition;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\CommentableTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
@@ -29,7 +30,7 @@ class RecipeModelTest extends TestCase
 
     protected Recipe $recipe;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -95,5 +96,31 @@ class RecipeModelTest extends TestCase
 
         $this->assertNotNull($squareImage);
         $this->assertStringContainsString('square.jpg', $squareImage);
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsCreated(): void
+    {
+        foreach (config('coeliac.cacheable.recipes') as $key) {
+            Cache::put($key, 'foo');
+
+            $this->create(Recipe::class);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsUpdated(): void
+    {
+        foreach (config('coeliac.cacheable.recipes') as $key) {
+            $recipe = $this->create(Recipe::class);
+
+            Cache::put($key, 'foo');
+
+            $recipe->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Blogs;
 
 use App\Concerns\CanBePublished;
+use App\Concerns\ClearsCache;
 use App\Concerns\Comments\Commentable;
 use App\Concerns\DisplaysDates;
 use App\Concerns\DisplaysMedia;
@@ -15,6 +16,7 @@ use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Models\Media;
 use App\Scopes\LiveScope;
 use App\Support\Collections\CanBeCollected;
 use App\Support\Collections\Collectable;
@@ -38,6 +40,7 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
     use CanBeCollected;
 
     use CanBePublished;
+    use ClearsCache;
 
     /** @use Commentable<$this> */
     use Commentable;
@@ -46,7 +49,10 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
+
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
+
     use LinkableModel;
     use Searchable;
 
@@ -145,5 +151,10 @@ class Blog extends Model implements Collectable, HasComments, HasMedia, IsSearch
     public function shouldBeSearchable(): bool
     {
         return (bool) $this->live;
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'blogs';
     }
 }

@@ -16,6 +16,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class OpenGraphImage extends Model implements HasMedia
 {
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
 
     /**

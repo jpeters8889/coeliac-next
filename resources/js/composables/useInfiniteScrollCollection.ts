@@ -2,7 +2,7 @@ import { computed, ComputedRef, Ref, ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import useIntersect from '@/composables/useIntersect';
 import { PaginatedCollection } from '@/types/GenericTypes';
-import { VisitOptions } from '@inertiajs/core';
+import { VisitOptions } from '@inertiajs/core/types/types';
 
 export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   const value: () => PaginatedCollection<T> = () =>
@@ -29,21 +29,21 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
       return;
     }
 
-    router.get(
-      <string>value().next_page_url,
-      {},
-      {
-        ...requestOptions.value,
-        preserveState: true,
-        preserveScroll: true,
-        replace: true,
-        preserveUrl: true,
-        only: [propName],
-        onSuccess: () => {
-          items.value = [...items.value, ...value().data];
-        },
+    const options: VisitOptions = {
+      ...requestOptions.value,
+      preserveState: true,
+      preserveScroll: true,
+      replace: true,
+      /** @ts-ignore */
+      preserveUrl: true,
+      only: [propName],
+      onSuccess: () => {
+        items.value = [...items.value, ...value().data];
       },
-    );
+    };
+
+    /** @ts-ignore */
+    router.get(<string>value().next_page_url, {}, options);
   };
 
   if (landmark !== null) {

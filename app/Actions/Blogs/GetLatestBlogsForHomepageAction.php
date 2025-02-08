@@ -14,7 +14,7 @@ class GetLatestBlogsForHomepageAction
     public function handle(): AnonymousResourceCollection
     {
         /** @var string $key */
-        $key = config('coeliac.cache.blogs.home');
+        $key = config('coeliac.cacheable.blogs.home');
 
         /** @var AnonymousResourceCollection $blogs */
         $blogs = Cache::rememberForever(

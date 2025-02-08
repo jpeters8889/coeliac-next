@@ -3,15 +3,6 @@
 declare(strict_types=1);
 
 return [
-    'cache' => [
-        'blogs' => [
-            'home' => 'blogs.home',
-        ],
-        'recipes' => [
-            'home' => 'recipes.home',
-        ],
-    ],
-
     'images_url' => env('IMAGES_URL'),
 
     'shop' => [
@@ -40,4 +31,33 @@ return [
     ],
 
     'generate_og_images' => (bool) env('GENERATE_OG_IMAGES', true),
+
+    'cacheable' => [
+        'blogs' => [
+            'home' => 'cache.blogs.home',
+        ],
+        'recipes' => [
+            'home' => 'cache.recipes.home',
+        ],
+        'collections' => [
+            'home' => 'cache.collections.home',
+        ],
+        'eating-out' => [
+            'home' => 'cache.eating-out.home',
+            'top-rated' => 'cache.eating-out.top-rated',
+            'most-rated' => 'cache.eating-out.most-rated',
+            'index-counts' => 'cache.eating-out.index-counts',
+            'stats' => 'cache.eating-out.stats',
+            'top-rated-in-county' => 'coeliac.eating-out.top-rated-in-county.{county.slug}',
+            'most-rated-in-county' => 'coeliac.eating-out.most-rated-in-county.{county.slug}',
+        ],
+        'eating-out-reviews' => [
+            'home' => 'cache.eating-out-reviews.home',
+            'top-rated' => 'cache.eating-out.top-rated',
+            'most-rated' => 'cache.eating-out.most-rated',
+            'stats' => 'cache.eating-out.stats',
+            'top-rated-in-county' => 'coeliac.eating-out.top-rated-in-county.{eatery.county.slug}',
+            'most-rated-in-county' => 'coeliac.eating-out.most-rated-in-county.{eatery.county.slug}',
+        ],
+    ],
 ];

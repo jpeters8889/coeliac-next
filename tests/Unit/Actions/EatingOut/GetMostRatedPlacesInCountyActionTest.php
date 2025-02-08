@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetMostRatedPlacesInCountyAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCounty;
 use App\Models\EatingOut\EateryReview;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Support\Facades\Cache;
-use Spatie\TestTime\TestTime;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetMostRatedPlacesInCountyActionTest extends TestCase
@@ -52,27 +51,13 @@ class GetMostRatedPlacesInCountyActionTest extends TestCase
     #[Test]
     public function itCachesTheMostRatedPlaces(): void
     {
-        $this->assertFalse(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
+        $key = str_replace('{county.slug}', $this->county->slug, config('coeliac.cacheable.eating-out.most-rated-in-county'));
+
+        $this->assertFalse(Cache::has($key));
 
         $this->callAction(GetMostRatedPlacesInCountyAction::class, $this->county);
 
-        $this->assertTrue(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
-    }
-
-    #[Test]
-    public function theMostRatedPlacesCacheExpiresAfter24Hours(): void
-    {
-        TestTime::freeze();
-
-        $this->assertFalse(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
-
-        $this->callAction(GetMostRatedPlacesInCountyAction::class, $this->county);
-
-        $this->assertTrue(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
-
-        TestTime::addHours(25);
-
-        $this->assertFalse(Cache::has("wheretoeat_county_{$this->county->slug}_most_rated_places"));
+        $this->assertTrue(Cache::has($key));
     }
 
     #[Test]

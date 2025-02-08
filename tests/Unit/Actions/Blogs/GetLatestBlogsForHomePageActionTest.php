@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Blogs;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Blogs\GetLatestBlogsForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Resources\Blogs\BlogSimpleCardViewResource;
@@ -12,6 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetLatestBlogsForHomePageActionTest extends TestCase
@@ -69,12 +69,12 @@ class GetLatestBlogsForHomePageActionTest extends TestCase
     #[Test]
     public function itCachesTheBlogs(): void
     {
-        $this->assertFalse(Cache::has(config('coeliac.cache.blogs.home')));
+        $this->assertFalse(Cache::has(config('coeliac.cacheable.blogs.home')));
 
         $blogs = $this->callAction(GetLatestBlogsForHomepageAction::class);
 
-        $this->assertTrue(Cache::has(config('coeliac.cache.blogs.home')));
-        $this->assertSame($blogs, Cache::get(config('coeliac.cache.blogs.home')));
+        $this->assertTrue(Cache::has(config('coeliac.cacheable.blogs.home')));
+        $this->assertSame($blogs, Cache::get(config('coeliac.cacheable.blogs.home')));
     }
 
     #[Test]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetCountyListAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryCountry;
@@ -15,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetCountyListActionTest extends TestCase
@@ -152,7 +152,7 @@ class GetCountyListActionTest extends TestCase
     #[Test]
     public function itCachesTheResults(): void
     {
-        $key = 'wheretoeat_index_county_status';
+        $key = config('coeliac.cacheable.eating-out.index-counts');
 
         $this->assertFalse(Cache::has($key));
 
@@ -165,13 +165,9 @@ class GetCountyListActionTest extends TestCase
     public function itGetsTheResultsFromTheCache(): void
     {
         Cache::partialMock()
-            ->shouldReceive('has')
-            ->andReturnTrue()
+            ->shouldReceive('rememberForever')
             ->once()
-            ->getMock()
-            ->shouldReceive('get')
-            ->andReturn(collect())
-            ->once();
+            ->andReturn(collect());
 
         app(GetCountyListAction::class)->handle();
     }

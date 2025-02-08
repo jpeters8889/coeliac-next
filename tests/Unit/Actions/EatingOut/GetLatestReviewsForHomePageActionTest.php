@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetLatestReviewsForHomepageAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
@@ -15,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetLatestReviewsForHomePageActionTest extends TestCase
@@ -103,12 +103,12 @@ class GetLatestReviewsForHomePageActionTest extends TestCase
     #[Test]
     public function itCachesTheEateries(): void
     {
-        $this->assertFalse(Cache::has(config('coeliac.cache.eating-out.reviews.home')));
+        $this->assertFalse(Cache::has(config('coeliac.cacheable.eating-out-reviews.home')));
 
         $eateries = $this->callAction(GetLatestReviewsForHomepageAction::class);
 
-        $this->assertTrue(Cache::has(config('coeliac.cache.eating-out.reviews.home')));
-        $this->assertSame($eateries, Cache::get(config('coeliac.cache.eating-out.reviews.home')));
+        $this->assertTrue(Cache::has(config('coeliac.cacheable.eating-out-reviews.home')));
+        $this->assertSame($eateries, Cache::get(config('coeliac.cacheable.eating-out-reviews.home')));
     }
 
     #[Test]

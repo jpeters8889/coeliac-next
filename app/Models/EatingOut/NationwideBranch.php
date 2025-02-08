@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
+use App\Concerns\ClearsCache;
 use App\Concerns\EatingOut\HasEateryDetails;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
@@ -32,6 +33,7 @@ use Laravel\Scout\Searchable;
  */
 class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSearchable
 {
+    use ClearsCache;
     use HasEateryDetails;
 
     /** @use HasOpenGraphImage<$this> */
@@ -153,7 +155,7 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
             'location' => $this->relationLoaded('town') && $this->relationLoaded('county') && $this->town && $this->county ? $this->town->town . ', ' . $this->county->county : '',
             'town' => $this->relationLoaded('town') && $this->town ? $this->town->town : '',
             'county' => $this->relationLoaded('county') && $this->county ? $this->county->county : '',
-            'info' => $this->eatery->info,
+            'info' => $this->eatery?->info, /** @phpstan-ignore-line */
             'address' => $this->address,
             '_geoloc' => [
                 'lat' => $this->lat,
@@ -219,5 +221,10 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
     public function averageRating(): Attribute
     {
         return Attribute::get(fn () => $this->eatery->average_rating);
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'eating-out';
     }
 }

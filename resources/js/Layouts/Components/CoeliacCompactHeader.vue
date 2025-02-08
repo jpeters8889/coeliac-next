@@ -7,12 +7,15 @@ import { ref } from 'vue';
 import MobileNav from '@/Layouts/Components/Nav/MobileNav.vue';
 import CoeliacMetas from '@/Layouts/Components/CoeliacMetas.vue';
 import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
-import Sealic from '@/Svg/Sealic.vue';
+import Sealiac from '@/Svg/Sealiac.vue';
 import { Link } from '@inertiajs/vue3';
 import { MetaProps } from '@/types/DefaultProps';
+import MobileSearch from '@/Layouts/Components/MobileSearch.vue';
 
 defineProps<{ metas: MetaProps }>();
+
 const mobileNavOpen = ref(false);
+const mobileSearchOpen = ref(false);
 </script>
 
 <template>
@@ -39,7 +42,7 @@ const mobileNavOpen = ref(false);
           class="my-2 flex flex-1 md:flex-none"
           href="/"
         >
-          <Sealic class="h-10" />
+          <Sealiac class="h-10" />
         </Link>
 
         <MainNav />
@@ -47,6 +50,7 @@ const mobileNavOpen = ref(false);
         <div class="h-14 w-14 p-2">
           <div
             class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
+            @click="mobileSearchOpen = true"
           >
             <MagnifyingGlassIcon class="h-6 w-6" />
           </div>
@@ -57,6 +61,11 @@ const mobileNavOpen = ref(false);
     <MobileNav
       :open="mobileNavOpen"
       @close="mobileNavOpen = false"
+    />
+
+    <MobileSearch
+      :open="mobileSearchOpen"
+      @close="mobileSearchOpen = false"
     />
   </div>
 </template>

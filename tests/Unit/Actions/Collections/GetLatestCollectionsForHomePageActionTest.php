@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Collections;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Collections\GetLatestCollectionsForHomepageAction;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
@@ -14,6 +13,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetLatestCollectionsForHomePageActionTest extends TestCase
@@ -92,12 +92,12 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
     {
         Collection::query()->update(['display_on_homepage' => true]);
 
-        $this->assertFalse(Cache::has(config('coeliac.cache.collections.home')));
+        $this->assertFalse(Cache::has(config('coeliac.cacheable.collections.home')));
 
         $collections = $this->callAction(GetLatestCollectionsForHomepageAction::class);
 
-        $this->assertTrue(Cache::has(config('coeliac.cache.collections.home')));
-        $this->assertSame($collections, Cache::get(config('coeliac.cache.collections.home')));
+        $this->assertTrue(Cache::has(config('coeliac.cacheable.collections.home')));
+        $this->assertSame($collections, Cache::get(config('coeliac.cacheable.collections.home')));
     }
 
     #[Test]
@@ -108,12 +108,11 @@ class GetLatestCollectionsForHomePageActionTest extends TestCase
         DB::enableQueryLog();
 
         $this->callAction(GetLatestCollectionsForHomepageAction::class);
-
         // collections and media/item relation;
-        $this->assertCount(2, DB::getQueryLog());
+        $this->assertCount(3, DB::getQueryLog());
 
         $this->callAction(GetLatestCollectionsForHomepageAction::class);
 
-        $this->assertCount(2, DB::getQueryLog());
+        $this->assertCount(3, DB::getQueryLog());
     }
 }

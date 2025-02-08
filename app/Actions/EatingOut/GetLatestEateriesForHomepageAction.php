@@ -15,7 +15,7 @@ class GetLatestEateriesForHomepageAction
     public function handle(): AnonymousResourceCollection
     {
         /** @var string $key */
-        $key = config('coeliac.cache.eating-out.home');
+        $key = config('coeliac.cacheable.eating-out.home');
 
         /** @var AnonymousResourceCollection $eateries */
         $eateries = Cache::rememberForever(

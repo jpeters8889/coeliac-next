@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryMapPageOpenGraphImageJob;
@@ -18,7 +17,9 @@ use App\Models\EatingOut\EateryVenueType;
 use App\Models\EatingOut\NationwideBranch;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class NationwideBranchTest extends TestCase
@@ -114,5 +115,113 @@ class NationwideBranchTest extends TestCase
     public function itHasACountry(): void
     {
         $this->assertEquals(1, $this->eatery->country()->count());
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsCreated(): void
+    {
+        $eatery = $this->create(Eatery::class);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if (str_contains($key, '{')) {
+                continue;
+            }
+
+            Cache::put($key, 'foo');
+
+            $this->create(NationwideBranch::class, [
+                'wheretoeat_id' => $eatery->id,
+            ]);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsUpdated(): void
+    {
+        $eatery = $this->create(Eatery::class);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if (str_contains($key, '{')) {
+                continue;
+            }
+
+            $branch = $this->create(NationwideBranch::class, [
+                'wheretoeat_id' => $eatery->id,
+            ]);
+
+            Cache::put($key, 'foo');
+
+            $branch->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itCanClearWildCardCacheEntriesWhenARecordIsCreated(): void
+    {
+        $county = $this->create(EateryCounty::class);
+        $town = $this->create(EateryTown::class, [
+            'county_id' => $county->id,
+        ]);
+
+        $eatery = $this->create(Eatery::class, [
+            'county_id' => $county->id,
+            'town_id' => $town->id,
+        ]);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if ( ! str_contains($key, '{')) {
+                continue;
+            }
+
+            $key = str_replace('{county.slug}', $county->slug, $key);
+
+            Cache::put($key, 'foo');
+
+            $this->create(NationwideBranch::class, [
+                'wheretoeat_id' => $eatery->id,
+                'county_id' => $county->id,
+                'town_id' => $town->id,
+            ]);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itCanClearWildCardCacheEntriesWhenARecordIsUpdated(): void
+    {
+        $county = $this->create(EateryCounty::class);
+        $town = $this->create(EateryTown::class, [
+            'county_id' => $county->id,
+        ]);
+
+        $eatery = $this->create(Eatery::class, [
+            'county_id' => $county->id,
+            'town_id' => $town->id,
+        ]);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if ( ! str_contains($key, '{')) {
+                continue;
+            }
+
+            $eatery = $this->create(NationwideBranch::class, [
+                'wheretoeat_id' => $eatery->id,
+                'county_id' => $county->id,
+                'town_id' => $town->id,
+            ]);
+
+            $key = str_replace('{county.slug}', $county->slug, $key);
+
+            Cache::put($key, 'foo');
+
+            $eatery->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
     }
 }

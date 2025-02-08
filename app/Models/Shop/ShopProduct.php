@@ -10,6 +10,7 @@ use App\Contracts\Search\IsSearchable;
 use App\Enums\Shop\OrderState;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Models\Media;
 use App\Support\Helpers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,6 +41,7 @@ class ShopProduct extends Model implements HasMedia, IsSearchable
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
     use LinkableModel;
     use Searchable;

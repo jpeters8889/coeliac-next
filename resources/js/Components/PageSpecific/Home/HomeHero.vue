@@ -55,6 +55,7 @@ setInterval(() => {
                 href="/shop"
                 size="xl"
                 theme="secondary"
+                classes="hover:scale-[1.3]"
                 bold
               />
             </div>

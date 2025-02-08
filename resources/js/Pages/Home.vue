@@ -49,34 +49,28 @@ defineProps<{
         </div>
       </Card>
 
-      <WhenVisible data="collections">
-        <template v-if="collections.length">
-          <HomeCollection
-            v-for="collection in collections"
-            :key="collection.title"
-            :collection="collection"
-          />
-        </template>
-      </WhenVisible>
+      <template v-if="collections.length">
+        <HomeCollection
+          v-for="collection in collections"
+          :key="collection.title"
+          :collection="collection"
+        />
+      </template>
 
       <HomeNewsletterSignup />
 
-      <WhenVisible data="blogs">
-        <HomeHoverGroup
-          :items="blogs"
-          title="Latest Blogs"
-        />
-      </WhenVisible>
+      <HomeHoverGroup
+        :items="blogs"
+        title="Latest Blogs"
+      />
 
       <GoogleAd code="9266309021" />
 
-      <WhenVisible data="recipes">
-        <HomeHoverGroup
-          :items="recipes"
-          :per-row="4"
-          title="Latest Recipes"
-        />
-      </WhenVisible>
+      <HomeHoverGroup
+        :items="recipes"
+        :per-row="4"
+        title="Latest Recipes"
+      />
     </div>
 
     <div class="flex w-full flex-col space-y-4 lg:w-1/4">
@@ -109,13 +103,9 @@ defineProps<{
         </p>
       </Card>
 
-      <WhenVisible data="latestReviews">
-        <HomeLatestReviews :reviews="latestReviews" />
-      </WhenVisible>
+      <HomeLatestReviews :reviews="latestReviews" />
 
-      <WhenVisible data="latestEateries">
-        <HomeLatestEateries :eateries="latestEateries" />
-      </WhenVisible>
+      <HomeLatestEateries :eateries="latestEateries" />
     </div>
   </div>
 </template>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Recipes;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\Recipes\GetLatestRecipesForHomepageAction;
 use App\Models\Recipes\Recipe;
 use App\Resources\Recipes\RecipeSimpleCardViewResource;
@@ -12,6 +11,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetLatestRecipesForHomePageActionTest extends TestCase
@@ -69,12 +69,12 @@ class GetLatestRecipesForHomePageActionTest extends TestCase
     #[Test]
     public function itCachesTheRecipes(): void
     {
-        $this->assertFalse(Cache::has(config('coeliac.cache.recipes.home')));
+        $this->assertFalse(Cache::has(config('coeliac.cacheable.recipes.home')));
 
         $recipes = $this->callAction(GetLatestRecipesForHomepageAction::class);
 
-        $this->assertTrue(Cache::has(config('coeliac.cache.recipes.home')));
-        $this->assertSame($recipes, Cache::get(config('coeliac.cache.recipes.home')));
+        $this->assertTrue(Cache::has(config('coeliac.cacheable.recipes.home')));
+        $this->assertSame($recipes, Cache::get(config('coeliac.cacheable.recipes.home')));
     }
 
     #[Test]

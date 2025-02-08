@@ -7,15 +7,15 @@ namespace App\Actions\EatingOut;
 use App\DataObjects\EatingOut\EateryStatistics;
 use App\Enums\EatingOut\EateryType;
 use App\Models\EatingOut\Eatery;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 class GetEateryStatisticsAction
 {
     public function handle(): EateryStatistics
     {
-        /** @var EateryStatistics $stats */
-        $stats = Cache::remember('eatery_stats', Carbon::now()->addHour(), function () {
+        $key = config('coeliac.cacheable.eating-out.stats');
+
+        return Cache::rememberForever($key, function () {
             $data = Eatery::query()
                 ->select(['id', 'type_id'])
                 ->withCount('reviews')
@@ -32,7 +32,5 @@ class GetEateryStatisticsAction
                 reviews: $reviews,
             );
         });
-
-        return $stats;
     }
 }

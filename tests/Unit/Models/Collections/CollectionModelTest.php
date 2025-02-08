@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Collections;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateCollectionIndexPageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Scopes\LiveScope;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
 use Tests\Concerns\LinkableModelTestTrait;
@@ -23,7 +24,7 @@ class CollectionModelTest extends TestCase
 
     protected Collection $collection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -67,5 +68,31 @@ class CollectionModelTest extends TestCase
         $this->collection->addItem($blog, $blog->meta_description)->refresh();
 
         $this->assertNotEmpty($this->collection->items);
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsCreated(): void
+    {
+        foreach (config('coeliac.cacheable.collections') as $key) {
+            Cache::put($key, 'foo');
+
+            $this->create(Collection::class);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsUpdated(): void
+    {
+        foreach (config('coeliac.cacheable.collections') as $key) {
+            $collection = $this->create(Collection::class);
+
+            Cache::put($key, 'foo');
+
+            $collection->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
     }
 }

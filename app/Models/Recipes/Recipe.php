@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Recipes;
 
 use App\Concerns\CanBePublished;
+use App\Concerns\ClearsCache;
 use App\Concerns\Comments\Commentable;
 use App\Concerns\DisplaysDates;
 use App\Concerns\DisplaysMedia;
@@ -15,6 +16,7 @@ use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateRecipeIndexPageOpenGraphImageJob;
 use App\Legacy\HasLegacyImage;
 use App\Legacy\Imageable;
+use App\Models\Media;
 use App\Scopes\LiveScope;
 use App\Support\Collections\CanBeCollected;
 use App\Support\Collections\Collectable;
@@ -45,6 +47,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     use CanBeCollected;
 
     use CanBePublished;
+    use ClearsCache;
 
     /** @use Commentable<$this> */
     use Commentable;
@@ -53,6 +56,7 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
     use LinkableModel;
     use Searchable;
@@ -318,5 +322,10 @@ class Recipe extends Model implements Collectable, HasComments, HasMedia, IsSear
     public function getScoutKey(): mixed
     {
         return $this->id;
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'recipes';
     }
 }

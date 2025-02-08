@@ -84,22 +84,22 @@ watch(hasError, (check) => {
         />
 
         <button
-          class="flex h-8 w-8 items-center justify-center rounded-full"
+          class="flex size-6 items-center justify-center rounded-full"
           :class="hasError ? 'bg-red' : 'bg-primary'"
           @click.prevent="handleSearch()"
         >
-          <MagnifyingGlassIcon class="h-5 w-5" />
+          <MagnifyingGlassIcon class="size-4" />
         </button>
 
         <div class="h-8 w-[1px] bg-grey-off" />
 
         <button
-          class="mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-secondary"
+          class="mr-1 flex size-6 items-center justify-center rounded-full bg-secondary"
           type="button"
           @click.prevent="getLocation()"
         >
           <MapPinIcon
-            class="h-5 w-5 opacity-50 transition-all hover:opacity-75"
+            class="size-4 opacity-50 transition-all hover:opacity-75"
           />
         </button>
       </form>

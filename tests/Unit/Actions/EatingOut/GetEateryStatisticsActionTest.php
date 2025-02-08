@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetEateryStatisticsAction;
 use App\DataObjects\EatingOut\EateryStatistics;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetEateryStatisticsActionTest extends TestCase
@@ -17,7 +17,7 @@ class GetEateryStatisticsActionTest extends TestCase
     #[Test]
     public function itCachesTheResult(): void
     {
-        Cache::shouldReceive('remember')
+        Cache::shouldReceive('rememberForever')
             ->once()
             ->andReturn(new EateryStatistics(1, 2, 3, 4, 5));
 

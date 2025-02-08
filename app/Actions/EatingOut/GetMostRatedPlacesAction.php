@@ -14,19 +14,8 @@ class GetMostRatedPlacesAction
     /** @return Collection<int, CountyEateryResource> */
     public function handle(): Collection
     {
-        $key = 'wheretoeat_most_rated_places';
+        $key = config('coeliac.cacheable.eating-out.most-rated');
 
-        if (Cache::has($key)) {
-            /** @var Collection<int, CountyEateryResource> $cached */
-            $cached = Cache::get($key);
-
-            return $cached;
-        }
-
-        $places = app(MostReviewsInUkQuery::class)('rating_count desc, rating desc');
-
-        Cache::put($key, $places, now()->addDay());
-
-        return $places;
+        return Cache::rememberForever($key, fn () => app(MostReviewsInUkQuery::class)('rating_count desc, rating desc'));
     }
 }

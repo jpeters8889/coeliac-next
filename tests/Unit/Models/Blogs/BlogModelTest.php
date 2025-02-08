@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\Blogs;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Jobs\OpenGraphImages\CreateBlogIndexPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateHomePageOpenGraphImageJob;
 use App\Models\Blogs\Blog;
 use App\Scopes\LiveScope;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Concerns\CanBePublishedTestTrait;
 use Tests\Concerns\CommentableTestTrait;
 use Tests\Concerns\DisplaysMediaTestTrait;
@@ -25,7 +26,7 @@ class BlogModelTest extends TestCase
 
     protected Blog $blog;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -65,5 +66,31 @@ class BlogModelTest extends TestCase
     public function itHasTheLiveScopeApplied(): void
     {
         $this->assertTrue(Blog::hasGlobalScope(LiveScope::class));
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsCreated(): void
+    {
+        foreach (config('coeliac.cacheable.blogs') as $key) {
+            Cache::put($key, 'foo');
+
+            $this->create(Blog::class);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsUpdated(): void
+    {
+        foreach (config('coeliac.cacheable.blogs') as $key) {
+            $blog = $this->create(Blog::class);
+
+            Cache::put($key, 'foo');
+
+            $blog->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
     }
 }

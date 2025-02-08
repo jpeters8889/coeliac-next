@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\DataObjects\EatingOut\LatLng;
 use App\Jobs\OpenGraphImages\CreateEateryAppPageOpenGraphImageJob;
 use App\Jobs\OpenGraphImages\CreateEateryIndexPageOpenGraphImageJob;
@@ -22,8 +21,10 @@ use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EateryTest extends TestCase
@@ -187,5 +188,93 @@ class EateryTest extends TestCase
 
         $this->assertArrayHasKey('aroundRadius', $parameters);
         $this->assertEquals(Helpers::milesToMeters(5), $parameters['aroundRadius']);
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsCreated(): void
+    {
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if (str_contains($key, '{')) {
+                continue;
+            }
+
+            Cache::put($key, 'foo');
+
+            $this->create(Eatery::class);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itClearsCacheWhenARowIsUpdated(): void
+    {
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if (str_contains($key, '{')) {
+                continue;
+            }
+
+            $eatery = $this->create(Eatery::class);
+
+            Cache::put($key, 'foo');
+
+            $eatery->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itCanClearWildCardCacheEntriesWhenARecordIsCreated(): void
+    {
+        $county = $this->create(EateryCounty::class);
+        $town = $this->create(EateryTown::class, [
+            'county_id' => $county->id,
+        ]);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if ( ! str_contains($key, '{')) {
+                continue;
+            }
+
+            $key = str_replace('{county.slug}', $county->slug, $key);
+
+            Cache::put($key, 'foo');
+
+            $this->create(Eatery::class, [
+                'county_id' => $county->id,
+                'town_id' => $town->id,
+            ]);
+
+            $this->assertFalse(Cache::has($key));
+        }
+    }
+
+    #[Test]
+    public function itCanClearWildCardCacheEntriesWhenARecordIsUpdated(): void
+    {
+        $county = $this->create(EateryCounty::class);
+        $town = $this->create(EateryTown::class, [
+            'county_id' => $county->id,
+        ]);
+
+        foreach (config('coeliac.cacheable.eating-out') as $key) {
+            if ( ! str_contains($key, '{')) {
+                continue;
+            }
+
+            $eatery = $this->create(Eatery::class, [
+                'county_id' => $county->id,
+                'town_id' => $town->id,
+            ]);
+
+            $key = str_replace('{county.slug}', $county->slug, $key);
+
+            Cache::put($key, 'foo');
+
+            $eatery->update();
+
+            $this->assertFalse(Cache::has($key));
+        }
     }
 }

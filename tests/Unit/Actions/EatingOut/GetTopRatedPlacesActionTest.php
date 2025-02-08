@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\EatingOut;
 
-use PHPUnit\Framework\Attributes\Test;
 use App\Actions\EatingOut\GetTopRatedPlacesAction;
 use App\Models\EatingOut\Eatery;
 use App\Models\EatingOut\EateryReview;
 use Database\Seeders\EateryScaffoldingSeeder;
 use Illuminate\Support\Facades\Cache;
-use Spatie\TestTime\TestTime;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GetTopRatedPlacesActionTest extends TestCase
@@ -45,27 +44,11 @@ class GetTopRatedPlacesActionTest extends TestCase
     #[Test]
     public function itCachesTheMostRatedPlaces(): void
     {
-        $this->assertFalse(Cache::has('wheretoeat_top_rated_places'));
+        $this->assertFalse(Cache::has(config('coeliac.cacheable.eating-out-reviews.top-rated')));
 
         $this->callAction(GetTopRatedPlacesAction::class);
 
-        $this->assertTrue(Cache::has('wheretoeat_top_rated_places'));
-    }
-
-    #[Test]
-    public function theMostRatedPlacesCacheExpiresAfter24Hours(): void
-    {
-        TestTime::freeze();
-
-        $this->assertFalse(Cache::has('wheretoeat_top_rated_places'));
-
-        $this->callAction(GetTopRatedPlacesAction::class);
-
-        $this->assertTrue(Cache::has('wheretoeat_top_rated_places'));
-
-        TestTime::addHours(25);
-
-        $this->assertFalse(Cache::has('wheretoeat_top_rated_places'));
+        $this->assertTrue(Cache::has(config('coeliac.cacheable.eating-out-reviews.top-rated')));
     }
 
     #[Test]

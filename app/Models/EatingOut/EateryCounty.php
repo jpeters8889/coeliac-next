@@ -8,6 +8,7 @@ use App\Concerns\DisplaysMedia;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
 use App\Jobs\OpenGraphImages\CreateEatingOutOpenGraphImageJob;
+use App\Models\Media;
 use Error;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -28,6 +29,7 @@ class EateryCounty extends Model implements HasMedia, HasOpenGraphImageContract
     /** @use HasOpenGraphImage<$this> */
     use HasOpenGraphImage;
 
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
 
     protected $table = 'wheretoeat_counties';

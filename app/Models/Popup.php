@@ -17,6 +17,7 @@ class Popup extends Model implements HasMedia
     use DisplaysMedia;
     use HasLegacyImage;
     use Imageable;
+    /** @use InteractsWithMedia<Media> */
     use InteractsWithMedia;
 
     protected static function booted(): void

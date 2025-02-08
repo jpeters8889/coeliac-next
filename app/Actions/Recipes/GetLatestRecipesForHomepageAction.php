@@ -14,7 +14,7 @@ class GetLatestRecipesForHomepageAction
     public function handle(): AnonymousResourceCollection
     {
         /** @var string $key */
-        $key = config('coeliac.cache.recipes.home');
+        $key = config('coeliac.cacheable.recipes.home');
 
         /** @var AnonymousResourceCollection $recipes */
         $recipes = Cache::rememberForever(

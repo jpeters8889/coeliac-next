@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\EatingOut;
 
 use Algolia\ScoutExtended\Builder as AlgoliaBuilder;
+use App\Concerns\ClearsCache;
 use App\Concerns\EatingOut\HasEateryDetails;
 use App\Concerns\HasOpenGraphImage;
 use App\Contracts\HasOpenGraphImageContract;
@@ -41,6 +42,7 @@ use Laravel\Scout\Searchable;
  */
 class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
 {
+    use ClearsCache;
     use HasEateryDetails;
 
     /** @use HasOpenGraphImage<$this> */
@@ -424,5 +426,10 @@ class Eatery extends Model implements HasOpenGraphImageContract, IsSearchable
     protected function makeAllSearchableUsing(Builder $query): Builder
     {
         return $query->with(['town', 'county', 'country']);
+    }
+
+    protected function cacheKey(): string
+    {
+        return 'eating-out';
     }
 }
