@@ -24,7 +24,7 @@ withDefaults(
 
       <div class="flex flex-col @sm:space-x-5 @sm:flex-row w-full h-full">
         <div class="flex flex-col space-y-5 flex-1 h-full">
-          <p class="prose prose-lg @xl:prose-xl flex flex-1 max-w-none">
+          <p class="prose prose-lg @xl:prose-xl flex flex-1 max-w-none inline">
             <img
               v-if="!noSmallImage"
               :src="image"

@@ -108,7 +108,7 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
       out.
     </WorkWithUsStory>
 
-    <div class="grid sm:grid-cols-2 xmd:grid-cols-10 gap-5">
+    <div class="grid sm:grid-cols-2 xmd:grid-cols-10! gap-5">
       <WorkWithUsStory
         class="xmd:col-span-4 xmd:col-start-2"
         title="Pho"
@@ -119,7 +119,6 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
             label: `Pho's page in my Eating Out guide`,
           },
         ]"
-        no-small-image
       >
         I worked with Pho in early 2024 to get all of their branches listed in
         my Eating Out guide, previously, I kept the main Eating Out guide for
@@ -145,7 +144,6 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
             label: `The Lounge's page in my Eating Out guide`,
           },
         ]"
-        no-small-image
       >
         Following the success of working with Pho to get their branches into the
         Eating Out guide, I reached out to the Lounge Group to see if they could
@@ -157,7 +155,7 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
       </WorkWithUsStory>
 
       <Card
-        class="xmd:row-start-2 xmd:col-span-4 xmd:col-start-4 text-center prose prose-lg xl:prose-xl"
+        class="xmd:row-start-2 xmd:col-span-6 xmd:col-start-3 text-center prose prose-lg xl:prose-xl max-w-none"
       >
         <p>
           Are you listed in our
