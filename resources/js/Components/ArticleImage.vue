@@ -26,7 +26,7 @@ const classes = (): string[] => {
   ];
 
   if (props.position !== 'fullwidth') {
-    classList.push('max-w-half', 'sm:max-w-1/2', 'lg:max-w-1/3');
+    classList.push('max-w-half', 'sm:max-lg:max-w-1/2', 'lg:max-w-1/3');
   }
 
   if (props.position === 'left') {

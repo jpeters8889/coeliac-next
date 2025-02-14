@@ -34,7 +34,7 @@ const address = computed(() =>
 
 <template>
   <Card
-    class="space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0 lg:space-x-4 lg:rounded-lg lg:p-6"
+    class="space-y-2 sm:flex-row sm:max-lg:space-x-3 sm:space-y-0 lg:space-x-4 lg:rounded-lg lg:p-6"
   >
     <div class="h-map-small w-full max-w-[600px] sm:w-1/2 lg:w-2/3">
       <StaticMap

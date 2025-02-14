@@ -7,7 +7,7 @@ import { ref } from 'vue';
 import MobileNav from '@/Layouts/Components/Nav/MobileNav.vue';
 import CoeliacMetas from '@/Layouts/Components/CoeliacMetas.vue';
 import MainNav from '@/Layouts/Components/Nav/MainNav.vue';
-import Sealiac from '@/Svg/Sealiac-Test.vue';
+import Sealiac from '@/Svg/Sealiac.vue';
 import { Link } from '@inertiajs/vue3';
 import { MetaProps } from '@/types/DefaultProps';
 import MobileSearch from '@/Layouts/Components/MobileSearch.vue';
@@ -28,39 +28,23 @@ const mobileSearchOpen = ref(false);
       class="relative z-20"
     >
       <div
-        class="mx-auto flex w-full max-w-8xl items-start justify-between px-2"
+        class="mx-auto flex w-full max-w-8xl items-start justify-between px-2 gap-2"
       >
-        <div class="md:hidden">
-          <a
-            class="flex items-center justify-center rounded-md text-white/80 hover:text-white"
-          >
-            <Bars3BottomLeftIcon
-              class="h-10 w-10"
-              @click="mobileNavOpen = true"
-            />
-          </a>
+        <div
+          class="md:hidden flex items-center justify-center rounded-md text-white/80 hover:text-white py-2"
+        >
+          <Bars3BottomLeftIcon
+            class="h-10 w-10"
+            @click="mobileNavOpen = true"
+          />
         </div>
 
-        <Link
-          class="my-2 flex h-[6.5rem] flex-1 flex-col items-center xs:flex-row xs:justify-center md:my-4 md:ml-2 md:justify-start relative"
-          href="/"
-        >
-          <Sealiac class="lg:h-30 -mb-3 xs:mb-0 xs:h-20 md:h-24" />
-
-          <div class="flex flex-col hidden">
-            <h1
-              class="mt-2 text-center font-coeliac text-xl xs:ml-2 xs:mt-0 xs:text-left xs:text-3xl md:text-4xl"
-            >
-              Coeliac Sanctuary
-            </h1>
-            <span class="text-center font-coeliac text-xs md:text-base">
-              Gluten Free Blog by Alison Peters
-            </span>
-          </div>
+        <Link href="/">
+          <Sealiac class="py-2 w-full" />
         </Link>
 
         <div class="md:w-full md:max-w-xs">
-          <div class="h-14 w-14 p-2 md:hidden">
+          <div class="h-10 w-10 py-2 md:hidden">
             <div
               class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
               @click="mobileSearchOpen = true"

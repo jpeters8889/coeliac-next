@@ -1,16 +1,13 @@
 <script lang="ts" setup>
 import Card from '@/Components/Card.vue';
 import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStory.vue';
+import Heading from '@/Components/Heading.vue';
 </script>
 
 <template>
   <div class="flex flex-col gap-5 mt-5">
     <Card class="max-w-8xl mx-auto flex flex-col space-y-3">
-      <h1
-        class="text-center text-4xl font-semibold md:text-5xl lg:text-6xl mb-5"
-      >
-        Work With Us
-      </h1>
+      <Heading> Work With Us </Heading>
 
       <p class="prose prose-lg xl:prose-xl max-w-none">
         Over the last few years since running Coeliac Sanctuary I have had the
@@ -28,7 +25,7 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
         across Facebook, Instagram and Twitter.
       </p>
 
-      <h3 class="text-xl font-semibold xl:text-2xl text-center mb-5">
+      <h3 class="text-xl font-semibold xl:text-2xl text-center my-5">
         Here is just a few companies I have had the pleasure of working with in
         the past!
       </h3>
@@ -108,7 +105,7 @@ import WorkWithUsStory from '@/Components/PageSpecific/WorkWithUs/WorkWithUsStor
       out.
     </WorkWithUsStory>
 
-    <div class="grid sm:grid-cols-2 xmd:grid-cols-10! gap-5">
+    <div class="grid sm:max-xmd:grid-cols-2 xmd:grid-cols-10! gap-5">
       <WorkWithUsStory
         class="xmd:col-span-4 xmd:col-start-2"
         title="Pho"

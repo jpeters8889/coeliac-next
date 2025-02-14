@@ -53,6 +53,7 @@ const classes = computed((): string[] => {
     'shadow-xs',
     'transition',
     'relative',
+    'cursor-pointer',
   ];
 
   switch (props.size) {

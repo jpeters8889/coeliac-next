@@ -35,7 +35,7 @@ setInterval(() => {
     <div class="mx-auto w-full max-w-8xl">
       <div class="relative z-10">
         <div
-          class="relative px-6 py-10 sm:py-12 md:py-14 xmd:py-16 lg:py-20 xl:py-24"
+          class="relative px-6 py-10 sm:max-md:py-12 md:max-xmd:py-14 xmd:max-lg:py-16 lg:max-xl:py-20 xl:py-24"
         >
           <div class="mx-auto max-w-5xl">
             <h1

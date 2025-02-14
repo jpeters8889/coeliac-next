@@ -13,6 +13,8 @@ import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
 import ProductAddBasketForm from '@/Components/PageSpecific/Shop/ProductAddBasketForm.vue';
 import { pluralise } from '@/helpers';
 import { Page } from '@inertiajs/core';
+import Heading from '@/Components/Heading.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 const props = defineProps<{
   product: ShopProductDetail;
@@ -92,36 +94,19 @@ const loadMoreReviews = () => {
     <div class="mx-auto">
       <!-- Product details -->
       <div class="space-y-3 md:self-end lg:space-y-4">
-        <nav>
-          <ol
-            role="list"
-            class="flex items-center space-x-2"
-          >
-            <li>
-              <div class="flex items-center text-sm">
-                <Link
-                  :href="product.category.link"
-                  class="inline-flex items-center font-medium text-gray-500 hover:text-primary-dark xl:text-lg"
-                >
-                  <ArrowUturnLeftIcon class="h-6 w-6 pr-2 xl:h-8 xl:w-8" />
-                  <span class="leading-none">
-                    Back to <strong v-text="product.category.title" />
-                  </span>
-                </Link>
-              </div>
-            </li>
-          </ol>
-        </nav>
-
-        <div>
-          <h1
-            class="text-2xl font-semibold tracking-tight lg:text-4xl"
-            v-text="product.title"
-          />
-        </div>
+        <Heading
+          :back-link="{
+            label: `Back to <strong>${product.category.title}</strong>`,
+            href: product.category.link,
+            position: 'top',
+            direction: 'left',
+          }"
+        >
+          {{ product.title }}
+        </Heading>
 
         <div
-          class="space-y-3 md:grid md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:gap-5 2xl:gap-7"
+          class="space-y-3 md:grid md:max-lg:grid-cols-2 md:max-lg:gap-3 lg:grid-cols-3 lg:max-2xl:gap-5 2xl:gap-7"
         >
           <!-- Product image -->
           <div
@@ -161,12 +146,12 @@ const loadMoreReviews = () => {
               >
                 <div class="flex flex-col items-end justify-end">
                   <StarRating
-                    size="w-4 h-4 xs:w-5 xs:h-5 xl:w-6 xl:h-6"
+                    size="w-4 h-4 xs:max-xl:w-5 xs:max-xl:h-5 xl:w-6 xl:h-6"
                     :rating="product.rating.average"
                   />
 
                   <p
-                    class="text-sm text-gray-500 group-hover:text-primary-dark xs:text-base xl:text-lg"
+                    class="text-sm text-gray-500 group-hover:text-primary-dark xs:max-xl:text-base xl:text-lg"
                   >
                     {{ product.rating.count }}
                     {{ pluralise('review', product.rating.count) }}
@@ -177,7 +162,7 @@ const loadMoreReviews = () => {
 
             <div class="flex-1 space-y-6">
               <p
-                class="prose max-w-none xs:prose-lg xl:prose-xl"
+                class="prose max-w-none xs:max-xl:prose-lg xl:prose-xl"
                 v-text="product.description"
               />
             </div>
@@ -201,11 +186,11 @@ const loadMoreReviews = () => {
       >
         <h3>
           <DisclosureButton
-            class="group relative flex w-full items-center justify-between py-2 text-left"
+            class="group relative flex w-full items-center justify-between py-2 text-left cursor-pointer hover:text-primary-dark"
           >
-            <span
-              class="text-lg font-semibold xl:text-xl"
-              :class="open ? 'text-primary-dark' : ''"
+            <SubHeading
+              as="h3"
+              :classes="open ? 'text-primary-dark' : ''"
               v-text="additionalDetail.title"
             />
             <span class="ml-6 flex items-center">
@@ -241,14 +226,28 @@ const loadMoreReviews = () => {
       >
         <h3>
           <DisclosureButton
-            class="group relative flex w-full items-center justify-between py-2 text-left"
+            class="group relative flex w-full items-center justify-between py-2 text-left cursor-pointer"
             @click="showReviews = !showReviews"
           >
-            <span
-              class="text-lg font-semibold xl:text-xl"
-              :class="showReviews ? 'text-primary-dark' : ''"
-              v-text="'Reviews'"
-            />
+            <SubHeading
+              as="h3"
+              :classes="
+                showReviews
+                  ? 'text-primary-dark flex items-center'
+                  : ' flex items-center'
+              "
+            >
+              <span class="mr-4">Reviews</span>
+              <StarRating
+                size="size-4"
+                :rating="product.rating.average"
+                show-all
+              />
+              <span class="font-sans text-sm ml-2">
+                {{ product.rating.count }}
+                {{ pluralise('review', product.rating.count) }}
+              </span>
+            </SubHeading>
             <span class="ml-6 flex items-center">
               <PlusIcon
                 v-if="!showReviews"

@@ -97,7 +97,7 @@ const reviewBody = computed(() => {
       </ul>
 
       <p
-        class="prose max-w-none md:prose-lg xl:prose-xl"
+        class="prose max-w-none md:max-xl:prose-lg xl:prose-xl"
         v-html="reviewBody"
       />
 

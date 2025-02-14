@@ -3,6 +3,7 @@ import FacebookIcon from '@/Icons/FacebookIcon.vue';
 import TwitterIcon from '@/Icons/TwitterIcon.vue';
 import InstagramIcon from '@/Icons/InstagramIcon.vue';
 import { Link } from '@inertiajs/vue3';
+import BlueskyIcon from '@/Icons/BlueskyIcon.vue';
 
 const year = new Date().getFullYear();
 
@@ -41,14 +42,29 @@ const navigation: { links: { label: string; url: string }[] } = {
       </p>
 
       <div class="flex items-center justify-center space-x-3">
-        <a href="#">
+        <<a
+          href="https://www.facebook.com/coeliacsanctuary/"
+          target="_blank"
+        >
           <FacebookIcon />
         </a>
-        <a href="#">
-          <TwitterIcon />
-        </a>
-        <a href="#">
+        <a
+          href="https://www.instagram.com/coeliacsanctuary"
+          target="_blank"
+        >
           <InstagramIcon />
+        </a>
+        <a
+          href="https://bsky.app/profile/coeliacsanctuary.bsky.social"
+          target="_blank"
+        >
+          <BlueskyIcon />
+        </a>
+        <a
+          href="https://twitter.com/coeliacsanc"
+          target="_blank"
+        >
+          <TwitterIcon />
         </a>
       </div>
     </div>

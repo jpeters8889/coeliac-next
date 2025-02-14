@@ -68,7 +68,7 @@ onMounted(() => {
     >
       <h2 class="text-xl xl:text-2xl font-semibold">Where are you heading?</h2>
 
-      <p class="prose max-w-none md:prose-lg xl:prose-xl">
+      <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl">
         Enter the country or language below and we'll try and find the best
         travel card for you!
       </p>
@@ -146,7 +146,7 @@ onMounted(() => {
         </p>
       </Card>
 
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4 sm:max-lg:grid-cols-2 lg:grid-cols-3">
         <CategoryProductCard
           v-for="product in searchResult.products"
           :key="product.id"

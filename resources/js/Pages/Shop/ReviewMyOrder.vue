@@ -169,7 +169,7 @@ const submitForm = () => {
 
           <div class="flex flex-col space-y-2">
             <h2
-              class="text-lg font-semibold text-primary-dark lg:text-xl xl:text-2xl"
+              class="text-lg font-semibold text-primary-dark lg:max-xl:text-xl xl:text-2xl"
             >
               <a
                 :href="product.link"

@@ -3,11 +3,14 @@ import Card from '@/Components/Card.vue';
 import Heading from '@/Components/Heading.vue';
 import ArticleImage from '@/Components/ArticleImage.vue';
 import { Link } from '@inertiajs/vue3';
+import SubHeading from '@/Components/SubHeading.vue';
 </script>
 
 <template>
   <div class="flex flex-col gap-5 mt-5">
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
+    <Card
+      class="prose prose-lg max-w-none lg:max-xl:prose-xl xl:prose-2xl block!"
+    >
       <Heading :border="false">About Coeliac Sanctuary</Heading>
 
       <div class="flex">
@@ -112,8 +115,10 @@ import { Link } from '@inertiajs/vue3';
       </div>
     </Card>
 
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
-      <Heading :border="false">Alison - Founder/Owner</Heading>
+    <Card
+      class="prose prose-lg max-w-none lg:max-xl:prose-xl xl:prose-2xl block!"
+    >
+      <SubHeading>Alison - Founder/Owner</SubHeading>
 
       <ArticleImage
         title="Alison - Coeliac Sanctuary founder"
@@ -147,10 +152,12 @@ import { Link } from '@inertiajs/vue3';
       </p>
     </Card>
 
-    <Card class="prose prose-lg max-w-none lg:prose-xl xl:prose-2xl block!">
-      <Heading :border="false"
-        >Jamie - The sidekick, the brains, developer and tech guru</Heading
-      >
+    <Card
+      class="prose prose-lg max-w-none lg:max-xl:prose-xl xl:prose-2xl block!"
+    >
+      <SubHeading>
+        Jamie - The sidekick, the brains, developer and tech guru
+      </SubHeading>
 
       <ArticleImage
         title="Jamie - Coeliac Sanctuary developer and tech guru"

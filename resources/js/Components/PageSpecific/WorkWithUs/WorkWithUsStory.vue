@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/Components/Card.vue';
+import Heading from '@/Components/Heading.vue';
 
 withDefaults(
   defineProps<{
@@ -17,10 +18,13 @@ withDefaults(
 <template>
   <div class="@container">
     <Card class="flex flex-col space-y-5 h-full @xl:p-8">
-      <h2
-        class="font-semibold text-primary-dark text-3xl text-center @sm:text-left @xl:text-4xl"
-        v-text="title"
-      />
+      <Heading
+        classes="text-primary-dark text-left"
+        as="h2"
+        :border="false"
+      >
+        {{ title }}
+      </Heading>
 
       <div class="flex flex-col @sm:space-x-5 @sm:flex-row w-full h-full">
         <div class="flex flex-col space-y-5 flex-1 h-full">

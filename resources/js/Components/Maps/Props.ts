@@ -24,6 +24,7 @@ export type StaticMapProps = MapProps & {
 
 export const StaticMapPropDefaults: Partial<StaticMapProps> = {
   ...MapPropDefaults,
-  mapClasses: 'min-h-map-small md:min-h-map lg:min-h-map-small xl:min-h-map',
+  mapClasses:
+    'min-h-map-small md:max-lg:min-h-map lg:max-xl:min-h-map-small xl:min-h-map',
   canExpand: true,
 };

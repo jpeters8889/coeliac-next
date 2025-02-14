@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import { HeadingBackLink } from '@/types/Types';
 import { Link } from '@inertiajs/vue3';
+import { ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
 
 withDefaults(
   defineProps<{
     as?: string;
     border?: boolean;
     backLink?: HeadingBackLink;
+    classes?: string;
   }>(),
   {
     as: 'h1',
     border: true,
     backLink: undefined,
+    classes: '',
   },
 );
 </script>
@@ -21,20 +24,45 @@ withDefaults(
     :class="{ 'border-gray-light border-b pb-2': border }"
     class="flex flex-col"
   >
+    <Link
+      v-if="backLink && backLink.position === 'top'"
+      :href="backLink.href"
+      class="inline-flex items-center font-medium text-gray-500 hover:text-primary-dark xl:text-lg mb-4"
+      :class="{
+        'justify-center':
+          !backLink.direction || backLink.direction === 'center',
+        'justify-start': backLink.direction === 'left',
+        'justify-end': backLink.direction === 'right',
+      }"
+    >
+      <ArrowUturnLeftIcon class="h-6 w-6 pr-2 xl:h-8 xl:w-8" />
+
+      <span v-html="backLink.label" />
+    </Link>
+
     <component
       :is="as"
-      class="text-center font-coeliac text-3xl font-semibold md:text-4xl lg:text-5xl mb-0!"
+      class="text-center font-coeliac text-3xl font-semibold md:max-lg:text-4xl lg:text-5xl mb-0!"
+      :class="classes"
     >
       <slot />
     </component>
 
-    <div
-      v-if="backLink"
-      class="mt-4 text-center text-sm font-semibold text-primary-dark transition hover:text-grey"
+    <Link
+      v-if="backLink && backLink.position !== 'top'"
+      :href="backLink.href"
+      class="inline-flex items-center justify-center font-medium text-gray-500 hover:text-primary-dark xl:text-lg mt-4"
+      :class="{
+        'justify-center':
+          !backLink.direction || backLink.direction === 'center',
+        'justify-start': backLink.direction === 'left',
+        'justify-end': backLink.direction === 'right',
+      }"
+      xe
     >
-      <Link :href="backLink.href">
-        {{ backLink.label }}
-      </Link>
-    </div>
+      <ArrowUturnLeftIcon class="h-6 w-6 pr-2 xl:h-8 xl:w-8" />
+
+      <span v-html="backLink.label" />
+    </Link>
   </div>
 </template>

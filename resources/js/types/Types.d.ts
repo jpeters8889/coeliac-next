@@ -34,4 +34,6 @@ export type CommentReply = {
 export type HeadingBackLink = {
   label: string;
   href: string;
+  position?: 'top' | 'bottom';
+  direction?: 'left' | 'center' | 'right';
 };

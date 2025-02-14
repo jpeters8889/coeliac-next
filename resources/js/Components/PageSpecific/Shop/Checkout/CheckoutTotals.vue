@@ -81,9 +81,9 @@ watch(
   <div class="w-full">
     <dl class="mt-10 space-y-3">
       <div class="flex justify-between">
-        <dt class="lg:text-lg xl:text-xl">Subtotal</dt>
+        <dt class="lg:max-xl:text-lg xl:text-xl">Subtotal</dt>
         <dd
-          class="text-lg font-semibold lg:text-xl xl:text-2xl"
+          class="text-lg font-semibold lg:max-xl:text-xl xl:text-2xl"
           v-text="subtotal"
         />
       </div>
@@ -100,7 +100,7 @@ watch(
 
         <dt class="flex-1 pr-2 xs:pr-4">
           <div
-            class="flex flex-col sm:w-full sm:flex-row sm:items-center sm:space-x-3 lg:text-lg xl:text-xl"
+            class="flex flex-col sm:w-full sm:flex-row sm:items-center sm:space-x-3 lg:max-xl:text-lg xl:text-xl"
           >
             <span>Postage to</span>
             <FormSelect
@@ -123,7 +123,7 @@ watch(
           </small>
         </dt>
         <dd
-          class="shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
+          class="shrink-0 text-lg font-semibold lg:max-xl:text-xl xl:text-2xl"
           v-text="postage"
         />
       </div>
@@ -132,7 +132,7 @@ watch(
         class="flex justify-between"
       >
         <dt
-          class="flex w-full items-center justify-between lg:text-lg xl:text-xl"
+          class="flex w-full items-center justify-between lg:max-xl:text-lg xl:text-xl"
         >
           <span>Discount</span>
           <XMarkIcon
@@ -141,7 +141,7 @@ watch(
           />
         </dt>
         <dd
-          class="shrink-0 text-lg font-semibold lg:text-xl xl:text-2xl"
+          class="shrink-0 text-lg font-semibold lg:max-xl:text-xl xl:text-2xl"
           v-text="`-${discount}`"
         />
       </div>
@@ -149,7 +149,7 @@ watch(
         <CheckoutDiscountCode />
       </div>
       <div
-        class="flex justify-between border-t border-t border-gray-200 border-secondary pt-3 text-xl font-semibold lg:text-2xl xl:text-3xl"
+        class="flex justify-between border-t border-secondary pt-3 text-xl font-semibold lg:max-xl:text-2xl xl:text-3xl"
       >
         <dt class="">Total</dt>
         <dd

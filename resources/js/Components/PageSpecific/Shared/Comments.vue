@@ -8,6 +8,8 @@ import FormTextarea from '@/Components/Forms/FormTextarea.vue';
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ref } from 'vue';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
+import Heading from '@/Components/Heading.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 const emits = defineEmits(['load-more']);
 
@@ -47,7 +49,7 @@ const submitComment = () => {
 
 <template>
   <Card>
-    <h2 class="my-2 font-coeliac text-2xl font-semibold">Your Comments</h2>
+    <Heading as="h3">Your Comments</Heading>
 
     <div
       v-if="comments.data.length"
@@ -97,16 +99,16 @@ const submitComment = () => {
 
     <div
       v-else
-      class="font-semibold"
+      class="font-semibold my-8"
     >
       There's no comments on this blog, why not leave one?
     </div>
   </Card>
 
   <Card>
-    <h2 class="my-2 font-coeliac text-2xl font-semibold">Submit Comment</h2>
+    <SubHeading>Submit Comment</SubHeading>
 
-    <p>
+    <p class="mt-3">
       Want to leave a comment on this blog? Feel free to join the discussion!
     </p>
 

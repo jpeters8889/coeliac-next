@@ -58,7 +58,9 @@ const howExpensive = (review: EateryReview) => {
 
 <template>
   <Card class="lg:rounded-lg lg:p-8">
-    <div class="mx-auto md:grid md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
+    <div
+      class="mx-auto md:grid md:max-xl:grid-cols-3 md:gap-x-8 xl:grid-cols-4"
+    >
       <RatingsBreakdown
         :average="eatery.reviews.average"
         :breakdown="eatery.reviews.ratings"
@@ -129,12 +131,12 @@ const howExpensive = (review: EateryReview) => {
                   >
                     <li
                       v-if="review.expense"
-                      class="rounded-sm bg-primary-light/50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                      class="rounded-sm bg-primary-light/50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:max-md:space-y-1 sm:max-xl:space-x-0 md:max-xl:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                       v-html="howExpensive(review)"
                     />
                     <li
                       v-if="review.food_rating"
-                      class="rounded-sm bg-primary-light/50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:space-y-1 sm:space-x-0 md:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                      class="rounded-sm bg-primary-light/50 px-2 py-2 leading-none flex space-x-2 sm:flex-col sm:max-md:space-y-1 sm:max-xl:space-x-0 md:max-xl:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
                     >
                       <strong>Food:</strong>
                       <span v-text="ucfirst(review.food_rating)" />

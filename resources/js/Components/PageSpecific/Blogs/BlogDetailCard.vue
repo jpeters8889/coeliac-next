@@ -59,7 +59,7 @@ defineProps<{ blog: BlogDetailCard }>();
       </div>
 
       <div class="mt-4 flex justify-between">
-        <div>Added on {{ formatDate(blog.date) }}</div>
+        <div>Added on {{ blog.date }}</div>
 
         <div>
           {{ blog.comments_count }} Comment{{

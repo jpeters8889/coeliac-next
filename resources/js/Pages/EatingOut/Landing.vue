@@ -3,6 +3,7 @@ import Card from '@/Components/Card.vue';
 import { Link } from '@inertiajs/vue3';
 import Icon from '@/Components/Icon.vue';
 import LocationSearch from '@/Components/PageSpecific/EatingOut/LocationSearch.vue';
+import Heading from '@/Components/Heading.vue';
 
 type LinkType = {
   title: string;
@@ -89,18 +90,16 @@ const elemClasses = (index: number): string[] => {
 </script>
 
 <template>
-  <h1
-    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 xs:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
-  >
-    Gluten Free Places to Eat and Visit
-  </h1>
+  <Card>
+    <Heading :border="false"> Gluten Free Places to Eat and Visit </Heading>
+  </Card>
 
   <LocationSearch />
 
   <Card class="mt-3 flex flex-col space-y-4 md:p-6">
     <ul
       role="list"
-      class="grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-6 md:gap-6"
+      class="grid grid-cols-1 gap-4 xs:max-md:grid-cols-2 md:grid-cols-6 md:gap-6"
     >
       <li
         v-for="(item, index) in links"
@@ -118,12 +117,12 @@ const elemClasses = (index: number): string[] => {
             />
 
             <h3
-              class="text-lg font-semibold md:text-xl lg:text-2xl"
+              class="text-lg font-semibold md:max-lg:text-xl lg:text-2xl"
               v-text="item.title"
             />
 
             <p
-              class="prose prose-sm max-w-none text-gray-500 md:text-base lg:text-lg"
+              class="prose prose-sm max-w-none text-gray-500 md:max-lg:text-base lg:text-lg"
               v-text="item.description"
             />
           </div>

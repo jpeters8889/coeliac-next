@@ -32,7 +32,7 @@ const linkCards = [
         class="w-full bg-white p-2 text-center shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:text-left xxs:shadow-lg xs:p-4"
       >
         <h1
-          class="text-xl font-semibold xxs:text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
+          class="text-xl font-semibold xxs:max-sm:text-lg sm:max-md:text-xl md:max-lg:text-2xl lg:max-xl:text-3xl xl:text-4xl"
         >
           Gluten Free search results for {{ term }}
         </h1>
@@ -58,16 +58,16 @@ const linkCards = [
             class="flex flex-1 flex-col items-center justify-center xs:w-full xs:flex-row md:flex-none md:items-start"
           >
             <div
-              class="mb-2 hidden flex-1 xs:mb-0 xs:mb-4 xs:mr-4 xs:block xs:flex-none"
+              class="mb-2 hidden flex-1 xs:mb-4 xs:mr-4 xs:block xs:flex-none"
             >
               <component
                 :is="item.icon"
-                class="h-12 w-12 xs:h-10 xs:w-10 md:h-8 md:w-8"
+                class="h-12 w-12 xs:max-md:h-10 xs:max-md:w-10 md:h-8 md:w-8"
               />
             </div>
 
             <div
-              class="text-center text-sm font-semibold xs:flex-1 xs:text-left xs:text-base md:text-xl lg:text-2xl"
+              class="text-center text-sm font-semibold xs:flex-1 xs:text-left xs:max-md:text-base md:max-lg:text-xl lg:text-2xl"
             >
               {{ item.title }}
             </div>

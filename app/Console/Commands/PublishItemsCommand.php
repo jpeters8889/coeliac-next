@@ -29,8 +29,11 @@ class PublishItemsCommand extends Command
                 ->where('draft', false)
                 ->where('publish_at', '<', now())
                 ->get()
-                ->each(function ($blog): void {
-                    $blog->update(['live' => true]);
+                ->each(function ($model): void {
+                    $model->update([
+                        'live' => true,
+                        'created_at' => now(),
+                    ]);
                 });
         }
 

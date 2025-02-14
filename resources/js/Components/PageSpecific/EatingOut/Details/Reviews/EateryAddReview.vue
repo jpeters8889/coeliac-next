@@ -140,7 +140,7 @@ const imageError = (message: string): void => {
     </div>
 
     <template v-else>
-      <p class="prose md:prose-lg lg:prose-xl xl:prose-2xl">
+      <p class="prose md:max-md:prose-lg lg:max-xl:prose-xl xl:prose-2xl">
         Have you visited <strong v-text="eatery.name" />? Let other people know
         your experience by leaving a review!
       </p>

@@ -159,7 +159,7 @@ const icon = computed((): string => {
               />
 
               <p
-                class="prose prose-sm max-w-none sm:prose-base lg:prose-lg"
+                class="prose prose-sm max-w-none sm:max-lg:prose-base lg:prose-lg"
                 v-text="restaurant.info"
               />
             </div>
@@ -170,7 +170,7 @@ const icon = computed((): string => {
             class="px-3"
           >
             <p
-              class="prose prose-sm max-w-none sm:prose-base lg:prose-lg"
+              class="prose prose-sm max-w-none sm:max-lg:prose-base lg:prose-lg"
               v-text="placeDetails.info"
             />
           </div>

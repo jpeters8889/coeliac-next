@@ -54,18 +54,20 @@ const addToBasket = () => {
     </Link>
     <div class="flex flex-1 flex-col space-y-2 p-4">
       <h3
-        class="font-semibold group-hover:text-primary-dark xxs:text-lg xmd:text-xl 2xl:text-2xl"
+        class="font-semibold group-hover:text-primary-dark xxs:max-xmd:text-lg xmd:max-2xl:text-xl 2xl:text-2xl"
       >
         <Link :href="product.link">
           {{ product.title }}
         </Link>
       </h3>
       <p
-        class="prose-sm text-gray-500 md:prose-base xl:prose-lg"
+        class="prose-sm text-gray-500 md:max-xl:prose-base xl:prose-lg"
         v-text="product.description"
       />
       <div class="flex flex-1 justify-between">
-        <p class="text-2xl font-semibold text-gray-900 md:text-3xl xl:text-4xl">
+        <p
+          class="text-2xl font-semibold text-gray-900 md:max-xl:text-3xl xl:text-4xl"
+        >
           {{ product.price }}
         </p>
 

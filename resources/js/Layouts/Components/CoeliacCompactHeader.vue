@@ -26,33 +26,35 @@ const mobileSearchOpen = ref(false);
       id="header"
       class="relative z-20"
     >
-      <div class="mx-auto flex w-full items-start justify-between px-2">
-        <div class="md:hidden">
-          <a
-            class="flex items-center justify-center rounded-md text-white/80 hover:text-white"
-          >
-            <Bars3BottomLeftIcon
-              class="h-10 w-10"
-              @click="mobileNavOpen = true"
-            />
-          </a>
+      <div
+        class="mx-auto flex w-full items-start justify-between px-2 lg:relative"
+      >
+        <div
+          class="lg:hidden flex items-center justify-center rounded-md text-white/80 hover:text-white py-2"
+        >
+          <Bars3BottomLeftIcon
+            class="h-10 w-10"
+            @click="mobileNavOpen = true"
+          />
         </div>
 
         <Link
-          class="my-2 flex flex-1 md:flex-none"
           href="/"
+          class="lg:absolute lg:left-2"
         >
-          <Sealiac class="h-10" />
+          <Sealiac class="w-full h-14" />
         </Link>
 
-        <MainNav />
+        <MainNav class="md:hidden! lg:flex!" />
 
-        <div class="h-14 w-14 p-2">
-          <div
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
-            @click="mobileSearchOpen = true"
-          >
-            <MagnifyingGlassIcon class="h-6 w-6" />
+        <div class="lg:absolute lg:right-2">
+          <div class="h-10 w-10 py-2">
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"
+              @click="mobileSearchOpen = true"
+            >
+              <MagnifyingGlassIcon class="h-6 w-6" />
+            </div>
           </div>
         </div>
       </div>

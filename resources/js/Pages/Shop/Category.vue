@@ -36,13 +36,13 @@ defineProps<{
     <Heading>{{ category.title }}</Heading>
 
     <p
-      class="prose max-w-none md:prose-lg xl:prose-xl"
+      class="prose max-w-none md:max-xl:prose-lg xl:prose-xl"
       v-text="category.description"
     />
   </Card>
 
   <div
-    class="grid grid-cols-1 gap-y-4 p-3 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 2xl:p-0"
+    class="grid grid-cols-1 gap-y-4 p-3 sm:max-lg:grid-cols-2 sm:gap-3 lg:grid-cols-3 2xl:p-0"
   >
     <CategoryProductCard
       v-for="product in products"

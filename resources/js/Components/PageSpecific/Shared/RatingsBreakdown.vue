@@ -2,6 +2,7 @@
 import CoeliacButton from '@/Components/CoeliacButton.vue';
 import StarRating from '@/Components/StarRating.vue';
 import { StarRating as StarRatingType } from '@/types/EateryTypes';
+import { pluralise } from '@/helpers';
 
 withDefaults(
   defineProps<{
@@ -30,7 +31,9 @@ defineEmits(['createReview']);
           />
         </div>
       </div>
-      <p class="text-right text-sm">Based on {{ count }} reviews</p>
+      <p class="text-right text-sm">
+        Based on {{ count }} {{ pluralise('review', count) }}
+      </p>
     </div>
 
     <div class="mt-6">

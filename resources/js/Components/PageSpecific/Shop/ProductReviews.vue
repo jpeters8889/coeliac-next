@@ -6,6 +6,8 @@ import CoeliacButton from '@/Components/CoeliacButton.vue';
 import { ref, watch } from 'vue';
 import RatingsBreakdown from '@/Components/PageSpecific/Shared/RatingsBreakdown.vue';
 import { formatDate } from '@/helpers';
+import Warning from '@/Components/Warning.vue';
+import Info from '@/Components/Info.vue';
 
 const props = defineProps<{
   productName: string;
@@ -23,17 +25,27 @@ defineEmits(['load-more']);
 </script>
 
 <template>
-  <div class="mx-auto md:grid md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
+  <div class="mx-auto md:grid md:max-xl:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
     <RatingsBreakdown
       :average="rating.average"
       :breakdown="rating.breakdown"
       :count="rating.count"
+      :can-add-review="false"
     >
       Have you used our <strong v-text="productName" />? Share your thoughts
       with other customers!
     </RatingsBreakdown>
 
-    <div class="mt-8 md:col-span-2 md:mt-0 xl:col-span-3">
+    <div class="mt-8 md:max-xl:col-span-2 md:mt-0 xl:col-span-3">
+      <Info class="mb-4">
+        <p class="text-sm">
+          All reviews are from verified purchases, customers are invited to
+          leave a review 10 days* after their order has been shipped.
+        </p>
+
+        <small class="text-xs mt-4">* 10 days is for UK orders only.</small>
+      </Info>
+
       <div class="flow-root">
         <div class="-my-6 divide-y divide-gray-200">
           <div
@@ -45,7 +57,7 @@ defineEmits(['load-more']);
               <div class="flex flex-col">
                 <h4
                   class="font-bold lg:text-xl"
-                  v-text="review.name"
+                  v-text="review.name || 'Anonymous'"
                 />
                 <time
                   :datetime="review.date"

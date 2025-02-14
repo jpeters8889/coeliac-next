@@ -68,6 +68,8 @@ class Menu
                 MenuItem::dashboard(Shop::class),
             ])->icon('chart-bar'),
 
+            MenuItem::externalLink('Mailcoach', config('mail.mailers.mailcoach.domain'))->openInNewTab(),
+
             MenuSection::make('Main Site', [
                 MenuItem::resource(Blog::class),
                 MenuItem::resource(Recipe::class),

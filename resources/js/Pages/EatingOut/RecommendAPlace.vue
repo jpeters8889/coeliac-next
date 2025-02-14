@@ -184,7 +184,7 @@ watchDebounced(
           >
             <div class="flex flex-col space-y-3 md:text-center">
               <p
-                class="prose lg:prose-lg xl:prose-xl"
+                class="prose lg:max-xl:prose-lg xl:prose-xl"
                 v-text="placeAlreadyRecommended.result"
               />
 
@@ -199,7 +199,7 @@ watchDebounced(
                 />
               </div>
 
-              <p class="prose lg:prose-lg xl:prose-xl font-semibold">
+              <p class="prose lg:max-xl:prose-lg xl:prose-xl font-semibold">
                 If you're this is a different place please carry on with your
                 recommendation!
               </p>

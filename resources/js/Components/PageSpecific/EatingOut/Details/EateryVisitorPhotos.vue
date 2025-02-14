@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <Card class="space-y-2 lg:space-y-4 lg:rounded-lg lg:p-8">
-    <p class="prose max-w-none lg:prose-lg xl:prose-xl">
+    <p class="prose max-w-none lg:max-xl:prose-lg xl:prose-xl">
       Here are some photos taken at <strong>{{ eatery.name }}</strong> that
       other visitors have submitted!
     </p>

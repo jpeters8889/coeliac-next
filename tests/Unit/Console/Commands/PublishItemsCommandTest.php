@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use App\Models\Blogs\Blog;
 use App\Models\Collections\Collection;
 use App\Models\Recipes\Recipe;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Spatie\TestTime\TestTime;
 use Tests\TestCase;
 
 class PublishItemsCommandTest extends TestCase
@@ -29,6 +30,26 @@ class PublishItemsCommandTest extends TestCase
         $this->artisan('coeliac:publish-items');
 
         $this->assertTrue($instance->refresh()->live);
+    }
+
+    /** @param  class-string<Model>  $model */
+    #[Test]
+    #[DataProvider('publishableModels')]
+    public function itUpdatesTheCreatedAt(string $model): void
+    {
+        /** @var Model $instance */
+        $instance = $this->create($model, [
+            'created_at' => now()->subDay(),
+            'live' => false,
+            'draft' => false,
+            'publish_at' => now()->subMinute(),
+        ]);
+
+        TestTime::freeze();
+
+        $this->artisan('coeliac:publish-items');
+
+        $this->assertEquals(now()->format('Y-m-d H:i:s'), $instance->refresh()->created_at);
     }
 
     /** @param  class-string<Model>  $model */

@@ -43,7 +43,7 @@ const ctaItems: Cta[] = [
     <Card
       v-for="cta in ctaItems"
       :key="cta.title"
-      class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 lg:flex-col lg:space-y-4 xl:flex-row xl:space-y-0"
+      class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 lg:max-xl:flex-col lg:max-xl:space-y-4 xl:flex-row xl:space-y-0"
     >
       <h2
         class="text-2xl text-primary font-semibold text-center sm:hidden"
@@ -51,7 +51,7 @@ const ctaItems: Cta[] = [
       />
 
       <div
-        class="flex justify-center items-center my-12 sm:m-0! sm:p-2 sm:w-1/4 sm:shrink-0 lg:w-full xl:w-1/4"
+        class="flex justify-center items-center my-12 sm:m-0! sm:p-2 sm:max-lg:w-1/4 sm:shrink-0 lg:max-xl:w-full xl:w-1/4"
         v-html="cta.icon"
       />
 

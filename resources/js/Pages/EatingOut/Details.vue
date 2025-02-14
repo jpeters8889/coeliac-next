@@ -35,7 +35,7 @@ const eateryName = (): string => {
 </script>
 
 <template>
-  <div class="flex flex-col space-y-3 lg:space-y-4 xl:space-y-5">
+  <div class="flex flex-col space-y-3 lg:max-xl:space-y-4 xl:space-y-5">
     <div
       v-if="eatery.closed_down"
       class="bg-red px-3 py-1 text-lg font-semibold text-white"
@@ -53,7 +53,7 @@ const eateryName = (): string => {
     />
 
     <div
-      class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:space-x-4 xl:space-x-5"
+      class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:max-lg:space-x-3 lg:max-xl:space-x-4 xl:space-x-5"
     >
       <EateryDescription
         class="md:flex-1"

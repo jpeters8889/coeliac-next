@@ -13,7 +13,7 @@ defineProps<{
   <Card class="mt-3 flex flex-col space-y-4">
     <Heading> Coeliac Sanctuary Shop</Heading>
 
-    <p class="prose max-w-none md:prose-lg xl:prose-xl">
+    <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl">
       Welcome to the Coeliac Sanctuary Shop, here you can find a range of
       helpful items including Coeliac travel cards to help you explain Coeliac
       and the need for gluten free, available in 50 languages, we cover most of

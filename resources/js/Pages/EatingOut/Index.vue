@@ -8,6 +8,8 @@ import {
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import EateryCountryCard from '@/Components/PageSpecific/EatingOut/Index/EateryCountryCard.vue';
 import LocationSearch from '@/Components/PageSpecific/EatingOut/LocationSearch.vue';
+import Heading from '@/Components/Heading.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 defineProps<{
   countries: EateryCountryListProp;
@@ -17,13 +19,9 @@ defineProps<{
 </script>
 
 <template>
-  <h1
-    class="mt-3 w-full bg-white p-2 text-center text-xl font-semibold shadow-sm xxs:w-auto xxs:rounded-sm xxs:bg-primary-light/90 xxs:px-8 xxs:text-lg xxs:shadow-lg xs:p-4 sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl"
-  >
-    Gluten Free Places to Eat and Visit
-  </h1>
-
   <Card class="mt-3 flex flex-col space-y-4">
+    <Heading>Gluten Free Places to Eat and Visit</Heading>
+
     <p class="prose prose-lg max-w-none md:prose-xl">
       Our Where to Eat guide lists 1,000s of independent eateries all over the
       UK and Ireland that offer gluten free options or have a gluten free menu.
@@ -59,9 +57,9 @@ defineProps<{
 
   <template v-if="topRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
+      <SubHeading>
         Top rated places to eat gluten free around the UK and Ireland
-      </h2>
+      </SubHeading>
 
       <p class="prose prose-lg max-w-none md:prose-xl">
         These are the top rated places to eat gluten free in our eating out
@@ -80,9 +78,9 @@ defineProps<{
 
   <template v-if="mostRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
+      <SubHeading>
         Most rated places to eat gluten free around the UK and Ireland
-      </h2>
+      </SubHeading>
 
       <p class="prose prose-lg max-w-none md:prose-xl">
         These are the top gluten free places in our eating guide gluten that
@@ -100,9 +98,7 @@ defineProps<{
   </template>
 
   <Card class="mt-3 flex flex-col space-y-4">
-    <h2 class="text-2xl font-semibold md:text-3xl">
-      Gluten Free around the UK and Ireland
-    </h2>
+    <Heading> Gluten Free around the UK and Ireland </Heading>
 
     <p class="prose prose-lg max-w-none md:prose-xl">
       Our eating out guide is split into countries, counties and then towns or

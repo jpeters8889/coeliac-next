@@ -303,7 +303,7 @@ watchDebounced(
           class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0"
           prefetch
         >
-          <div class="w-full sm:w-1/4 xl:w-1/5">
+          <div class="w-full sm:max-xl:w-1/4 xl:w-1/5">
             <RecipeSquareImage
               v-if="item.type === 'Recipe'"
               :src="item.image"
@@ -324,7 +324,7 @@ watchDebounced(
 
           <div class="flex flex-col space-y-4 sm:flex-1 sm:space-y-2">
             <h2
-              class="text-primary-dark text-xl font-semibold group-hover/item:text-black transition lg:text-2xl xl:text-3xl"
+              class="text-primary-dark text-xl font-semibold group-hover/item:text-black transition lg:max-xl:text-2xl xl:text-3xl"
               v-text="item.title"
             />
 

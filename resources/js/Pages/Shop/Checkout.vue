@@ -346,7 +346,9 @@ onMounted(() => {
       :absolute="false"
     />
 
-    <div class="grid grid-cols-1 gap-x-4 gap-y-4 lg:grid-cols-2 xl:grid-cols-3">
+    <div
+      class="grid grid-cols-1 gap-x-4 gap-y-4 lg:max-xl:grid-cols-2 xl:grid-cols-3"
+    >
       <Card
         theme="primary-light"
         class="bg-primary-light/20!"

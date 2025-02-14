@@ -69,7 +69,7 @@ const classes = (): string[] => {
       class="block font-semibold leading-6 text-primary-dark"
       :class="
         size === 'large'
-          ? 'text-base sm:text-lg xl:text-xl'
+          ? 'text-base sm:max-xl:text-lg xl:text-xl'
           : 'text-base sm:text-lg'
       "
     >

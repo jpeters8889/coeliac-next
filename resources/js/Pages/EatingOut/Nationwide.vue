@@ -7,6 +7,8 @@ import {
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import NationwideEateryCard from '@/Components/PageSpecific/EatingOut/NationwideEateryCard.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import Heading from '@/Components/Heading.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 defineProps<{
   county: NationwidePage;
@@ -17,9 +19,7 @@ defineProps<{
 
 <template>
   <Card class="mt-3 flex flex-col space-y-4">
-    <h2 class="text-2xl font-semibold md:text-3xl">
-      Gluten Free Nationwide Chains
-    </h2>
+    <Heading> Gluten Free Nationwide Chains </Heading>
 
     <p class="prose prose-lg max-w-none">
       Here you can see all of the nationwide chains in our Where to Eat guide
@@ -35,9 +35,7 @@ defineProps<{
 
   <template v-if="topRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
-        Highest Rated Gluten Free Nationwide Chains
-      </h2>
+      <SubHeading> Highest Rated Gluten Free Nationwide Chains </SubHeading>
 
       <p class="prose prose-lg max-w-none">
         Discover the best rated places nationwide chains to eat gluten free in,
@@ -58,9 +56,7 @@ defineProps<{
 
   <template v-if="mostRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
-        Most rated nationwide chains to eat gluten free
-      </h2>
+      <SubHeading> Most rated nationwide chains to eat gluten free </SubHeading>
 
       <p class="prose prose-lg max-w-none">
         Discover the most reviewed and highly praised chains to eat gluten free
@@ -82,9 +78,7 @@ defineProps<{
   <GoogleAd code="5284484376" />
 
   <Card class="mt-3 flex flex-col space-y-4">
-    <h2 class="text-2xl font-semibold md:text-3xl">
-      List of Gluten Free Nationwide Chains
-    </h2>
+    <Heading :border="false"> List of Gluten Free Nationwide Chains </Heading>
   </Card>
 
   <div class="group grid gap-3 md:grid-cols-2">

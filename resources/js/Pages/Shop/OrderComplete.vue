@@ -65,7 +65,9 @@ document.cookie =
             class="h-24 w-24 flex-none rounded-md object-cover object-center"
           />
           <div class="flex-auto space-y-1">
-            <h3 class="font-semibold text-primary-dark md:text-lg lg:text-xl">
+            <h3
+              class="font-semibold text-primary-dark md:max-lg:text-lg lg:text-xl"
+            >
               <Link
                 :href="product.link"
                 target="_blank"

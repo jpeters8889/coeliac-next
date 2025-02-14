@@ -62,7 +62,7 @@ const info = computed((): string => {
       :href="town.link"
       prefetch="click"
     >
-      <h3 class="mb-4 text-lg font-semibold md:text-xl lg:text-2xl">
+      <h3 class="mb-4 text-lg font-semibold md:max-lg:text-xl lg:text-2xl">
         {{ town.name }}
       </h3>
 

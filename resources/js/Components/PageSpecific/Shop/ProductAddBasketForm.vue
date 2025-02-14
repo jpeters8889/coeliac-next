@@ -84,7 +84,7 @@ const addToBasket = () => {
           class="w-full"
         >
           <label
-            class="block text-base font-semibold leading-6 text-primary-dark md:text-lg xl:text-xl"
+            class="block text-base font-semibold leading-6 text-primary-dark md:max-xl:text-lg xl:text-xl"
           >
             {{ product.variant_title }}
             <span

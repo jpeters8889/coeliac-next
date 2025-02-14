@@ -74,7 +74,7 @@ const branchName = (branch: EateryNationwideBranch): string => {
             >
               <div class="flex flex-col space-y-1">
                 <span
-                  class="text-left text-primary-dark font-semibold lg:text-lg xl:text-xl"
+                  class="text-left text-primary-dark font-semibold lg:max-xl:text-lg xl:text-xl"
                   v-text="branchName(branch)"
                 />
 

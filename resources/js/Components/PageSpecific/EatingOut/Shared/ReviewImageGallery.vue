@@ -104,7 +104,7 @@ const handleTouchEnd = (event: TouchEvent) => {
       >
         <img
           v-if="limit === 0 || viewAll === true || index < limit"
-          class="max-h-[125px] max-w-[125px] cursor-pointer p-1 lg:max-h-[200px] lg:max-w-[200px] 2xl:max-h-[250px] 2xl:max-w-[250px] lg:p-2"
+          class="max-h-[125px] max-w-[125px] cursor-pointer p-1 lg:max-2xl:max-h-[200px] lg:max-2xl:max-w-[200px] 2xl:max-h-[250px] 2xl:max-w-[250px] lg:p-2"
           :src="image.thumbnail"
           :alt="altText"
           @click="openImage(index)"

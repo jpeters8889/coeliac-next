@@ -15,7 +15,7 @@ defineProps<{ eatery: CountyEateryType }>();
       :href="eatery.link"
       prefetch
     >
-      <h3 class="text-lg font-semibold md:text-xl lg:text-2xl">
+      <h3 class="text-lg font-semibold md:max-md:text-xl lg:text-2xl">
         {{ eatery.name }}
       </h3>
     </Link>

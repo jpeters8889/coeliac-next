@@ -40,18 +40,18 @@
     @vite('resources/js/app.ts')
     @inertiaHead
 </head>
-<body>
+<body class="mb-0">
 @inertia
 @if(app()->isLocal())
-    <div class="fixed bottom-0 right-0 bg-red text-white text-xs font-semibold leading-0 p-1">
+    <div class="fixed bottom-0 right-0 bg-red text-white text-xs font-semibold leading-0 p-2">
         <span class="xxs:hidden">xxxs</span>
-        <span class="hidden xxs:block xs:hidden">xxs</span>
-        <span class="hidden xs:block sm:hidden">xs</span>
-        <span class="hidden sm:block md:hidden">sm</span>
-        <span class="hidden md:block xmd:hidden">md</span>
-        <span class="hidden xmd:block lg:hidden">xmd</span>
-        <span class="hidden lg:block xl:hidden">lg</span>
-        <span class="hidden xl:block 2xl:hidden">xl</span>
+        <span class="hidden xxs:max-xs:block">xxs</span>
+        <span class="hidden xs:max-sm:block">xs</span>
+        <span class="hidden sm:max-md:block">sm</span>
+        <span class="hidden md:max-xmd:block">md</span>
+        <span class="hidden xmd:max-lg:block">xmd</span>
+        <span class="hidden lg:max-xl:block">lg</span>
+        <span class="hidden xl:max-2xl:block">xl</span>
         <span class="hidden 2xl:block">2xl</span>
     </div>
 @endif

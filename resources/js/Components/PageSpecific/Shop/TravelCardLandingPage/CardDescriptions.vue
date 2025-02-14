@@ -10,13 +10,13 @@ import Card from '@/Components/Card.vue';
     <Card class="flex flex-col space-y-4">
       <Heading>Coeliac Travel Cards</Heading>
 
-      <p class="prose max-w-none md:prose-lg xl:prose-xl">
+      <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl">
         Our standard coeliac gluten free travel and translation cards come in
         two languages for the price of one card, one on each side of the card,
         and available in over 50 different languages!
       </p>
 
-      <p class="prose max-w-none md:prose-lg xl:prose-xl flex-1">
+      <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl flex-1">
         Our standard gluten free travel cards are perfect for those who have
         coeliac without any other allergies or foods they must avoid, each
         language is professionally translated to explain coeliac disease and a
@@ -36,13 +36,13 @@ import Card from '@/Components/Card.vue';
     <Card class="flex flex-col space-y-4">
       <Heading>Coeliac+ Travel Cards</Heading>
 
-      <p class="prose max-w-none md:prose-lg xl:prose-xl">
+      <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl">
         Unlike our standard travel and translation cards, our Coeliac+ travel
         and translation cards come in just one language per card, and are
         currently available in our 10 most popular languages.
       </p>
 
-      <p class="prose max-w-none md:prose-lg xl:prose-xl flex-1">
+      <p class="prose max-w-none md:max-xl:prose-lg xl:prose-xl flex-1">
         The first side of the card covers the gluten free diet, professionally
         translated to explain coeliac disease and a gluten free diet, what you
         can and can't eat, cross contamination, and what to look out for, the

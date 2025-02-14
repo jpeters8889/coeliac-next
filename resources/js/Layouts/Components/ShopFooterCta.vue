@@ -108,7 +108,9 @@ onMounted(() => {
         class="absolute right-0 top-0 -mr-3 -mt-3 flex h-6 w-6 items-center justify-center rounded-full bg-red"
         v-text="items.length"
       />
-      <ShoppingBagIcon class="h-10 w-10 xl:h-12 xl:w-12 2xl:h-14 2xl:w-14" />
+      <ShoppingBagIcon
+        class="h-10 w-10 xl:max-2xl:h-12 xl:max-2xl:w-12 2xl:h-14 2xl:w-14"
+      />
     </div>
   </transition>
 

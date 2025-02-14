@@ -8,6 +8,7 @@ import CountyHeading from '@/Components/PageSpecific/EatingOut/County/CountyHead
 import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEatery.vue';
 import CountyTown from '@/Components/PageSpecific/EatingOut/County/CountyTown.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 defineProps<{
   county: CountyPage;
@@ -28,9 +29,9 @@ defineProps<{
 
   <template v-if="topRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
+      <SubHeading>
         Top rated places to eat gluten free in {{ county.name }}
-      </h2>
+      </SubHeading>
 
       <p class="prose prose-lg max-w-none">
         Discover the best rated places to eat gluten free in
@@ -52,9 +53,9 @@ defineProps<{
 
   <template v-if="mostRated.length">
     <Card class="mt-3 flex flex-col space-y-4">
-      <h2 class="text-2xl font-semibold md:text-3xl">
+      <SubHeading>
         Most rated places to eat gluten free in {{ county.name }}
-      </h2>
+      </SubHeading>
 
       <p class="prose prose-lg max-w-none">
         Discover the most reviewed and highly praised places to eat gluten free
@@ -74,9 +75,7 @@ defineProps<{
   </template>
 
   <Card class="mt-3 flex flex-col space-y-4">
-    <h2 class="text-2xl font-semibold md:text-3xl">
-      Gluten Free {{ county.name }}
-    </h2>
+    <Heading> Gluten Free {{ county.name }} </Heading>
 
     <p class="prose prose-lg max-w-none">
       If you're heading to <span class="font-semibold">{{ county.name }}</span

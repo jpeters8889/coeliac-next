@@ -9,6 +9,7 @@ import GoogleAd from '@/Components/GoogleAd.vue';
 import useNewsletter from '@/composables/useNewsletter';
 import { CheckCircleIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
+import BlueskyIcon from '@/Icons/BlueskyIcon.vue';
 
 const year = new Date().getFullYear();
 
@@ -135,16 +136,22 @@ const { subscribeForm } = useNewsletter();
             <FacebookIcon />
           </a>
           <a
-            href="https://twitter.com/coeliacsanc"
-            target="_blank"
-          >
-            <TwitterIcon />
-          </a>
-          <a
             href="https://www.instagram.com/coeliacsanctuary"
             target="_blank"
           >
             <InstagramIcon />
+          </a>
+          <a
+            href="https://bsky.app/profile/coeliacsanctuary.bsky.social"
+            target="_blank"
+          >
+            <BlueskyIcon />
+          </a>
+          <a
+            href="https://twitter.com/coeliacsanc"
+            target="_blank"
+          >
+            <TwitterIcon />
           </a>
         </div>
         <p class="mt-8 text-center text-xs leading-5 sm:mt-0 sm:text-left">

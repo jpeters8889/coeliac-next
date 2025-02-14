@@ -12,7 +12,7 @@ export default {
   theme: {
     fontFamily: {
       sans: ['Raleway', 'ui-sans-serif'],
-      coeliac: ['Note This', 'ui-sans-serif'],
+      coeliac: ['Hangyaboly', 'ui-sans-serif'],
     },
 
     extend: {
@@ -21,6 +21,7 @@ export default {
           DEFAULT: '#80CCFC',
           light: '#addaf9',
           lightest: '#e7f4fe',
+          alt: '#057DC7',
           dark: '#29719f',
           darkest: '#237cbd',
           other: '#186ba3',

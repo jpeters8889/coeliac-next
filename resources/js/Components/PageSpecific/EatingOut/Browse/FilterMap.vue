@@ -76,7 +76,7 @@ onMounted(() => {
       class="-ml-3 cursor-pointer rounded-full border-2 border-white bg-secondary p-3 text-white shadow-sm transition md:shadow-lg"
     >
       <AdjustmentsHorizontalIcon
-        class="h-8 w-8 md:h-12 md:w-12 xmd:h-14 xmd:w-14"
+        class="h-8 w-8 md:max-xmd:h-12 md:max-xmd:w-12 xmd:h-14 xmd:w-14"
         @click="viewSidebar = true"
       />
     </div>

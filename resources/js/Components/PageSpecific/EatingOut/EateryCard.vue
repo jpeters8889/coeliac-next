@@ -38,7 +38,7 @@ const eateryLink = computed(() => {
   <Card>
     <div class="flex w-full">
       <div
-        :class="{ 'sm:w-3/5 lg:w-2/3': isNotNationwide }"
+        :class="{ 'sm:max-lg:w-3/5 lg:w-2/3': isNotNationwide }"
         class="flex w-full flex-col"
       >
         <EateryIntroduction
@@ -70,7 +70,7 @@ const eateryLink = computed(() => {
 
       <div
         v-if="isNotNationwide"
-        class="hidden pl-4 sm:block sm:w-2/5 lg:w-1/3"
+        class="hidden pl-4 sm:block sm:max-lg:w-2/5 lg:w-1/3"
       >
         <StaticMap
           :lat="

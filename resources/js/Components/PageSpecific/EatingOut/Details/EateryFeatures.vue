@@ -16,7 +16,7 @@ defineProps<{
     </p>
 
     <ul
-      class="grid grid-cols-1 gap-2 xxs:grid-cols-2 sm:grid-cols-3 xmd:grid-cols-4 xmd:gap-3 lg:gap-3 xl:grid-cols-6"
+      class="grid grid-cols-1 gap-2 xxs:max-sm:grid-cols-2 sm:max-xmd:grid-cols-3 xmd:max-xl:grid-cols-4 xmd:gap-3 lg:gap-3 xl:grid-cols-6"
     >
       <li
         v-for="feature in features"

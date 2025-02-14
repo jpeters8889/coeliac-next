@@ -5,7 +5,7 @@ defineProps<{ nutrition: RecipePage['nutrition'] }>();
 </script>
 
 <template>
-  <div class="flex text-xs xs:text-sm sm:text-base">
+  <div class="flex text-xs xs:max-sm:text-sm sm:text-base">
     <div class="grid grid-rows-2 leading-none">
       <div
         class="grid grid-cols-6 divide-x-2 divide-primary border-b-2 border-primary bg-primary-light/50 font-semibold"

@@ -11,6 +11,7 @@ import RecipeSquareImage from '@/Components/PageSpecific/Recipes/RecipeSquareIma
 import RecipeNutritionTable from '@/Components/PageSpecific/Recipes/RecipeNutritionTable.vue';
 import { Page } from '@inertiajs/core';
 import GoogleAd from '@/Components/GoogleAd.vue';
+import SubHeading from '@/Components/SubHeading.vue';
 
 const props = defineProps<{
   recipe: RecipePage;
@@ -152,7 +153,7 @@ const loadMoreComments = () => {
   </Card>
 
   <Card class="space-y-3 pb-0">
-    <h2 class="text-xl font-semibold text-primary-dark">Ingredients</h2>
+    <SubHeading classes="text-primary-dark">Ingredients</SubHeading>
 
     <div
       class="prose prose-lg max-w-none md:prose-xl"
@@ -179,7 +180,7 @@ const loadMoreComments = () => {
   <GoogleAd code="2137793897" />
 
   <Card class="space-y-3">
-    <h3 class="text-xl font-semibold text-primary-dark">Method</h3>
+    <SubHeading classes="text-primary-dark">Method</SubHeading>
 
     <article
       class="prose prose-lg max-w-none md:prose-xl"

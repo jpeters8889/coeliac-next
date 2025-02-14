@@ -16,7 +16,7 @@ defineProps<{
     :shadow="false"
   >
     <Link
-      class="group block px-4 sm:px-6 2xl:px-0"
+      class="group block px-4 sm:max-2xl:px-6 2xl:px-0"
       :href="category.link"
       prefetch
     >
@@ -31,21 +31,21 @@ defineProps<{
         <div class="relative h-72 w-full xmd:hidden" />
         <div class="relative h-32 w-full xmd:hidden" />
         <div
-          class="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-primary-dark/75 p-4 backdrop-blur-sm backdrop-filter xs:flex xs:items-center xs:justify-between xmd:inset-x-auto xmd:inset-y-0 xmd:w-96 xmd:flex-col xmd:items-start xmd:rounded-br-none xmd:rounded-tl-lg xmd:p-6"
+          class="absolute inset-x-0 bottom-0 rounded-bl-lg rounded-br-lg bg-primary-alt/75 p-4 backdrop-blur-sm backdrop-filter xs:flex xs:items-center xs:justify-between xmd:inset-x-auto xmd:inset-y-0 xmd:w-96 xmd:flex-col xmd:items-start xmd:rounded-br-none xmd:rounded-tl-lg xmd:p-6"
         >
           <div>
             <h2
-              class="text-xl font-semibold text-white xmd:text-2xl xl:text-3xl"
+              class="text-xl font-semibold text-white xmd:max-xl:text-2xl xl:text-3xl"
               v-text="category.title"
             />
             <p
-              class="mt-1 text-sm text-gray-300 xmd:mt-2 xmd:text-base xl:mt-3 xl:text-lg"
+              class="mt-1 text-sm text-gray-300 xmd:max-xl:mt-2 xmd:max-xl:text-base xl:mt-3 xl:text-lg"
               v-text="category.description"
             />
           </div>
 
           <div
-            class="mt-6 flex shrink-0 items-center justify-center rounded-md border border-white/25 bg-primary-dark/0 px-4 py-3 text-base font-medium text-white hover:bg-primary-dark/50 xs:ml-8 xs:mt-0 xmd:ml-0 xmd:w-full xl:text-lg"
+            class="mt-6 flex shrink-0 items-center justify-center rounded-md border border-white/25 bg-primary-alt/0 px-4 py-3 text-base font-medium text-white hover:bg-primary-dark/50 xs:max-xmd:ml-8 xs:mt-0 xmd:ml-0 xmd:w-full xl:text-lg"
           >
             Shop Now
           </div>
