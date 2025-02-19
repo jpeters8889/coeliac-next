@@ -22,7 +22,7 @@ class GetCountyLatLngCommand extends Command
             ->each(function (EateryCounty $county) use ($locationSearchService): void {
                 $latLng = $locationSearchService->getLatLng("{$county->county}, {$county->country?->country}");
 
-                $county->update([
+                $county->updateQuietly([
                     'latlng' => $latLng->toString(),
                 ]);
 

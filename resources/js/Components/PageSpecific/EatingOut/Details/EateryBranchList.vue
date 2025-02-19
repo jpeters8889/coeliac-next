@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { DetailedEatery, EateryNationwideBranch } from '@/types/EateryTypes';
+import {
+  DetailedEatery,
+  EateryBranchesCollection,
+  EateryNationwideBranch,
+} from '@/types/EateryTypes';
 import Card from '@/Components/Card.vue';
 import { computed, ref } from 'vue';
 import { pluralise } from '../../../../helpers';
@@ -16,9 +20,23 @@ const showModal = ref(false);
 const { screenIsLessThan } = useScreensize();
 
 const branches = computed(
-  (): EateryNationwideBranch[] =>
-    props.eatery.nationwide_branches as EateryNationwideBranch[],
+  (): EateryBranchesCollection =>
+    props.eatery.nationwide_branches as EateryBranchesCollection,
 );
+
+const numberOfBranches = computed(() => {
+  let count = 0;
+
+  Object.keys(branches.value).forEach((country: string) => {
+    Object.keys(branches.value[country]).forEach((county: string) => {
+      Object.keys(branches.value[country][county]).forEach((town: string) => {
+        count += branches.value[country][county][town].length;
+      });
+    });
+  });
+
+  return count;
+});
 </script>
 
 <template>
@@ -30,14 +48,14 @@ const branches = computed(
       We've currently got
       <span
         class="font-semibold"
-        v-text="branches.length"
+        v-text="numberOfBranches"
       />
-      {{ pluralise('branch', branches.length) }} for
+      {{ pluralise('branch', numberOfBranches) }} for
       <span
         class="font-semibold"
         v-text="eatery.name"
       />
-      listed in our eating guide?
+      listed in our eating guide.
     </p>
 
     <CoeliacButton

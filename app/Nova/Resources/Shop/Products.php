@@ -118,6 +118,12 @@ class Products extends Resource
                     ->showOnDetail(),
 
                 Number::make('Total Sold', 'total_sold')
+                    ->sortable()
+                    ->exceptOnForms()
+                    ->showOnDetail(),
+
+                Number::make('Sold in last month', 'sold_last_month')
+                    ->sortable()
                     ->exceptOnForms()
                     ->showOnDetail(),
             ]),
@@ -197,8 +203,23 @@ class Products extends Resource
                     OrderState::SHIPPED,
                 ])),
             ])
+            ->addSelect(['sold_last_month' => ShopOrderItem::query()
+                ->selectRaw('sum(quantity)')
+                ->whereColumn('product_id', 'shop_products.id')
+                ->whereRelation('order', fn (Builder $relation) => $relation
+                    ->whereIn('state_id', [
+                        OrderState::PAID,
+                        OrderState::READY,
+                        OrderState::SHIPPED,
+                    ])
+                    ->where('created_at', '>', now()->subMonth())
+                ),
+            ])
             ->withCount('variants')
-            ->reorder('pinned', 'desc')->orderBy('title');
+            ->when(
+                $request->missing('orderByDirection'),
+                fn (Builder $builder) => $builder->reorder('pinned', 'desc')->orderBy('title'),
+            );
     }
 
     public function authorizedToView(Request $request)

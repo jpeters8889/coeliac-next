@@ -5,10 +5,7 @@
 <div class="w-[1200px] h-[630px] bg-linear-to-b from-primary to-primary-light relative overflow-hidden flex flex-col object-cover">
     <div class="flex-1">
         <div class="flex flex-col justify-center space-x-6 items-center z-20 w-full p-6 relative">
-            <img src="{{ asset('images/logo.svg') }}" class="w-60"/>
-            <span class="font-coeliac text-3xl text-center">
-                Coeliac Sanctuary<br/>Gluten Free Blog by Alison Peters
-            </span>
+            <img src="{{ asset('images/logo.svg') }}" class="w-1/2"/>
         </div>
     </div>
 

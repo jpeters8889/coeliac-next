@@ -1,3 +1,12 @@
+<?php
+
+use App\Models\Shop\ShopOrder;
+use App\Support\Helpers;
+use Money\Money;
+
+/** @var ShopOrder $order */
+?>
+
 <html>
 <head>
     <style>
@@ -19,8 +28,9 @@
         }
 
         img {
-            width: 60%;
+            width: 50%;
             height: auto;
+            margin-top:-12px;
         }
 
         table.orderTable {
@@ -43,15 +53,15 @@
         }
 
         table.orderTable th {
-            background-color: #ccc;
+            background-color: #addaf9;
         }
 
         hr {
-            color: #DBBC25;
-            background-color: #DBBC25;
+            color: #80CCFC;
+            background-color: #80CCFC;
             height: 5px;
             margin: 15px 0;
-            border: 0 #DBBC25;
+            border: 0 #80CCFC;
         }
 
         .address {
@@ -60,17 +70,9 @@
     </style>
 </head>
 <body>
-<?php
-
-use App\Models\Shop\ShopOrder;
-use App\Support\Helpers;
-use Money\Money;
-
-/** @var ShopOrder $order */
-?>
 @foreach($orders as $order)
     <div class="page">
-        <div style="width:100%;text-align:center">
+        <div style="width:100%;">
             <img src="{{ asset('/images/dispatch_logo.png') }}"/>
         </div>
 
@@ -88,8 +90,10 @@ use Money\Money;
                         @if($order->address->line_3)
                             {{ $order->address->line_3 }}<br/>
                         @endif
-                        {{ $order->address->town }}<br/>
-                        {{ $order->address->county }}<br/>
+                        {{ $order->address->town }}t<br/>
+                        @if($order->address->county)
+                            {{ $order->address->county }}<br/>
+                        @endif
                         {{ $order->address->postcode }}<br/>
                         {{ $order->address->country }}
                     </div>
@@ -148,7 +152,7 @@ use Money\Money;
         <hr/>
         <p>Problem with your order? Please contact us via email and quote your order number if you wish to return your
             item within 14 days of delivery.</p>
-        <p>For full Terms and Conditions please see www.coeliacsanctuary.co.uk/terms-of-use#shop</p>
+        <p>For full Terms and Conditions please see <strong>www.coeliacsanctuary.co.uk/shop/terms</strong></p>
     </div>
 @endforeach
 </body>

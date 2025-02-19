@@ -44,7 +44,6 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
         Route::delete('/{item}', BasketDestroyController::class)->name('shop.basket.remove');
     });
 
-    Route::get('/{category}', CategoryShowController::class)->name('shop.category');
     Route::get('/product/{product}', ProductShowController::class)->name('shop.product');
 
     Route::get('review-my-order/{invitation}', ReviewMyOrderShowController::class)
@@ -57,4 +56,8 @@ Route::middleware(ShopBasketTokenMiddleware::class)->group(function (): void {
     Route::post('review-my-order/{invitation}', ReviewMyOrderStoreController::class)
         ->middleware(HandlePrecognitiveRequests::class)
         ->name('shop.review-order.store');
+
+    Route::redirect('terms', '/terms-of-use#shop');
+
+    Route::get('/{category}', CategoryShowController::class)->name('shop.category');
 });

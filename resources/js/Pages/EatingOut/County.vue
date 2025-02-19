@@ -9,6 +9,7 @@ import CountyEatery from '@/Components/PageSpecific/EatingOut/County/CountyEater
 import CountyTown from '@/Components/PageSpecific/EatingOut/County/CountyTown.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
 import SubHeading from '@/Components/SubHeading.vue';
+import Heading from '@/Components/Heading.vue';
 
 defineProps<{
   county: CountyPage;

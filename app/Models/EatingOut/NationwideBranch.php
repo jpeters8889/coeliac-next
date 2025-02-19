@@ -217,6 +217,18 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
         });
     }
 
+    /** @return Attribute<non-falsy-string, never> */
+    public function shortName(): Attribute
+    {
+        return Attribute::get(function () {
+            if ($this->name) {
+                return "{$this->name}, {$this->short_location}";
+            }
+
+            return $this->short_location;
+        });
+    }
+
     /** @return Attribute<string | null, never> */
     public function averageRating(): Attribute
     {

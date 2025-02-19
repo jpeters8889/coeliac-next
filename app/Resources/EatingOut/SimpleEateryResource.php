@@ -37,7 +37,7 @@ class SimpleEateryResource extends JsonResource
             'name' => $this->eateryName($resource),
             'link' => $resource->link(),
             'location' => [
-                'name' => $resource->full_location,
+                'name' => $resource->town?->slug === 'nationwide' ? $resource->short_location : $resource->full_location,
                 'link' => $resource->town?->link(),
             ],
             'address' => collect(explode("\n", $resource->address))

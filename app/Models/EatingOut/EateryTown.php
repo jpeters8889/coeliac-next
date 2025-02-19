@@ -136,6 +136,10 @@ class EateryTown extends Model implements HasMedia, HasOpenGraphImageContract
 
     public function link(): string
     {
+        if ($this->slug === 'nationwide') {
+            return '/wheretoeat/nationwide';
+        }
+
         return '/' . implode('/', [
             'wheretoeat',
             $this->county?->slug,

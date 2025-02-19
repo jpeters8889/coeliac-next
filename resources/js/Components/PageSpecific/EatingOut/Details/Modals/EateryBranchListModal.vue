@@ -1,33 +1,30 @@
 <script setup lang="ts">
-import { EateryNationwideBranch } from '@/types/EateryTypes';
+import {
+  EateryBranchesCollection,
+  EateryNationwideBranch,
+} from '@/types/EateryTypes';
 import Warning from '@/Components/Warning.vue';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import Card from '@/Components/Card.vue';
 import Sidebar from '@/Components/Overlays/Sidebar.vue';
 import StaticMap from '@/Components/Maps/StaticMap.vue';
+import { Link } from '@inertiajs/vue3';
+import CountryList from '@/Components/PageSpecific/EatingOut/Details/Modals/BranchList/CountryList.vue';
+import CountyList from '@/Components/PageSpecific/EatingOut/Details/Modals/BranchList/CountyList.vue';
+import TownList from '@/Components/PageSpecific/EatingOut/Details/Modals/BranchList/TownList.vue';
+import BranchList from '@/Components/PageSpecific/EatingOut/Details/Modals/BranchList/BranchList.vue';
 
 const props = defineProps<{
   eateryName: string;
   show: boolean;
-  branches: EateryNationwideBranch[];
+  branches: EateryBranchesCollection;
 }>();
 
 const emits = defineEmits(['close']);
 
 const close = () => {
   emits('close');
-};
-
-const branchName = (branch: EateryNationwideBranch): string => {
-  const suffix =
-    branch.town.name === branch.county.name
-      ? branch.town.name
-      : `${branch.town.name}, ${branch.county.name}`;
-
-  const name = branch.name ? branch.name : props.eateryName;
-
-  return `${name}, ${suffix}`;
 };
 </script>
 
@@ -38,7 +35,7 @@ const branchName = (branch: EateryNationwideBranch): string => {
     size="lg"
     @close="close()"
   >
-    <div class="bg-white">
+    <div class="bg-white flex-1">
       <div
         class="border-grey-mid relative border-b bg-grey-light p-3 pr-[34px] text-center text-sm font-semibold"
       >
@@ -55,56 +52,29 @@ const branchName = (branch: EateryNationwideBranch): string => {
           </p>
         </Warning>
 
-        <template
-          v-for="branch in branches"
-          :key="branch.id"
+        <CountryList
+          v-for="(counties, country) in branches"
+          :key="country"
+          :country="<string>country"
         >
-          <Disclosure
-            v-slot="{ open }"
-            :as="Card"
-            v-bind="{
-              theme: 'primary-light',
-              faded: true,
-              noPadding: true,
-              class: 'p-2',
-            }"
+          <CountyList
+            v-for="(towns, county) in counties"
+            :key="county"
+            :county="<string>county"
           >
-            <DisclosureButton
-              class="flex w-full justify-between rounded-lg focus:outline-hidden"
+            <TownList
+              v-for="(branches, town) in towns"
+              :key="town"
+              :town="<string>town"
             >
-              <div class="flex flex-col space-y-1">
-                <span
-                  class="text-left text-primary-dark font-semibold lg:max-xl:text-lg xl:text-xl"
-                  v-text="branchName(branch)"
-                />
-
-                <span
-                  v-if="!open"
-                  class="text-xs text-left lg:text-base"
-                  v-text="branch.location.address"
-                />
-              </div>
-              <ChevronDownIcon
-                :class="open ? 'rotate-180 transform' : ''"
-                class="h-5 w-5 text-primary-dark"
+              <BranchList
+                v-for="branch in branches"
+                :key="branch.id"
+                :branch="branch"
               />
-            </DisclosureButton>
-
-            <DisclosurePanel
-              class="flex flex-col mt-4 border-t border-primary pt-4"
-            >
-              <StaticMap
-                :lng="branch.location.lng"
-                :lat="branch.location.lat"
-              />
-
-              <div
-                class="font-semibold lg:text-lg"
-                v-text="branch.location.address"
-              />
-            </DisclosurePanel>
-          </Disclosure>
-        </template>
+            </TownList>
+          </CountyList>
+        </CountryList>
       </div>
     </div>
   </Sidebar>

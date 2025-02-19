@@ -12,7 +12,7 @@ defineProps<{
 <template>
   <Card class="space-y-2 lg:rounded-lg lg:p-8 lg:space-y-4">
     <p class="prose mb-2 max-w-none sm:prose-lg lg:prose-xl">
-      Here are some highlights you can get at <strong>{{ name }}</strong>
+      Here are some highlights you can find at <strong>{{ name }}</strong>
     </p>
 
     <ul

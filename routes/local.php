@@ -199,7 +199,7 @@ Route::get('/og/eating-out/eatery/{id?}', function (GenerateEateryOpenGraphImage
     return $generateEateryOpenGraphImageAction->handle($eatery);
 });
 
-Route::get('/og/eating-out/branch/{id?}', function (GenerateNationwideBranchOpenGraphImageAction $generateNationwideBranchOpenGraphImageAction, ?string $id): View {
+Route::get('/og/eating-out/branch/{id?}', function (GenerateNationwideBranchOpenGraphImageAction $generateNationwideBranchOpenGraphImageAction, ?string $id = null): View {
     $branch = NationwideBranch::query()
         ->when($id, fn (Builder $builder) => $builder->where('id', $id), fn (Builder $builder) => $builder->inRandomOrder())
         ->with(['town', 'county', 'country', 'reviews'])

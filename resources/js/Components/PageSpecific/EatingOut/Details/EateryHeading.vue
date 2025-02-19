@@ -98,7 +98,7 @@ const eateryName = (): string => {
         v-if="eatery.town.name !== 'Nationwide'"
         class="1 flex space-x-3 text-xs font-semibold text-grey-darker"
       >
-        <Link :href="eatery.town.link"> {{ eatery.town.name }} </Link>,
+        <Link :href="eatery.town.link"> {{ eatery.town.name }}, </Link>
         <Link :href="eatery.county.link">
           {{ eatery.county.name }}
         </Link>
@@ -109,8 +109,8 @@ const eateryName = (): string => {
         class="2 flex space-x-3 text-xs font-semibold text-grey-darker"
       >
         <Link :href="eatery.branch.town.link">
-          {{ eatery.branch.town.name }} </Link
-        >,
+          {{ eatery.branch.town.name }},
+        </Link>
         <Link :href="eatery.branch.county.link">
           {{ eatery.branch.county.name }}
         </Link>

@@ -6,10 +6,7 @@
     <div class="flex flex-col flex-1">
         <div class="flex-1">
             <div class="flex flex-col justify-center space-x-6 items-center z-20 w-full p-6 relative">
-                <img src="{{ asset('images/logo.svg') }}" class="w-60"/>
-                <span class="font-coeliac text-3xl text-center">
-                    Coeliac Sanctuary<br/>Gluten Free Blog by Alison Peters
-                </span>
+                <img src="{{ asset('images/logo.svg') }}"/>
             </div>
         </div>
 

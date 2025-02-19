@@ -127,8 +127,18 @@ const howExpensive = (review: EateryReview) => {
                 <div>
                   <ul
                     v-if="reviewHasRatings(review)"
-                    class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:text-lg"
+                    class="mt-3 grid grid-cols-1 gap-3 sm:text-lg"
+                    :class="
+                      review.branch_name ? 'sm:grid-cols-4' : 'sm:grid-cols-3'
+                    "
                   >
+                    <li
+                      v-if="review.branch_name"
+                      class="rounded-sm bg-primary-light/50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:max-md:space-y-1 sm:max-xl:space-x-0 md:max-xl:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"
+                    >
+                      <strong>Location:</strong>
+                      <span v-text="ucfirst(review.branch_name)" />
+                    </li>
                     <li
                       v-if="review.expense"
                       class="rounded-sm bg-primary-light/50 px-3 py-2 leading-none flex space-x-2 sm:flex-col sm:max-md:space-y-1 sm:max-xl:space-x-0 md:max-xl:space-y-2 xl:flex-row xl:space-y-0 xl:space-x-2"

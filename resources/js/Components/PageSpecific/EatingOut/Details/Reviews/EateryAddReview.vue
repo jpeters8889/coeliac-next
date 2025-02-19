@@ -14,6 +14,7 @@ import CoeliacButton from '@/Components/CoeliacButton.vue';
 import UploadReviewImages from '@/Components/PageSpecific/EatingOut/Details/Reviews/UploadReviewImages.vue';
 import useUrl from '@/composables/useUrl';
 import { InertiaForm } from '@/types/Core';
+import FormLookup from '@/Components/Forms/FormLookup.vue';
 
 const props = defineProps<{
   eatery: DetailedEatery;
@@ -214,14 +215,33 @@ const imageError = (message: string): void => {
           v-if="eatery.county.id === 1 && !eatery.branch"
           class="flex-1"
         >
-          <FormInput
+          <input
+            type="hidden"
             v-model="form.branch_name"
-            required
             name="branchName"
-            type="text"
+          />
+
+          <FormLookup
+            ref="lookup"
             label="What branch did you eat at?"
             :error="form.errors.branch_name"
-          />
+            name=""
+            borders
+            :lookup-endpoint="`/api/wheretoeat/${eatery.id}/branches`"
+            :preselect-term="form.branch_name"
+            :lock="form.branch_name !== ''"
+            allow-any
+            fallback-key="name"
+            @unlock="form.branch_name = ''"
+          >
+            <template #item="{ name }">
+              <div
+                class="p-2 border-b border-grey-off transition cursor-pointer hover:bg-grey-lightest"
+                @click="form.branch_name = name"
+                v-html="name"
+              />
+            </template>
+          </FormLookup>
         </div>
         <div class="flex-1">
           <FormTextarea

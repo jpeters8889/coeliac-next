@@ -3,7 +3,7 @@ import {
   FormLookupPropDefaults,
   FormLookupProps,
 } from '@/Components/Forms/Props';
-import { ExclamationCircleIcon } from '@heroicons/vue/20/solid';
+import { ExclamationCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid';
 import { onMounted, ref, watch } from 'vue';
 import { watchDebounced } from '@vueuse/core';
 import axios from 'axios';
@@ -13,7 +13,7 @@ const props = withDefaults(
   FormLookupPropDefaults,
 );
 
-const emits = defineEmits(['search']);
+const emits = defineEmits(['search', 'unlock']);
 
 const value = ref('');
 
@@ -75,7 +75,8 @@ const classes = (): string[] => {
 };
 
 const performSearch = () => {
-  if (value.value === '') {
+  if (value.value === '' || props.lock) {
+    showResultsBox.value = false;
     return;
   }
 
@@ -153,6 +154,7 @@ watchDebounced(value, performSearch, { debounce: 500 });
         :name="name"
         :required="required"
         type="text"
+        :readonly="lock"
         v-bind="{
           ...(id ? { id } : null),
           ...(autocomplete ? { autocomplete } : null),
@@ -162,6 +164,20 @@ watchDebounced(value, performSearch, { debounce: 500 });
           ...(max ? { max } : null),
         }"
       />
+
+      <div
+        v-if="lock"
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3"
+        @click="
+          value = '';
+          $emit('unlock');
+        "
+      >
+        <XCircleIcon
+          aria-hidden="true"
+          class="h-5 w-5 text-grey-darkest hover:text-primary-dark transition"
+        />
+      </div>
 
       <div
         v-if="error"
@@ -175,10 +191,10 @@ watchDebounced(value, performSearch, { debounce: 500 });
     </div>
 
     <div
-      v-if="showResultsBox"
+      v-if="showResultsBox && !lock"
       class="rounded-b-md border border-grey-off focus:border-grey-dark shadow-xs border-t-0"
     >
-      <ul v-if="results.length > 0">
+      <ul v-if="results.length > 0 || allowAny">
         <li
           v-for="(result, index) in results"
           :key="index"
@@ -186,6 +202,15 @@ watchDebounced(value, performSearch, { debounce: 500 });
           <slot
             name="item"
             v-bind="result"
+          />
+        </li>
+        <li v-if="allowAny">
+          <slot
+            name="item"
+            v-bind="{
+              ...fallbackObject,
+              [fallbackKey]: value,
+            }"
           />
         </li>
       </ul>

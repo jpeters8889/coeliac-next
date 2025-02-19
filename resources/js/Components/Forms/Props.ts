@@ -154,6 +154,10 @@ export type FormLookupProps = Omit<InputProps, 'type'> & {
   postParameter?: string;
   resultKey?: string;
   preselectTerm?: string;
+  lock?: boolean;
+  allowAny?: boolean;
+  fallbackObject?: object;
+  fallbackKey?: string;
 };
 
 export const FormLookupPropDefaults: Partial<
@@ -164,4 +168,8 @@ export const FormLookupPropDefaults: Partial<
   postParameter: 'term',
   resultKey: 'data',
   preselectTerm: undefined,
+  lock: false,
+  allowAny: false,
+  fallbackObject: {},
+  fallbackKey: undefined,
 };

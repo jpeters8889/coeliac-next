@@ -150,6 +150,7 @@ class EateryDetailsResource extends JsonResource
                 'name' => $branch->town?->town,
                 'link' => $branch->town?->link(),
             ],
+            'link' => $branch->link(),
             'location' => [
                 'address' => collect(explode("\n", $branch->address))
                     ->map(fn (string $line) => trim($line))
@@ -167,9 +168,20 @@ class EateryDetailsResource extends JsonResource
         }
 
         return $this->nationwideBranches
-            ->map(fn (NationwideBranch $branch) => $this->formatBranch($branch))
-            ->sortBy(['town.name', 'name'])
-            ->values()
+            ->groupBy(fn (NationwideBranch $branch) => $branch->country->country)
+            ->sortKeys()
+            ->map(fn (Collection $branches) => $branches
+                ->groupBy(fn (NationwideBranch $branch) => $branch->county->county)
+                ->sortKeys()
+                ->map(fn (Collection $branches) => $branches
+                    ->groupBy(fn (NationwideBranch $branch) => $branch->town->town)
+                    ->sortKeys()
+                    ->map(fn (Collection $branches) => $branches
+                        ->sortBy('name')
+                        ->map(fn (NationwideBranch $branch) => $this->formatBranch($branch))
+                    )
+                )
+            )
             ->toArray();
     }
 }

@@ -23,7 +23,7 @@ class GetTownLatLngCommand extends Command
                 $name = "{$town->town}, {$town->county?->county}, {$town->county?->country?->country}";
                 $latLng = $locationSearchService->getLatLng($name);
 
-                $town->update([
+                $town->updateQuietly([
                     'latlng' => $latLng->toString(),
                 ]);
 

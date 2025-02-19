@@ -61,17 +61,11 @@ const eateryName = (): string => {
       />
 
       <EateryBranchList
-        v-if="eatery.is_nationwide && eatery.nationwide_branches?.length"
+        v-if="eatery.is_nationwide && eatery.nationwide_branches"
         class="md:w-1/3 md:shrink-0 md:grow-0 xl:w-1/4"
         :eatery="eatery"
       />
     </div>
-
-    <EateryFeatures
-      v-if="eatery.features && eatery.features.length > 0"
-      :name="eateryName()"
-      :features="eatery.features"
-    />
 
     <EateryLocation
       v-if="eatery.county.id !== 1 || eatery.branch"

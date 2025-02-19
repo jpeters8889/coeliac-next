@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\EatingOut\Browse\IndexController as BrowseIndexController;
 use App\Http\Controllers\Api\EatingOut\Browse\Search\StoreController as BrowseSearchStoreController;
 use App\Http\Controllers\Api\EatingOut\CheckRecommendedPlace\GetController as CheckRecommendedPlaceGetController;
+use App\Http\Controllers\Api\EatingOut\Details\Branches\IndexController as DetailsBranchesIndexController;
 use App\Http\Controllers\Api\EatingOut\Details\ShowController as DetailsShowController;
 use App\Http\Controllers\Api\EatingOut\Features\IndexController as FeatureIndexController;
 use App\Http\Controllers\Api\EatingOut\IndexController as WhereToEatIndexController;
@@ -44,6 +45,8 @@ Route::post('check-recommended-place', CheckRecommendedPlaceGetController::class
 Route::get('random', RandomShowController::class)->name('api.wheretoeat.random');
 
 Route::get('{eatery}', DetailsShowController::class)->name('api.wheretoeat.get');
+
+Route::post('{eatery}/branches', DetailsBranchesIndexController::class)->name('api.wheretoeat.branches.index');
 
 Route::get('{eatery}/suggest-edit', SuggestEditsIndexController::class)->name('api.wheretoeat.suggest-edit.get');
 

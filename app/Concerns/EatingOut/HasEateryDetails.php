@@ -118,7 +118,7 @@ trait HasEateryDetails
             }
 
             if (Str::lower($this->town->town) === 'nationwide') {
-                return "{$this->name}, Nationwide";
+                return 'Nationwide';
             }
 
             return implode(', ', [

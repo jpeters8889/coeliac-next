@@ -50,7 +50,7 @@ class GetController
         ]);
 
         if ($request->routeIs('eating-out.nationwide.show')) {
-            $eatery->load(['nationwideBranches.town', 'nationwideBranches.town.county', 'nationwideBranches.county']);
+            $eatery->load(['nationwideBranches.eatery', 'nationwideBranches.town', 'nationwideBranches.town.county', 'nationwideBranches.county', 'nationwideBranches.country']);
         }
 
         if ($request->routeIs('eating-out.nationwide.show.branch')) {
