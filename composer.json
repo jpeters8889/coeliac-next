@@ -171,7 +171,10 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "stan": "vendor/bin/phpstan analyse --memory-limit 4048M",
+        "stan": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpstan analyse --memory-limit 4048M"
+        ],
         "pint": "vendor/bin/pint -vvv",
         "test": "php artisan test --parallel",
         "pre-commit": [

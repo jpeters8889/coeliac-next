@@ -206,13 +206,15 @@ class Products extends Resource
             ->addSelect(['sold_last_month' => ShopOrderItem::query()
                 ->selectRaw('sum(quantity)')
                 ->whereColumn('product_id', 'shop_products.id')
-                ->whereRelation('order', fn (Builder $relation) => $relation
-                    ->whereIn('state_id', [
-                        OrderState::PAID,
-                        OrderState::READY,
-                        OrderState::SHIPPED,
-                    ])
-                    ->where('created_at', '>', now()->subMonth())
+                ->whereRelation(
+                    'order',
+                    fn (Builder $relation) => $relation
+                        ->whereIn('state_id', [
+                            OrderState::PAID,
+                            OrderState::READY,
+                            OrderState::SHIPPED,
+                        ])
+                        ->where('created_at', '>', now()->subMonth())
                 ),
             ])
             ->withCount('variants')

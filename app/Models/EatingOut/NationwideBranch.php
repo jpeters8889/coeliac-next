@@ -30,6 +30,7 @@ use Laravel\Scout\Searchable;
  * @implements HasOpenGraphImageContract<$this>
  *
  * @property Eatery $eatery
+ * @property string $short_name
  */
 class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSearchable
 {
@@ -217,7 +218,7 @@ class NationwideBranch extends Model implements HasOpenGraphImageContract, IsSea
         });
     }
 
-    /** @return Attribute<non-falsy-string, never> */
+    /** @return Attribute<string, never> */
     public function shortName(): Attribute
     {
         return Attribute::get(function () {

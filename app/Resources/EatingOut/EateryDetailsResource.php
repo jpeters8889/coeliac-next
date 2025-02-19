@@ -168,19 +168,22 @@ class EateryDetailsResource extends JsonResource
         }
 
         return $this->nationwideBranches
-            ->groupBy(fn (NationwideBranch $branch) => $branch->country->country)
+            ->groupBy(fn (NationwideBranch $branch) => $branch->country->country) /** @phpstan-ignore-line */
             ->sortKeys()
-            ->map(fn (Collection $branches) => $branches
-                ->groupBy(fn (NationwideBranch $branch) => $branch->county->county)
-                ->sortKeys()
-                ->map(fn (Collection $branches) => $branches
-                    ->groupBy(fn (NationwideBranch $branch) => $branch->town->town)
+            ->map(
+                fn (Collection $branches) => $branches
+                    ->groupBy(fn (NationwideBranch $branch) => $branch->county->county) /** @phpstan-ignore-line */
                     ->sortKeys()
-                    ->map(fn (Collection $branches) => $branches
-                        ->sortBy('name')
-                        ->map(fn (NationwideBranch $branch) => $this->formatBranch($branch))
+                    ->map(
+                        fn (Collection $branches) => $branches
+                            ->groupBy(fn (NationwideBranch $branch) => $branch->town->town) /** @phpstan-ignore-line */
+                            ->sortKeys()
+                            ->map(
+                                fn (Collection $branches) => $branches
+                                    ->sortBy('name')
+                                    ->map(fn (NationwideBranch $branch) => $this->formatBranch($branch))
+                            )
                     )
-                )
             )
             ->toArray();
     }

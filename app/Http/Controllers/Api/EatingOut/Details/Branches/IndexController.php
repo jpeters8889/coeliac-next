@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class IndexController
 {
-    public function __invoke(Request $request, Eatery $eatery)
+    public function __invoke(Request $request, Eatery $eatery): array
     {
         if ($eatery->county_id !== 1) {
             abort(404);
@@ -20,9 +20,10 @@ class IndexController
         return [
             'data' => $eatery->nationwideBranches()
                 ->with(['eatery', 'town', 'county'])
-                ->where(fn (Builder $query) => $query
-                    ->whereLike('name', "%{$request->string('term')->toString()}%")
-                    ->orWhereRelation('town', 'town', 'like', "%{$request->string('term')->toString()}%")
+                ->where(
+                    fn (Builder $query) => $query
+                        ->whereLike('name', "%{$request->string('term')->toString()}%")
+                        ->orWhereRelation('town', 'town', 'like', "%{$request->string('term')->toString()}%")
                 )
                 ->where('live', true)
                 ->get()
