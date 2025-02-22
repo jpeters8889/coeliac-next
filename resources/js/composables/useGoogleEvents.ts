@@ -1,6 +1,6 @@
 export default () => {
   const googleEvent = (key: string, event: string, attributes: object = {}) => {
-    if (!window.gtag) {
+    if (typeof window === 'undefined' || !window.gtag) {
       return;
     }
 

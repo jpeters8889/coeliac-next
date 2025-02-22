@@ -41,6 +41,7 @@ import { usePage } from '@inertiajs/vue3';
 import { DefaultProps } from '@/types/DefaultProps';
 import 'ol/ol.css';
 import PlaceDetails from '@/Components/PageSpecific/EatingOut/Browse/PlaceDetails.vue';
+import useBrowser from '@/composables/useBrowser';
 
 type FilterKeys = 'category' | 'venueType' | 'feature';
 type UrlFilter = { [T in FilterKeys]?: string };
@@ -380,7 +381,7 @@ const updateUrl = (latLng?: LatLng, zoom?: number) => {
     url.searchParams.set(key, value);
   });
 
-  window.history.pushState(null, '', url);
+  useBrowser().replaceHistory(url, null);
 };
 
 const handleMapClick = (event: MapBrowserEvent<MouseEvent>) => {
@@ -467,7 +468,7 @@ const createMap = () => {
 };
 
 const parseUrl = () => {
-  const url = new URL(window.location.href);
+  const url = new URL(useBrowser().currentUrl());
 
   let paths = url.pathname.replace('/wheretoeat/browse', '');
   const queryStrings = url.searchParams;

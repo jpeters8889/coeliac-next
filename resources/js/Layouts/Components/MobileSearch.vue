@@ -16,7 +16,7 @@ watch(
   () => {
     hasError.value = false;
 
-    if (props.open) {
+    if (props.open && typeof document !== 'undefined') {
       nextTick(() => {
         (<HTMLInputElement>document.getElementById('mobileSearch')).focus();
       });

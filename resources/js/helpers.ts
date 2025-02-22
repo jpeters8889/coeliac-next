@@ -23,8 +23,12 @@ export const numberToWords = (
   return new Converter().toWords(number);
 };
 
-export const loadScript = (script: string) =>
-  new Promise((resolve) => {
+export const loadScript = (script: string) => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
+  return new Promise((resolve) => {
     if (document.querySelector(`script[src="${script}"]`)) {
       resolve(true);
 
@@ -39,6 +43,7 @@ export const loadScript = (script: string) =>
 
     scriptElement.addEventListener('load', resolve);
   });
+};
 
 export const ucfirst = (str: string): string =>
   str.charAt(0).toUpperCase() + str.slice(1);
@@ -57,4 +62,14 @@ export const pluralise = (str: string, count: number): string => {
   }
 
   return `${str}s`;
+};
+
+const appName = 'Coeliac Sanctuary';
+
+export const getTitle = (title: string | undefined): string => {
+  const appName = 'Coeliac Sanctuary';
+
+  return title && title !== '' && title !== appName
+    ? `${title} - ${appName}`
+    : 'Coeliac Sanctuary - Coeliac Blog, Gluten Free Places to Eat, Reviews, and more!';
 };

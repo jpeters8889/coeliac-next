@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import useBrowser from '@/composables/useBrowser';
 
 type BreakPoint =
   | 'xxxs'
@@ -19,8 +20,10 @@ type ScreenSize = {
 
 type ScreenConfig = { [T in BreakPoint]: string };
 
+const { pageWidth } = useBrowser();
+
 export default () => {
-  const rawWidth = ref(window.screen.width);
+  const rawWidth = ref<number>(pageWidth(1280) as number);
 
   const screenConfig: ScreenConfig = {
     xxs: '400px',

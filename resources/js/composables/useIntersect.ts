@@ -5,6 +5,10 @@ export default (
   callback: () => void,
   options: Partial<IntersectionObserverInit> = {},
 ) => {
+  if (typeof IntersectionObserver === 'undefined') {
+    return;
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

@@ -3,7 +3,17 @@ import { computed, onMounted } from 'vue';
 
 defineProps<{ code: string }>();
 
-const hasGoogle = computed(() => !!window.adsbygoogle);
+const hasGoogle = computed(() => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  if (!window.adsbygoogle) {
+    return false;
+  }
+
+  return true;
+});
 
 onMounted(() => {
   if (!hasGoogle.value) {

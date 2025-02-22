@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import HomeHero from '@/Components/PageSpecific/Home/HomeHero.vue';
 import Card from '@/Components/Card.vue';
-import { Link, WhenVisible } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import HomeHoverGroup from '@/Components/PageSpecific/Home/HomeHoverGroup.vue';
 import { HomeHoverItem } from '@/types/Types';
 import HomeCollection from '@/Components/PageSpecific/Home/HomeCollection.vue';
@@ -14,7 +14,6 @@ import HomeLatestEateries from '@/Components/PageSpecific/Home/HomeLatestEaterie
 import HomeLatestReviews from '@/Components/PageSpecific/Home/HomeLatestReviews.vue';
 import GoogleAd from '@/Components/GoogleAd.vue';
 import HomeNewsletterSignup from '@/Components/PageSpecific/Home/HomeNewsletterSignup.vue';
-import HomeHoverItemLoaderSkeleton from '@/Components/PageSpecific/Home/HomeHoverItemLoaderSkeleton.vue';
 
 defineProps<{
   blogs: HomeHoverItem[];
@@ -82,6 +81,7 @@ defineProps<{
         <img
           alt="Alison Peters - Coeliac Sanctuary"
           src="/images/misc/alison.jpg"
+          loading="lazy"
         />
 
         <p class="prose max-w-none sm:prose-lg">

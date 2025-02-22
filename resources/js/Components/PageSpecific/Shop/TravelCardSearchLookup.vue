@@ -6,6 +6,7 @@ import Loader from '@/Components/Loader.vue';
 import { ShopProductIndex } from '@/types/Shop';
 import { nextTick, onMounted, ref } from 'vue';
 import axios, { AxiosResponse } from 'axios';
+import useBrowser from '@/composables/useBrowser';
 
 type SearchResult = {
   term: string;
@@ -17,6 +18,8 @@ const lookup = ref<null | { reset: () => void }>(null);
 
 const loadingResult = ref(false);
 const searchResult = ref<SearchResult | null>(null);
+
+const { currentUrl } = useBrowser();
 
 const selectResult = (id: number) => {
   loadingResult.value = true;
@@ -45,7 +48,7 @@ const searchContainer = ref<null | HTMLElement>(null);
 
 onMounted(() => {
   nextTick(() => {
-    const url = new URL(window.location.href);
+    const url = new URL(currentUrl());
     if (url && url.searchParams && url.searchParams.has('term')) {
       setTimeout(() => {
         searchContainer.value?.scrollIntoView({

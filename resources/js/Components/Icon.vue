@@ -17,6 +17,10 @@ const modules = import.meta.glob('../../icons/*.svg', {
 });
 
 const svg = computed(() => {
+  if (typeof document === 'undefined') {
+    return '';
+  }
+
   const template = document.createElement('template');
   template.innerHTML = modules[filepath];
 

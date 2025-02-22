@@ -11,20 +11,27 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @method static static make(string $name, Closure $lines)
  */
 class Stack extends \Laravel\Nova\Fields\Stack
 {
     protected ?Closure $loadClasses = null;
+
+    protected ?Closure $unpreparedLines = null;
+
+    public function __construct($name, Closure $lines)
+    {
+        parent::__construct($name);
+
+        $this->unpreparedLines = $lines;
+    }
 
     public function prepareLines($resource, $attribute = null): void
     {
         $this->processLines($resource);
 
         $request = app(NovaRequest::class);
-
-        if ( ! $this->lines instanceof Collection) {
-            $this->lines = collect($this->lines);
-        }
 
         $this->lines = $this->lines->filter(function (Line $field) use ($request, $resource) {
             if ($request->isResourceIndexRequest()) {
@@ -37,21 +44,13 @@ class Stack extends \Laravel\Nova\Fields\Stack
 
     protected function processLines(mixed $resource): void
     {
-        $this->lines = collect($this->lines)->map(function ($line) use ($resource) {
-            if (is_callable($line)) {
-                $lines = $line($resource);
-
-                if ($lines instanceof Collection) {
-                    return $lines->map(fn ($l) => Line::make('Anonymous', fn () => $l)
-                        ->extraClasses($this->loadClasses ? call_user_func($this->loadClasses, $l) : ''));
-                }
-
-                return Line::make('Anonymous', $line)
-                    ->extraClasses($this->loadClasses ? call_user_func($this->loadClasses, $line) : '');
-            }
-
-            return $line;
-        })->flatten();
+        $this->lines = collect(call_user_func($this->unpreparedLines, $resource))
+            ->when(fn (Collection $items) => $items->count() > 1, fn (Collection $items) => $items->map(fn (array $lines, $index) => [
+                $lines[0],
+                $lines[1],
+                $lines[2]->extraClasses($index < $items->count() - 1 ? 'inline-block border-b border-gray-300 pb-2 mb-2' : ''),
+            ]))
+            ->flatten();
     }
 
     public function withClasses(Closure $callable): self

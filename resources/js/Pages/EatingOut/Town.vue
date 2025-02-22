@@ -12,6 +12,7 @@ import useScreensize from '@/composables/useScreensize';
 import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
 import GoogleAd from '@/Components/GoogleAd.vue';
 import { RequestPayload } from '@inertiajs/core';
+import useBrowser from '@/composables/useBrowser';
 
 defineProps<{
   town: TownPage;
@@ -69,7 +70,7 @@ const handleFiltersChanged = ({
     }
   }
 
-  router.get(window.location.pathname, params, {
+  router.get(useBrowser().currentUrl(), params, {
     preserveState: screenIsGreaterThanOrEqualTo('xmd') ? false : preserveState,
     preserveScroll: true,
   });

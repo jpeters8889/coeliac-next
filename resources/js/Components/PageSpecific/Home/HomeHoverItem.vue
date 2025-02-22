@@ -24,6 +24,7 @@ defineProps<{ item: HomeHoverItemType }>();
         "
         :alt="item.title"
         :src="item.image"
+        loading="lazy"
       />
       <RecipeSquareImage
         v-else

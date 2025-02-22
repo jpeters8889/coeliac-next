@@ -8,10 +8,13 @@ use App\Models\Shop\ShopOrderReview;
 use App\Models\Shop\ShopOrderReviewItem;
 use App\Nova\FieldOverrides\Stack;
 use App\Nova\Resource;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -34,13 +37,22 @@ class OrderReviews extends Resource
 
             Text::make('Name'),
 
-            Stack::make('Reviewed Products', [
-                fn (ShopOrderReview $resource) => $resource
-                    ->products()
-                    ->with('product')
-                    ->get()
-                    ->map(fn (ShopOrderReviewItem $item) => "{$item->product->title} ({$item->rating} stars)"),
-            ])->onlyOnIndex(),
+            Stack::make('Reviewed Products', fn (ShopOrderReview $resource) => $resource
+                ->products()
+                ->with(['product' => fn (Relation $relation) => $relation->withoutGlobalScopes()])
+                ->get()
+                ->map(fn (ShopOrderReviewItem $item) => [
+                    Line::make('Product', fn () => $item?->product->title)->extraClasses('font-bold'),
+                    Line::make('Rating', fn () => "{$item->rating} stars")->extraClasses(match ((string) $item->rating) {
+                        '5' => 'text-green-700',
+                        '4' => 'text-yellow-500',
+                        '3' => 'text-blue-700',
+                        '2' => 'text-grey-800',
+                        default => 'text-red-700',
+                    }),
+                    Line::make('Review', fn () => Str::limit($item->review, 150)),
+                ]),
+            )->onlyOnIndex(),
 
             Date::make('Created At')->exceptOnForms(),
 

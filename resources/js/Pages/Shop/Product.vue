@@ -3,10 +3,9 @@ import Card from '@/Components/Card.vue';
 import { ShopProductDetail, ShopProductReview } from '@/types/Shop';
 import { PaginatedResponse } from '@/types/GenericTypes';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
-import { ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
 import StarRating from '@/Components/StarRating.vue';
 import { nextTick, Ref, ref } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import Modal from '@/Components/Overlays/Modal.vue';
 import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import ProductReviews from '@/Components/PageSpecific/Shop/ProductReviews.vue';
@@ -15,6 +14,7 @@ import { pluralise } from '@/helpers';
 import { Page } from '@inertiajs/core';
 import Heading from '@/Components/Heading.vue';
 import SubHeading from '@/Components/SubHeading.vue';
+import useBrowser from '@/composables/useBrowser';
 
 const props = defineProps<{
   product: ShopProductDetail;
@@ -42,9 +42,11 @@ const showReviews = ref(false);
 const scrollToReviews = async (): Promise<void> => {
   showReviews.value = true;
 
-  await nextTick(() => {
-    document.getElementById('reviews-dropdown')?.scrollIntoView();
-  });
+  if (typeof document !== 'undefined') {
+    await nextTick(() => {
+      document.getElementById('reviews-dropdown')?.scrollIntoView();
+    });
+  }
 };
 
 const allReviews: Ref<PaginatedResponse<ShopProductReview>> = ref(
@@ -68,11 +70,7 @@ const loadMoreReviews = () => {
         event: Page<{ reviews?: PaginatedResponse<ShopProductReview> }>,
       ) => {
         // eslint-disable-next-line no-restricted-globals
-        history.replaceState(
-          null,
-          '',
-          `${window.location.origin}${window.location.pathname}`,
-        );
+        useBrowser().replaceHistory(usePage().url, null);
 
         if (!event.props.reviews) {
           return true;

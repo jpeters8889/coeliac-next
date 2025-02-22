@@ -2,6 +2,7 @@ import { computed, ComputedRef, Ref, ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 import useIntersect from '@/composables/useIntersect';
 import { PaginatedResponse } from '@/types/GenericTypes';
+import useBrowser from '@/composables/useBrowser';
 
 export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   const value: () => PaginatedResponse<T> = () =>
@@ -14,6 +15,8 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
   const canLoadMoreItems: ComputedRef<boolean> = computed(
     () => value().links.next !== null,
   );
+
+  const { replaceHistory } = useBrowser();
 
   const loadMoreItems = (): void => {
     if (!canLoadMoreItems.value) {
@@ -28,7 +31,7 @@ export default <T>(propName: string, landmark: Ref<Element> | null = null) => {
         preserveScroll: true,
         replace: true,
         onSuccess: () => {
-          window.history.replaceState(null, '', initialUrl);
+          replaceHistory(initialUrl, null);
 
           items.value = [...items.value, ...value().data];
         },

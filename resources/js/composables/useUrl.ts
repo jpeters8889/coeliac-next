@@ -1,6 +1,7 @@
+import useBrowser from '@/composables/useBrowser';
+
 export default () => {
-  const currentUrl = (): string =>
-    window.location.origin + window.location.pathname;
+  const currentUrl = (): string => useBrowser().absoluteUrl();
 
   const generateUrl = (suffix: string): string => `${currentUrl()}/${suffix}`;
 

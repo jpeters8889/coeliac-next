@@ -1,4 +1,3 @@
-import { Axios } from 'axios';
 import 'vite/client';
 import { VisitOptions } from '@inertiajs/core';
 import { InertiaForm as BaseInertiaForm } from '@inertiajs/vue3';
@@ -10,7 +9,6 @@ export {};
 
 declare global {
   interface Window {
-    axios: Axios;
     gtag: (key: string, event: string, attributes: object = {}) => void;
     adsbygoogle: object[];
   }

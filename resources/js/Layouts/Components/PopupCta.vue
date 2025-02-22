@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import useGoogleEvents from '@/composables/useGoogleEvents';
+import useBrowser from '@/composables/useBrowser';
 
 const props = defineProps<{ popup: PopupProps }>();
 
@@ -27,7 +28,7 @@ const handlePopupClick = () => {
 const { googleEvent } = useGoogleEvents();
 
 onMounted(() => {
-  if (window.innerWidth <= 360) {
+  if ((useBrowser().pageWidth(1280) as number) <= 360) {
     return;
   }
 

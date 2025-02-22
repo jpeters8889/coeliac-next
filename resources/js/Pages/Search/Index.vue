@@ -19,6 +19,7 @@ import StaticMap from '@/Components/Maps/StaticMap.vue';
 import { pluralise } from '@/helpers';
 import eventBus from '@/eventBus';
 import useInfiniteScrollCollection from '@/composables/useInfiniteScrollCollection';
+import useBrowser from '@/composables/useBrowser';
 
 const props = defineProps<{
   parameters: SearchParams;
@@ -49,7 +50,7 @@ onMounted(() => {
   pause.value = true;
 
   if (props.aiAssisted) {
-    const url = new URL(window.location.href);
+    const url = new URL(useBrowser().currentUrl());
     url.search = formParamsToSearchParams().toString();
 
     nextTick(() => {

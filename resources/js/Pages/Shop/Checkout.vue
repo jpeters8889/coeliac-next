@@ -24,12 +24,13 @@ import Loader from '@/Components/Loader.vue';
 import useUrl from '@/composables/useUrl';
 import axios, { AxiosError } from 'axios';
 import useStripeStore from '@/stores/useStripeStore';
-import { getAlpha2Code, registerLocale } from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
 import { usePage } from '@inertiajs/vue3';
 import eventBus from '@/eventBus';
 import { ConfirmPaymentData } from '@stripe/stripe-js';
 import useGoogleEvents from '@/composables/useGoogleEvents';
+import pkg from 'i18n-iso-countries';
+const { registerLocale, getAlpha2Code } = pkg;
 
 type SectionKeys = 'details' | 'shipping' | 'payment' | '_complete';
 type FormSection = {

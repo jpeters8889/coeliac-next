@@ -13,8 +13,11 @@ const { removeFromLocalStorage } = useLocalStorage();
 removeFromLocalStorage('checkout-form');
 removeFromLocalStorage('checkout-steps');
 removeFromLocalStorage('checkout-active-section');
-document.cookie =
-  'basket_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+if (typeof document !== 'undefined') {
+  document.cookie =
+    'basket_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+}
 </script>
 
 <template>

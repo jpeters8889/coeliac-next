@@ -31,6 +31,10 @@ const items = computed((): ShopBasketItem[] => page.props.basket?.items || []);
 const subtotal = computed(() => page.props.basket?.subtotal || '');
 
 onMounted(() => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
   new IntersectionObserver((entries) => {
     isVisible.value = entries[0].intersectionRatio === 0;
   }).observe(<Element>document.querySelector('#header-basket-detail'));

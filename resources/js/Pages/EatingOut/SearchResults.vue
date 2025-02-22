@@ -10,6 +10,7 @@ import useInfiniteScroll from '@/composables/useInfiniteScroll';
 import { router } from '@inertiajs/vue3';
 import useScreensize from '@/composables/useScreensize';
 import SearchResultsHeading from '@/Components/PageSpecific/EatingOut/SearchResults/SearchResultsHeading.vue';
+import useBrowser from '@/composables/useBrowser';
 
 defineProps<{
   term: string;
@@ -63,7 +64,7 @@ const handleFiltersChanged = ({
     }
   }
 
-  router.get(window.location.pathname, params, {
+  router.get(useBrowser().currentUrl(), params, {
     preserveState: screenIsGreaterThanOrEqualTo('xmd') ? false : preserveState,
     preserveScroll: true,
   });

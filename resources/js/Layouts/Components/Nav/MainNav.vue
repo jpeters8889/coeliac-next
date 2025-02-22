@@ -6,7 +6,7 @@ import eventBus from '@/eventBus';
 const isSticky = ref(false);
 
 onMounted(() => {
-  if (document.getElementById('header')) {
+  if (typeof document !== 'undefined' && document.getElementById('header')) {
     new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
