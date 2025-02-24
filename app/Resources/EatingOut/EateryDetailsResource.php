@@ -62,7 +62,7 @@ class EateryDetailsResource extends JsonResource
             'info' => $this->info,
             'location' => [
                 'address' => collect(explode("\n", $this->address))
-                    ->map(fn (string $line) => trim($line))
+                    ->map(fn (string $line) => mb_trim($line))
                     ->join(', '),
                 'lat' => $this->lat,
                 'lng' => $this->lng,
@@ -153,7 +153,7 @@ class EateryDetailsResource extends JsonResource
             'link' => $branch->link(),
             'location' => [
                 'address' => collect(explode("\n", $branch->address))
-                    ->map(fn (string $line) => trim($line))
+                    ->map(fn (string $line) => mb_trim($line))
                     ->join(', '),
                 'lat' => $branch->lat,
                 'lng' => $branch->lng,

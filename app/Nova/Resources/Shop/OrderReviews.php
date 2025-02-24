@@ -37,21 +37,23 @@ class OrderReviews extends Resource
 
             Text::make('Name'),
 
-            Stack::make('Reviewed Products', fn (ShopOrderReview $resource) => $resource
-                ->products()
-                ->with(['product' => fn (Relation $relation) => $relation->withoutGlobalScopes()])
-                ->get()
-                ->map(fn (ShopOrderReviewItem $item) => [
-                    Line::make('Product', fn () => $item?->product->title)->extraClasses('font-bold'),
-                    Line::make('Rating', fn () => "{$item->rating} stars")->extraClasses(match ((string) $item->rating) {
-                        '5' => 'text-green-700',
-                        '4' => 'text-yellow-500',
-                        '3' => 'text-blue-700',
-                        '2' => 'text-grey-800',
-                        default => 'text-red-700',
-                    }),
-                    Line::make('Review', fn () => Str::limit($item->review, 150)),
-                ]),
+            Stack::make(
+                'Reviewed Products',
+                fn (ShopOrderReview $resource) => $resource
+                    ->products()
+                    ->with(['product' => fn (Relation $relation) => $relation->withoutGlobalScopes()])
+                    ->get()
+                    ->map(fn (ShopOrderReviewItem $item) => [
+                        Line::make('Product', fn () => $item?->product->title)->extraClasses('font-bold'),
+                        Line::make('Rating', fn () => "{$item->rating} stars")->extraClasses(match ((string) $item->rating) {
+                            '5' => 'text-green-700',
+                            '4' => 'text-yellow-500',
+                            '3' => 'text-blue-700',
+                            '2' => 'text-grey-800',
+                            default => 'text-red-700',
+                        }),
+                        Line::make('Review', fn () => Str::limit($item->review, 150)),
+                    ]),
             )->onlyOnIndex(),
 
             Date::make('Created At')->exceptOnForms(),

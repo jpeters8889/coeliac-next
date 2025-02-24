@@ -29,7 +29,7 @@ class CountyEateryResource extends JsonResource
             'rating_count' => $this->rating_count,
             'info' => (string) $this->info,
             'address' => collect(explode("\n", $this->address))
-                ->map(fn (string $line) => trim($line))
+                ->map(fn (string $line) => mb_trim($line))
                 ->join(', '),
         ];
     }

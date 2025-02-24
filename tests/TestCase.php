@@ -16,7 +16,6 @@ use Tests\Concerns\SeedsWebsite;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
     use CreatesFactories;
     use InteractsWithActions;
     use InteractsWithPipelines;

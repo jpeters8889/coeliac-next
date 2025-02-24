@@ -16,26 +16,10 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event to listener mappings for the application.
-     *
-     * @var array<class-string, array<int, class-string>>
-     */
     protected $listen = [
-        // Shop
-        OrderPaidEvent::class => [
-            SendOrderConfirmationMails::class,
-        ],
-
-        OrderShippedEvent::class => [
-            SendOrderShippedNotification::class,
-        ],
-
-        OrderCancelledEvent::class => [
-            SendOrderCancellationNotification::class,
-        ],
-        ContactFormSubmittedEvent::class => [
-            SendContactFormListener::class,
-        ],
+        OrderPaidEvent::class => [SendOrderConfirmationMails::class],
+        OrderShippedEvent::class => [SendOrderShippedNotification::class],
+        OrderCancelledEvent::class => [SendOrderCancellationNotification::class],
+        ContactFormSubmittedEvent::class => [SendContactFormListener::class],
     ];
 }

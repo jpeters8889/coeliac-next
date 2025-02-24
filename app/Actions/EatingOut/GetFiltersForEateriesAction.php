@@ -22,7 +22,7 @@ class GetFiltersForEateriesAction
 
     protected bool $withCount;
 
-    public function handle(Closure $whereClause = null, array $filters = [], bool $withCount = true): array
+    public function handle(?Closure $whereClause = null, array $filters = [], bool $withCount = true): array
     {
         if ($withCount && $whereClause === null) {
             throw new RuntimeException('Missing where clause');
