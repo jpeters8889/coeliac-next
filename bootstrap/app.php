@@ -7,11 +7,14 @@ use App\Console\Commands\CloseBasketsCommand;
 use App\Console\Commands\PrepareShopReviewInvitationsCommand;
 use App\Console\Commands\PublishItemsCommand;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Response\Inertia;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Console\Scheduling\Schedule;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,7 +33,45 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: HandleInertiaRequests::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
+            $errorStatusCodes = [
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                Response::HTTP_SERVICE_UNAVAILABLE,
+                Response::HTTP_NOT_FOUND,
+                Response::HTTP_FORBIDDEN,
+            ];
+
+            if ( ! app()->environment(['local', 'testing']) && in_array($response->getStatusCode(), $errorStatusCodes)) {
+                $title = match ($response->getStatusCode()) {
+                    Response::HTTP_NOT_FOUND, Response::HTTP_FORBIDDEN => 'Page not found',
+                    default => 'Something went wrong',
+                };
+
+                $description = match ($response->getStatusCode()) {
+                    Response::HTTP_NOT_FOUND => 'Sorry, the page you are looking for could not be found.',
+                    default => 'Sorry, something has gone wrong and this page has been contaminated with gluten! We\'re doing our best to fix it!',
+                };
+
+                return app(Inertia::class)
+                    ->title($title)
+                    ->metaTags([], false)
+                    ->doNotTrack()
+                    ->render('Error', [
+                        'title' => $title,
+                        'description' => $description,
+                    ])
+                    ->toResponse($request)
+                    ->setStatusCode($response->getStatusCode());
+            }
+
+            if ($response->getStatusCode() === 419) {
+                return back()->with([
+                    'message' => 'The page expired, please try again.',
+                ]);
+            }
+
+            return $response;
+        });
     })
     ->withSchedule(function (Schedule $schedule): void {
         $schedule->command(CloseBasketsCommand::class)->everyMinute();

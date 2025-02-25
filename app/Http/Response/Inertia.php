@@ -15,7 +15,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 use Inertia\DeferProp;
 use Inertia\Inertia as BaseInertia;
-use Inertia\LazyProp;
 use Inertia\MergeProp;
 use Inertia\Response;
 use Money\Money;
@@ -122,11 +121,6 @@ class Inertia
     public function getShared(?string $key = null, mixed $default = null): mixed
     {
         return BaseInertia::getShared($key, $default);
-    }
-
-    public function lazy(callable $callback): LazyProp
-    {
-        return BaseInertia::lazy($callback);
     }
 
     protected function includeBasket(): void
