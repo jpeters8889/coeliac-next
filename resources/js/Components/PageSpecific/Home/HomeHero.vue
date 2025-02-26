@@ -39,7 +39,7 @@ setInterval(() => {
         >
           <div class="mx-auto max-w-5xl">
             <h1
-              class="mx-auto bg-secondary/60 p-2 text-center text-2xl font-semibold tracking-tight text-gray-900 sm:w-4/5 sm:text-3xl sm:leading-10"
+              class="font-coeliac mx-auto bg-secondary/60 px-2 py-3 text-center text-3xl font-semibold tracking-tight text-gray-900 sm:w-4/5 sm:text-4xl sm:leading-10"
               v-text="activeItem.title"
             />
             <p
@@ -55,7 +55,7 @@ setInterval(() => {
                 href="/shop"
                 size="xl"
                 theme="secondary"
-                classes="hover:scale-[1.3]"
+                classes="hover:scale-[1.3] text-2xl!"
                 bold
               />
             </div>

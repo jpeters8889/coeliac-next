@@ -84,26 +84,19 @@ class Products extends Resource
                         ]);
                     }),
 
-                Stack::make('Variants', [
-                    fn (ShopProduct $resource) => $resource
-                        ->variants
-                        ->pluck('title'),
-                ])->onlyOnIndex(),
+                Stack::make('Variants', fn (ShopProduct $resource) => $resource->variants->pluck('title'))->onlyOnIndex(),
 
-                Stack::make('Quantity', [
-                    fn (ShopProduct $resource) => $resource
-                        ->variants
-                        ->pluck('quantity'),
-                ])
+                Stack::make('Quantity', fn (ShopProduct $resource) => $resource->variants->pluck('quantity'))
                     ->onlyOnIndex()
                     ->withClasses(fn ($quantity) => $quantity < 10 ? 'font-semibold text-red-500' : ''),
 
-                Stack::make('', [
+                Stack::make(
+                    '',
                     fn (ShopProduct $resource) => $resource
                         ->variants
                         ->pluck('live')
                         ->map(fn (int $live) => $live === 1 ? 'Live' : 'Not Live'),
-                ])
+                )
                     ->onlyOnIndex()
                     ->withClasses(fn ($value) => $value === 'Live' ? 'font-semibold text-green-500' : 'font-semibold text-red-500'),
 

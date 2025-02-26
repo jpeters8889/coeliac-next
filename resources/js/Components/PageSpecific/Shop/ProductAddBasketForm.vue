@@ -11,6 +11,8 @@ import Icon from '@/Components/Icon.vue';
 import { ShopProductDetail, ShopProductVariant } from '@/types/Shop';
 import { computed, onMounted, ref, Ref, watch } from 'vue';
 import useAddToBasket from '@/composables/useAddToBasket';
+import { ShoppingBagIcon } from '@heroicons/vue/24/solid';
+import useScreensize from '@/composables/useScreensize';
 
 const props = defineProps<{ product: ShopProductDetail }>();
 
@@ -65,6 +67,8 @@ const addToBasket = () => {
     only: ['basket', 'errors'],
   });
 };
+
+const { screenIsGreaterThanOrEqualTo } = useScreensize();
 </script>
 
 <template>
@@ -188,9 +192,15 @@ const addToBasket = () => {
       <div class="flex items-center justify-between">
         <CoeliacButton
           as="button"
-          size="xxl"
           label="Add To Basket"
           :disabled="!isInStock"
+          :theme="isInStock ? 'secondary' : 'negative'"
+          :icon="
+            screenIsGreaterThanOrEqualTo('xxs') ? ShoppingBagIcon : undefined
+          "
+          icon-position="right"
+          size="xxl"
+          :loading="addBasketForm.processing"
         />
       </div>
     </form>

@@ -20,6 +20,8 @@ class Stack extends \Laravel\Nova\Fields\Stack
 
     protected ?Closure $unpreparedLines = null;
 
+    protected ?Closure $processUsingCallback = null;
+
     public function __construct($name, Closure $lines)
     {
         parent::__construct($name);
@@ -33,23 +35,28 @@ class Stack extends \Laravel\Nova\Fields\Stack
 
         $request = app(NovaRequest::class);
 
-        $this->lines = $this->lines->filter(function (Line $field) use ($request, $resource) {
-            if ($request->isResourceIndexRequest()) {
-                return $field->isShownOnIndex($request, $resource);
-            }
+        $this->lines = $this->lines
+            ->map(fn (string | Line $line) => $line instanceof Line ? $line : Line::make('', fn () => $line))
+            ->filter(function (Line $field) use ($request, $resource) {
+                if ($request->isResourceIndexRequest()) {
+                    return $field->isShownOnIndex($request, $resource);
+                }
 
-            return $field->isShownOnDetail($request, $resource);
-        })->values()->each->resolveForDisplay($resource, $attribute);
+                return $field->isShownOnDetail($request, $resource);
+            })->values()->each->resolveForDisplay($resource, $attribute);
+    }
+
+    public function processUsing(Closure $callback): self
+    {
+        $this->processUsingCallback = $callback;
+
+        return $this;
     }
 
     protected function processLines(mixed $resource): void
     {
         $this->lines = collect(call_user_func($this->unpreparedLines, $resource))
-            ->when(fn (Collection $items) => $items->count() > 1, fn (Collection $items) => $items->map(fn (array $lines, $index) => [
-                $lines[0],
-                $lines[1],
-                $lines[2]->extraClasses($index < $items->count() - 1 ? 'inline-block border-b border-gray-300 pb-2 mb-2' : ''),
-            ]))
+            ->when($this->processUsingCallback, fn (Collection $collection) => call_user_func($this->processUsingCallback, $collection))
             ->flatten();
     }
 

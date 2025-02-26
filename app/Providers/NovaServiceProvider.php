@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Nova\Dashboards\Main;
 use App\Nova\Dashboards\Shop;
 use App\Nova\FieldRegistrar;
@@ -49,19 +50,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Nova::routes()
             ->withAuthenticationRoutes()
-            ->withPasswordResetRoutes()
             ->register();
     }
 
     protected function gate(): void
     {
-        Gate::define('viewNova', function ($user) {
-            //            return in_array($user->email, [
-            //                //
-            //            ]);
-
-            return true;
-        });
+        Gate::define('viewNova', fn (?User $user) => $user?->exists());
     }
 
     protected function dashboards()

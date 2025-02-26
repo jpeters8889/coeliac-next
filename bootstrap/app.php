@@ -31,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: HandleInertiaRequests::class);
+        $middleware->redirectGuestsTo(fn () => route('nova.pages.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {

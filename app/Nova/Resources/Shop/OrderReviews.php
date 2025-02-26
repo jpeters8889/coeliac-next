@@ -10,6 +10,7 @@ use App\Nova\FieldOverrides\Stack;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
@@ -54,7 +55,13 @@ class OrderReviews extends Resource
                         }),
                         Line::make('Review', fn () => Str::limit($item->review, 150)),
                     ]),
-            )->onlyOnIndex(),
+            )
+                ->processUsing(fn (Collection $collection) => $collection->when(fn (Collection $items) => $items->count() > 1, fn (Collection $items) => $items->map(fn (array $lines, $index) => [
+                    $lines[0],
+                    $lines[1],
+                    $lines[2]->extraClasses($index < $items->count() - 1 ? 'inline-block border-b border-gray-300 pb-2 mb-2' : ''),
+                ])))
+                ->onlyOnIndex(),
 
             Date::make('Created At')->exceptOnForms(),
 

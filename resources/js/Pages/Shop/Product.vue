@@ -121,7 +121,9 @@ const loadMoreReviews = () => {
           </div>
 
           <section class="flex flex-col space-y-5 lg:col-span-2">
-            <div class="flex items-center md:items-start">
+            <div
+              class="flex flex-col space-y-2 items-center md:items-start pb-5 border-b"
+            >
               <div class="flex flex-col">
                 <p v-if="product.prices.old_price">
                   was
@@ -142,15 +144,22 @@ const loadMoreReviews = () => {
                 class="group flex-1 cursor-pointer"
                 @click="scrollToReviews()"
               >
-                <div class="flex flex-col items-end justify-end">
+                <div class="flex items-center font-semibold space-x-2">
+                  <p
+                    class="text-gray-500 group-hover:text-primary-dark xs:max-xl:text-base text-xl"
+                  >
+                    Rated
+                  </p>
+
                   <StarRating
                     size="w-4 h-4 xs:max-xl:w-5 xs:max-xl:h-5 xl:w-6 xl:h-6"
                     :rating="product.rating.average"
                   />
 
                   <p
-                    class="text-sm text-gray-500 group-hover:text-primary-dark xs:max-xl:text-base xl:text-lg"
+                    class="text-gray-500 group-hover:text-primary-dark xs:max-xl:text-base text-xl"
                   >
+                    from
                     {{ product.rating.count }}
                     {{ pluralise('review', product.rating.count) }}
                   </p>
